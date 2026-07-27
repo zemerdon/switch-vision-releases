@@ -37,11 +37,8 @@ It includes:
 
 Download the latest installable release from the GitHub Releases page:
 
-[Download the latest Switch Vision release](https://github.com/zemerdon/switch-vision-releases/releases/latest)
+[Download the latest Switch Vision release](https://github.com/zemerdon/switch-vision-releases)
 
-For older versions, visit:
-
-[All Switch Vision releases](https://github.com/zemerdon/switch-vision-releases/releases)
 
 ---
 
