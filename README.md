@@ -20,8 +20,8 @@ Current tested component set:
 
 ```text
 Switch Vision Core/dashboard    2.2.2
-Switch Vision Discovery         2.1.13
-Switch Vision SNMP2MQTT app     0.9.8
+Switch Vision Discovery         2.1.14
+Switch Vision SNMP2MQTT app     0.9.9
 Switch Vision UniFi2MQTT        2.0.41
 Switch Vision Installer         2.1.19
 ```
