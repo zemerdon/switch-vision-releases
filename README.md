@@ -16,7 +16,7 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 It includes the v2.2 Activity LED system and the v2.2.2 C3650 Status Box hotfix while preserving the established Discovery, SNMP2MQTT, entity, calibration, faceplate, and dashboard contracts.
 
-Current tested component set:
+Component versions validated when Core v2.2.2 was released:
 
 ```text
 Switch Vision Core/dashboard    2.2.2
@@ -26,7 +26,9 @@ Switch Vision UniFi2MQTT        2.0.41
 Switch Vision Installer         2.1.19
 ```
 
-These components have independent version lines. Matching the Core version number is not required.
+These versions are a historical compatibility baseline for the Core v2.2.2 release, not a live component-version list.
+
+Switch Vision components have independent version lines and may receive newer compatible releases without requiring a Core version change. Use Switch Vision Installer for current installed/latest component status.
 
 ---
 
