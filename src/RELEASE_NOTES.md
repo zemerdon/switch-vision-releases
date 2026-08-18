@@ -1,11 +1,9 @@
-# Switch Vision Core v2.3.2 — UniFi logo refresh
+# Switch Vision Core v2.3.3 — Calibration Selection layout cleanup
 
-Switch Vision Core v2.3.2 is a small presentation-maintenance release for the bundled UniFi/Ubiquiti logo library.
+Switch Vision Core v2.3.3 refines the interactive Calibration Selection workspace.
 
-The legacy `unifi-2005.png` and `unifi-2013.png` artwork has been refreshed.
+RJ45 key and display-name controls now sit on their own row beneath the main Target and Port manager controls, reducing horizontal crowding while keeping port-management actions easy to reach.
 
-The obsolete `unifi-2023.png` raster image has been removed. The vector `unifi-2023.svg` asset remains available.
+The Logo and Calibration button quick-selection actions now sit immediately after the Even-port controls, consolidating the Selection workspace and reducing unnecessary line wrapping.
 
-The existing `ubiquiti-networks.png` asset is unchanged.
-
-All Switch Vision Core v2.3.1 calibration flexibility, port presentation, Discovery, SNMP2MQTT, UniFi2MQTT, dashboard, telemetry, and Activity LED behaviour is preserved unchanged.
+No calibration data format, port identity, telemetry mapping, Discovery behaviour, SNMP2MQTT behaviour, UniFi2MQTT behaviour, Activity LED behaviour, or dashboard contract is changed by this release.
