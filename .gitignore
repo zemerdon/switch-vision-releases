@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+*.bak
+*.tmp
+*.swp
+*.psd
+.DS_Store
+Switch_Vision_v*_source.zip
+Switch_Vision_v*_SHA256SUMS.txt
+Releases/*.zip
