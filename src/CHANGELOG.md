@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.3.5 — Calibration selection highlight correctness
+
+- Refactors the yellow Calibration selection overlay to use the same canonical editable target as movement, positioning, and sizing operations.
+- Corrects RJ45 Port box, Entire Port, Link, Activity, and Number highlighting.
+- Corrects grouped All, Odd, Even, and Custom RJ45 highlight behaviour.
+- Adds yellow calibration rings for RJ45 number targets.
+- Corrects combined Port Numbers highlighting across RJ45 numbers and SFP/uplink labels.
+- Keeps SFP/uplink centre, link, activity, and label highlighting part-aware.
+- Keeps Status Box 1 and Status Box 2 field highlighting aligned with All fields, All labels, and All values selections.
+- Preserves positional calibration outlines for selected hidden UI objects.
+- Adds whole-box Visible controls for Status Box 1 and Status Box 2.
+- Preserves saved Status Box 1 visibility instead of allowing the card default to overwrite it.
+- Does not change the underlying calibration selection, movement, sizing, or saved target identity semantics.
+
 ## v2.3.4 — Status field group quick selection
 
 - Adds **All labels** and **All values** quick-selection controls for Status Box 1.

@@ -1,22 +1,37 @@
-# Switch Vision Core v2.3.4 — Status field group quick selection
+# Switch Vision Core v2.3.5 — Calibration selection highlight correctness
 
-Switch Vision Core v2.3.4 expands the Calibration Selection workspace with more useful Status Box group controls.
+Switch Vision Core v2.3.5 focuses on making the Calibration workspace's yellow selection overlay accurately represent the target that is actually being edited.
 
-Status Box 1 and Status Box 2 now each provide:
+The overlay now uses the same canonical editable-target resolution used by calibration movement, direct positioning, and sizing operations.
 
-- Box
-- All fields
-- All labels
-- All values
+This corrects visual highlighting for:
 
-All labels targets only the label coordinates represented by `row1_key` through `row6_key`.
+- individual RJ45 port boxes
+- Entire Port selections
+- RJ45 link LEDs
+- RJ45 activity LEDs
+- RJ45 number labels
+- All RJ45 groups
+- Odd RJ45 groups
+- Even RJ45 groups
+- custom RJ45 groups
+- SFP/uplink boxes
+- SFP/uplink link LEDs
+- SFP/uplink activity LEDs
+- SFP/uplink labels
+- combined Port Numbers
+- individual and grouped status LEDs
+- Status Box 1 fields, labels, and values
+- Status Box 2 fields, labels, and values
+- Logo
+- Calibration button
+- Status Box 1
+- Status Box 2
 
-All values targets only the value coordinates represented by `row1_value` through `row6_value`.
+The underlying calibration target-selection behaviour was not changed; this release aligns the yellow visual feedback with the target already being edited.
 
-The existing All fields selection continues to operate on the complete Status Box field set.
+Status Box 1 and Status Box 2 also gain whole-box Visible controls in the Calibration workspace.
 
-Status Box 1 controls remain grouped together, Status Box 2 controls remain grouped together, and Logo plus Calibration button have moved back to the general Quick select row.
+A targeted regression matrix covering 60 overlay selection cases passed before release.
 
-The grouped selections support calibration overlay highlighting, nudge controls, direct X/Y positioning, and subgroup-aware reset handling.
-
-Community testing and feedback on the new grouped calibration controls is welcome.
+Community testing and feedback remain welcome.

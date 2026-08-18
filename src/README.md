@@ -10,11 +10,11 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current public Core release
 
-### Switch Vision v2.3.4
+### Switch Vision v2.3.5
 
-**v2.3.4** is the current tested public Switch Vision Core/dashboard release.
+**v2.3.5** is the current tested public Switch Vision Core/dashboard release.
 
-This release expands Calibration quick selection with grouped Status Box label and value controls. Status Box 1 and Status Box 2 can now select all fields, all labels, or all values independently, while keeping each Status Box control group together in the Selection workspace.
+This release corrects Calibration yellow-selection highlighting so the visual overlay follows the same canonical editable target used by calibration operations. It also adds whole-box visibility controls for Status Box 1 and Status Box 2.
 
 Component versions validated when Core v2.2.2 was released:
 
