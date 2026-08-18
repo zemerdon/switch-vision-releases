@@ -1918,6 +1918,31 @@ function statusFieldLabel(key) {
   return found ? found[1] : key;
 }
 
+function normaliseStatusFieldGroupPart(value) {
+  const part = String(value || "field").trim().toLowerCase();
+  return ["field", "label", "value"].includes(part) ? part : "field";
+}
+
+function statusFieldKeyMatchesPart(key, part = "field") {
+  const normalised = normaliseStatusFieldGroupPart(part);
+  if (normalised === "label") return String(key || "").endsWith("_key");
+  if (normalised === "value") return String(key || "").endsWith("_value");
+  return true;
+}
+
+function statusFieldPointsForPart(panel, part = "field") {
+  return Object.entries(panel?.fields || {})
+    .filter(([key]) => statusFieldKeyMatchesPart(key, part))
+    .map(([, point]) => point);
+}
+
+function statusFieldGroupDescription(part = "field") {
+  const normalised = normaliseStatusFieldGroupPart(part);
+  if (normalised === "label") return "LABELS";
+  if (normalised === "value") return "VALUES";
+  return "FIELDS";
+}
+
 function normaliseHexColour(value, fallback = "#ffffff") {
   const raw = String(value || "").trim();
   if (/^#[0-9a-f]{6}$/i.test(raw)) return raw.toLowerCase();
@@ -2790,8 +2815,8 @@ function calibrationInfoText(config) {
 
   if (type === "number_labels") return "ALL PORT LABELS";
   if (type === "status_leds") return "ALL STATUS LEDS";
-  if (type === "status_fields") return "STATUS BOX 1 FIELDS";
-  if (type === "status_fields_2") return "STATUS BOX 2 FIELDS";
+  if (type === "status_fields") return `STATUS BOX 1 ${statusFieldGroupDescription(target.part || config?.calibration_part)}`;
+  if (type === "status_fields_2") return `STATUS BOX 2 ${statusFieldGroupDescription(target.part || config?.calibration_part)}`;
   if (type === "status_field") return `STATUS BOX 1 · ${String(target.id || "").toUpperCase()}`;
   if (type === "status_field_2") return `STATUS BOX 2 · ${String(target.id || "").toUpperCase()}`;
   if (type === "status_box") return "STATUS BOX 1";
@@ -2915,9 +2940,10 @@ function drawCalibrationOverlay(svg, { config, calibration }) {
     if (showLabels) text(svg, panel.x + (panel.width / 2), panel.y - 12, "STATUS BOX", boxActive ? "cv-calibration-label cv-calibration-active-text" : "cv-calibration-label");
 
     const allFieldsActive = raw === "status_fields";
+    const allFieldsPart = allFieldsActive ? normaliseStatusFieldGroupPart(target?.part) : "field";
     for (const [key, label, fallback] of STATUS_PANEL_FIELD_DEFS) {
       const [fx, fy] = statusFieldDisplayPosition(panel, key, fallback, 1);
-      const active = allFieldsActive || (target?.type === "status_field" && String(target.id) === key);
+      const active = (allFieldsActive && statusFieldKeyMatchesPart(key, allFieldsPart)) || (target?.type === "status_field" && String(target.id) === key);
       if (showLedRings) drawRing(fx, fy, 7, active);
       if (showLabels && active) text(svg, fx, fy - 12, label, "cv-calibration-label cv-calibration-active-text");
     }
@@ -2939,9 +2965,10 @@ function drawCalibrationOverlay(svg, { config, calibration }) {
     if (showLabels) text(svg, panel2.x + (panel2.width / 2), panel2.y - 12, "STATUS BOX 2", boxActive ? "cv-calibration-label cv-calibration-active-text" : "cv-calibration-label");
 
     const allFieldsActive = raw === "status_fields_2";
+    const allFieldsPart = allFieldsActive ? normaliseStatusFieldGroupPart(target?.part) : "field";
     for (const [key, label, fallback] of STATUS_PANEL_FIELD_DEFS) {
       const [fx, fy] = statusFieldDisplayPosition(panel2, key, fallback, 2);
-      const active = allFieldsActive || (target?.type === "status_field_2" && String(target.id) === key);
+      const active = (allFieldsActive && statusFieldKeyMatchesPart(key, allFieldsPart)) || (target?.type === "status_field_2" && String(target.id) === key);
       if (showLedRings) drawRing(fx, fy, 7, active);
       if (showLabels && active) text(svg, fx, fy - 12, label, "cv-calibration-label cv-calibration-active-text");
     }
@@ -3431,8 +3458,8 @@ function normalCalibrationTarget(config) {
   if (rawTarget === "calibration_button") return { type: "calibration_button", id: "calibration_button", part: "box" };
   if (rawTarget === "status_box" || rawTarget === "status_box_1") return { type: "status_box", id: "status_box_1", part: "box" };
   if (rawTarget === "status_box_2") return { type: "status_box_2", id: "status_box_2", part: "box" };
-  if (rawTarget === "status_fields") return { type: "status_fields", id: "all", part: "field" };
-  if (rawTarget === "status_fields_2") return { type: "status_fields_2", id: "all", part: "field" };
+  if (rawTarget === "status_fields") return { type: "status_fields", id: "all", part: normaliseStatusFieldGroupPart(config?.calibration_part) };
+  if (rawTarget === "status_fields_2") return { type: "status_fields_2", id: "all", part: normaliseStatusFieldGroupPart(config?.calibration_part) };
   if (rawTarget.startsWith("status_field_2:")) return { type: "status_field_2", id: rawTarget.split(":").slice(1).join(":"), part: "field" };
   if (rawTarget.startsWith("status_field:")) return { type: "status_field", id: rawTarget.split(":").slice(1).join(":"), part: "field" };
 
@@ -3502,10 +3529,12 @@ function getEditableCalibrationTarget(cal, config) {
   }
 
   if (type === "status_fields") {
-    return { type, id: "all", key: "status_fields", item: cal.ui.status_panel, part: "field", point: ["all", "all"], group: true };
+    part = normaliseStatusFieldGroupPart(part);
+    return { type, id: "all", key: "status_fields", item: cal.ui.status_panel, part, point: ["all", "all"], group: true };
   }
   if (type === "status_fields_2") {
-    return { type, id: "all", key: "status_fields_2", item: cal.ui.status_panel_2, part: "field", point: ["all", "all"], group: true };
+    part = normaliseStatusFieldGroupPart(part);
+    return { type, id: "all", key: "status_fields_2", item: cal.ui.status_panel_2, part, point: ["all", "all"], group: true };
   }
 
   if (type === "status_field_2") {
@@ -3656,7 +3685,7 @@ function calibrationCoordinatePoints(cal, editable, createMissing = false) {
       .filter(([name]) => String(name).toUpperCase() !== "MODE")
       .map(([, point]) => point);
   } else if (editable.group && ["status_fields", "status_fields_2"].includes(editable.type)) {
-    points = Object.values(editable.item?.fields || {});
+    points = statusFieldPointsForPart(editable.item, editable.part);
   } else if (["logo", "calibration_button", "status_box", "status_box_2"].includes(editable.type)) {
     points = [[editable.item?.x, editable.item?.y]];
   } else if (editable.type === "port") {
@@ -3786,7 +3815,12 @@ function calibrationPartOptionsHtml(target, selectedPart) {
   const part = String(selectedPart || "entire").toLowerCase();
   const option = (value, label) => `<option value="${htmlEscape(value)}" ${value === part ? "selected" : ""}>${htmlEscape(label)}</option>`;
   if (["logo", "status_box", "status_box_2", "calibration_button"].includes(type)) return option("box", "Box / size");
-  if (["status_fields", "status_fields_2", "status_field", "status_field_2"].includes(type)) return option("field", "Field position");
+  if (["status_fields", "status_fields_2"].includes(type)) return [
+    option("field", "All fields"),
+    option("label", "All labels"),
+    option("value", "All values")
+  ].join("");
+  if (["status_field", "status_field_2"].includes(type)) return option("field", "Field position");
   if (type === "number_labels") return option("number", "All number labels");
   if (type === "port" || type === "ports") {
     return [
@@ -5550,8 +5584,8 @@ class SwitchVision3650 extends HTMLElement {
     }
     else if (editable?.group && editable.type === "number_labels") targetText = "all RJ45 numbers and SFP labels";
     else if (editable?.group && editable.type === "status_leds") targetText = "all status LEDs · center";
-    else if (editable?.group && editable.type === "status_fields") targetText = "all Status Box 1 fields";
-    else if (editable?.group && editable.type === "status_fields_2") targetText = "all Status Box 2 fields";
+    else if (editable?.group && editable.type === "status_fields") targetText = `all Status Box 1 ${statusFieldGroupDescription(editable.part).toLowerCase()}`;
+    else if (editable?.group && editable.type === "status_fields_2") targetText = `all Status Box 2 ${statusFieldGroupDescription(editable.part).toLowerCase()}`;
     else if (editable?.type === "status_field") targetText = `Status Box 1 · ${statusFieldLabel(editable.id)} field`;
     else if (editable?.type === "status_field_2") targetText = `Status Box 2 · ${statusFieldLabel(editable.id)} field`;
     else if (editable) targetText = `${editable.type}:${editable.id} · ${partText}`;
@@ -5647,12 +5681,21 @@ class SwitchVision3650 extends HTMLElement {
         <button type="button" data-cv-action="reset-port-display-name" ${displayNameEditable && displayNameValue ? "" : "disabled"}>Reset name</button>
       </div>${numberLabelVisibilityControls}
       <div class="cv-cal-subsection-divider"><span>Quick selection</span></div>
-<div class="cv-cal-tools-row cv-cal-quick-row">
+<div class="cv-cal-tools-row cv-cal-status-quick-row">
+        <span class="cv-cal-quick-label">Status Box 1</span>
+        <button type="button" data-cv-action="select-target" data-target="status_box" data-part="box">Box</button>
+        <button type="button" data-cv-action="select-target" data-target="status_fields" data-part="field">All fields</button>
+        <button type="button" data-cv-action="select-target" data-target="status_fields" data-part="label">All labels</button>
+        <button type="button" data-cv-action="select-target" data-target="status_fields" data-part="value">All values</button>
+        <span class="cv-cal-parity-divider" aria-hidden="true"></span>
+        <span class="cv-cal-quick-label">Status Box 2</span>
+        <button type="button" data-cv-action="select-target" data-target="status_box_2" data-part="box">Box</button>
+        <button type="button" data-cv-action="select-target" data-target="status_fields_2" data-part="field">All fields</button>
+        <button type="button" data-cv-action="select-target" data-target="status_fields_2" data-part="label">All labels</button>
+        <button type="button" data-cv-action="select-target" data-target="status_fields_2" data-part="value">All values</button>
+      </div>
+      <div class="cv-cal-tools-row cv-cal-quick-row">
         <span class="cv-cal-quick-label">Quick select</span>
-        <button type="button" data-cv-action="select-target" data-target="status_box" data-part="box">Status Box 1</button>
-        <button type="button" data-cv-action="select-target" data-target="status_fields" data-part="field">Status Box 1 fields</button>
-        <button type="button" data-cv-action="select-target" data-target="status_box_2" data-part="box">Status Box 2</button>
-        <button type="button" data-cv-action="select-target" data-target="status_fields_2" data-part="field">Status Box 2 fields</button>
         <button type="button" data-cv-action="select-target" data-target="status_leds" data-part="center">Status LEDs</button>
         <button type="button" data-cv-action="select-target" data-target="ports" data-part="entire">All RJ45</button>
         <button type="button" data-cv-action="select-target" data-target="ports_led_left" data-part="led_left">RJ45 Link</button>
@@ -5661,6 +5704,9 @@ class SwitchVision3650 extends HTMLElement {
         <button type="button" data-cv-action="select-target" data-target="sfps_led_left" data-part="led_left">SFP Link</button>
         <button type="button" data-cv-action="select-target" data-target="sfps_led_right" data-part="led_right">SFP Activity</button>
         <button type="button" data-cv-action="select-target" data-target="all_numbers" data-part="number">Port Numbers</button>
+        <span class="cv-cal-parity-divider" aria-hidden="true"></span>
+        <button type="button" data-cv-action="select-target" data-target="logo" data-part="box">Logo</button>
+        <button type="button" data-cv-action="select-target" data-target="calibration_button" data-part="box">Calibration button</button>
       </div>
       <div class="cv-cal-tools-row cv-cal-parity-row">
         <span class="cv-cal-quick-label">Odd</span>
@@ -5674,9 +5720,6 @@ class SwitchVision3650 extends HTMLElement {
         <button type="button" data-cv-action="select-target" data-target="ports_even_led_left" data-part="led_left">Even link LEDs</button>
         <button type="button" data-cv-action="select-target" data-target="ports_even_led_right" data-part="led_right">Even activity LEDs</button>
         <button type="button" data-cv-action="select-target" data-target="ports_even_numbers" data-part="number">Even numbers</button>
-        <span class="cv-cal-parity-divider" aria-hidden="true"></span>
-        <button type="button" data-cv-action="select-target" data-target="logo" data-part="box">Logo</button>
-        <button type="button" data-cv-action="select-target" data-target="calibration_button" data-part="box">Calibration button</button>
       </div>
       <div class="cv-cal-tools-row cv-cal-custom-port-row">
         <span class="cv-cal-quick-label">Custom ports</span>
@@ -6047,7 +6090,7 @@ class SwitchVision3650 extends HTMLElement {
 
     if (editable.group && (editable.type === "status_fields" || editable.type === "status_fields_2")) {
       const p = editable.type === "status_fields_2" ? cal.ui.status_panel_2 : cal.ui.status_panel;
-      for (const xy of Object.values(p.fields || {})) movePoint(xy, dx, dy);
+      for (const xy of statusFieldPointsForPart(p, editable.part)) movePoint(xy, dx, dy);
       return true;
     }
 
@@ -6183,7 +6226,7 @@ class SwitchVision3650 extends HTMLElement {
 
     if (editable.group && ["status_fields", "status_fields_2"].includes(editable.type)) {
       let changed = false;
-      for (const point of Object.values(editable.item?.fields || {})) changed = setPoint(point) || changed;
+      for (const point of statusFieldPointsForPart(editable.item, editable.part)) changed = setPoint(point) || changed;
       return changed;
     }
 
@@ -7362,14 +7405,28 @@ class SwitchVision3650 extends HTMLElement {
           if (editable.type === "status_box") cal.ui.status_panel = original.ui.status_panel;
           if (editable.type === "status_box_2") cal.ui.status_panel_2 = original.ui.status_panel_2;
           if (editable.type === "status_fields") {
-            cal.ui.status_panel.fields = original.ui.status_panel.fields;
-            cal.ui.status_panel.field_order = original.ui.status_panel.field_order;
-            cal.ui.status_panel.hidden_fields = original.ui.status_panel.hidden_fields;
+            if (normaliseStatusFieldGroupPart(editable.part) === "field") {
+              cal.ui.status_panel.fields = original.ui.status_panel.fields;
+              cal.ui.status_panel.field_order = original.ui.status_panel.field_order;
+              cal.ui.status_panel.hidden_fields = original.ui.status_panel.hidden_fields;
+            } else {
+              for (const [key, point] of Object.entries(original.ui.status_panel.fields || {})) {
+                if (!statusFieldKeyMatchesPart(key, editable.part)) continue;
+                cal.ui.status_panel.fields[key] = clonePlainData(point);
+              }
+            }
           }
           if (editable.type === "status_fields_2") {
-            cal.ui.status_panel_2.fields = original.ui.status_panel_2.fields;
-            cal.ui.status_panel_2.field_order = original.ui.status_panel_2.field_order;
-            cal.ui.status_panel_2.hidden_fields = original.ui.status_panel_2.hidden_fields;
+            if (normaliseStatusFieldGroupPart(editable.part) === "field") {
+              cal.ui.status_panel_2.fields = original.ui.status_panel_2.fields;
+              cal.ui.status_panel_2.field_order = original.ui.status_panel_2.field_order;
+              cal.ui.status_panel_2.hidden_fields = original.ui.status_panel_2.hidden_fields;
+            } else {
+              for (const [key, point] of Object.entries(original.ui.status_panel_2.fields || {})) {
+                if (!statusFieldKeyMatchesPart(key, editable.part)) continue;
+                cal.ui.status_panel_2.fields[key] = clonePlainData(point);
+              }
+            }
           }
           if (editable.type === "status_field" && original.ui.status_panel.fields?.[editable.key]) cal.ui.status_panel.fields[editable.key] = original.ui.status_panel.fields[editable.key];
           if (editable.type === "status_field_2" && original.ui.status_panel_2.fields?.[editable.key]) cal.ui.status_panel_2.fields[editable.key] = original.ui.status_panel_2.fields[editable.key];
