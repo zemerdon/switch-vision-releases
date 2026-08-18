@@ -1,0 +1,19 @@
+{
+  "domain": "switch_vision",
+  "name": "Switch Vision",
+  "codeowners": [
+    "@zemerdon"
+  ],
+  "config_flow": true,
+  "documentation": "https://switch-vision.zemerdon.com",
+  "iot_class": "local_push",
+  "version": "2.2.2",
+  "dependencies": [
+    "frontend",
+    "lovelace",
+    "http",
+    "panel_custom",
+    "websocket_api"
+  ],
+  "issue_tracker": "https://github.com/zemerdon/switch-vision-releases/issues"
+}
