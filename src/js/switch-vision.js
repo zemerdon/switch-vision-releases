@@ -5635,18 +5635,20 @@ class SwitchVision3650 extends HTMLElement {
         <span class="cv-cal-quick-label">Port manager</span>
         <button type="button" data-cv-action="add-port">Add port</button>
         <button type="button" data-cv-action="duplicate-port">Duplicate port</button>
+        <button type="button" data-cv-action="remove-port" ${["port", "sfp"].includes(editable?.type) ? "" : "disabled"}>Remove port</button>
+        <span class="cv-cal-current">${sortedCalibrationPortKeys(cal).length} visual ports</span>
+      </div>
+      <div class="cv-cal-tools-row cv-cal-port-meta-row">
         <label>RJ45 key<input class="cv-cal-input" data-cv-field="port-number" type="number" min="1" step="1" value="${editable?.type === "port" ? htmlEscape(editable.key) : ""}" ${editable?.type === "port" ? "" : "disabled"}></label>
         <button type="button" data-cv-action="rename-port" ${editable?.type === "port" ? "" : "disabled"}>Renumber</button>
+        <span class="cv-cal-row-divider" aria-hidden="true"></span>
         <label>Display name<input class="cv-cal-input" data-cv-field="port-display-name" maxlength="96" value="${htmlEscape(displayNameValue)}" placeholder="Optional label" ${displayNameEditable ? "" : "disabled"}></label>
         <button type="button" data-cv-action="set-port-display-name" ${displayNameEditable ? "" : "disabled"}>Set name</button>
         <button type="button" data-cv-action="reset-port-display-name" ${displayNameEditable && displayNameValue ? "" : "disabled"}>Reset name</button>
-        <button type="button" data-cv-action="remove-port" ${["port", "sfp"].includes(editable?.type) ? "" : "disabled"}>Remove port</button>
-        <span class="cv-cal-current">${sortedCalibrationPortKeys(cal).length} visual ports</span>
       </div>${numberLabelVisibilityControls}
       <div class="cv-cal-subsection-divider"><span>Quick selection</span></div>
 <div class="cv-cal-tools-row cv-cal-quick-row">
         <span class="cv-cal-quick-label">Quick select</span>
-        <button type="button" data-cv-action="select-target" data-target="logo" data-part="box">Logo</button>
         <button type="button" data-cv-action="select-target" data-target="status_box" data-part="box">Status Box 1</button>
         <button type="button" data-cv-action="select-target" data-target="status_fields" data-part="field">Status Box 1 fields</button>
         <button type="button" data-cv-action="select-target" data-target="status_box_2" data-part="box">Status Box 2</button>
@@ -5659,7 +5661,6 @@ class SwitchVision3650 extends HTMLElement {
         <button type="button" data-cv-action="select-target" data-target="sfps_led_left" data-part="led_left">SFP Link</button>
         <button type="button" data-cv-action="select-target" data-target="sfps_led_right" data-part="led_right">SFP Activity</button>
         <button type="button" data-cv-action="select-target" data-target="all_numbers" data-part="number">Port Numbers</button>
-        <button type="button" data-cv-action="select-target" data-target="calibration_button" data-part="box">Calibration button</button>
       </div>
       <div class="cv-cal-tools-row cv-cal-parity-row">
         <span class="cv-cal-quick-label">Odd</span>
@@ -5673,6 +5674,9 @@ class SwitchVision3650 extends HTMLElement {
         <button type="button" data-cv-action="select-target" data-target="ports_even_led_left" data-part="led_left">Even link LEDs</button>
         <button type="button" data-cv-action="select-target" data-target="ports_even_led_right" data-part="led_right">Even activity LEDs</button>
         <button type="button" data-cv-action="select-target" data-target="ports_even_numbers" data-part="number">Even numbers</button>
+        <span class="cv-cal-parity-divider" aria-hidden="true"></span>
+        <button type="button" data-cv-action="select-target" data-target="logo" data-part="box">Logo</button>
+        <button type="button" data-cv-action="select-target" data-target="calibration_button" data-part="box">Calibration button</button>
       </div>
       <div class="cv-cal-tools-row cv-cal-custom-port-row">
         <span class="cv-cal-quick-label">Custom ports</span>
