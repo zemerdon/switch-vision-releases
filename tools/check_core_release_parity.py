@@ -7,7 +7,17 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "src"
-RELEASE = ROOT / "Releases" / "switch-vision-2.2.2"
+
+VERSION_FILE = ROOT / "VERSION"
+if not VERSION_FILE.is_file():
+    raise RuntimeError(f"Missing VERSION file: {VERSION_FILE}")
+
+VERSION = VERSION_FILE.read_text(encoding="utf-8").strip()
+
+if not VERSION:
+    raise RuntimeError("VERSION is empty")
+
+RELEASE = ROOT / "Releases" / f"switch-vision-{VERSION}"
 
 # build.py intentionally generates these release-only files.
 RELEASE_ONLY = {

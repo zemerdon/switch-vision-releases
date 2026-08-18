@@ -1,260 +1,164 @@
-# Switch Vision
+# Switch Vision Releases
 
-Switch Vision is a Home Assistant platform for discovering managed network switches, generating SNMP2MQTT configuration, and displaying live switch activity on an interactive front-panel dashboard.
+![Switch Vision](https://switch-vision.zemerdon.com/icon_pack/release.png)
 
-## Current release
+This repository is the official public **Switch Vision Core/dashboard release channel** for Home Assistant.
 
-- **Latest release:** v2.2.2
-- **Release status:** **Support / compatibility release**
-- **Gold baseline:** **v2.0.0 Gold**
-- **Primary workflow:** Discovery-generated Home Assistant Lovelace dashboard; Native and Custom paths remain supported fallbacks
-- **Manual dashboard YAML:** Supported as a permanent fallback
-- **SNMP:** Read-only SNMP v2c
+Switch Vision is now composed of independently versioned components. The Core/dashboard release published here is installed and managed alongside the separate Discovery, SNMP2MQTT, UniFi2MQTT, and Installer projects.
 
-v2.0.0 is the protected Gold baseline, promoted directly from the final v1.9.97 pre-Gold codebase. It preserves the proven feature set and locks the current Installer, Discovery, native-dashboard, Calibration, faceplate, diagnostics, and support workflows as the stable 2.0 foundation.
+---
 
-## What Switch Vision includes
+## Current public Core release
 
-- Repository-managed Switch Vision Discovery app with a persistent Web UI
-- Optional repository-managed Switch Vision UniFi2MQTT app for read-only UniFi Integration API telemetry
-- Native Home Assistant **Switch Vision** sidebar dashboard
-- Switch Vision Lovelace card for native and manual dashboards
-- Home Assistant custom integration for the panel, calibration storage, asset browsing, and settings
-- Exact-model supported-device registry
-- Model-aware visual profiles and faceplates
-- Faceplate-specific calibration profiles
-- Calibration import, export, reset, and validation tools
-- Support My Switch contribution workflow with privacy processing
-- Diagnostics, installation, upgrade, troubleshooting, and development documentation
+### Switch Vision v2.3.0
 
-The Switch Vision SNMP2MQTT app is maintained separately. In the recommended installation path, the Switch Vision Installer installs and manages it for the user.
+**v2.3.0** is the current tested public Switch Vision Core/dashboard release.
 
-### Optional UniFi API bridge
+It establishes the Core v2.3 UniFi presentation baseline, expands the bundled vendor logo library, and normalizes Cisco logo asset names while preserving the established Discovery, SNMP2MQTT, entity, calibration, faceplate, and dashboard contracts.
 
-Switch Vision supports the separately versioned **Switch Vision UniFi2MQTT** app. It is a read-only bridge for the official UniFi Network Integration API and is deliberately separate from the proven SNMP2MQTT path. Its source is maintained in its own public repository and is not bundled inside the main Switch Vision release ZIP.
+Component versions validated when Core v2.2.2 was released:
 
-UniFi2MQTT can publish model, firmware, online state, per-port link/speed/connector/PoE data, CPU, memory, uptime, and uplink rates through MQTT Discovery when the controller exposes those fields. Current live API samples do not expose per-port RX/TX traffic in the latest-statistics endpoint, so SNMP2MQTT remains the current source for per-port traffic counters. Discovery consumes the normalized UniFi snapshot and automatically generates Switch Vision cards for exact registered models; SNMP2MQTT remains the current source for per-port traffic counters when required.
+```text
+Switch Vision Core/dashboard    2.2.2
+Switch Vision Discovery         2.1.13
+Switch Vision SNMP2MQTT app     0.9.8
+Switch Vision UniFi2MQTT        2.0.41
+Switch Vision Installer         2.1.19
+```
 
-The UniFi bridge requires a controller URL, site ID, read-only API key, and MQTT connection details as required by the local broker configuration. Its normalized local snapshot is written to `/share/switch_vision/unifi/devices.json`; Support My Switch privacy processing masks UniFi device names and stable IDs before packaging.
+These versions are a historical compatibility baseline for the Core v2.2.2 release, not a live component-version list.
 
-UniFi2MQTT is independently versioned and is configured from **Switch Vision Hub → UniFi2MQTT Settings**. The Hub can install the app when available, save its Home Assistant Supervisor options, and start/restart it without exposing stored secrets back to the browser. End users only need to add the Switch Vision Installer repository manually; the Installer remains the deployment layer while the Hub owns ongoing UniFi configuration.
+Switch Vision components have independent version lines and may receive newer compatible releases without requiring a Core version change. Use Switch Vision Installer for current installed/latest component status.
+
+---
+
+## Recommended installation
+
+The recommended deployment path is **Switch Vision Installer**:
+
+https://github.com/zemerdon/switch-vision-installer
+
+The Installer manages the Core/dashboard files and the separately versioned Switch Vision apps. It also provides component status, updates, backups, restore actions, and dependency-aware Update All handling.
+
+After a Core file update, restart Home Assistant Core when the Installer requests it.
+
+---
+
+## Downloads
+
+Latest public release:
+
+https://github.com/zemerdon/switch-vision-releases/releases/latest
+
+All releases:
+
+https://github.com/zemerdon/switch-vision-releases/releases
+
+For v2.2.2 the authoritative attached release files are:
+
+```text
+switch-vision-2.2.2.zip
+Switch_Vision_v2.2.2_source.zip
+Switch_Vision_v2.2.2_SHA256SUMS.txt
+```
+
+### v2.2.2 SHA-256
+
+```text
+61241576b143ea7370b43f1940e3c5069c8ff7465038e33779e7170765f84d20  switch-vision-2.2.2.zip
+0318e91091b100ea709fd7e89ecd9f989a4dfd06d42f161bc76c13fe9cb46daf  Switch_Vision_v2.2.2_source.zip
+```
+
+For **v2.2.2**, use the explicitly attached `Switch_Vision_v2.2.2_source.zip` as the authoritative public source package. GitHub's automatically generated **Source code (zip)** and **Source code (tar.gz)** entries are repository-tag snapshots and are not the authoritative v2.2.2 Switch Vision source package.
+
+---
+
+## Component repositories
+
+- Core/dashboard public releases: https://github.com/zemerdon/switch-vision-releases
+- Switch Vision Discovery: https://github.com/zemerdon/switch-vision-discovery
+- Switch Vision SNMP2MQTT core: https://github.com/zemerdon/switch-vision-snmp2mqtt
+- Switch Vision SNMP2MQTT Home Assistant app: https://github.com/zemerdon/switch-vision-snmp2mqtt-addon
+- Switch Vision UniFi2MQTT: https://github.com/zemerdon/switch-vision-unifi2mqtt
+- Switch Vision Installer: https://github.com/zemerdon/switch-vision-installer
+
+The v2.2.2 public Core source is distributed as the explicit source archive attached to the v2.2.2 GitHub Release.
+
+---
 
 ## Normal workflow
 
 ```text
-Install Switch Vision
-→ Configure switches in Discovery
+Install / update through Switch Vision Installer
+→ Restart Home Assistant Core when requested
+→ Configure switches in Switch Vision Discovery
 → Run Discovery
-→ Discovery identifies the exact model and generates configuration
-→ Switch Vision starts or restarts SNMP2MQTT
+→ Discovery generates dashboard and SNMP2MQTT configuration
 → Open Switch Vision from the Home Assistant sidebar
 ```
 
-## Quick start
+Discovery and SNMP2MQTT are separate Home Assistant apps and are not bundled inside the Core release ZIP.
 
-1. Add the **Switch Vision Installer** repository to Home Assistant: `https://github.com/zemerdon/switch-vision-installer`. This is the only repository end users need to add manually.
-2. Install the **current Switch Vision release** through the Installer. The Installer manages the main Switch Vision files and registers/installs the separately versioned Discovery and SNMP2MQTT apps; UniFi2MQTT remains optional. v2.0.0 remains the protected Gold baseline. Core, Discovery, Installer, SNMP2MQTT, and UniFi2MQTT now advance on independent version lines.
-3. Restart Home Assistant Core when requested and add the **Switch Vision** integration under **Settings → Devices & services**.
-4. Open **Switch Vision Discovery**, add each switch, and leave **Switch Model** set to **Auto-detect** unless an explicit compatibility override is required.
-5. Run Discovery.
-6. Open **Switch Vision** from the Home Assistant sidebar.
-7. Use **Calibrate** only when a visual adjustment is needed.
+UniFi2MQTT is optional and is only required for users using the read-only UniFi Network Integration API path.
 
-The generated custom dashboard YAML remains available for advanced users. No dashboard YAML copying is required for the normal v2.2.2 workflow.
+---
 
-For manual installation or an existing installation, use `docs/INSTALLATION.md` and `docs/UPGRADING.md` without merging files from different releases.
+## Activity LEDs in v2.2
 
-## Automatic native dashboard
+Switch Vision Core v2.2 measures activity relative to negotiated link speed rather than using one fixed byte-rate threshold for every port.
 
-The `switch_vision` integration registers a native Home Assistant panel named **Switch Vision**. It reads:
+Activity LED controls include:
 
-```text
-/share/switch_vision/generated-dashboard-card.yaml
-```
+- Low / Normal / High / Custom sensitivity presets
+- configurable Medium and Fast utilisation thresholds
+- Slow / Medium / Fast blink periods
+- activity hold time
+- hysteresis
+- safe fallback when negotiated speed is unavailable
 
-The native panel:
-
-- loads its own frontend resources automatically;
-- does not require a manually created Lovelace dashboard;
-- does not write to Lovelace storage;
-- does not modify unrelated dashboards;
-- checks for updated generated card YAML while visible;
-- builds replacement cards before swapping the visible dashboard;
-- keeps the existing dashboard active when a refresh fails;
-- cleans up event listeners when cards leave the page;
-- uses versioned frontend URLs to reduce stale browser caching.
-
-The generated YAML remains available as a manual fallback.
-
-## Optional sidebar and calibration-button visibility
-
-Open:
+Settings are available under:
 
 ```text
-Settings → Devices & services → Switch Vision → Configure
+Switch Vision Core → Options → Activity LEDs
 ```
 
-The integration can independently:
+---
 
-- show or hide the Switch Vision sidebar shortcut;
-- show or hide Calibration buttons on cards in the automatic native dashboard.
+## v2.2.2 hotfix
 
-Hiding the sidebar shortcut does not disable the panel URL, manual cards, Discovery, stored calibrations, or SNMP2MQTT. The Discovery app has its own separate **Show in sidebar** setting.
-
-## Model detection and visual profiles
-
-Discovery preserves the exact detected hardware SKU. Registered exact models with dashboard support enabled receive their mapped interface layout, calibration profile, and recommended visible faceplate. Some Experimental entries are intentionally detection/API-telemetry only until their dashboard path is validated.
-
-The current bundled faceplates are:
+v2.2.2 corrects C3650 factory-profile Status Box value coordinates that could cause these fields to disappear after a reset:
 
 ```text
-faceplates/24rj45-2sfp.png
-faceplates/24rj45-4sfp.png
-faceplates/48rj45-2sfp.png
-faceplates/48rj45-4sfp.png
-faceplates/c3560cg-8pc-s.png
-faceplates/submarine-48rj45-4sfp.png
+MODEL
+IP
+CPU
+TEMP
+POE
 ```
 
-Examples of model-aware defaults include:
+`UPTIME` was unaffected. The correction was applied to the primary C3650 factory profile and the corresponding legacy / Status Box 2 definitions.
 
-- Cisco 3650 48-port models → 48 RJ45 / 4 uplinks
-- Cisco 2960S and supported 2960X 48-port models → 48 RJ45 / 2 uplinks
-- Cisco 2960X 24-port models → 24 RJ45 / 4 uplinks
-- Cisco WS-C3560CG-8PC-S → dedicated `c3560cg-8pc-s.png` faceplate with its bundled faceplate-specific defaults
+---
 
-An unknown or unregistered model receives a visible generic fallback. The user may calibrate that fallback or use a custom faceplate until a registered model profile becomes available. Existing user-saved topology remains authoritative and is not silently rebuilt to a factory port count.
+## Supported devices
 
-A registered model may be selected manually as an experimental compatibility override. Reports retain the detected model, selected override, and effective mapping model. An override does not change the detected hardware's official support status.
+Switch Vision support is tracked by **exact model identifier**. The current supported-device registry is shipped with the Core release and Discovery.
 
-See `docs/SUPPORTED_DEVICES.md` for the authoritative exact-model list.
+The authoritative community index is maintained on the Switch Vision forum:
 
-## Faceplates and calibration
+https://switch-vision.zemerdon.com/viewtopic.php?t=74
 
-Switch Vision always keeps visible switch artwork. The faceplate selector provides:
+Unsupported or experimental hardware can be submitted through **Support My Switch** in Discovery.
 
-- **Default / recommended** — resolves the bundled faceplate assigned to the exact model;
-- a named custom faceplate — uses that image and its own calibration namespace.
+---
 
-Legacy hidden, blank, invalid, or `__none__` states migrate to the model-recommended visible faceplate. If a selected custom image is missing, Switch Vision displays the recommended faceplate instead of a blank switch.
+## Documentation and support
 
-Install custom assets in:
+Switch Vision forum:
 
-```text
-/config/www/switch-vision/logos/
-/config/www/switch-vision/faceplates/
-```
+https://switch-vision.zemerdon.com
 
-Each custom faceplate receives its own saved geometry. Keep filenames stable because the filename is part of the faceplate-specific profile identity.
-
-Calibration supports:
-
-- adding or removing visual RJ45 ports and uplinks;
-- moving and resizing ports, labels, uplinks, status LEDs, logos, status boxes, and the Calibration button;
-- independent Link/Speed and Activity LED rectangle dimensions;
-- Circle or Rectangle port LED shapes while chassis/status LEDs remain circular;
-- per-status-LED visibility;
-- safe profile import and export;
-- atomic cross-browser profile saves;
-- independent switch and faceplate profiles.
-
-The principal actions are:
-
-- **Save Profile** — validate and save without closing;
-- **Done** — validate, save, and close;
-- **Reset Current Faceplate** — restore bundled defaults for the selected faceplate when available, otherwise model factory geometry, while retaining the selected faceplate image;
-- **Reset Current Switch** — remove that switch's saved faceplate-specific profiles and restore its exact-model defaults;
-- **Reset All Switches** — clear saved Switch Vision calibrations and restore each loaded switch to its own model-aware defaults.
-
-There is no separate **Apply Recommended Setup** action. Automatic exact-model detection and the reset actions are the authoritative model-profile paths.
-
-## Calibration profile safety
-
-Saved and imported profiles are checked for:
-
-- safe profile names and asset filenames;
-- supported canvas dimensions;
-- positive, finite geometry values;
-- reasonable coordinate ranges and element counts;
-- payload size limits;
-- matching stored profile identity.
-
-Save, delete, reset, and profile-read operations share one asynchronous storage lock so simultaneous browser sessions do not overwrite unrelated profiles.
-
-Calibration data is stored under Home Assistant `.storage`. Do not delete `.storage/switch_vision_calibrations` during a normal upgrade.
-
-## Discovery Web UI
-
-The Discovery app starts in **Idle / Ready** and keeps its Web UI available before, during, and after a run.
-
-Main pages:
-
-- **Discovery** — run and monitor Discovery;
-- **Devices** — view detected hardware and generated state;
-- **Support My Switch** — create a privacy-processed contribution package;
-- **Diagnostics** — inspect installation and generated outputs;
-- **Configuration** — export or import portable Discovery configuration.
-
-Discovery writes:
-
-```text
-/share/switch_vision/generated-snmp2mqtt.yaml
-/share/switch_vision/generated-dashboard-card.yaml
-```
-
-The Discovery Web UI shows **Generated Card YAML** directly above **Generated SNMP2MQTT YAML**, with validation, preview, copy, and download actions. The dashboard file remains review/copy only and is never installed automatically.
-
-After a successful run, Discovery validates the generated SNMP2MQTT YAML, locates the installed Switch Vision SNMP2MQTT app dynamically through Supervisor, and starts or restarts it. A handoff warning does not invalidate an otherwise successful Discovery run.
-
-## Portable Discovery configuration
-
-Use **Discovery → Configuration → Export Configuration** to back up the configured switches, stack mappings, and Discovery settings. The export may contain management addresses and SNMP community strings, so store it securely.
-
-Use **Import Configuration** on a fresh installation before editing the app options manually.
-
-
-## Home Assistant community dashboard
-
-On Home Assistant 2026.5 or newer, Switch Vision also registers a **Switch Vision** community dashboard strategy. After the integration is loaded:
-
-1. Open **Settings → Dashboards**.
-2. Select **Add dashboard**.
-3. Choose **Switch Vision** under **Community dashboards**.
-4. Create the dashboard and choose whether it appears in the sidebar.
-
-This creates a genuine Home Assistant Lovelace dashboard and therefore allows Home Assistant's normal default-dashboard selection to target Switch Vision. The existing Native Switch Vision custom panel remains available as a separate fallback and is not removed or converted automatically.
-
-## Manual dashboard fallback
-
-The native dashboard is recommended, but this file remains available:
-
-```text
-/share/switch_vision/generated-dashboard-card.yaml
-```
-
-A manual/custom YAML dashboard requires the Switch Vision card resource:
-
-```text
-/local/switch-vision/js/switch-vision.js?v=2.2.2
-```
-
-Generated layouts that use Layout Card also require this HACS JavaScript Module:
-
-```text
-/hacsfiles/lovelace-layout-card/layout-card.js
-```
-
-Neither manual resource is required by the native Switch Vision sidebar panel.
-
-## Support My Switch
-
-Support My Switch creates a contribution package from a temporary copy of `/share/switch_vision/`. The live data folder is not modified.
-
-Credentials are always removed. Optional controls can mask management IP addresses, MAC addresses, hostnames, VLAN names, and interface descriptions.
-
-Every included file must be inspectable by the privacy processor. Unsupported binary files, oversized files, unreadable files, symbolic links, and special files are excluded from the temporary archive and force **REVIEW REQUIRED**. Their original names and paths are replaced by privacy-safe identifiers in `SANITIZATION_REPORT.txt`.
-
-A fully inspected bundle can produce a ZIP, prepared `.eml`, and local action page. A **REVIEW REQUIRED** bundle produces the reviewable ZIP but withholds prepared send actions. Nothing is sent automatically.
+Useful forum sections include installation, configuration reference, supported devices, Support My Switch, troubleshooting, releases, and advanced custom-dashboard guidance.
 
 Support email:
 
@@ -262,53 +166,30 @@ Support email:
 switch-vision@zemerdon.com
 ```
 
-Community forum:
+---
+
+For the Core tag/source/artifact trust model, see [RELEASE_PROVENANCE.md](RELEASE_PROVENANCE.md).
+
+## Release integrity policy
+
+For future Core releases the intended release sequence is:
 
 ```text
-https://switch-vision.zemerdon.com
+Prepare and validate exact release source
+→ build install package from that source
+→ verify install/source parity and versions
+→ calculate SHA-256 digests
+→ commit the exact public release-source state
+→ tag that exact commit
+→ publish install ZIP, explicit source ZIP, checksum file, and release notes
 ```
 
-Public release repository:
+A release should not be considered complete until its explicit attached artifacts and checksums are published and verified.
 
-```text
-https://github.com/zemerdon/switch-vision-releases
-```
+---
 
-## Hardware support levels
+## Licence and distribution
 
-- **Detected** — hardware identity was recognised.
-- **Experimental** — generated support exists but validation is incomplete.
-- **Community Validated** — a contributor has successfully tested the implementation.
-- **Confirmed Supported** — support has strong repeatable validation.
+No open-source licence is currently included with Switch Vision. Unless a release states otherwise, copyright is retained by the project owner.
 
-Real-hardware uplink operation is confirmed for the exact registered `WS-C2960X-48FPD-L`, `WS-C2960S-48FPD-L`, and standalone `EX3300-48P` models. The registered Cisco 2960X 24-port and Cisco 3560-C models remain Experimental pending model-specific validation. Juniper Virtual Chassis remains outside the confirmed scope.
-
-## Documentation
-
-- `RELEASE_NOTES.md`
-- `docs/REQUIREMENTS.md`
-- `docs/INSTALLATION.md`
-- `docs/UPGRADING.md`
-- `docs/DISCOVERY_WORKFLOW.md`
-- `docs/FIELD_REFERENCE.md`
-- `docs/TROUBLESHOOTING.md`
-- `docs/SUPPORT_MY_SWITCH.md`
-- `docs/SUPPORTED_DEVICES.md`
-- `docs/BUILDING.md`
-- `CONTRIBUTING.md`
-- `SECURITY.md`
-
-## Card header controls
-
-Use the global **Show card headers** integration option to show or hide the complete header row on every native and custom YAML card. Discovery still supports an optional per-switch **Card header title**.
-
-## Management UI themes
-
-Switch Vision Hub includes a browser-local top-right theme selector with Switch Vision, Cisco Classic, Cisco Nexus, and UniFi palettes. Discovery UI Density remains controlled by the existing Switch Vision integration setting. Themes affect management pages only; Native, Lovelace, and Custom dashboards and switch-card rendering are intentionally unchanged.
-
-## Support the project
-
-Switch Vision is free and community-driven. If you find it useful and would like to support continued development, you can sponsor the project through GitHub Sponsors:
-
-https://github.com/sponsors/zemerdon
-
+Official packages are distributed through the Switch Vision project repositories. Modified builds must not be represented as official Switch Vision releases.

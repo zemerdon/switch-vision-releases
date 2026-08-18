@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.3.0 — UniFi presentation baseline
+
+- Establishes the Switch Vision Core v2.3 release line for expanded UniFi presentation work.
+- Adds bundled UniFi and Ubiquiti logo assets for model-specific presentation and calibration use.
+- Normalizes Cisco logo filenames to the consistent `cisco-<variant>` naming scheme.
+- Migrates existing bundled Cisco logo references to the normalized asset names.
+- Preserves existing Discovery, SNMP2MQTT, entity, calibration, faceplate, dashboard, Activity LED 2.0, and C3650 Status Box behaviour.
+
+
 ## v2.2.2 — C3650 Status Box emergency hotfix
 
 - Corrects stale Cisco 3650 factory Status Box value-column coordinates that caused MODEL, IP, CPU, TEMP, and POE rows to be clipped after a factory reset.

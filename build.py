@@ -722,13 +722,22 @@ def patch_current_release_metadata(version: str) -> None:
     if readme.exists():
         text = readme.read_text(encoding="utf-8", errors="ignore")
         text, count = re.subn(
-            r"(?m)^- \*\*Latest release:\*\* v\d+\.\d+\.\d+(?: [^\n]*)?$",
-            f"- **Latest release:** v{version}",
+            r"(?m)^### Switch Vision v\d+\.\d+\.\d+$",
+            f"### Switch Vision v{version}",
             text,
             count=1,
         )
         if count == 0:
-            raise SystemExit("README latest-release marker not found")
+            raise SystemExit("README current-release heading not found")
+
+        text, count = re.subn(
+            r"(?m)^\*\*v\d+\.\d+\.\d+\*\* is the current tested public Switch Vision Core/dashboard release\.$",
+            f"**v{version}** is the current tested public Switch Vision Core/dashboard release.",
+            text,
+            count=1,
+        )
+        if count == 0:
+            raise SystemExit("README current-release description not found")
         text = re.sub(
             r"No dashboard YAML copying is required for the normal v\d+\.\d+\.\d+ workflow\.",
             f"No dashboard YAML copying is required for the normal v{version} workflow.",
@@ -1567,8 +1576,8 @@ def zip_directory(source_dir: Path, zip_path: Path, arc_base: Path) -> None:
 def write_source_zip(version: str, gold: bool = False) -> Path:
     """Create the private source archive from an explicit allowlist."""
     output = PROJECT_ROOT / f"Switch_Vision_v{version}_source.zip"
-    for old_source_zip in PROJECT_ROOT.glob("Switch_Vision_v*_source.zip"):
-        old_source_zip.unlink()
+    if output.exists():
+        output.unlink()
 
     release_folder = RELEASES / f"{PROJECT_NAME}-{version}"
     if not release_folder.is_dir():
@@ -1577,7 +1586,6 @@ def write_source_zip(version: str, gold: bool = False) -> Path:
     root_names = [
         ".gitattributes",
         ".gitignore",
-        ".github/FUNDING.yml",
         "README.md",
         "CHANGELOG.md",
         "RELEASE_NOTES.md",
@@ -1629,12 +1637,16 @@ def validate_public_documentation(version: str) -> None:
 
     checks = {
         ROOT / "README.md": [
-            f"**Latest release:** v{version}",
-            f"v{version} workflow",
+            f"### Switch Vision v{version}",
+            f"**v{version}** is the current tested public Switch Vision Core/dashboard release.",
             "https://github.com/zemerdon/switch-vision-installer",
             "https://github.com/zemerdon/switch-vision-releases",
         ],
         ROOT / "RELEASE_NOTES.md": [f"# Switch Vision Core v{version}"],
+        SRC / "README.md": [
+            f"### Switch Vision v{version}",
+            f"**v{version}** is the current tested public Switch Vision Core/dashboard release.",
+        ],
         SRC / "examples" / "README.md": [f"switch-vision.js?v={version}"],
     }
     errors: list[str] = []
@@ -1673,22 +1685,22 @@ def write_checksums(version: str, release_zip: Path, source_zip: Path) -> tuple[
     """Write separate public-release and private-source checksum files."""
     import hashlib
 
-    for old in PROJECT_ROOT.glob("Switch_Vision_v*_SHA256SUMS.txt"):
-        old.unlink()
-    for old in RELEASES.glob(f"{PROJECT_NAME}-*.zip.sha256"):
-        old.unlink()
+    private_output = PROJECT_ROOT / f"Switch_Vision_v{version}_SHA256SUMS.txt"
+    public_output = release_zip.with_name(release_zip.name + ".sha256")
+
+    for path in (private_output, public_output):
+        if path.exists():
+            path.unlink()
 
     release_digest = hashlib.sha256(release_zip.read_bytes()).hexdigest()
     source_digest = hashlib.sha256(source_zip.read_bytes()).hexdigest()
 
-    private_output = PROJECT_ROOT / f"Switch_Vision_v{version}_SHA256SUMS.txt"
     private_lines = [
         f"{release_digest}  {release_zip.relative_to(PROJECT_ROOT).as_posix()}",
         f"{source_digest}  {source_zip.relative_to(PROJECT_ROOT).as_posix()}",
     ]
     write_text_lf(private_output, "\n".join(private_lines) + "\n")
 
-    public_output = release_zip.with_name(release_zip.name + ".sha256")
     write_text_lf(public_output, f"{release_digest}  {release_zip.name}\n")
     return private_output, public_output
 
@@ -1726,11 +1738,20 @@ def validate_source_archive(zip_path: Path, version: str, gold: bool = False) ->
         raise SystemExit("Non-Gold source archive includes Gold-only documents")
 
 
-def clean_releases() -> None:
-    """Remove all previously built release folders and archives."""
-    if RELEASES.exists():
-        shutil.rmtree(RELEASES)
+def clean_release(version: str) -> None:
+    """Remove only build outputs for the release version being rebuilt."""
     RELEASES.mkdir(parents=True, exist_ok=True)
+
+    release_dir = RELEASES / f"{PROJECT_NAME}-{version}"
+    release_zip = RELEASES / f"{PROJECT_NAME}-{version}.zip"
+    public_checksum = RELEASES / f"{PROJECT_NAME}-{version}.zip.sha256"
+
+    if release_dir.exists():
+        shutil.rmtree(release_dir)
+
+    for path in (release_zip, public_checksum):
+        if path.exists():
+            path.unlink()
 
 
 def build(version: str, gold: bool = False) -> tuple[Path, Path]:
@@ -1744,7 +1765,7 @@ def build(version: str, gold: bool = False) -> tuple[Path, Path]:
     validate_embedded_versions(PROJECT_ROOT, version, source_layout=True)
     ensure_required_sources()
     run_maintenance_tests()
-    clean_releases()
+    clean_release(version)
     release_dir = RELEASES / f"{PROJECT_NAME}-{version}"
     release_zip = RELEASES / f"{PROJECT_NAME}-{version}.zip"
     release_dir.mkdir(parents=True)
