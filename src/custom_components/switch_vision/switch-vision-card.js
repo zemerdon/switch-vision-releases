@@ -1,4 +1,4 @@
-const SV_VERSION = "2.3.3";
+const SV_VERSION = "2.3.4";
 const calibration = {"schema_version":1,"schema":"switch-vision-interactive-calibration-v1","model":"cisco-3650-48p-4-uplink","generated_by":`Switch Vision v${SV_VERSION}`,"image":{"file":"faceplates/48rj45-4sfp.png","width":2048,"height":448,"master":"switch-master-v4.0","alpha_min":0,"alpha_max":255},"ports":{"1":{"center":[176,245],"number":[176,181],"led_left":[154,221],"led_right":[199,221],"hitbox":[34,56]},"2":{"center":[177,338],"number":[176,409],"led_left":[153,365],"led_right":[200,365],"hitbox":[34,56]},"3":{"center":[236,245],"number":[237,181],"led_left":[213,221],"led_right":[259,221],"hitbox":[34,56]},"4":{"center":[237,337],"number":[237,409],"led_left":[213,365],"led_right":[259,365],"hitbox":[34,56]},"5":{"center":[294,245],"number":[296,181],"led_left":[273,221],"led_right":[319,221],"hitbox":[34,56]},"6":{"center":[297,337],"number":[297,409],"led_left":[273,365],"led_right":[319,365],"hitbox":[34,56]},"7":{"center":[355,245],"number":[356,181],"led_left":[333,221],"led_right":[379,221],"hitbox":[34,56]},"8":{"center":[357,337],"number":[357,409],"led_left":[333,365],"led_right":[379,365],"hitbox":[34,56]},"9":{"center":[414,245],"number":[415,181],"led_left":[393,221],"led_right":[440,221],"hitbox":[34,56]},"10":{"center":[416,337],"number":[415,409],"led_left":[393,365],"led_right":[439,365],"hitbox":[34,56]},"11":{"center":[474,245],"number":[475,181],"led_left":[453,221],"led_right":[499,221],"hitbox":[34,56]},"12":{"center":[476,336],"number":[476,409],"led_left":[453,365],"led_right":[499,365],"hitbox":[34,56]},"13":{"center":[550,245],"number":[551,181],"led_left":[524,221],"led_right":[570,221],"hitbox":[34,56]},"14":{"center":[549,337],"number":[551,409],"led_left":[524,365],"led_right":[571,365],"hitbox":[34,56]},"15":{"center":[610,245],"number":[611,181],"led_left":[584,221],"led_right":[631,221],"hitbox":[34,56]},"16":{"center":[608,336],"number":[612,409],"led_left":[584,365],"led_right":[631,365],"hitbox":[34,56]},"17":{"center":[669,245],"number":[670,181],"led_left":[644,221],"led_right":[690,221],"hitbox":[34,56]},"18":{"center":[668,337],"number":[670,409],"led_left":[644,365],"led_right":[690,365],"hitbox":[34,56]},"19":{"center":[729,245],"number":[729,181],"led_left":[704,221],"led_right":[750,221],"hitbox":[34,56]},"20":{"center":[728,337],"number":[729,409],"led_left":[704,365],"led_right":[750,365],"hitbox":[34,56]},"21":{"center":[788,245],"number":[790,181],"led_left":[764,221],"led_right":[810,221],"hitbox":[34,56]},"22":{"center":[788,337],"number":[790,409],"led_left":[764,365],"led_right":[810,365],"hitbox":[34,56]},"23":{"center":[848,245],"number":[849,181],"led_left":[824,221],"led_right":[870,221],"hitbox":[34,56]},"24":{"center":[850,337],"number":[849,409],"led_left":[824,365],"led_right":[870,365],"hitbox":[34,56]},"25":{"center":[923,245],"number":[925,181],"led_left":[904,221],"led_right":[949,221],"hitbox":[34,56]},"26":{"center":[925,336],"number":[925,409],"led_left":[903,365],"led_right":[950,365],"hitbox":[34,56]},"27":{"center":[983,245],"number":[985,181],"led_left":[963,221],"led_right":[1009,221],"hitbox":[34,56]},"28":{"center":[984,336],"number":[985,409],"led_left":[963,365],"led_right":[1009,365],"hitbox":[34,56]},"29":{"center":[1043,245],"number":[1043,181],"led_left":[1023,221],"led_right":[1069,221],"hitbox":[34,56]},"30":{"center":[1045,337],"number":[1043,409],"led_left":[1023,365],"led_right":[1069,365],"hitbox":[34,56]},"31":{"center":[1105,245],"number":[1104,181],"led_left":[1083,221],"led_right":[1129,221],"hitbox":[34,56]},"32":{"center":[1104,337],"number":[1104,409],"led_left":[1083,365],"led_right":[1129,365],"hitbox":[34,56]},"33":{"center":[1162,245],"number":[1163,181],"led_left":[1143,221],"led_right":[1189,221],"hitbox":[34,56]},"34":{"center":[1164,337],"number":[1163,409],"led_left":[1143,365],"led_right":[1189,365],"hitbox":[34,56]},"35":{"center":[1225,245],"number":[1221,181],"led_left":[1203,221],"led_right":[1249,221],"hitbox":[34,56]},"36":{"center":[1223,337],"number":[1221,409],"led_left":[1203,365],"led_right":[1249,365],"hitbox":[34,56]},"37":{"center":[1297,245],"number":[1298,181],"led_left":[1273,221],"led_right":[1319,221],"hitbox":[34,56]},"38":{"center":[1298,337],"number":[1298,409],"led_left":[1273,365],"led_right":[1318,365],"hitbox":[34,56]},"39":{"center":[1355,245],"number":[1357,181],"led_left":[1333,221],"led_right":[1379,221],"hitbox":[34,56]},"40":{"center":[1358,337],"number":[1357,409],"led_left":[1332,365],"led_right":[1379,365],"hitbox":[34,56]},"41":{"center":[1416,245],"number":[1418,181],"led_left":[1393,221],"led_right":[1439,221],"hitbox":[34,56]},"42":{"center":[1417,337],"number":[1418,409],"led_left":[1393,365],"led_right":[1438,365],"hitbox":[34,56]},"43":{"center":[1475,245],"number":[1476,181],"led_left":[1453,221],"led_right":[1499,221],"hitbox":[34,56]},"44":{"center":[1477,336],"number":[1476,409],"led_left":[1453,365],"led_right":[1499,365],"hitbox":[34,56]},"45":{"center":[1534,245],"number":[1535,181],"led_left":[1513,221],"led_right":[1559,221],"hitbox":[34,56]},"46":{"center":[1537,337],"number":[1535,409],"led_left":[1513,365],"led_right":[1559,365],"hitbox":[34,56]},"47":{"center":[1594,245],"number":[1595,181],"led_left":[1573,221],"led_right":[1618,221],"hitbox":[34,56]},"48":{"center":[1596,337],"number":[1595,409],"led_left":[1572,365],"led_right":[1618,365],"hitbox":[34,56]}},"sfp":{"G1":{"center":[1710,246],"hitbox":[94,48]},"G2":{"center":[1835,246],"hitbox":[94,48]},"G3/TE3":{"center":[1711,341],"hitbox":[94,48]},"G4/TE4":{"center":[1836,341],"hitbox":[94,48]}},"status_leds":{"STAT":[674,84],"SYST":[674,149],"DUPLX":[852,84],"ACTV":[852,149],"SPEED":[1026,84],"STACK":[1204,84],"PoE":[1369,84]},"ui":{"logo":{"show":true,"file":"sv-logo.png","source":"default","x":143,"y":-1,"width":187,"height":188},"status_panel":{"show":true,"x":338,"y":30,"width":313,"height":132,"font_family":"SwitchVisionCustom, Arial, Helvetica, sans-serif","font_size":16,"title_font_size":16,"font_weight":"bold","text_color":"#ffffff","label_color":"#eef2f4","title_color":"#f4f6f7","background_color":"rgba(0,0,0,.06)","border_color":"rgba(245,248,250,.75)","border_show":true,"field_order":{"switch":["model","ip","cpu","temp","poe","uptime","vendor","os","firmware","serial","stack","fans","psu"],"port":["vlan","desc","link","rx","tx"],"sfp":["vlan","desc","link","rx","tx"]},"hidden_fields":{"switch":["vendor","os","firmware","serial","stack","fans","psu"],"port":[],"sfp":[]},"fields":{"title":[152.5,18],"row1_key":[19,39],"row1_value":[107,39],"row2_key":[19,58],"row2_value":[107,58],"row3_key":[19,78],"row3_value":[107,78],"row4_key":[19,97],"row4_value":[107,97],"row5_key":[19,116],"row5_value":[107,116],"row6_key":[19,135],"row6_value":[107,135]}},"faceplate":{"show":true,"file":"__default__","fit":"fill","opacity":1},"calibration_button":{"show":true,"x":1888,"y":14,"width":138,"height":34,"anchor":"top_right"},"status_panel_2":{"show":true,"x":1605,"y":25,"width":278,"height":55,"font_family":"SwitchVisionCustom, Arial, Helvetica, sans-serif","font_size":16,"title_font_size":16,"font_weight":"bold","text_color":"#ffffff","label_color":"#eef2f4","title_color":"#f4f6f7","background_color":"rgba(0,0,0,.06)","border_color":"rgba(245,248,250,.75)","border_show":true,"title_mode":"custom","title_field":"model","custom_title":"","field_order":{"switch":["vendor","uptime","model","ip","cpu","temp","poe","os","firmware","serial","stack","fans","psu"],"port":["vlan","desc","link","rx","tx"],"sfp":["vlan","desc","link","rx","tx"]},"hidden_fields":{"switch":["model","ip","cpu","temp","poe","os","firmware","serial","stack","fans","psu"],"port":[],"sfp":[]},"fields":{"title":[152.5,23],"row1_key":[24,55],"row1_value":[112,55],"row2_key":[24,72],"row2_value":[112,72],"row3_key":[24,89],"row3_value":[112,89],"row4_key":[24,106],"row4_value":[112,106],"row5_key":[24,123],"row5_value":[112,123],"row6_key":[24,140],"row6_value":[112,140]}}},"stack":{"enabled":false,"stack_id":"","uptime_source":"","members":{}},"management":{"switch_ip":""},"profile":"default_cisco_48_port"};
 const calibration2960X24 = {"schema":"switch-vision-interactive-calibration-v1","model":"cisco-2960x-24p-4-uplink","generated_by":"Switch Vision v1.8.9","image":{"file":"faceplates/24rj45-4sfp.png","width":2048,"height":448,"master":"switch-master-v4.0","alpha_min":0,"alpha_max":255},"ports":{"1":{"center":[926,245],"number":[926,181],"led_left":[907,221],"led_right":[942,221],"hitbox":[34,56]},"2":{"center":[927,338],"number":[926,409],"led_left":[906,365],"led_right":[943,365],"hitbox":[34,56]},"3":{"center":[986,245],"number":[987,181],"led_left":[966,221],"led_right":[1002,221],"hitbox":[34,56]},"4":{"center":[987,337],"number":[987,409],"led_left":[966,365],"led_right":[1002,365],"hitbox":[34,56]},"5":{"center":[1044,245],"number":[1046,181],"led_left":[1026,221],"led_right":[1062,221],"hitbox":[34,56]},"6":{"center":[1047,337],"number":[1047,409],"led_left":[1026,365],"led_right":[1062,365],"hitbox":[34,56]},"7":{"center":[1105,245],"number":[1106,181],"led_left":[1086,221],"led_right":[1122,221],"hitbox":[34,56]},"8":{"center":[1107,337],"number":[1107,409],"led_left":[1086,365],"led_right":[1122,365],"hitbox":[34,56]},"9":{"center":[1164,245],"number":[1165,181],"led_left":[1146,221],"led_right":[1183,221],"hitbox":[34,56]},"10":{"center":[1166,337],"number":[1165,409],"led_left":[1146,365],"led_right":[1182,365],"hitbox":[34,56]},"11":{"center":[1224,245],"number":[1225,181],"led_left":[1206,221],"led_right":[1242,221],"hitbox":[34,56]},"12":{"center":[1226,336],"number":[1226,409],"led_left":[1206,365],"led_right":[1242,365],"hitbox":[34,56]},"13":{"center":[1300,245],"number":[1301,181],"led_left":[1277,221],"led_right":[1313,221],"hitbox":[34,56]},"14":{"center":[1299,337],"number":[1301,409],"led_left":[1277,365],"led_right":[1314,365],"hitbox":[34,56]},"15":{"center":[1360,245],"number":[1361,181],"led_left":[1337,221],"led_right":[1374,221],"hitbox":[34,56]},"16":{"center":[1358,336],"number":[1362,409],"led_left":[1337,365],"led_right":[1374,365],"hitbox":[34,56]},"17":{"center":[1419,245],"number":[1420,181],"led_left":[1397,221],"led_right":[1433,221],"hitbox":[34,56]},"18":{"center":[1418,337],"number":[1420,409],"led_left":[1397,365],"led_right":[1433,365],"hitbox":[34,56]},"19":{"center":[1479,245],"number":[1479,181],"led_left":[1457,221],"led_right":[1493,221],"hitbox":[34,56]},"20":{"center":[1478,337],"number":[1479,409],"led_left":[1457,365],"led_right":[1493,365],"hitbox":[34,56]},"21":{"center":[1538,245],"number":[1540,181],"led_left":[1517,221],"led_right":[1553,221],"hitbox":[34,56]},"22":{"center":[1538,337],"number":[1540,409],"led_left":[1517,365],"led_right":[1553,365],"hitbox":[34,56]},"23":{"center":[1598,245],"number":[1599,181],"led_left":[1577,221],"led_right":[1613,221],"hitbox":[34,56]},"24":{"center":[1600,337],"number":[1599,409],"led_left":[1577,365],"led_right":[1613,365],"hitbox":[34,56]}},"sfp":{"G1":{"center":[1710,246],"hitbox":[94,48],"label":[1709,188]},"G2":{"center":[1835,246],"hitbox":[94,48],"label":[1838,188]},"G3":{"center":[1711,341],"hitbox":[94,48],"label":[1710,402]},"G4":{"center":[1836,341],"hitbox":[94,48],"label":[1839,402]}},"status_leds":{"STAT":[674,84],"SYST":[674,149],"DUPLX":[852,84],"ACTV":[852,149],"SPEED":[1026,84],"STACK":[1204,84],"PoE":[1369,84]},"ui":{"logo":{"show":true,"file":"sv-logo.png","source":"default","x":143,"y":-1,"width":187,"height":188},"status_panel":{"show":true,"x":338,"y":30,"width":313,"height":132,"font_family":"SwitchVisionCustom, Arial, Helvetica, sans-serif","font_size":16,"title_font_size":16,"font_weight":"bold","text_color":"#ffffff","label_color":"#eef2f4","title_color":"#f4f6f7","background_color":"rgba(0,0,0,.06)","border_color":"rgba(245,248,250,.75)","border_show":true,"field_order":{"switch":["model","ip","cpu","temp","poe","uptime","vendor","os","firmware","serial","stack","fans","psu"],"port":["vlan","desc","link","rx","tx"],"sfp":["vlan","desc","link","rx","tx"]},"hidden_fields":{"switch":["vendor","os","firmware","serial","stack","fans","psu"],"port":[],"sfp":[]},"fields":{"row1_key":[19,39],"row1_value":[107,39],"row2_key":[19,58],"row2_value":[107,58],"row3_key":[19,78],"row3_value":[107,78],"row4_key":[19,97],"row4_value":[107,97],"row5_key":[19,116],"row5_value":[107,116],"row6_key":[19,135],"row6_value":[107,135]}},"faceplate":{"show":true,"file":"24rj45-4sfp.png","fit":"fill","opacity":1},"calibration_button":{"show":true,"x":1888,"y":14,"width":138,"height":34,"anchor":"top_right"},"status_panel_2":{"show":true,"x":1605,"y":25,"width":278,"height":55,"font_family":"SwitchVisionCustom, Arial, Helvetica, sans-serif","font_size":16,"title_font_size":16,"font_weight":"bold","text_color":"#ffffff","label_color":"#eef2f4","title_color":"#f4f6f7","background_color":"rgba(0,0,0,.06)","border_color":"rgba(245,248,250,.75)","border_show":true,"title_mode":"custom","title_field":"model","custom_title":"","field_order":{"switch":["vendor","uptime","model","ip","cpu","temp","poe","os","firmware","serial","stack","fans","psu"],"port":["vlan","desc","link","rx","tx"],"sfp":["vlan","desc","link","rx","tx"]},"hidden_fields":{"switch":["model","ip","cpu","temp","poe","os","firmware","serial","stack","fans","psu"],"port":[],"sfp":[]},"fields":{"row1_key":[24,55],"row1_value":[112,55],"row2_key":[24,72],"row2_value":[112,72],"row3_key":[24,89],"row3_value":[112,89],"row4_key":[24,106],"row4_value":[112,106],"row5_key":[24,123],"row5_value":[112,123],"row6_key":[24,140],"row6_value":[112,140]}}},"stack":{"enabled":false,"stack_id":"","uptime_source":"","members":{}},"management":{"switch_ip":""},"profile":"cisco_2960x_24p"};
 const calibration2960S48 = {"schema_version":1,"schema":"switch-vision-interactive-calibration-v1","model":"cisco-2960s-48p-2x10g","generated_by":"Switch Vision v1.8.9","image":{"file":"faceplates/48rj45-2sfp.png","width":2048,"height":448,"master":"switch-master-v4.0","alpha_min":0,"alpha_max":255},"ports":{"1":{"center":[176,245],"number":[176,181],"led_left":[154,221],"led_right":[199,221],"hitbox":[34,56]},"2":{"center":[177,338],"number":[176,409],"led_left":[153,365],"led_right":[200,365],"hitbox":[34,56]},"3":{"center":[236,245],"number":[237,181],"led_left":[213,221],"led_right":[259,221],"hitbox":[34,56]},"4":{"center":[237,337],"number":[237,409],"led_left":[213,365],"led_right":[259,365],"hitbox":[34,56]},"5":{"center":[294,245],"number":[296,181],"led_left":[273,221],"led_right":[319,221],"hitbox":[34,56]},"6":{"center":[297,337],"number":[297,409],"led_left":[273,365],"led_right":[319,365],"hitbox":[34,56]},"7":{"center":[355,245],"number":[356,181],"led_left":[333,221],"led_right":[379,221],"hitbox":[34,56]},"8":{"center":[357,337],"number":[357,409],"led_left":[333,365],"led_right":[379,365],"hitbox":[34,56]},"9":{"center":[414,245],"number":[415,181],"led_left":[393,221],"led_right":[440,221],"hitbox":[34,56]},"10":{"center":[416,337],"number":[415,409],"led_left":[393,365],"led_right":[439,365],"hitbox":[34,56]},"11":{"center":[474,245],"number":[475,181],"led_left":[453,221],"led_right":[499,221],"hitbox":[34,56]},"12":{"center":[476,336],"number":[476,409],"led_left":[453,365],"led_right":[499,365],"hitbox":[34,56]},"13":{"center":[550,245],"number":[551,181],"led_left":[524,221],"led_right":[570,221],"hitbox":[34,56]},"14":{"center":[549,337],"number":[551,409],"led_left":[524,365],"led_right":[571,365],"hitbox":[34,56]},"15":{"center":[610,245],"number":[611,181],"led_left":[584,221],"led_right":[631,221],"hitbox":[34,56]},"16":{"center":[608,336],"number":[612,409],"led_left":[584,365],"led_right":[631,365],"hitbox":[34,56]},"17":{"center":[669,245],"number":[670,181],"led_left":[644,221],"led_right":[690,221],"hitbox":[34,56]},"18":{"center":[668,337],"number":[670,409],"led_left":[644,365],"led_right":[690,365],"hitbox":[34,56]},"19":{"center":[729,245],"number":[729,181],"led_left":[704,221],"led_right":[750,221],"hitbox":[34,56]},"20":{"center":[728,337],"number":[729,409],"led_left":[704,365],"led_right":[750,365],"hitbox":[34,56]},"21":{"center":[788,245],"number":[790,181],"led_left":[764,221],"led_right":[810,221],"hitbox":[34,56]},"22":{"center":[788,337],"number":[790,409],"led_left":[764,365],"led_right":[810,365],"hitbox":[34,56]},"23":{"center":[848,245],"number":[849,181],"led_left":[824,221],"led_right":[870,221],"hitbox":[34,56]},"24":{"center":[850,337],"number":[849,409],"led_left":[824,365],"led_right":[870,365],"hitbox":[34,56]},"25":{"center":[923,245],"number":[925,181],"led_left":[904,221],"led_right":[949,221],"hitbox":[34,56]},"26":{"center":[925,336],"number":[925,409],"led_left":[903,365],"led_right":[950,365],"hitbox":[34,56]},"27":{"center":[983,245],"number":[985,181],"led_left":[963,221],"led_right":[1009,221],"hitbox":[34,56]},"28":{"center":[984,336],"number":[985,409],"led_left":[963,365],"led_right":[1009,365],"hitbox":[34,56]},"29":{"center":[1043,245],"number":[1043,181],"led_left":[1023,221],"led_right":[1069,221],"hitbox":[34,56]},"30":{"center":[1045,337],"number":[1043,409],"led_left":[1023,365],"led_right":[1069,365],"hitbox":[34,56]},"31":{"center":[1105,245],"number":[1104,181],"led_left":[1083,221],"led_right":[1129,221],"hitbox":[34,56]},"32":{"center":[1104,337],"number":[1104,409],"led_left":[1083,365],"led_right":[1129,365],"hitbox":[34,56]},"33":{"center":[1162,245],"number":[1163,181],"led_left":[1143,221],"led_right":[1189,221],"hitbox":[34,56]},"34":{"center":[1164,337],"number":[1163,409],"led_left":[1143,365],"led_right":[1189,365],"hitbox":[34,56]},"35":{"center":[1225,245],"number":[1221,181],"led_left":[1203,221],"led_right":[1249,221],"hitbox":[34,56]},"36":{"center":[1223,337],"number":[1221,409],"led_left":[1203,365],"led_right":[1249,365],"hitbox":[34,56]},"37":{"center":[1297,245],"number":[1298,181],"led_left":[1273,221],"led_right":[1319,221],"hitbox":[34,56]},"38":{"center":[1298,337],"number":[1298,409],"led_left":[1273,365],"led_right":[1318,365],"hitbox":[34,56]},"39":{"center":[1355,245],"number":[1357,181],"led_left":[1333,221],"led_right":[1379,221],"hitbox":[34,56]},"40":{"center":[1358,337],"number":[1357,409],"led_left":[1332,365],"led_right":[1379,365],"hitbox":[34,56]},"41":{"center":[1416,245],"number":[1418,181],"led_left":[1393,221],"led_right":[1439,221],"hitbox":[34,56]},"42":{"center":[1417,337],"number":[1418,409],"led_left":[1393,365],"led_right":[1438,365],"hitbox":[34,56]},"43":{"center":[1475,245],"number":[1476,181],"led_left":[1453,221],"led_right":[1499,221],"hitbox":[34,56]},"44":{"center":[1477,336],"number":[1476,409],"led_left":[1453,365],"led_right":[1499,365],"hitbox":[34,56]},"45":{"center":[1534,245],"number":[1535,181],"led_left":[1513,221],"led_right":[1559,221],"hitbox":[34,56]},"46":{"center":[1537,337],"number":[1535,409],"led_left":[1513,365],"led_right":[1559,365],"hitbox":[34,56]},"47":{"center":[1594,245],"number":[1595,181],"led_left":[1573,221],"led_right":[1618,221],"hitbox":[34,56]},"48":{"center":[1596,337],"number":[1595,409],"led_left":[1572,365],"led_right":[1618,365],"hitbox":[34,56]}},"sfp":{"TE1":{"center":[1712,285],"hitbox":[94,48],"label":[1709,228]},"TE2":{"center":[1837,285],"hitbox":[94,48],"label":[1838,228]}},"status_leds":{"STAT":[674,84],"SYST":[674,149],"DUPLX":[852,84],"ACTV":[852,149],"SPEED":[1026,84],"STACK":[1204,84],"PoE":[1369,84]},"ui":{"logo":{"show":true,"file":"sv-logo.png","source":"default","x":143,"y":-1,"width":187,"height":188},"status_panel":{"show":true,"x":338,"y":30,"width":313,"height":132,"font_family":"SwitchVisionCustom, Arial, Helvetica, sans-serif","font_size":16,"title_font_size":16,"font_weight":"bold","text_color":"#ffffff","label_color":"#eef2f4","title_color":"#f4f6f7","background_color":"rgba(0,0,0,.06)","border_color":"rgba(245,248,250,.75)","border_show":true,"field_order":{"switch":["model","ip","cpu","temp","poe","uptime","vendor","os","firmware","serial","stack","fans","psu"],"port":["vlan","desc","link","rx","tx"],"sfp":["vlan","desc","link","rx","tx"]},"hidden_fields":{"switch":["vendor","os","firmware","serial","stack","fans","psu"],"port":[],"sfp":[]},"fields":{"row1_key":[19,39],"row1_value":[107,39],"row2_key":[19,58],"row2_value":[107,58],"row3_key":[19,78],"row3_value":[107,78],"row4_key":[19,97],"row4_value":[107,97],"row5_key":[19,116],"row5_value":[107,116],"row6_key":[19,135],"row6_value":[107,135]}},"faceplate":{"show":true,"file":"48rj45-2sfp.png","fit":"fill","opacity":1},"calibration_button":{"show":true,"x":1888,"y":14,"width":138,"height":34,"anchor":"top_right"},"status_panel_2":{"show":true,"x":1605,"y":25,"width":278,"height":55,"font_family":"SwitchVisionCustom, Arial, Helvetica, sans-serif","font_size":16,"title_font_size":16,"font_weight":"bold","text_color":"#ffffff","label_color":"#eef2f4","title_color":"#f4f6f7","background_color":"rgba(0,0,0,.06)","border_color":"rgba(245,248,250,.75)","border_show":true,"title_mode":"custom","title_field":"model","custom_title":"","field_order":{"switch":["vendor","uptime","model","ip","cpu","temp","poe","os","firmware","serial","stack","fans","psu"],"port":["vlan","desc","link","rx","tx"],"sfp":["vlan","desc","link","rx","tx"]},"hidden_fields":{"switch":["model","ip","cpu","temp","poe","os","firmware","serial","stack","fans","psu"],"port":[],"sfp":[]},"fields":{"row1_key":[24,55],"row1_value":[112,55],"row2_key":[24,72],"row2_value":[112,72],"row3_key":[24,89],"row3_value":[112,89],"row4_key":[24,106],"row4_value":[112,106],"row5_key":[24,123],"row5_value":[112,123],"row6_key":[24,140],"row6_value":[112,140]}}},"stack":{"enabled":false,"stack_id":"","uptime_source":"","members":{}},"management":{"switch_ip":""},"profile":"cisco_2960s_48p"};
@@ -1918,6 +1918,31 @@ function statusFieldLabel(key) {
   return found ? found[1] : key;
 }
 
+function normaliseStatusFieldGroupPart(value) {
+  const part = String(value || "field").trim().toLowerCase();
+  return ["field", "label", "value"].includes(part) ? part : "field";
+}
+
+function statusFieldKeyMatchesPart(key, part = "field") {
+  const normalised = normaliseStatusFieldGroupPart(part);
+  if (normalised === "label") return String(key || "").endsWith("_key");
+  if (normalised === "value") return String(key || "").endsWith("_value");
+  return true;
+}
+
+function statusFieldPointsForPart(panel, part = "field") {
+  return Object.entries(panel?.fields || {})
+    .filter(([key]) => statusFieldKeyMatchesPart(key, part))
+    .map(([, point]) => point);
+}
+
+function statusFieldGroupDescription(part = "field") {
+  const normalised = normaliseStatusFieldGroupPart(part);
+  if (normalised === "label") return "LABELS";
+  if (normalised === "value") return "VALUES";
+  return "FIELDS";
+}
+
 function normaliseHexColour(value, fallback = "#ffffff") {
   const raw = String(value || "").trim();
   if (/^#[0-9a-f]{6}$/i.test(raw)) return raw.toLowerCase();
@@ -2790,8 +2815,8 @@ function calibrationInfoText(config) {
 
   if (type === "number_labels") return "ALL PORT LABELS";
   if (type === "status_leds") return "ALL STATUS LEDS";
-  if (type === "status_fields") return "STATUS BOX 1 FIELDS";
-  if (type === "status_fields_2") return "STATUS BOX 2 FIELDS";
+  if (type === "status_fields") return `STATUS BOX 1 ${statusFieldGroupDescription(target.part || config?.calibration_part)}`;
+  if (type === "status_fields_2") return `STATUS BOX 2 ${statusFieldGroupDescription(target.part || config?.calibration_part)}`;
   if (type === "status_field") return `STATUS BOX 1 · ${String(target.id || "").toUpperCase()}`;
   if (type === "status_field_2") return `STATUS BOX 2 · ${String(target.id || "").toUpperCase()}`;
   if (type === "status_box") return "STATUS BOX 1";
@@ -2915,9 +2940,10 @@ function drawCalibrationOverlay(svg, { config, calibration }) {
     if (showLabels) text(svg, panel.x + (panel.width / 2), panel.y - 12, "STATUS BOX", boxActive ? "cv-calibration-label cv-calibration-active-text" : "cv-calibration-label");
 
     const allFieldsActive = raw === "status_fields";
+    const allFieldsPart = allFieldsActive ? normaliseStatusFieldGroupPart(target?.part) : "field";
     for (const [key, label, fallback] of STATUS_PANEL_FIELD_DEFS) {
       const [fx, fy] = statusFieldDisplayPosition(panel, key, fallback, 1);
-      const active = allFieldsActive || (target?.type === "status_field" && String(target.id) === key);
+      const active = (allFieldsActive && statusFieldKeyMatchesPart(key, allFieldsPart)) || (target?.type === "status_field" && String(target.id) === key);
       if (showLedRings) drawRing(fx, fy, 7, active);
       if (showLabels && active) text(svg, fx, fy - 12, label, "cv-calibration-label cv-calibration-active-text");
     }
@@ -2939,9 +2965,10 @@ function drawCalibrationOverlay(svg, { config, calibration }) {
     if (showLabels) text(svg, panel2.x + (panel2.width / 2), panel2.y - 12, "STATUS BOX 2", boxActive ? "cv-calibration-label cv-calibration-active-text" : "cv-calibration-label");
 
     const allFieldsActive = raw === "status_fields_2";
+    const allFieldsPart = allFieldsActive ? normaliseStatusFieldGroupPart(target?.part) : "field";
     for (const [key, label, fallback] of STATUS_PANEL_FIELD_DEFS) {
       const [fx, fy] = statusFieldDisplayPosition(panel2, key, fallback, 2);
-      const active = allFieldsActive || (target?.type === "status_field_2" && String(target.id) === key);
+      const active = (allFieldsActive && statusFieldKeyMatchesPart(key, allFieldsPart)) || (target?.type === "status_field_2" && String(target.id) === key);
       if (showLedRings) drawRing(fx, fy, 7, active);
       if (showLabels && active) text(svg, fx, fy - 12, label, "cv-calibration-label cv-calibration-active-text");
     }
@@ -3431,8 +3458,8 @@ function normalCalibrationTarget(config) {
   if (rawTarget === "calibration_button") return { type: "calibration_button", id: "calibration_button", part: "box" };
   if (rawTarget === "status_box" || rawTarget === "status_box_1") return { type: "status_box", id: "status_box_1", part: "box" };
   if (rawTarget === "status_box_2") return { type: "status_box_2", id: "status_box_2", part: "box" };
-  if (rawTarget === "status_fields") return { type: "status_fields", id: "all", part: "field" };
-  if (rawTarget === "status_fields_2") return { type: "status_fields_2", id: "all", part: "field" };
+  if (rawTarget === "status_fields") return { type: "status_fields", id: "all", part: normaliseStatusFieldGroupPart(config?.calibration_part) };
+  if (rawTarget === "status_fields_2") return { type: "status_fields_2", id: "all", part: normaliseStatusFieldGroupPart(config?.calibration_part) };
   if (rawTarget.startsWith("status_field_2:")) return { type: "status_field_2", id: rawTarget.split(":").slice(1).join(":"), part: "field" };
   if (rawTarget.startsWith("status_field:")) return { type: "status_field", id: rawTarget.split(":").slice(1).join(":"), part: "field" };
 
@@ -3502,10 +3529,12 @@ function getEditableCalibrationTarget(cal, config) {
   }
 
   if (type === "status_fields") {
-    return { type, id: "all", key: "status_fields", item: cal.ui.status_panel, part: "field", point: ["all", "all"], group: true };
+    part = normaliseStatusFieldGroupPart(part);
+    return { type, id: "all", key: "status_fields", item: cal.ui.status_panel, part, point: ["all", "all"], group: true };
   }
   if (type === "status_fields_2") {
-    return { type, id: "all", key: "status_fields_2", item: cal.ui.status_panel_2, part: "field", point: ["all", "all"], group: true };
+    part = normaliseStatusFieldGroupPart(part);
+    return { type, id: "all", key: "status_fields_2", item: cal.ui.status_panel_2, part, point: ["all", "all"], group: true };
   }
 
   if (type === "status_field_2") {
@@ -3656,7 +3685,7 @@ function calibrationCoordinatePoints(cal, editable, createMissing = false) {
       .filter(([name]) => String(name).toUpperCase() !== "MODE")
       .map(([, point]) => point);
   } else if (editable.group && ["status_fields", "status_fields_2"].includes(editable.type)) {
-    points = Object.values(editable.item?.fields || {});
+    points = statusFieldPointsForPart(editable.item, editable.part);
   } else if (["logo", "calibration_button", "status_box", "status_box_2"].includes(editable.type)) {
     points = [[editable.item?.x, editable.item?.y]];
   } else if (editable.type === "port") {
@@ -3786,7 +3815,12 @@ function calibrationPartOptionsHtml(target, selectedPart) {
   const part = String(selectedPart || "entire").toLowerCase();
   const option = (value, label) => `<option value="${htmlEscape(value)}" ${value === part ? "selected" : ""}>${htmlEscape(label)}</option>`;
   if (["logo", "status_box", "status_box_2", "calibration_button"].includes(type)) return option("box", "Box / size");
-  if (["status_fields", "status_fields_2", "status_field", "status_field_2"].includes(type)) return option("field", "Field position");
+  if (["status_fields", "status_fields_2"].includes(type)) return [
+    option("field", "All fields"),
+    option("label", "All labels"),
+    option("value", "All values")
+  ].join("");
+  if (["status_field", "status_field_2"].includes(type)) return option("field", "Field position");
   if (type === "number_labels") return option("number", "All number labels");
   if (type === "port" || type === "ports") {
     return [
@@ -5550,8 +5584,8 @@ class SwitchVision3650 extends HTMLElement {
     }
     else if (editable?.group && editable.type === "number_labels") targetText = "all RJ45 numbers and SFP labels";
     else if (editable?.group && editable.type === "status_leds") targetText = "all status LEDs · center";
-    else if (editable?.group && editable.type === "status_fields") targetText = "all Status Box 1 fields";
-    else if (editable?.group && editable.type === "status_fields_2") targetText = "all Status Box 2 fields";
+    else if (editable?.group && editable.type === "status_fields") targetText = `all Status Box 1 ${statusFieldGroupDescription(editable.part).toLowerCase()}`;
+    else if (editable?.group && editable.type === "status_fields_2") targetText = `all Status Box 2 ${statusFieldGroupDescription(editable.part).toLowerCase()}`;
     else if (editable?.type === "status_field") targetText = `Status Box 1 · ${statusFieldLabel(editable.id)} field`;
     else if (editable?.type === "status_field_2") targetText = `Status Box 2 · ${statusFieldLabel(editable.id)} field`;
     else if (editable) targetText = `${editable.type}:${editable.id} · ${partText}`;
@@ -5647,12 +5681,21 @@ class SwitchVision3650 extends HTMLElement {
         <button type="button" data-cv-action="reset-port-display-name" ${displayNameEditable && displayNameValue ? "" : "disabled"}>Reset name</button>
       </div>${numberLabelVisibilityControls}
       <div class="cv-cal-subsection-divider"><span>Quick selection</span></div>
-<div class="cv-cal-tools-row cv-cal-quick-row">
+<div class="cv-cal-tools-row cv-cal-status-quick-row">
+        <span class="cv-cal-quick-label">Status Box 1</span>
+        <button type="button" data-cv-action="select-target" data-target="status_box" data-part="box">Box</button>
+        <button type="button" data-cv-action="select-target" data-target="status_fields" data-part="field">All fields</button>
+        <button type="button" data-cv-action="select-target" data-target="status_fields" data-part="label">All labels</button>
+        <button type="button" data-cv-action="select-target" data-target="status_fields" data-part="value">All values</button>
+        <span class="cv-cal-parity-divider" aria-hidden="true"></span>
+        <span class="cv-cal-quick-label">Status Box 2</span>
+        <button type="button" data-cv-action="select-target" data-target="status_box_2" data-part="box">Box</button>
+        <button type="button" data-cv-action="select-target" data-target="status_fields_2" data-part="field">All fields</button>
+        <button type="button" data-cv-action="select-target" data-target="status_fields_2" data-part="label">All labels</button>
+        <button type="button" data-cv-action="select-target" data-target="status_fields_2" data-part="value">All values</button>
+      </div>
+      <div class="cv-cal-tools-row cv-cal-quick-row">
         <span class="cv-cal-quick-label">Quick select</span>
-        <button type="button" data-cv-action="select-target" data-target="status_box" data-part="box">Status Box 1</button>
-        <button type="button" data-cv-action="select-target" data-target="status_fields" data-part="field">Status Box 1 fields</button>
-        <button type="button" data-cv-action="select-target" data-target="status_box_2" data-part="box">Status Box 2</button>
-        <button type="button" data-cv-action="select-target" data-target="status_fields_2" data-part="field">Status Box 2 fields</button>
         <button type="button" data-cv-action="select-target" data-target="status_leds" data-part="center">Status LEDs</button>
         <button type="button" data-cv-action="select-target" data-target="ports" data-part="entire">All RJ45</button>
         <button type="button" data-cv-action="select-target" data-target="ports_led_left" data-part="led_left">RJ45 Link</button>
@@ -5661,6 +5704,9 @@ class SwitchVision3650 extends HTMLElement {
         <button type="button" data-cv-action="select-target" data-target="sfps_led_left" data-part="led_left">SFP Link</button>
         <button type="button" data-cv-action="select-target" data-target="sfps_led_right" data-part="led_right">SFP Activity</button>
         <button type="button" data-cv-action="select-target" data-target="all_numbers" data-part="number">Port Numbers</button>
+        <span class="cv-cal-parity-divider" aria-hidden="true"></span>
+        <button type="button" data-cv-action="select-target" data-target="logo" data-part="box">Logo</button>
+        <button type="button" data-cv-action="select-target" data-target="calibration_button" data-part="box">Calibration button</button>
       </div>
       <div class="cv-cal-tools-row cv-cal-parity-row">
         <span class="cv-cal-quick-label">Odd</span>
@@ -5674,9 +5720,6 @@ class SwitchVision3650 extends HTMLElement {
         <button type="button" data-cv-action="select-target" data-target="ports_even_led_left" data-part="led_left">Even link LEDs</button>
         <button type="button" data-cv-action="select-target" data-target="ports_even_led_right" data-part="led_right">Even activity LEDs</button>
         <button type="button" data-cv-action="select-target" data-target="ports_even_numbers" data-part="number">Even numbers</button>
-        <span class="cv-cal-parity-divider" aria-hidden="true"></span>
-        <button type="button" data-cv-action="select-target" data-target="logo" data-part="box">Logo</button>
-        <button type="button" data-cv-action="select-target" data-target="calibration_button" data-part="box">Calibration button</button>
       </div>
       <div class="cv-cal-tools-row cv-cal-custom-port-row">
         <span class="cv-cal-quick-label">Custom ports</span>
@@ -6047,7 +6090,7 @@ class SwitchVision3650 extends HTMLElement {
 
     if (editable.group && (editable.type === "status_fields" || editable.type === "status_fields_2")) {
       const p = editable.type === "status_fields_2" ? cal.ui.status_panel_2 : cal.ui.status_panel;
-      for (const xy of Object.values(p.fields || {})) movePoint(xy, dx, dy);
+      for (const xy of statusFieldPointsForPart(p, editable.part)) movePoint(xy, dx, dy);
       return true;
     }
 
@@ -6183,7 +6226,7 @@ class SwitchVision3650 extends HTMLElement {
 
     if (editable.group && ["status_fields", "status_fields_2"].includes(editable.type)) {
       let changed = false;
-      for (const point of Object.values(editable.item?.fields || {})) changed = setPoint(point) || changed;
+      for (const point of statusFieldPointsForPart(editable.item, editable.part)) changed = setPoint(point) || changed;
       return changed;
     }
 
@@ -7362,14 +7405,28 @@ class SwitchVision3650 extends HTMLElement {
           if (editable.type === "status_box") cal.ui.status_panel = original.ui.status_panel;
           if (editable.type === "status_box_2") cal.ui.status_panel_2 = original.ui.status_panel_2;
           if (editable.type === "status_fields") {
-            cal.ui.status_panel.fields = original.ui.status_panel.fields;
-            cal.ui.status_panel.field_order = original.ui.status_panel.field_order;
-            cal.ui.status_panel.hidden_fields = original.ui.status_panel.hidden_fields;
+            if (normaliseStatusFieldGroupPart(editable.part) === "field") {
+              cal.ui.status_panel.fields = original.ui.status_panel.fields;
+              cal.ui.status_panel.field_order = original.ui.status_panel.field_order;
+              cal.ui.status_panel.hidden_fields = original.ui.status_panel.hidden_fields;
+            } else {
+              for (const [key, point] of Object.entries(original.ui.status_panel.fields || {})) {
+                if (!statusFieldKeyMatchesPart(key, editable.part)) continue;
+                cal.ui.status_panel.fields[key] = clonePlainData(point);
+              }
+            }
           }
           if (editable.type === "status_fields_2") {
-            cal.ui.status_panel_2.fields = original.ui.status_panel_2.fields;
-            cal.ui.status_panel_2.field_order = original.ui.status_panel_2.field_order;
-            cal.ui.status_panel_2.hidden_fields = original.ui.status_panel_2.hidden_fields;
+            if (normaliseStatusFieldGroupPart(editable.part) === "field") {
+              cal.ui.status_panel_2.fields = original.ui.status_panel_2.fields;
+              cal.ui.status_panel_2.field_order = original.ui.status_panel_2.field_order;
+              cal.ui.status_panel_2.hidden_fields = original.ui.status_panel_2.hidden_fields;
+            } else {
+              for (const [key, point] of Object.entries(original.ui.status_panel_2.fields || {})) {
+                if (!statusFieldKeyMatchesPart(key, editable.part)) continue;
+                cal.ui.status_panel_2.fields[key] = clonePlainData(point);
+              }
+            }
           }
           if (editable.type === "status_field" && original.ui.status_panel.fields?.[editable.key]) cal.ui.status_panel.fields[editable.key] = original.ui.status_panel.fields[editable.key];
           if (editable.type === "status_field_2" && original.ui.status_panel_2.fields?.[editable.key]) cal.ui.status_panel_2.fields[editable.key] = original.ui.status_panel_2.fields[editable.key];

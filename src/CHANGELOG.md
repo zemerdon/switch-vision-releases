@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.3.4 — Status field group quick selection
+
+- Adds **All labels** and **All values** quick-selection controls for Status Box 1.
+- Adds **All labels** and **All values** quick-selection controls for Status Box 2.
+- Keeps each Status Box group together with Box and All fields controls.
+- Moves Logo and Calibration button back to the general Quick select row.
+- Group label operations affect only `row*_key` coordinates.
+- Group value operations affect only `row*_value` coordinates.
+- Existing All fields operations continue to affect the complete Status Box field set.
+- Group-aware nudge, direct X/Y positioning, overlay highlighting, and reset handling are included.
+- Preserves existing calibration profile data and stable field identities.
+
 ## v2.3.3 — Calibration Selection layout cleanup
 
 - Moves **RJ45 key** and **Renumber** onto a dedicated row beneath the main Target / Port manager controls.
