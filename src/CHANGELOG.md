@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.3.3 — Calibration Selection layout cleanup
+
+- Moves **RJ45 key** and **Renumber** onto a dedicated row beneath the main Target / Port manager controls.
+- Moves **Display name**, **Set name**, and **Reset name** onto that same dedicated row.
+- Keeps **Remove port** with the main Port manager controls.
+- Moves **Logo** and **Calibration button** quick-selection actions to immediately follow the Even-port controls.
+- Reduces unnecessary wrapping and horizontal scrolling in the Calibration Selection workspace.
+- Preserves all v2.3.2 calibration behaviour, port identity, telemetry mappings, logo assets, and profile data unchanged.
+
 ## v2.3.2 — UniFi logo refresh
 
 - Refreshes the bundled `unifi-2005.png` artwork.
