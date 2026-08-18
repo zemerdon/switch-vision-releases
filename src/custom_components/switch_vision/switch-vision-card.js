@@ -2243,7 +2243,7 @@ function applyConfigToCalibrationForEdit(cal, config = {}) {
 
 
   const panel = ui.status_panel;
-  if (config.show_status_panel !== undefined) panel.show = config.show_status_panel !== false;
+  if (config?.__raw_config?.show_status_panel === false) panel.show = false;
   if (config.status_panel_x !== undefined) panel.x = Number(config.status_panel_x);
   if (config.status_panel_y !== undefined) panel.y = Number(config.status_panel_y);
   if (config.status_panel_width !== undefined) panel.width = Number(config.status_panel_width);
@@ -2410,7 +2410,7 @@ function drawStatusPanel(svg, hass, config, cal = calibration, panelNumber = 1) 
   const y = Number(panel.y);
   const w = Number(panel.width);
   const h = Number(panel.height);
-  // Status Box 2 is a permanent switch-summary panel. It must never inherit
+  // Status Box 2 is an independent switch-summary panel. It must never inherit
   // selected port or SFP details from Status Box 1. Its calibrated dimensions
   // are authoritative: showing or hiding fields changes only the content and
   // never resizes the box at runtime.
@@ -2837,35 +2837,146 @@ function visualHitboxSize(type, hitbox) {
   return [Math.max(8, w), Math.max(8, h)];
 }
 
+function calibrationOverlayPartActive(editable, itemType, itemKey, itemPart) {
+  if (!editable) return false;
+
+  const targetType = String(editable.type || "").toLowerCase();
+  const type = String(itemType || "").toLowerCase();
+  const key = String(itemKey ?? "").toLowerCase();
+  const part = String(itemPart || "").toLowerCase();
+  const targetPart = String(editable.part || "").toLowerCase();
+
+  const sameKey = (value) =>
+    value !== undefined &&
+    value !== null &&
+    String(value).toLowerCase() === key;
+
+  const groupHasKey = () =>
+    Array.isArray(editable.keys) &&
+    editable.keys.some((value) => sameKey(value));
+
+  // "Port Numbers" deliberately spans both RJ45 number positions and
+  // SFP/uplink label positions.
+  if (targetType === "number_labels") {
+    return (type === "port" && part === "number") ||
+      (type === "sfp" && part === "label");
+  }
+
+  if (targetType === "status_leds") {
+    return type === "status";
+  }
+
+  if (targetType === "status_fields" && type === "status_field") {
+    if (targetPart === "label") return key.endsWith("_key");
+    if (targetPart === "value") return key.endsWith("_value");
+    return true;
+  }
+
+  if (targetType === "status_fields_2" && type === "status_field_2") {
+    if (targetPart === "label") return key.endsWith("_key");
+    if (targetPart === "value") return key.endsWith("_value");
+    return true;
+  }
+
+  if (targetType === "status_field" && type === "status_field") {
+    return sameKey(editable.key ?? editable.id);
+  }
+
+  if (targetType === "status_field_2" && type === "status_field_2") {
+    return sameKey(editable.key ?? editable.id);
+  }
+
+  if (["logo", "calibration_button", "status_box", "status_box_2"].includes(targetType)) {
+    return type === targetType && part === "box";
+  }
+
+  if (targetType === "port" || targetType === "ports") {
+    if (type !== "port") return false;
+
+    const selected = targetType === "ports"
+      ? groupHasKey()
+      : sameKey(editable.key ?? editable.id);
+
+    if (!selected) return false;
+
+    if (targetPart === "entire") {
+      return ["center", "led_left", "led_right"].includes(part);
+    }
+
+    return targetPart === part;
+  }
+
+  if (targetType === "sfp" || targetType === "sfps") {
+    if (type !== "sfp") return false;
+
+    const selected = targetType === "sfps"
+      ? groupHasKey()
+      : sameKey(editable.key ?? editable.id);
+
+    if (!selected) return false;
+
+    return targetPart === part;
+  }
+
+  if (targetType === "status" && type === "status") {
+    return sameKey(editable.key ?? editable.id);
+  }
+
+  return false;
+}
+
 function drawCalibrationOverlay(svg, { config, calibration }) {
   if (!calibrationEnabled(config)) return;
 
   const showHitboxes = config.calibration_show_hitboxes !== false;
   const showLabels = config.calibration_show_labels !== false;
   const showLedRings = config.calibration_show_led_rings !== false;
+  const editable = getEditableCalibrationTarget(calibration, config);
 
-  text(svg, 24, 28, `CALIBRATION · ${calibrationInfoText(config)}`, "cv-calibration-title", "start");
+  text(
+    svg,
+    24,
+    28,
+    `CALIBRATION · ${calibrationInfoText(config)}`,
+    "cv-calibration-title",
+    "start"
+  );
 
   const drawRing = (x, y, r, active) => {
+    if (!Number.isFinite(Number(x)) || !Number.isFinite(Number(y))) return;
     const ring = e("circle");
-    ring.setAttribute("class", active ? "cv-calibration-ring cv-calibration-active" : "cv-calibration-ring");
+    ring.setAttribute(
+      "class",
+      active
+        ? "cv-calibration-ring cv-calibration-active"
+        : "cv-calibration-ring"
+    );
     ring.setAttribute("cx", x);
     ring.setAttribute("cy", y);
     ring.setAttribute("r", r);
     svg.appendChild(ring);
   };
 
-  const drawHitbox = (type, id, center, hitbox, label) => {
+  const drawHitbox = (type, key, center, hitbox, label) => {
+    if (!Array.isArray(center) || center.length < 2) return;
+
     const [cx, cy] = center;
     const [w, h] = visualHitboxSize(type, hitbox);
-    const selectedPart = String(normalCalibrationTarget(config)?.part || config.calibration_part || "center").toLowerCase();
-    const active = type === "port"
-      ? calibrationPortPartMatches(config, id, "center", calibration)
-      : (type === "sfp" ? calibrationMatches(config, type, id, calibration) && selectedPart === "center" : calibrationMatches(config, type, id, calibration));
+    const active = calibrationOverlayPartActive(
+      editable,
+      type,
+      key,
+      "center"
+    );
 
     if (showHitboxes) {
       const r = e("rect");
-      r.setAttribute("class", active ? "cv-calibration-hitbox cv-calibration-active" : "cv-calibration-hitbox");
+      r.setAttribute(
+        "class",
+        active
+          ? "cv-calibration-hitbox cv-calibration-active"
+          : "cv-calibration-hitbox"
+      );
       r.setAttribute("x", cx - (w / 2));
       r.setAttribute("y", cy - (h / 2));
       r.setAttribute("width", w);
@@ -2876,104 +2987,421 @@ function drawCalibrationOverlay(svg, { config, calibration }) {
     }
 
     if (showLabels) {
-      text(svg, cx, cy + 4, label, active ? "cv-calibration-label cv-calibration-active-text" : "cv-calibration-label");
+      text(
+        svg,
+        cx,
+        cy + 4,
+        label,
+        active
+          ? "cv-calibration-label cv-calibration-active-text"
+          : "cv-calibration-label"
+      );
     }
   };
 
+  // --------------------------------------------------------
+  // RJ45
+  // --------------------------------------------------------
+
   for (const [num, port] of Object.entries(calibration.ports || {})) {
-    const n = Number(num);
-    drawHitbox("port", n, port.center, port.hitbox, String(port.display_name || `P${num}`));
+    drawHitbox(
+      "port",
+      num,
+      port.center,
+      port.hitbox,
+      String(port.display_name || `P${num}`)
+    );
+
+    const linkActive = calibrationOverlayPartActive(
+      editable,
+      "port",
+      num,
+      "led_left"
+    );
+
+    const activityActive = calibrationOverlayPartActive(
+      editable,
+      "port",
+      num,
+      "led_right"
+    );
+
+    const numberActive = calibrationOverlayPartActive(
+      editable,
+      "port",
+      num,
+      "number"
+    );
 
     if (showLedRings) {
-      const active = calibrationMatches(config, "port", n, calibration);
-      const activeLeft = active || calibrationPortPartMatches(config, n, "led_left", calibration);
-      const activeRight = active || calibrationPortPartMatches(config, n, "led_right", calibration);
-      if (port.led_left) drawRing(port.led_left[0], port.led_left[1], 7.5, activeLeft);
-      if (port.led_right) drawRing(port.led_right[0], port.led_right[1], 7.5, activeRight);
+      if (Array.isArray(port.led_left)) {
+        drawRing(
+          port.led_left[0],
+          port.led_left[1],
+          7.5,
+          linkActive
+        );
+      }
+
+      if (Array.isArray(port.led_right)) {
+        drawRing(
+          port.led_right[0],
+          port.led_right[1],
+          7.5,
+          activityActive
+        );
+      }
+
+      // Number positions are normally left uncluttered. Draw their
+      // calibration ring only when that number target is actually selected.
+      if (numberActive && Array.isArray(port.number)) {
+        drawRing(
+          port.number[0],
+          port.number[1],
+          8,
+          true
+        );
+      }
+    }
+
+    if (showLabels && numberActive && Array.isArray(port.number)) {
+      text(
+        svg,
+        port.number[0],
+        port.number[1] - 12,
+        `NUMBER ${num}`,
+        "cv-calibration-label cv-calibration-active-text"
+      );
     }
   }
+
+  // --------------------------------------------------------
+  // SFP / UPLINK
+  // --------------------------------------------------------
 
   for (const [name, sfp] of Object.entries(calibration.sfp || {})) {
-    const sfpPort = sfpPortNumber(name);
-    drawHitbox("sfp", sfpPort, sfp.center, sfp.hitbox, String(sfp.display_name || name));
+    drawHitbox(
+      "sfp",
+      name,
+      sfp.center,
+      sfp.hitbox,
+      String(sfp.display_name || name)
+    );
+
+    const linkActive = calibrationOverlayPartActive(
+      editable,
+      "sfp",
+      name,
+      "led_left"
+    );
+
+    const activityActive = calibrationOverlayPartActive(
+      editable,
+      "sfp",
+      name,
+      "led_right"
+    );
+
+    const labelActive = calibrationOverlayPartActive(
+      editable,
+      "sfp",
+      name,
+      "label"
+    );
 
     if (showLedRings) {
-      const active = calibrationMatches(config, "sfp", sfpPort, calibration);
-      const targetPart = String(normalCalibrationTarget(config)?.part || config.calibration_part || "center").toLowerCase();
       const left = sfpLedPoint(sfp, "led_left", false);
       const right = sfpLedPoint(sfp, "led_right", false);
-      drawRing(left[0], left[1], 8, active && targetPart === "led_left");
-      drawRing(right[0], right[1], 8, active && targetPart === "led_right");
-      const allNumberLabelsActive = String(normalCalibrationTarget(config)?.type || "").toLowerCase() === "number_labels";
-      if ((allNumberLabelsActive || (active && targetPart === "label")) && Array.isArray(sfp.label)) drawRing(sfp.label[0], sfp.label[1], 8, true);
+
+      if (Array.isArray(left)) {
+        drawRing(left[0], left[1], 8, linkActive);
+      }
+
+      if (Array.isArray(right)) {
+        drawRing(right[0], right[1], 8, activityActive);
+      }
+
+      if (labelActive && Array.isArray(sfp.label)) {
+        drawRing(sfp.label[0], sfp.label[1], 8, true);
+      }
+    }
+
+    if (showLabels && labelActive && Array.isArray(sfp.label)) {
+      text(
+        svg,
+        sfp.label[0],
+        sfp.label[1] - 12,
+        `${name} LABEL`,
+        "cv-calibration-label cv-calibration-active-text"
+      );
     }
   }
+
+  // --------------------------------------------------------
+  // STATUS LEDs
+  // --------------------------------------------------------
 
   for (const [name, xy] of Object.entries(calibration.status_leds || {})) {
     if (String(name).toUpperCase() === "MODE") continue;
-    const [x, y] = xy;
-    const active = calibrationMatches(config, "status", name, calibration);
-    if (showLedRings) drawRing(x, y, 10, active);
-    if (showLabels) text(svg, x, y - 16, name, active ? "cv-calibration-label cv-calibration-active-text" : "cv-calibration-label");
-  }
+    if (!Array.isArray(xy)) continue;
 
+    const [x, y] = xy;
+    const active = calibrationOverlayPartActive(
+      editable,
+      "status",
+      name,
+      "center"
+    );
+
+    if (showLedRings) drawRing(x, y, 10, active);
+
+    if (showLabels) {
+      text(
+        svg,
+        x,
+        y - 16,
+        name,
+        active
+          ? "cv-calibration-label cv-calibration-active-text"
+          : "cv-calibration-label"
+      );
+    }
+  }
 
   const ui = uiFromCalibration(calibration);
+
+  // --------------------------------------------------------
+  // LOGO
+  // --------------------------------------------------------
+
   const logoUi = ui.logo;
-  const panel = statusPanelUi(config, calibration);
-  const raw = calibrationRawTarget(config);
-  const target = normalCalibrationTarget(config);
+  const logoActive = calibrationOverlayPartActive(
+    editable,
+    "logo",
+    "logo",
+    "box"
+  );
 
-  if (logoUi?.show !== false) {
-    const active = raw === "logo";
+  if (logoUi && (logoUi.show !== false || logoActive)) {
     if (showHitboxes) {
-      const r = rect(svg, logoUi.x, logoUi.y, logoUi.width, logoUi.height, 4, active ? "cv-calibration-hitbox cv-calibration-active" : "cv-calibration-hitbox");
+      rect(
+        svg,
+        logoUi.x,
+        logoUi.y,
+        logoUi.width,
+        logoUi.height,
+        4,
+        logoActive
+          ? "cv-calibration-hitbox cv-calibration-active"
+          : "cv-calibration-hitbox"
+      );
     }
-    if (showLabels) text(svg, logoUi.x + (logoUi.width / 2), logoUi.y - 12, "LOGO", active ? "cv-calibration-label cv-calibration-active-text" : "cv-calibration-label");
+
+    if (showLabels) {
+      text(
+        svg,
+        logoUi.x + (logoUi.width / 2),
+        logoUi.y - 12,
+        "LOGO",
+        logoActive
+          ? "cv-calibration-label cv-calibration-active-text"
+          : "cv-calibration-label"
+      );
+    }
   }
 
-  if (panel?.show !== false) {
-    const boxActive = raw === "status_box" || raw === "status_box_1";
-    // Draw the calibration outline outside the real box border so users can see
-    // border visibility and colour changes while the box remains selected.
-    if (showHitboxes) rect(svg, panel.x - 5, panel.y - 5, panel.width + 10, panel.height + 10, 4, boxActive ? "cv-calibration-hitbox cv-calibration-active" : "cv-calibration-hitbox");
-    if (showLabels) text(svg, panel.x + (panel.width / 2), panel.y - 12, "STATUS BOX", boxActive ? "cv-calibration-label cv-calibration-active-text" : "cv-calibration-label");
+  // --------------------------------------------------------
+  // STATUS BOX 1
+  // --------------------------------------------------------
 
-    const allFieldsActive = raw === "status_fields";
-    const allFieldsPart = allFieldsActive ? normaliseStatusFieldGroupPart(target?.part) : "field";
-    for (const [key, label, fallback] of STATUS_PANEL_FIELD_DEFS) {
-      const [fx, fy] = statusFieldDisplayPosition(panel, key, fallback, 1);
-      const active = (allFieldsActive && statusFieldKeyMatchesPart(key, allFieldsPart)) || (target?.type === "status_field" && String(target.id) === key);
-      if (showLedRings) drawRing(fx, fy, 7, active);
-      if (showLabels && active) text(svg, fx, fy - 12, label, "cv-calibration-label cv-calibration-active-text");
+  const panel = statusPanelUi(config, calibration, 1);
+
+  const panelActive = calibrationOverlayPartActive(
+    editable,
+    "status_box",
+    "status_box_1",
+    "box"
+  );
+
+  const panelFieldTarget =
+    ["status_fields", "status_field"].includes(
+      String(editable?.type || "").toLowerCase()
+    );
+
+  if (panel && (panel.show !== false || panelActive || panelFieldTarget)) {
+    if (showHitboxes) {
+      rect(
+        svg,
+        panel.x - 5,
+        panel.y - 5,
+        panel.width + 10,
+        panel.height + 10,
+        4,
+        panelActive
+          ? "cv-calibration-hitbox cv-calibration-active"
+          : "cv-calibration-hitbox"
+      );
+    }
+
+    if (showLabels) {
+      text(
+        svg,
+        panel.x + (panel.width / 2),
+        panel.y - 12,
+        "STATUS BOX 1",
+        panelActive
+          ? "cv-calibration-label cv-calibration-active-text"
+          : "cv-calibration-label"
+      );
+    }
+
+    if (panel.show !== false || panelFieldTarget) {
+      for (const [key, label, fallback] of STATUS_PANEL_FIELD_DEFS) {
+        const [fx, fy] = statusFieldDisplayPosition(
+          panel,
+          key,
+          fallback,
+          1
+        );
+
+        const active = calibrationOverlayPartActive(
+          editable,
+          "status_field",
+          key,
+          "field"
+        );
+
+        if (showLedRings) drawRing(fx, fy, 7, active);
+
+        if (showLabels && active) {
+          text(
+            svg,
+            fx,
+            fy - 12,
+            label,
+            "cv-calibration-label cv-calibration-active-text"
+          );
+        }
+      }
     }
   }
+
+  // --------------------------------------------------------
+  // CALIBRATION BUTTON
+  // --------------------------------------------------------
 
   const buttonUi = ui.calibration_button;
-  if (buttonUi?.show !== false) {
-    const active = raw === "calibration_button";
-    if (showHitboxes) rect(svg, buttonUi.x, buttonUi.y, buttonUi.width, buttonUi.height, 4, active ? "cv-calibration-hitbox cv-calibration-active" : "cv-calibration-hitbox");
-    if (showLabels) text(svg, buttonUi.x + (buttonUi.width / 2), buttonUi.y - 8, "CALIBRATION BUTTON", active ? "cv-calibration-label cv-calibration-active-text" : "cv-calibration-label");
-  }
 
-  const panel2 = statusPanelUi(config, calibration, 2);
-  if (panel2?.show !== false) {
-    const boxActive = raw === "status_box_2";
-    // Keep the calibration outline outside Status Box 2. Previously it sat on top
-    // of the user border, making border re-enable and colour changes look broken.
-    if (showHitboxes) rect(svg, panel2.x - 5, panel2.y - 5, panel2.width + 10, panel2.height + 10, 4, boxActive ? "cv-calibration-hitbox cv-calibration-active" : "cv-calibration-hitbox");
-    if (showLabels) text(svg, panel2.x + (panel2.width / 2), panel2.y - 12, "STATUS BOX 2", boxActive ? "cv-calibration-label cv-calibration-active-text" : "cv-calibration-label");
+  const buttonActive = calibrationOverlayPartActive(
+    editable,
+    "calibration_button",
+    "calibration_button",
+    "box"
+  );
 
-    const allFieldsActive = raw === "status_fields_2";
-    const allFieldsPart = allFieldsActive ? normaliseStatusFieldGroupPart(target?.part) : "field";
-    for (const [key, label, fallback] of STATUS_PANEL_FIELD_DEFS) {
-      const [fx, fy] = statusFieldDisplayPosition(panel2, key, fallback, 2);
-      const active = (allFieldsActive && statusFieldKeyMatchesPart(key, allFieldsPart)) || (target?.type === "status_field_2" && String(target.id) === key);
-      if (showLedRings) drawRing(fx, fy, 7, active);
-      if (showLabels && active) text(svg, fx, fy - 12, label, "cv-calibration-label cv-calibration-active-text");
+  if (buttonUi && (buttonUi.show !== false || buttonActive)) {
+    if (showHitboxes) {
+      rect(
+        svg,
+        buttonUi.x,
+        buttonUi.y,
+        buttonUi.width,
+        buttonUi.height,
+        4,
+        buttonActive
+          ? "cv-calibration-hitbox cv-calibration-active"
+          : "cv-calibration-hitbox"
+      );
+    }
+
+    if (showLabels) {
+      text(
+        svg,
+        buttonUi.x + (buttonUi.width / 2),
+        buttonUi.y - 8,
+        "CALIBRATION BUTTON",
+        buttonActive
+          ? "cv-calibration-label cv-calibration-active-text"
+          : "cv-calibration-label"
+      );
     }
   }
 
+  // --------------------------------------------------------
+  // STATUS BOX 2
+  // --------------------------------------------------------
+
+  const panel2 = statusPanelUi(config, calibration, 2);
+
+  const panel2Active = calibrationOverlayPartActive(
+    editable,
+    "status_box_2",
+    "status_box_2",
+    "box"
+  );
+
+  const panel2FieldTarget =
+    ["status_fields_2", "status_field_2"].includes(
+      String(editable?.type || "").toLowerCase()
+    );
+
+  if (panel2 && (panel2.show !== false || panel2Active || panel2FieldTarget)) {
+    if (showHitboxes) {
+      rect(
+        svg,
+        panel2.x - 5,
+        panel2.y - 5,
+        panel2.width + 10,
+        panel2.height + 10,
+        4,
+        panel2Active
+          ? "cv-calibration-hitbox cv-calibration-active"
+          : "cv-calibration-hitbox"
+      );
+    }
+
+    if (showLabels) {
+      text(
+        svg,
+        panel2.x + (panel2.width / 2),
+        panel2.y - 12,
+        "STATUS BOX 2",
+        panel2Active
+          ? "cv-calibration-label cv-calibration-active-text"
+          : "cv-calibration-label"
+      );
+    }
+
+    if (panel2.show !== false || panel2FieldTarget) {
+      for (const [key, label, fallback] of STATUS_PANEL_FIELD_DEFS) {
+        const [fx, fy] = statusFieldDisplayPosition(
+          panel2,
+          key,
+          fallback,
+          2
+        );
+
+        const active = calibrationOverlayPartActive(
+          editable,
+          "status_field_2",
+          key,
+          "field"
+        );
+
+        if (showLedRings) drawRing(fx, fy, 7, active);
+
+        if (showLabels && active) {
+          text(
+            svg,
+            fx,
+            fy - 12,
+            label,
+            "cv-calibration-label cv-calibration-active-text"
+          );
+        }
+      }
+    }
+  }
 }
 
 
@@ -5851,6 +6279,7 @@ class SwitchVision3650 extends HTMLElement {
       <details class="cv-cal-section" data-cv-section="status-boxes" ${this.calibrationSectionOpen("status-boxes", false) ? "open" : ""}><summary><span>Status Boxes</span><small>Switch and interface information styling</small></summary><div class="cv-cal-section-body">
 <div class="cv-cal-tools-row cv-cal-style-row">
         <span class="cv-cal-quick-label">Status Box 1 style</span>
+        <label>Visible <input type="checkbox" data-cv-field="status-show" ${statusUi.show !== false ? "checked" : ""}></label>
         <label>Font
           <select class="cv-cal-select" data-cv-field="status-font">
             <option value="Arial Narrow, Roboto Condensed, Helvetica Neue Condensed, Arial, Helvetica, sans-serif" ${String(statusUi.font_family).startsWith("Arial Narrow") ? "selected" : ""}>Condensed</option>
@@ -5895,6 +6324,7 @@ class SwitchVision3650 extends HTMLElement {
       </div>
       <div class="cv-cal-tools-row cv-cal-style-row">
         <span class="cv-cal-quick-label">Status Box 2 style</span>
+        <label>Visible <input type="checkbox" data-cv-field="status2-show" ${status2Ui.show !== false ? "checked" : ""}></label>
         <label>Font
           <select class="cv-cal-select" data-cv-field="status2-font">
             <option value="Arial Narrow, Roboto Condensed, Helvetica Neue Condensed, Arial, Helvetica, sans-serif" ${String(status2Ui.font_family).startsWith("Arial Narrow") ? "selected" : ""}>Condensed</option>
@@ -6575,6 +7005,44 @@ class SwitchVision3650 extends HTMLElement {
         this.render();
       });
     }
+
+    const bindPanelVisibilityControl = (field, panelKey, configKey) => {
+      const input = this.shadowRoot.querySelector(`[data-cv-field="${field}"]`);
+      if (!input) return;
+
+      input.addEventListener("change", (event) => {
+        ensureCalibrationUi(cal);
+
+        const panel = cal.ui?.[panelKey];
+        if (!panel) return;
+
+        const visible = event.target.checked === true;
+        panel.show = visible;
+
+        // Keep the currently rendered card aligned with the profile while the
+        // calibration editor is open. A future explicit YAML false remains an
+        // external force-hide when the card configuration is loaded again.
+        this.config = {
+          ...this.config,
+          [configKey]: visible
+        };
+
+        this.markCalibrationDirty();
+        this.render();
+      });
+    };
+
+    bindPanelVisibilityControl(
+      "status-show",
+      "status_panel",
+      "show_status_panel"
+    );
+
+    bindPanelVisibilityControl(
+      "status2-show",
+      "status_panel_2",
+      "show_status_panel_2"
+    );
 
     const statusBorderShow = this.shadowRoot.querySelector('[data-cv-field="status-border-show"]');
     if (statusBorderShow) statusBorderShow.addEventListener("change", (event) => { cal.ui.status_panel.border_show = event.target.checked === true; this.markCalibrationDirty(); this.render(); });
