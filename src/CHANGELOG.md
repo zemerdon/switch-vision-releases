@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.3.1 — Calibration flexibility update
+
+- Reorders the interactive calibration workspace so **Assets** appears first and opens by default, **Selection** starts collapsed, and **Position & Size** remains open for faster faceplate work.
+- Makes **Reset section layout** restore the new default section order and expanded/collapsed state.
+- Extends **Custom ports** selection to SFP/SFP+ uplinks using case-insensitive aliases such as `g1`, `te2`, `sfp1`, and `uplink2`, while retaining numeric RJ45 lists and ranges.
+- Adds selected-SFP group operations so position, size, labels, link LEDs, and activity LEDs can be calibrated on an arbitrary subset of uplinks instead of only all uplinks.
+- Adds optional per-port display-name overrides for both RJ45 and SFP/uplink ports without changing the underlying port key, entity mapping, or telemetry identity.
+- Adds **Set name** and **Reset name** actions and exposes saved display names in the calibration target selector and overlay.
+- Adds a shared **Normal / Bold** presentation control for all RJ45 and SFP/uplink labels.
+- Adds independent RJ45 and SFP/uplink label font sizing with a maximum of **50 px**.
+- Extends Status LED and Status Box font-size calibration controls to **50 px**.
+- Keeps existing default geometry, colours, telemetry behaviour, profile storage, Discovery integration, Activity LED 2.0 behaviour, and switch mappings unchanged.
+
 ## v2.3.0 — UniFi presentation baseline
 
 - Establishes the Switch Vision Core v2.3 release line for expanded UniFi presentation work.

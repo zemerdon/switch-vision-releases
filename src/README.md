@@ -10,11 +10,11 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current public Core release
 
-### Switch Vision v2.3.0
+### Switch Vision v2.3.1
 
-**v2.3.0** is the current tested public Switch Vision Core/dashboard release.
+**v2.3.1** is the current tested public Switch Vision Core/dashboard release.
 
-It establishes the Core v2.3 UniFi presentation baseline, expands the bundled vendor logo library, and normalizes Cisco logo asset names while preserving the established Discovery, SNMP2MQTT, entity, calibration, faceplate, and dashboard contracts.
+This release expands the interactive calibration workspace with flexible RJ45 and SFP/uplink selection, editable per-port display names, shared port-label weight controls, font sizing up to 50 px, and improved default calibration-section layout while preserving underlying port identity and existing switch telemetry mappings.
 
 Component versions validated when Core v2.2.2 was released:
 
