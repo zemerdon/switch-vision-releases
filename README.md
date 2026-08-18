@@ -168,6 +168,8 @@ switch-vision@zemerdon.com
 
 ---
 
+For the Core tag/source/artifact trust model, see [RELEASE_PROVENANCE.md](RELEASE_PROVENANCE.md).
+
 ## Release integrity policy
 
 For future Core releases the intended release sequence is:
