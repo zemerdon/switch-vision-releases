@@ -1,13 +1,11 @@
-# Switch Vision Core v2.3.1 — Calibration flexibility update
+# Switch Vision Core v2.3.2 — UniFi logo refresh
 
-Switch Vision Core v2.3.1 expands the interactive calibration workspace for faster model-specific faceplate creation, including the first UniFi faceplate calibration work in the v2.3 release line.
+Switch Vision Core v2.3.2 is a small presentation-maintenance release for the bundled UniFi/Ubiquiti logo library.
 
-Custom port selection now supports both RJ45 port numbers/ranges and case-insensitive SFP/uplink aliases such as `g1` and `te2`. Selected uplink groups can be positioned, resized, and calibrated independently rather than requiring all SFP ports to be edited together.
+The legacy `unifi-2005.png` and `unifi-2013.png` artwork has been refreshed.
 
-Every RJ45 and SFP/uplink visual port can now carry an optional display-name override. The display name affects presentation only; the underlying port identity and telemetry mapping remain unchanged.
+The obsolete `unifi-2023.png` raster image has been removed. The vector `unifi-2023.svg` asset remains available.
 
-Port-label presentation gains shared Normal/Bold control plus independent RJ45 and SFP/uplink font sizing up to 50 px. Status LED and Status Box font-size controls also extend to 50 px.
+The existing `ubiquiti-networks.png` asset is unchanged.
 
-The calibration workspace now opens with Assets first and expanded, Selection collapsed, Position & Size expanded, and the remaining sections collapsed. Reset section layout restores this default arrangement.
-
-The release preserves existing Discovery, SNMP2MQTT, UniFi2MQTT, entity, telemetry, Activity LED 2.0, dashboard, faceplate, and calibration-profile behaviour outside these calibration-tool improvements.
+All Switch Vision Core v2.3.1 calibration flexibility, port presentation, Discovery, SNMP2MQTT, UniFi2MQTT, dashboard, telemetry, and Activity LED behaviour is preserved unchanged.

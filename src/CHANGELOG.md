@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.3.2 — UniFi logo refresh
+
+- Refreshes the bundled `unifi-2005.png` artwork.
+- Refreshes the bundled `unifi-2013.png` artwork.
+- Removes the obsolete `unifi-2023.png` raster asset.
+- Retains `unifi-2023.svg` as the current vector UniFi artwork.
+- Keeps the existing `ubiquiti-networks.png` asset unchanged.
+- Preserves all Core v2.3.1 calibration flexibility behaviour unchanged.
+
 ## v2.3.1 — Calibration flexibility update
 
 - Reorders the interactive calibration workspace so **Assets** appears first and opens by default, **Selection** starts collapsed, and **Position & Size** remains open for faster faceplate work.
