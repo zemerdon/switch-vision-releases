@@ -10,11 +10,11 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current public Core release
 
-### Switch Vision v2.3.9
+### Switch Vision v2.3.10
 
-**v2.3.9** is the current tested public Switch Vision Core/dashboard release.
+**v2.3.10** is the current tested public Switch Vision Core/dashboard release.
 
-This release improves Calibration Quick Selection by populating the Custom Ports field whenever an RJ45 Quick Selection resolves to a normal set of visual ports. The Quick Selection remains active while the resolved list is visible and immediately editable.
+This release adds Calibration LED Test Mode, a full Calibration Profile Manager in the Switch Vision Hub, and a runtime Refresh Faceplate action that reloads updated faceplate image bytes without renaming the file or changing calibration profile identity.
 
 Component versions validated when Core v2.2.2 was released:
 
