@@ -10,11 +10,11 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current public Core release
 
-### Switch Vision v2.3.8
+### Switch Vision v2.3.9
 
-**v2.3.8** is the current tested public Switch Vision Core/dashboard release.
+**v2.3.9** is the current tested public Switch Vision Core/dashboard release.
 
-This release corrects Calibration yellow-selection highlighting so the visual overlay follows the same canonical editable target used by calibration operations. It also adds whole-box visibility controls for Status Box 1 and Status Box 2.
+This release improves Calibration Quick Selection by populating the Custom Ports field whenever an RJ45 Quick Selection resolves to a normal set of visual ports. The Quick Selection remains active while the resolved list is visible and immediately editable.
 
 Component versions validated when Core v2.2.2 was released:
 

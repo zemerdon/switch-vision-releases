@@ -1,28 +1,27 @@
-# Switch Vision Core v2.3.8 — Streamlined calibration colour controls
+# Switch Vision Core v2.3.9 — Quick Selection populates Custom Ports
 
-Switch Vision Core v2.3.8 simplifies the Calibration interface by removing redundant preset colour dropdowns from the Status Box styling controls.
+Switch Vision Core v2.3.9 improves the Calibration Quick Selection workflow.
 
-Status Box 1 and Status Box 2 now use the existing colour-picker controls directly for:
+When an RJ45 Quick Selection resolves to a normal set of visual ports, the resolved port list is now also populated into the Custom Ports field.
 
-- text colour
-- box/background colour
-- border colour
+This applies to:
 
-The colour pickers already provide direct colour selection and therefore make the older preset dropdown menus unnecessary.
+- All RJ45
+- RJ45 Link
+- RJ45 Activity
+- Odd ports
+- Odd link LEDs
+- Odd activity LEDs
+- Odd numbers
+- Even ports
+- Even link LEDs
+- Even activity LEDs
+- Even numbers
 
-This is a Calibration UI cleanup only.
+The populated Custom Ports value contains only ports that actually exist in the active calibration profile.
 
-Existing calibration properties and saved-profile values are unchanged. Existing profiles continue to use the same text, label, title, background, and border colour settings.
+The original Quick Selection remains active. Populating Custom Ports simply makes the resolved selection visible and provides an editable starting point for further calibration work.
 
-The release does not change:
+Quick selections that do not resolve to normal RJ45 ports do not modify the Custom Ports field.
 
-- colour storage keys
-- saved-profile compatibility
-- factory calibration values
-- reset/default behaviour
-- port or uplink mappings
-- Discovery
-- faceplate selection
-- Activity LED calculations
-
-Other Calibration dropdowns that perform non-colour selections, such as fonts, targets, assets, LED shapes, fields, stack settings, and movement steps, remain unchanged.
+This release does not change port mappings, SFP/uplink mappings, Discovery, device profiles, faceplate assignments, calibration storage keys, saved-profile compatibility, or Activity LED behaviour.

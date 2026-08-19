@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.3.9 — Quick Selection populates Custom Ports
+
+- RJ45 Calibration Quick Selection now populates the Custom Ports field with the exact resolved visual-port set.
+- Applies to All RJ45, RJ45 Link/Activity, and Odd/Even port, LED, and number selections.
+- Uses only RJ45 ports that actually exist in the active calibration profile.
+- Keeps the original Quick Selection target active while making the resolved list visible and editable.
+- Non-RJ45 Quick Selections leave Custom Ports unchanged.
+- Does not change port mappings, Discovery, faceplate assignments, or saved-profile compatibility.
+
 ## v2.3.8 — Streamlined calibration colour controls
 
 - Removes the redundant preset colour dropdowns from Status Box 1 and Status Box 2 in Calibration.
