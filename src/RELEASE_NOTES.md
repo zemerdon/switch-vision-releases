@@ -1,23 +1,28 @@
-# Switch Vision Core v2.3.7 — Accurate multi-gigabit speed labels
+# Switch Vision Core v2.3.8 — Streamlined calibration colour controls
 
-Switch Vision Core v2.3.7 corrects generic human-readable link-speed formatting for multi-gigabit Ethernet ports.
+Switch Vision Core v2.3.8 simplifies the Calibration interface by removing redundant preset colour dropdowns from the Status Box styling controls.
 
-A genuine 2.5 Gbit/s link could previously be displayed as `3G` because the presentation layer rounded Gbit/s values to the nearest whole number. Real-hardware reports from multiple contributors confirmed that the underlying SNMP speed data was correct and that the fault was in Switch Vision Core's display formatting.
+Status Box 1 and Status Box 2 now use the existing colour-picker controls directly for:
 
-The formatter now preserves meaningful Ethernet rates:
+- text colour
+- box/background colour
+- border colour
 
-- 10 Mbps → `10M`
-- 100 Mbps → `100M`
-- 1,000 Mbps → `1G`
-- 2,500 Mbps → `2.5G`
-- 5,000 Mbps → `5G`
-- 10,000 Mbps → `10G`
-- 25,000 Mbps → `25G`
-- 40,000 Mbps → `40G`
-- 100,000 Mbps → `100G`
+The colour pickers already provide direct colour selection and therefore make the older preset dropdown menus unnecessary.
 
-This is a generic Core correction and is not tied to a particular switch vendor.
+This is a Calibration UI cleanup only.
 
-The change affects human-readable speed labels only. Numeric link-speed values used for activity and utilisation calculations remain numeric and are not derived from the formatted display string.
+Existing calibration properties and saved-profile values are unchanged. Existing profiles continue to use the same text, label, title, background, and border colour settings.
 
-This release does not change physical-port mappings, Discovery classification, faceplate selection, or calibration data.
+The release does not change:
+
+- colour storage keys
+- saved-profile compatibility
+- factory calibration values
+- reset/default behaviour
+- port or uplink mappings
+- Discovery
+- faceplate selection
+- Activity LED calculations
+
+Other Calibration dropdowns that perform non-colour selections, such as fonts, targets, assets, LED shapes, fields, stack settings, and movement steps, remain unchanged.

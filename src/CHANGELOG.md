@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.3.8 — Streamlined calibration colour controls
+
+- Removes the redundant preset colour dropdowns from Status Box 1 and Status Box 2 in Calibration.
+- Keeps the existing colour-picker controls for text, box/background, and border colours.
+- Preserves the existing calibration property names, saved-profile values, factory defaults, and reset behaviour.
+- Leaves all non-colour Calibration dropdowns unchanged.
+- Does not change Discovery, physical-port mappings, faceplate selection, or Activity LED behaviour.
+
+
 ## v2.3.7 — Accurate multi-gigabit speed labels
 
 - Corrects the generic human-readable port-speed formatter so 2.5 Gbit/s links display as `2.5G` instead of being rounded to `3G`.
