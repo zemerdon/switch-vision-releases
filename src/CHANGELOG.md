@@ -1,5 +1,36 @@
 # Changelog
 
+## v2.3.6 — Neutral stock visual profiles
+
+- Adds neutral factory calibration profiles for the four bundled stock faceplate families:
+  - `stock_24rj45_2sfp`
+  - `stock_24rj45_4sfp`
+  - `stock_48rj45_2sfp`
+  - `stock_48rj45_4sfp`
+- Uses the stock 24-port family for devices with 24 or fewer RJ45 ports and the stock 48-port family for devices with more than 24 RJ45 ports when a dedicated model-specific profile is not available.
+- Uses the two-SFP stock variant for devices with up to two uplinks and the four-SFP stock variant for devices with three or four uplinks.
+- Corrects fallback visual selection for SG500X-24, Huawei S5720/S5735, Zyxel XS1930-10, and generic-fallback UniFi models.
+- Reserves the dedicated `cisco_3560cg_8pc` calibration and `c3560cg-8pc-s.png` faceplate exclusively for the exact `WS-C3560CG-8PC-S` model.
+- Preserves existing model-specific Cisco Catalyst and validated Juniper EX3300 visual profiles.
+- Adds build-time regression checks for stock-profile policy and dedicated 3560CG visual isolation.
+- Does not change discovered physical port counts or vendor-specific physical-port mappings.
+
+### Important upgrade note
+
+Existing saved calibration profiles are preserved during upgrade and are not silently overwritten.
+
+If an affected switch continues to display its previous fallback faceplate or geometry after updating to v2.3.6:
+
+1. Open **Switch Vision Calibration** for that switch.
+2. Select **Reset Current Switch**.
+3. Confirm the reset.
+
+**Reset Current Switch removes the saved faceplate-specific calibration for that switch and replaces it with the current recommended factory visual and calibration profile. The replacement is saved automatically.**
+
+This also replaces any custom calibration positions, sizing, faceplate selection, or other saved calibration adjustments for that switch. Note any custom adjustments you want to recreate before resetting.
+
+New switches, and switches without a saved calibration profile, use the corrected factory visual automatically.
+
 ## v2.3.5 — Calibration selection highlight correctness
 
 - Refactors the yellow Calibration selection overlay to use the same canonical editable target as movement, positioning, and sizing operations.
