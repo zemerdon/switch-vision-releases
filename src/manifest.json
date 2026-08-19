@@ -1,8 +1,8 @@
 {
-  "version": "2.3.6",
-  "resource": "/local/switch-vision/js/switch-vision.js?v=2.3.6",
+  "version": "2.3.7",
+  "resource": "/local/switch-vision/js/switch-vision.js?v=2.3.7",
   "card_type": "custom:switch-vision-3650",
-  "release_name": "switch-vision-2.3.6",
+  "release_name": "switch-vision-2.3.7",
   "status": "release",
   "gold_master": false
 }
