@@ -1,27 +1,64 @@
-# Switch Vision Core v2.3.9 — Quick Selection populates Custom Ports
+# Switch Vision Core v2.3.10 — Calibration profile management and test tools
 
-Switch Vision Core v2.3.9 improves the Calibration Quick Selection workflow.
+Switch Vision Core v2.3.10 expands the Calibration workflow with safer profile management, easier LED positioning, and a proper faceplate refresh path.
 
-When an RJ45 Quick Selection resolves to a normal set of visual ports, the resolved port list is now also populated into the Custom Ports field.
+## Calibration LED Test Mode
 
-This applies to:
+Calibration now includes a transient LED Test Mode.
 
-- All RJ45
-- RJ45 Link
-- RJ45 Activity
-- Odd ports
-- Odd link LEDs
-- Odd activity LEDs
-- Odd numbers
-- Even ports
-- Even link LEDs
-- Even activity LEDs
-- Even numbers
+While enabled, calibratable Status, RJ45 link/activity, and SFP/uplink link/activity LEDs are shown continuously lit so their positions are easy to see and adjust.
 
-The populated Custom Ports value contains only ports that actually exist in the active calibration profile.
+Test Mode is calibration-only and does not change live switch state, saved calibration data, or the calibration dirty state.
 
-The original Quick Selection remains active. Populating Custom Ports simply makes the resolved selection visible and provides an editable starting point for further calibration work.
+## Calibration Profile Manager
 
-Quick selections that do not resolve to normal RJ45 ports do not modify the Custom Ports field.
+The Switch Vision Hub now includes a dedicated Calibration Profiles view.
 
-This release does not change port mappings, SFP/uplink mappings, Discovery, device profiles, faceplate assignments, calibration storage keys, saved-profile compatibility, or Activity LED behaviour.
+Profiles show their scope, active state, model, RJ45 and SFP/uplink counts, faceplate identity, stale state, and faceplate SHA-256 fingerprint information.
+
+The manager can identify:
+
+- active and unused profiles
+- missing-faceplate/stale profiles
+- identical faceplate image content stored under different filenames
+- factory profiles that must remain protected
+
+Active and factory profiles are protected from deletion in both the frontend and backend.
+
+The Hub also provides:
+
+- Select Stale
+- Clean Stale Profiles
+- multi-select deletion
+- individual deletion
+- Copy Profile
+- Export Profile
+- Import Into Profile
+
+Copy and Import preserve the destination profile identity and faceplate rather than allowing source data to silently redirect the destination.
+
+Import also preserves destination management and stack data and rejects incompatible model transfers.
+
+No duplicate or stale profile is automatically merged or deleted.
+
+## Refresh Faceplate
+
+Calibration now includes Refresh Faceplate.
+
+If a faceplate PNG is replaced while keeping the same filename, Refresh Faceplate adds a temporary runtime cache-buster and reloads the current image bytes.
+
+This avoids the previous workaround of renaming a faceplate file merely to bypass browser caching.
+
+Refresh Faceplate does not:
+
+- change the faceplate filename
+- change the calibration profile key
+- mark Calibration dirty
+- save a profile
+- change the active-profile pointer
+
+## Upgrade note
+
+Switch Vision Core v2.3.10 changes the Home Assistant custom integration files.
+
+After updating Core through Switch Vision Installer, restart Home Assistant Core when prompted.

@@ -1,5 +1,20 @@
 # Changelog
 
+## v2.3.10 — Calibration profile management and test tools
+
+- Adds Calibration LED Test Mode, forcing Status, RJ45, and SFP/uplink LEDs visibly on while Calibration is open without changing live state, saved calibration, or dirty state.
+- Adds a first-class Calibration Profiles manager to the Switch Vision Hub.
+- Shows profile scope, active/unused state, model, RJ45/SFP counts, faceplate identity, stale/missing-faceplate state, and SHA-256 faceplate fingerprints.
+- Detects identical faceplate image content stored under different filenames without automatically merging or deleting profiles.
+- Protects active and factory calibration profiles from deletion in both the Hub UI and backend service.
+- Adds multi-select deletion, Select Stale, and Clean Stale Profiles with explicit confirmation and protected-profile filtering.
+- Adds Copy Profile between compatible profiles while preserving the destination faceplate identity and active-profile pointer.
+- Adds Export Profile and destination-driven Import Into Profile using the Switch Vision faceplate-profile transfer format.
+- Import preserves destination faceplate, profile identity, management data, and stack data, and rejects unsafe factory/stale destinations and model mismatches.
+- Adds Refresh Faceplate in Calibration to bypass browser image caching for an overwritten faceplate file without changing the filename or creating a new calibration profile.
+- Keeps the canonical card source and Home Assistant card copy byte-identical.
+- Does not change Discovery, physical-port mappings, or existing saved-profile keys.
+
 ## v2.3.9 — Quick Selection populates Custom Ports
 
 - RJ45 Calibration Quick Selection now populates the Custom Ports field with the exact resolved visual-port set.
