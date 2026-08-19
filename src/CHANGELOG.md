@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.3.7 — Accurate multi-gigabit speed labels
+
+- Corrects the generic human-readable port-speed formatter so 2.5 Gbit/s links display as `2.5G` instead of being rounded to `3G`.
+- Preserves meaningful standard Ethernet rates including 10M, 100M, 1G, 2.5G, 5G, 10G, 25G, 40G, and 100G.
+- Keeps link-speed presentation separate from the numeric speed values used for activity and utilisation calculations.
+- Applies the correction generically rather than using a Dell- or vendor-specific display workaround.
+- Does not change physical-port mappings, Discovery classification, faceplate selection, or calibration data.
+
 ## v2.3.6 — Neutral stock visual profiles
 
 - Adds neutral factory calibration profiles for the four bundled stock faceplate families:
