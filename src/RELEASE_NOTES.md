@@ -1,64 +1,52 @@
-# Switch Vision Core v2.3.10 — Calibration profile management and test tools
+# Switch Vision Core v2.3.11 — Calibration Profile Manager relocation
 
-Switch Vision Core v2.3.10 expands the Calibration workflow with safer profile management, easier LED positioning, and a proper faceplate refresh path.
+Switch Vision Core v2.3.11 cleans up the Switch Vision Core Hub by moving Calibration Profile management into the Switch Vision Discovery Hub.
 
-## Calibration LED Test Mode
+## Core Hub cleanup
 
-Calibration now includes a transient LED Test Mode.
+The Core Hub is once again focused on the native Switch Vision dashboard.
 
-While enabled, calibratable Status, RJ45 link/activity, and SFP/uplink link/activity LEDs are shown continuously lit so their positions are easy to see and adjust.
+The temporary Dashboard / Calibration Profiles selector introduced in v2.3.10 has been removed.
 
-Test Mode is calibration-only and does not change live switch state, saved calibration data, or the calibration dirty state.
+Calibration Profiles are now managed from:
 
-## Calibration Profile Manager
+**Switch Vision Discovery Hub → Calibration Profiles**
 
-The Switch Vision Hub now includes a dedicated Calibration Profiles view.
+This keeps switch discovery, setup, device management, and calibration-profile management together in one management interface.
 
-Profiles show their scope, active state, model, RJ45 and SFP/uplink counts, faceplate identity, stale state, and faceplate SHA-256 fingerprint information.
+## Calibration backend remains in Core
 
-The manager can identify:
+Only the Profile Manager frontend has moved.
 
-- active and unused profiles
-- missing-faceplate/stale profiles
-- identical faceplate image content stored under different filenames
-- factory profiles that must remain protected
+Switch Vision Core continues to own the authoritative calibration storage and API.
 
-Active and factory profiles are protected from deletion in both the frontend and backend.
+The existing Core calibration interfaces remain available, including:
 
-The Hub also provides:
+- calibration profile listing
+- calibration profile retrieval
+- save calibration
+- delete calibration
+- active-profile protection
+- factory-profile protection
+- stale and duplicate-faceplate metadata
 
-- Select Stale
-- Clean Stale Profiles
-- multi-select deletion
-- individual deletion
-- Copy Profile
-- Export Profile
-- Import Into Profile
+Switch Vision Discovery v2.1.25 uses these existing Core interfaces rather than reading or modifying Home Assistant `.storage` files directly.
 
-Copy and Import preserve the destination profile identity and faceplate rather than allowing source data to silently redirect the destination.
+No calibration profiles are migrated, renamed, deleted, or recreated by this update.
 
-Import also preserves destination management and stack data and rejects incompatible model transfers.
+## Existing v2.3.10 calibration tools remain
 
-No duplicate or stale profile is automatically merged or deleted.
+The v2.3.10 calibration features remain available, including:
 
-## Refresh Faceplate
-
-Calibration now includes Refresh Faceplate.
-
-If a faceplate PNG is replaced while keeping the same filename, Refresh Faceplate adds a temporary runtime cache-buster and reloads the current image bytes.
-
-This avoids the previous workaround of renaming a faceplate file merely to bypass browser caching.
-
-Refresh Faceplate does not:
-
-- change the faceplate filename
-- change the calibration profile key
-- mark Calibration dirty
-- save a profile
-- change the active-profile pointer
+- Calibration LED Test Mode
+- Refresh Faceplate
+- faceplate-aware calibration profile identity
+- active and factory profile protection
 
 ## Upgrade note
 
-Switch Vision Core v2.3.10 changes the Home Assistant custom integration files.
+Switch Vision Core v2.3.11 changes the Home Assistant custom integration files.
 
 After updating Core through Switch Vision Installer, restart Home Assistant Core when prompted.
+
+For Calibration Profile management, use Switch Vision Discovery v2.1.25 or later.

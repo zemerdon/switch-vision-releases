@@ -1,5 +1,16 @@
 # Changelog
 
+## v2.3.11 — Calibration Profile Manager relocation
+
+- Moves Calibration Profile management out of the Core Hub and into Switch Vision Discovery Hub v2.1.25.
+- Removes the temporary Dashboard / Calibration Profiles selector from the Core Hub.
+- Restores the Core Hub to its normal dashboard-focused layout.
+- Retains Core ownership of calibration profile storage, WebSocket commands, save/delete services, active-profile protection, and factory-profile protection.
+- Requires no calibration-profile migration, rename, deletion, or recreation.
+- Preserves Calibration LED Test Mode and Refresh Faceplate introduced in v2.3.10.
+- Changes the Home Assistant custom integration files; restart Home Assistant Core after updating.
+
+
 ## v2.3.10 — Calibration profile management and test tools
 
 - Adds Calibration LED Test Mode, forcing Status, RJ45, and SFP/uplink LEDs visibly on while Calibration is open without changing live state, saved calibration, or dirty state.
