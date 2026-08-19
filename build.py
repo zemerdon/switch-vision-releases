@@ -275,6 +275,83 @@ def validate_faceplate_factory_calibrations(base: Path, source_layout: bool = Fa
             else:
                 mismatched = [key for key in expected_keys if actual.get(key) != expected.get(key)]
                 errors.append(f"{path}: stale embedded defaults for {', '.join(mismatched)}")
+    required_stock = {
+        "24rj45-2sfp.png": ("stock_24rj45_2sfp", 24, 2),
+        "24rj45-4sfp.png": ("stock_24rj45_4sfp", 24, 4),
+        "48rj45-2sfp.png": ("stock_48rj45_2sfp", 48, 2),
+        "48rj45-4sfp.png": ("stock_48rj45_4sfp", 48, 4),
+    }
+
+    for filename, (profile, rj45_count, sfp_count) in required_stock.items():
+        calibration = expected.get(filename)
+
+        if calibration is None:
+            errors.append(
+                f"missing required stock faceplate calibration: {filename}"
+            )
+            continue
+
+        if calibration.get("profile") != profile:
+            errors.append(
+                f"{filename}: profile={calibration.get('profile')!r}, "
+                f"expected {profile!r}"
+            )
+
+        ports = calibration.get("ports")
+        sfp = calibration.get("sfp")
+
+        if not isinstance(ports, dict) or len(ports) != rj45_count:
+            errors.append(
+                f"{filename}: expected {rj45_count} RJ45 calibration entries"
+            )
+
+        if not isinstance(sfp, dict) or len(sfp) != sfp_count:
+            errors.append(
+                f"{filename}: expected {sfp_count} SFP calibration entries"
+            )
+
+        image = calibration.get("image")
+        image_file = (
+            image.get("file")
+            if isinstance(image, dict)
+            else ""
+        )
+
+        if Path(str(image_file)).name != filename:
+            errors.append(
+                f"{filename}: calibration image points to {image_file!r}"
+            )
+
+    dedicated_3560 = expected.get("c3560cg-8pc-s.png")
+
+    if dedicated_3560 is None:
+        errors.append(
+            "missing dedicated c3560cg-8pc-s.png factory calibration"
+        )
+    else:
+        if dedicated_3560.get("profile") != "cisco_3560cg_8pc":
+            errors.append(
+                "c3560cg-8pc-s.png: dedicated profile is incorrect"
+            )
+
+        if dedicated_3560.get("model") != "cisco-3560cg-8pc-8p-2dual":
+            errors.append(
+                "c3560cg-8pc-s.png: dedicated model identity is incorrect"
+            )
+
+        ports = dedicated_3560.get("ports")
+        sfp = dedicated_3560.get("sfp")
+
+        if not isinstance(ports, dict) or len(ports) != 8:
+            errors.append(
+                "c3560cg-8pc-s.png: expected exactly 8 RJ45 entries"
+            )
+
+        if not isinstance(sfp, dict) or list(sfp) != ["G1", "G2"]:
+            errors.append(
+                "c3560cg-8pc-s.png: expected exactly G1 and G2 uplinks"
+            )
+
     if errors:
         raise SystemExit("Faceplate factory calibration validation failed:\n- " + "\n- ".join(errors))
 
@@ -872,14 +949,6 @@ check(configuredPortCountAllows({{__raw_config: {{port_count: 8}}, port_count: 8
         item = devices.get(model)
         if not item:
             raise SystemExit(f"UniFi support validation failed: {model} missing from registry")
-        if item.get("default_faceplate") != "faceplates/48rj45-4sfp.png":
-            raise SystemExit(
-                f"UniFi support validation failed: {model} does not use universal fallback visual"
-            )
-        if item.get("calibration_profile") != "default_cisco_48_port":
-            raise SystemExit(
-                f"UniFi support validation failed: {model} does not use universal fallback calibration"
-            )
         if item.get("dashboard_support") is not True:
             raise SystemExit(
                 f"UniFi support validation failed: {model} dashboard_support is not enabled"
@@ -1152,18 +1221,78 @@ def validate_device_visual_recommendations(base: Path, source_layout: bool = Fal
         for key, value in expected.items():
             if item.get(key) != value:
                 errors.append(f"{model}: {key}={item.get(key)!r}, expected {value!r}")
-    # Huawei support currently uses the generic 48-RJ45/4-SFP visual as a
-    # deliberate temporary fallback. Keep those exact-model recommendations
-    # embedded so model-aware reset/default behavior remains deterministic.
-    for model in ("S5720-12TP-LI-AC", "S5735-L8P4X-A1"):
-        device = devices.get(model)
-        if not device:
-            continue
-        item = next((row for row in recommendations if row.get("model") == model), None)
+    # Generic stock visual policy:
+    #   <= 24 RJ45 -> stock 24-port family
+    #   > 24 RJ45  -> stock 48-port family
+    #   0-2 uplinks -> 2-SFP variant
+    #   3-4 uplinks -> 4-SFP variant
+    #
+    # The dedicated WS-C3560CG-8PC-S visual/profile is reserved exclusively
+    # for that exact model and must never be used as a generic fallback.
+    dedicated_model = "WS-C3560CG-8PC-S"
+
+    exact_visual_overrides = {
+        "WS-C3650-48PD-E": ("default_cisco_48_port", "faceplates/48rj45-4sfp.png"),
+        "WS-C3650-48PD-L": ("default_cisco_48_port", "faceplates/48rj45-4sfp.png"),
+        "WS-C2960X-48FPD-L": ("cisco_2960s_48p", "faceplates/48rj45-2sfp.png"),
+        "WS-C2960X-24PS-L": ("cisco_2960x_24p", "faceplates/24rj45-4sfp.png"),
+        "WS-C2960X-24TS-L": ("cisco_2960x_24p", "faceplates/24rj45-4sfp.png"),
+        "WS-C2960S-48FPD-L": ("cisco_2960s_48p", "faceplates/48rj45-2sfp.png"),
+        "WS-C3560CG-8PC-S": ("cisco_3560cg_8pc", "faceplates/c3560cg-8pc-s.png"),
+        "EX3300-48P": ("default_cisco_48_port", "faceplates/48rj45-4sfp.png"),
+    }
+
+    for model, device in devices.items():
+        ports = device.get("ports") if isinstance(device.get("ports"), dict) else {}
+        rj45 = int(ports.get("rj45") or 0)
+        uplinks = int(ports.get("uplinks") or 0)
+
+        if model in exact_visual_overrides:
+            expected_profile, expected_faceplate = exact_visual_overrides[model]
+        else:
+            family = 24 if rj45 <= 24 else 48
+            sfp = 2 if uplinks <= 2 else 4
+            expected_profile = f"stock_{family}rj45_{sfp}sfp"
+            expected_faceplate = f"faceplates/{family}rj45-{sfp}sfp.png"
+
+        if device.get("calibration_profile") != expected_profile:
+            errors.append(
+                f"{model}: registry calibration_profile={device.get('calibration_profile')!r}, "
+                f"expected {expected_profile!r}"
+            )
+
+        if device.get("default_faceplate") != expected_faceplate:
+            errors.append(
+                f"{model}: registry default_faceplate={device.get('default_faceplate')!r}, "
+                f"expected {expected_faceplate!r}"
+            )
+
+        item = next(
+            (row for row in recommendations if row.get("model") == model),
+            None,
+        )
+
         if item is None:
             errors.append(f"{model}: embedded model visual recommendation is missing")
-        elif item.get("faceplate") != "faceplates/48rj45-4sfp.png" or item.get("profile") != "default_cisco_48_port":
-            errors.append(f"{model}: generic 48-RJ45/4-SFP fallback visual is not embedded")
+            continue
+
+        if item.get("profile") != expected_profile:
+            errors.append(
+                f"{model}: embedded profile={item.get('profile')!r}, "
+                f"expected {expected_profile!r}"
+            )
+
+        if item.get("faceplate") != expected_faceplate:
+            errors.append(
+                f"{model}: embedded faceplate={item.get('faceplate')!r}, "
+                f"expected {expected_faceplate!r}"
+            )
+
+        if model != dedicated_model:
+            if item.get("profile") == "cisco_3560cg_8pc":
+                errors.append(f"{model}: dedicated 3560CG calibration leaked into fallback")
+            if item.get("faceplate") == "faceplates/c3560cg-8pc-s.png":
+                errors.append(f"{model}: dedicated 3560CG faceplate leaked into fallback")
 
     if errors:
         raise SystemExit("Device visual recommendation validation failed:\n- " + "\n- ".join(errors))
