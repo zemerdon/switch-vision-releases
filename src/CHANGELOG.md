@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.3.15 — Consistent Test Mode spacing
+
+- Uses a real 10 CSS px gap between Calibrate and TEST MODE so shallow faceplates do not compress the spacing.
+- Keeps Calibrate and TEST MODE positions, size, alignment and behaviour otherwise unchanged.
+- Changes the Home Assistant custom integration/card files; restart Home Assistant Core after updating.
+
 ## v2.3.14 — Test Mode control spacing
 
 - Restores the stock Calibrate button to its original top-right position.
