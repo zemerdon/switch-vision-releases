@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -104,7 +105,7 @@ jobs:
             src/devices/generate_supported_devices.py
 
   build_v2312:
-    if: ${{ github.event_name == 'push' && github.event.head_commit.message == '[SV MAINT] build Core v2.3.12' }}
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     name: Build Core v2.3.12 feature branch
     runs-on: ubuntu-latest
     permissions:
