@@ -130,11 +130,42 @@ jobs:
           set -euo pipefail
           BRANCH='feature/core-2.3.12-test-mode-persistence'
           VERSION='2.3.12'
+          BUILD_LOG='/tmp/sv-core-v2312-build.log'
 
           git config user.name 'Switch Vision CI'
           git config user.email 'actions@users.noreply.github.com'
           git fetch origin "$BRANCH"
           git switch -C "$BRANCH" "origin/$BRANCH"
+
+          report_failure() {
+            rc="$1"
+            line="$2"
+            cmd="$3"
+            trap - ERR
+            set +e
+            tmp_diag='/tmp/sv-core-v2312-build-diagnostic.txt'
+            {
+              echo 'Switch Vision Core v2.3.12 guarded build diagnostic'
+              echo "exit_code=$rc"
+              echo "line=$line"
+              echo "command=$cmd"
+              echo
+              echo '===== BUILD LOG TAIL ====='
+              if [ -f "$BUILD_LOG" ]; then
+                tail -n 250 "$BUILD_LOG"
+              else
+                echo 'No build log was produced before the failure.'
+              fi
+            } > "$tmp_diag"
+            git reset --hard "origin/$BRANCH"
+            git clean -fd
+            cp "$tmp_diag" .sv-core-v2312-build-diagnostic.txt
+            git add .sv-core-v2312-build-diagnostic.txt
+            git commit -m 'Record Core v2.3.12 build diagnostic' || true
+            git push origin "HEAD:$BRANCH" || true
+            exit "$rc"
+          }
+          trap 'report_failure "$?" "$LINENO" "$BASH_COMMAND"' ERR
 
           python3 <<'PY'
           from pathlib import Path
@@ -161,7 +192,7 @@ jobs:
               path.write_text(marker + entry + text[len(marker):], encoding='utf-8')
           PY
 
-          python3 build.py -v "$VERSION"
+          python3 build.py -v "$VERSION" 2>&1 | tee "$BUILD_LOG"
 
           rm -f \
             "Releases/switch-vision-$VERSION.zip" \
@@ -173,7 +204,7 @@ jobs:
             \( -type d -name '__pycache__' -o -type f -name '*.pyc' -o -type f -name '*.pyo' -o -type f -name '.DS_Store' \) \
             | grep -q .; then
             echo 'STOP: generated cache/junk material found after build'
-            exit 1
+            false
           fi
 
           test "$(cat VERSION)" = "$VERSION"
@@ -195,9 +226,11 @@ jobs:
 
           if git diff --cached --name-only | grep -E '\.(zip|pyc|pyo)$|SHA256SUMS|\.zip\.sha256$'; then
             echo 'STOP: archive/checksum/cache output was staged'
-            exit 1
+            false
           fi
 
           git diff --cached --check
+          rm -f .sv-core-v2312-build-diagnostic.txt
+          git add -A
           git commit -m 'Build Switch Vision Core v2.3.12'
           git push origin "HEAD:$BRANCH"
