@@ -3676,8 +3676,7 @@ function calibrationControlsEnabled(config) {
 }
 
 function calibrationTestModeEnabled(config) {
-  return calibrationControlsEnabled(config)
-    && config?.calibration_test_mode === true;
+  return config?.calibration_test_mode === true;
 }
 
 
@@ -4972,7 +4971,32 @@ class SwitchVision3650 extends HTMLElement {
       `height:${(height / designHeight) * 100}%`,
       "right:auto"
     ].join(";");
-    return `<button type="button" class="cv-cal-toggle ${active ? "is-active" : ""}" style="${style}" data-cv-action="toggle-calibration" title="${title}" ${opening ? "disabled" : ""}>${label}</button>`;
+    const testModeActive = calibrationTestModeEnabled(this.config);
+    const testModeTop = Math.min(designHeight - 14, y + height + 4);
+    const testModeStyle = [
+      `left:${((x + (width / 2)) / designWidth) * 100}%`,
+      `top:${(testModeTop / designHeight) * 100}%`,
+      "position:absolute",
+      "right:auto",
+      "transform:translateX(-50%)",
+      "z-index:16",
+      "pointer-events:none",
+      "white-space:nowrap",
+      "font-size:9px",
+      "font-weight:800",
+      "letter-spacing:.12em",
+      "line-height:1",
+      "color:#ffd54a",
+      "background:rgba(4,12,18,.82)",
+      "border:1px solid rgba(255,213,74,.55)",
+      "border-radius:3px",
+      "padding:2px 5px",
+      "box-shadow:0 1px 2px rgba(0,0,0,.65)"
+    ].join(";");
+    const testModeBadge = testModeActive
+      ? `<div class="cv-cal-test-mode-badge" style="${testModeStyle}" title="Calibration LED Test Mode is active">TEST MODE</div>`
+      : "";
+    return `<button type="button" class="cv-cal-toggle ${active ? "is-active" : ""}" style="${style}" data-cv-action="toggle-calibration" title="${title}" ${opening ? "disabled" : ""}>${label}</button>${testModeBadge}`;
   }
 
   showConfirmation(message, options = {}) {
@@ -5073,7 +5097,7 @@ class SwitchVision3650 extends HTMLElement {
         ...this.config,
         calibration_mode: !active,
         calibration_controls: !active,
-        calibration_test_mode: false,
+        calibration_test_mode: this.config?.calibration_test_mode === true,
         calibration_target: this.config.calibration_target || "all",
         calibration_part: this.config.calibration_part || "entire"
       };
