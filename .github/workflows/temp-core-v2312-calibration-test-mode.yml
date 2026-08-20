@@ -1,23 +1,26 @@
 name: One-shot Core v2.3.12 Calibration Test Mode Relocation
 
 on:
-  push:
+  pull_request:
     branches:
-      - feature/core-2.3.12-calibration-test-mode
-    paths:
-      - .github/workflows/temp-core-v2312-calibration-test-mode.yml
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
 
 permissions:
   contents: write
 
 jobs:
   relocate:
+    if: github.head_ref == 'feature/core-2.3.12-calibration-test-mode'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout feature branch
         uses: actions/checkout@v4
         with:
-          ref: feature/core-2.3.12-calibration-test-mode
+          ref: ${{ github.head_ref }}
           fetch-depth: 0
 
       - name: Relocate Test Mode into Profile & Advanced Actions
@@ -83,14 +86,13 @@ jobs:
           echo "===== DIFF ====="
           git diff -- src/js/switch-vision.js
 
-      - name: Commit clean feature change
+      - name: Commit feature change
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "Switch Vision CI"
           git config user.email "actions@users.noreply.github.com"
-          git rm .github/workflows/temp-core-v2312-calibration-test-mode.yml
           git add src/js/switch-vision.js
           git diff --cached --check
           git commit -m "Move calibration Test Mode into advanced actions"
-          git push origin HEAD:feature/core-2.3.12-calibration-test-mode
+          git push origin HEAD:${{ github.head_ref }}
