@@ -37,18 +37,20 @@ jobs:
           BRANCH='feature/core-2.4.0-unifi-faceplates'
           ASSET='src/faceplates/unifi-24p-rj45-2sfp.png'
           EXPECTED_SHA='3843544aedd63e8d591fec3c77741686ce2820a1d49ab464cee2b25f23c1f7b7'
+          ASSET_URL='https://sdmntprnznorth.oaiusercontent.com/files/00000000-bc9c-820b-a339-e39e9874da77/raw?se=2026-08-20T12%3A33%3A16Z&sp=r&sv=2026-02-06&sr=b&scid=ccd9481f-60d4-591f-9115-4daa5be0fd5b&skoid=27fbae2c-124f-4566-a0d8-1b07a5a41c53&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-20T02%3A41%3A54Z&ske=2026-08-21T02%3A41%3A54Z&sks=b&skv=2026-02-06&sig=6zRIsESA6V%2B%2BUV4ikepRHW8%2BtxTrKRJ%2Bqo58OZ5xAqI%3D'
 
-          # The second synchronize event after the build intentionally becomes a no-op.
-          if [ ! -f .sv-v240-asset/part0.bin ]; then
-            echo 'v2.4.0 staged asset parts already consumed; nothing to rebuild.'
+          # The synchronize event produced by the successful build is intentionally a no-op.
+          if [ "$(cat VERSION)" = "$VERSION" ] && [ -f "$ASSET" ] && [ ! -d .sv-v240-asset ]; then
+            echo 'v2.4.0 feature branch is already built; nothing to rebuild.'
             exit 0
           fi
 
-          cat .sv-v240-asset/part0.bin \
-              .sv-v240-asset/part1.bin \
-              .sv-v240-asset/part2.bin \
-              .sv-v240-asset/part3.bin > "$ASSET"
-
+          curl -fL --retry 3 --retry-delay 1 "$ASSET_URL" -o /tmp/core-v240-unifi-faceplate.zip
+          rm -rf /tmp/core-v240-asset
+          mkdir -p /tmp/core-v240-asset
+          unzip -q /tmp/core-v240-unifi-faceplate.zip -d /tmp/core-v240-asset
+          test -f /tmp/core-v240-asset/unifi-24p-rj45-2sfp.png
+          cp /tmp/core-v240-asset/unifi-24p-rj45-2sfp.png "$ASSET"
           test "$(sha256sum "$ASSET" | awk '{print $1}')" = "$EXPECTED_SHA"
 
           python3 <<'PY'
@@ -59,7 +61,7 @@ jobs:
           asset = Path('src/faceplates/unifi-24p-rj45-2sfp.png')
           raw = asset.read_bytes()
           if raw[:8] != b'\x89PNG\r\n\x1a\n':
-              raise SystemExit('STOP: reconstructed UniFi asset is not a PNG')
+              raise SystemExit('STOP: approved UniFi asset is not a PNG')
           width, height = struct.unpack('>II', raw[16:24])
           if (width, height) != (1592, 149):
               raise SystemExit(f'STOP: unexpected UniFi asset dimensions {width}x{height}')
@@ -129,7 +131,7 @@ jobs:
               upgrading.write_text(up_text, encoding='utf-8', newline='\n')
           PY
 
-          rm -rf .sv-v240-asset
+          rm -rf .sv-v240-asset .sv-v240-b64
           rm -f .sv-v240-pr-trigger
 
           python3 build.py -v "$VERSION"
