@@ -38,7 +38,7 @@ jobs:
       - name: Validate Core source/release parity
         run: python3 tools/check_core_release_parity.py
 
-      - name: Validate version contract
+      - name: Validate version and HAOS resource contract
         shell: bash
         run: |
           set -euo pipefail
@@ -52,6 +52,7 @@ jobs:
 
           version = sys.argv[1]
           root = Path(".")
+          expected_resource = f"/local/switch-vision/js/switch-vision.js?v={version}"
 
           component = json.loads(
               (
@@ -62,7 +63,9 @@ jobs:
                   / "manifest.json"
               ).read_text(encoding="utf-8")
           )
-
+          source_manifest = json.loads(
+              (root / "src" / "manifest.json").read_text(encoding="utf-8")
+          )
           release_component = json.loads(
               (
                   root
@@ -73,7 +76,6 @@ jobs:
                   / "manifest.json"
               ).read_text(encoding="utf-8")
           )
-
           release = json.loads(
               (
                   root
@@ -84,10 +86,16 @@ jobs:
           )
 
           assert component["version"] == version
+          assert source_manifest["version"] == version
+          assert source_manifest["resource"] == expected_resource
           assert release_component["version"] == version
           assert release["version"] == version
+          assert release["resource"] == expected_resource
 
-          print(f"Core {version} version contract: PASS")
+          print(
+              f"Core {version} version/resource contract: PASS "
+              f"({expected_resource})"
+          )
           PY
 
       - name: Reject generated cache material
