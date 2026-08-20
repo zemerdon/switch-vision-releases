@@ -1,5 +1,13 @@
 # Changelog
 
+## v2.3.14 — Test Mode control spacing
+
+- Restores the stock Calibrate button to its original top-right position.
+- Places TEST MODE 10 px below Calibrate with the same width, height and alignment.
+- Corrects exact v2.3.13 stock button positions while preserving customised Calibrate placements.
+- Keeps all v2.3.12 Test Mode persistence behaviour unchanged.
+- Changes the Home Assistant custom integration/card files; restart Home Assistant Core after updating.
+
 ## v2.3.13 — Bottom-right Calibration controls
 
 - Moves the stock Calibrate control to the lower-right faceplate control area so the upper-right screw/hardware remains visible.
