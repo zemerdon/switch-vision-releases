@@ -1,3 +1,11 @@
+## v2.4.2 — Hardware validation safeguards
+
+- Promote five real-hardware-tested exact models to Community Validated while preserving model-specific physical semantics.
+- Align Core's Ubiquiti exact-model visual/profile metadata with Discovery's explicit real-API geometry assignments; remove remaining Cisco-profile fallbacks from Ubiquiti records.
+- Preserve Huawei S5720 8 RJ45 + 4 physical 1G SFP layout metadata; Discovery v2.1.27 enforces the physical 1G speed cap while retaining ifHighSpeed preference.
+- Add permanent 2.5G display regression coverage and explicit HAOS/manual Lovelace resource version checks.
+- Correct build documentation to reflect explicit release-version requirements.
+
 ## v2.4.1
 
 - Promoted 11 Discovery-only exact model entries into the Core supported-device index without changing their support status.
