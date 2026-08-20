@@ -46,16 +46,17 @@ jobs:
           js_path = Path('src/js/switch-vision.js')
           text = js_path.read_text(encoding='utf-8')
 
-          old = '''const testModeTop = Math.min(designHeight - height - 4, y + height + 10);
-const testModeStyle = [
-  `left:${(x / designWidth) * 100}%`,
-  `top:${(testModeTop / designHeight) * 100}%`,'''
-          new = '''const testModeStyle = [
-  `left:${(x / designWidth) * 100}%`,
-  `top:calc(${((y + height) / designHeight) * 100}% + 10px)`,'''
-          if text.count(old) != 1:
-              raise SystemExit('STOP: expected one v2.3.14 TEST MODE spacing block')
-          text = text.replace(old, new, 1)
+          old_top_var = 'const testModeTop = Math.min(designHeight - height - 4, y + height + 10);\n'
+          old_top_style = '  `top:${(testModeTop / designHeight) * 100}%`,'
+          new_top_style = '  `top:calc(${((y + height) / designHeight) * 100}% + 10px)`,'
+
+          if text.count(old_top_var) != 1:
+              raise SystemExit('STOP: expected one v2.3.14 testModeTop line')
+          if text.count(old_top_style) != 1:
+              raise SystemExit('STOP: expected one v2.3.14 TEST MODE top style line')
+
+          text = text.replace(old_top_var, '', 1)
+          text = text.replace(old_top_style, new_top_style, 1)
           js_path.write_text(text, encoding='utf-8')
 
           notes = [
@@ -110,5 +111,3 @@ const testModeStyle = [
           git diff --cached --check
           git commit -m 'Build Switch Vision Core v2.3.15'
           git push origin "HEAD:$BRANCH"
-
-# retry after branch creation
