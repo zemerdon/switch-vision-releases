@@ -66,6 +66,37 @@ jobs:
           if (width, height) != (1592, 149):
               raise SystemExit(f'STOP: unexpected UniFi asset dimensions {width}x{height}')
 
+          # Make Ubiquiti an explicit visual family in the authoritative build guard.
+          # This ensures current and future exact Ubiquiti models use the UniFi baseline
+          # instead of falling back to the generic port-count stock faceplate rule.
+          build_path = Path('build.py')
+          build_text = build_path.read_text(encoding='utf-8')
+          old_rule = '''        if model in exact_visual_overrides:
+            expected_profile, expected_faceplate = exact_visual_overrides[model]
+        else:
+            family = 24 if rj45 <= 24 else 48
+            sfp = 2 if uplinks <= 2 else 4
+            expected_profile = f"stock_{family}rj45_{sfp}sfp"
+            expected_faceplate = f"faceplates/{family}rj45-{sfp}sfp.png"
+'''
+          new_rule = '''        vendor = str(device.get("vendor") or "").strip()
+        if vendor == "Ubiquiti":
+            expected_profile = "unifi_24p_rj45_2sfp"
+            expected_faceplate = "faceplates/unifi-24p-rj45-2sfp.png"
+        elif model in exact_visual_overrides:
+            expected_profile, expected_faceplate = exact_visual_overrides[model]
+        else:
+            family = 24 if rj45 <= 24 else 48
+            sfp = 2 if uplinks <= 2 else 4
+            expected_profile = f"stock_{family}rj45_{sfp}sfp"
+            expected_faceplate = f"faceplates/{family}rj45-{sfp}sfp.png"
+'''
+          if old_rule in build_text:
+              build_text = build_text.replace(old_rule, new_rule, 1)
+              build_path.write_text(build_text, encoding='utf-8', newline='\n')
+          elif new_rule not in build_text:
+              raise SystemExit('STOP: authoritative visual-family guard was not found in build.py')
+
           registry = Path('src/devices/supported_devices.yaml')
           text = registry.read_text(encoding='utf-8')
           blocks = re.split(r'(?=^- vendor: )', text, flags=re.M)
