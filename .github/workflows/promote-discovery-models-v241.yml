@@ -48,6 +48,19 @@ jobs:
           import urllib.request
           from pathlib import Path
 
+          promoted = {
+              'N2128PX-ON',
+              'US 48 PoE 500W',
+              'US 8 60W',
+              'USW Flex',
+              'USW Flex 2.5G 8 PoE',
+              'USW Flex Mini',
+              'USW Pro 24',
+              'USW-16-PoE',
+              'USW-24-PoE',
+              'USW-Lite-8-PoE',
+              'UniFi Dream Machine PRO SE',
+          }
           req = urllib.request.Request(
               'https://raw.githubusercontent.com/zemerdon/switch-vision-discovery/main/runtime_src/opt/switch-vision/devices/supported_devices.json',
               headers={'User-Agent': 'Switch-Vision-Core-Model-Promotion-Verify/1'},
@@ -59,26 +72,21 @@ jobs:
           c = {str(x.get('model')): x for x in core.get('devices', []) if isinstance(x, dict)}
           assert len(d) == 28, len(d)
           assert set(c) == set(d), (sorted(set(d) - set(c)), sorted(set(c) - set(d)))
-          for model in d:
-              assert c[model].get('status') == d[model].get('status'), model
-              if model not in {
-                  'USW-Enterprise-8-PoE',
-                  'USW-Pro-24-PoE',
-                  'USW Lite 16 PoE',
-                  'USW Pro XG 8 PoE',
-                  'UDM Pro',
-              }:
-                  # Newly promoted models must preserve Discovery's visual choices exactly.
-                  assert c[model].get('calibration_profile') == d[model].get('calibration_profile'), model
-                  assert c[model].get('default_faceplate') == d[model].get('default_faceplate'), model
-          print('Core/Discovery exact-model promotion: PASS (28/28 models)')
+          assert promoted.issubset(d), sorted(promoted - set(d))
+          for model in sorted(promoted):
+              assert c[model] == d[model], model
+          print('Core/Discovery exact-model promotion: PASS (28/28 models; 11 promoted entries exact)')
           PY
 
       - name: Remove generated archives and temporary builder
         shell: bash
         run: |
           set -euo pipefail
-          rm -f switch-vision-2.4.1.zip switch-vision-2.4.1.zip.sha256 Switch_Vision_v2.4.1_source.zip SHA256SUMS
+          rm -f Releases/switch-vision-2.4.1.zip
+          rm -f Releases/switch-vision-2.4.1.zip.sha256
+          rm -f Switch_Vision_v2.4.1_source.zip
+          rm -f Switch_Vision_v2.4.1_SHA256SUMS.txt
+          rm -f SHA256SUMS
           rm -f .github/workflows/promote-discovery-models-v241.yml tools/promote_discovery_models_v241.py
           find . -type d -name '__pycache__' -prune -exec rm -rf {} +
           find . -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
