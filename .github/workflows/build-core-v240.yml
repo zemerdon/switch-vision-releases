@@ -29,169 +29,22 @@ jobs:
       - name: Install build dependency
         run: python3 -m pip install --disable-pip-version-check PyYAML
 
-      - name: Build and validate Core v2.4.0
+      - name: Build, validate and push Core v2.4.0
         shell: bash
+        env:
+          ASSET_URL: 'https://sdmntpraustraliaeast.oaiusercontent.com/files/00000000-9768-81fa-91bb-5d4aad8e59f8/raw?se=2026-08-20T16%3A57%3A52Z&sp=r&sv=2026-02-06&sr=b&scid=1f9977d5-95aa-5713-9ff0-ab5777641884&skoid=697dc613-6c29-4a76-87a7-d1b783c6d43f&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-20T01%3A15%3A41Z&ske=2026-08-21T01%3A15%3A41Z&sks=b&skv=2026-02-06&sig=gJuh2fSav/7pIfD4smAqejcnuhpo9bi3M9SmOCMErVM%3D'
         run: |
           set -euo pipefail
-          VERSION='2.4.0'
           BRANCH='feature/core-2.4.0-unifi-faceplates'
-          ASSET='src/faceplates/unifi-24p-rj45-2sfp.png'
-          EXPECTED_SHA='3843544aedd63e8d591fec3c77741686ce2820a1d49ab464cee2b25f23c1f7b7'
-          ASSET_URL='https://sdmntprnznorth.oaiusercontent.com/files/00000000-bc9c-820b-a339-e39e9874da77/raw?se=2026-08-20T12%3A33%3A16Z&sp=r&sv=2026-02-06&sr=b&scid=ccd9481f-60d4-591f-9115-4daa5be0fd5b&skoid=27fbae2c-124f-4566-a0d8-1b07a5a41c53&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-20T02%3A41%3A54Z&ske=2026-08-21T02%3A41%3A54Z&sks=b&skv=2026-02-06&sig=6zRIsESA6V%2B%2BUV4ikepRHW8%2BtxTrKRJ%2Bqo58OZ5xAqI%3D'
-
-          # The synchronize event produced by the successful build is intentionally a no-op.
-          if [ "$(cat VERSION)" = "$VERSION" ] && [ -f "$ASSET" ] && [ ! -d .sv-v240-asset ]; then
-            echo 'v2.4.0 feature branch is already built; nothing to rebuild.'
+          if [ ! -f tools/_sv_v240_build.py ]; then
+            echo 'Core v2.4.0 feature branch is already built; nothing to do.'
             exit 0
           fi
-
-          curl -fL --retry 3 --retry-delay 1 "$ASSET_URL" -o /tmp/core-v240-unifi-faceplate.zip
-          rm -rf /tmp/core-v240-asset
-          mkdir -p /tmp/core-v240-asset
-          unzip -q /tmp/core-v240-unifi-faceplate.zip -d /tmp/core-v240-asset
-          test -f /tmp/core-v240-asset/unifi-24p-rj45-2sfp.png
-          cp /tmp/core-v240-asset/unifi-24p-rj45-2sfp.png "$ASSET"
-          test "$(sha256sum "$ASSET" | awk '{print $1}')" = "$EXPECTED_SHA"
-
-          python3 <<'PY'
-          from pathlib import Path
-          import re
-          import struct
-
-          asset = Path('src/faceplates/unifi-24p-rj45-2sfp.png')
-          raw = asset.read_bytes()
-          if raw[:8] != b'\x89PNG\r\n\x1a\n':
-              raise SystemExit('STOP: approved UniFi asset is not a PNG')
-          width, height = struct.unpack('>II', raw[16:24])
-          if (width, height) != (1592, 149):
-              raise SystemExit(f'STOP: unexpected UniFi asset dimensions {width}x{height}')
-
-          # Make Ubiquiti an explicit visual family in the authoritative build guard.
-          # This ensures current and future exact Ubiquiti models use the UniFi baseline
-          # instead of falling back to the generic port-count stock faceplate rule.
-          build_path = Path('build.py')
-          build_text = build_path.read_text(encoding='utf-8')
-          old_rule = '''        if model in exact_visual_overrides:
-            expected_profile, expected_faceplate = exact_visual_overrides[model]
-        else:
-            family = 24 if rj45 <= 24 else 48
-            sfp = 2 if uplinks <= 2 else 4
-            expected_profile = f"stock_{family}rj45_{sfp}sfp"
-            expected_faceplate = f"faceplates/{family}rj45-{sfp}sfp.png"
-'''
-          new_rule = '''        vendor = str(device.get("vendor") or "").strip()
-        if vendor == "Ubiquiti":
-            expected_profile = "unifi_24p_rj45_2sfp"
-            expected_faceplate = "faceplates/unifi-24p-rj45-2sfp.png"
-        elif model in exact_visual_overrides:
-            expected_profile, expected_faceplate = exact_visual_overrides[model]
-        else:
-            family = 24 if rj45 <= 24 else 48
-            sfp = 2 if uplinks <= 2 else 4
-            expected_profile = f"stock_{family}rj45_{sfp}sfp"
-            expected_faceplate = f"faceplates/{family}rj45-{sfp}sfp.png"
-'''
-          if old_rule in build_text:
-              build_text = build_text.replace(old_rule, new_rule, 1)
-              build_path.write_text(build_text, encoding='utf-8', newline='\n')
-          elif new_rule not in build_text:
-              raise SystemExit('STOP: authoritative visual-family guard was not found in build.py')
-
-          registry = Path('src/devices/supported_devices.yaml')
-          text = registry.read_text(encoding='utf-8')
-          blocks = re.split(r'(?=^- vendor: )', text, flags=re.M)
-          changed = 0
-          output = []
-          for block in blocks:
-              if not block.startswith('- vendor: Ubiquiti\n'):
-                  output.append(block)
-                  continue
-              changed += 1
-              block, c1 = re.subn(
-                  r'(?m)^  calibration_profile: .*$',
-                  '  calibration_profile: unifi_24p_rj45_2sfp',
-                  block,
-                  count=1,
-              )
-              block, c2 = re.subn(
-                  r'(?m)^  default_faceplate: .*$',
-                  '  default_faceplate: faceplates/unifi-24p-rj45-2sfp.png',
-                  block,
-                  count=1,
-              )
-              block, c3 = re.subn(
-                  r'(?m)^    recommended_faceplate: .*$',
-                  '    recommended_faceplate: faceplates/unifi-24p-rj45-2sfp.png',
-                  block,
-                  count=1,
-              )
-              block, c4 = re.subn(
-                  r'(?m)^    calibration_profile: .*$',
-                  '    calibration_profile: unifi_24p_rj45_2sfp',
-                  block,
-                  count=1,
-              )
-              if (c1, c2, c3, c4) != (1, 1, 1, 1):
-                  raise SystemExit(
-                      f'STOP: Ubiquiti registry block did not have expected visual fields: {(c1,c2,c3,c4)}'
-                  )
-              output.append(block)
-          if changed != 5:
-              raise SystemExit(f'STOP: expected 5 current Ubiquiti models, found {changed}')
-          registry.write_text(''.join(output), encoding='utf-8', newline='\n')
-
-          readme = Path('src/faceplates/README.txt')
-          readme_text = readme.read_text(encoding='utf-8')
-          unifi_line = '- unifi-24p-rj45-2sfp.png — default UniFi / Ubiquiti faceplate; all current UniFi model mappings recommend this artwork\n'
-          if unifi_line not in readme_text:
-              marker = '\nAll faceplates use the standard Switch Vision 2048 x 448 canvas.\n'
-              if marker not in readme_text:
-                  raise SystemExit('STOP: faceplate README insertion marker not found')
-              readme_text = readme_text.replace(marker, '\n' + unifi_line + marker, 1)
-              readme.write_text(readme_text, encoding='utf-8', newline='\n')
-
-          upgrading = Path('src/docs/UPGRADING.md')
-          up_text = upgrading.read_text(encoding='utf-8')
-          heading = '## Faceplate defaults updated in v2.4.0'
-          if heading not in up_text:
-              note = '''\n\n## Faceplate defaults updated in v2.4.0\n\nExisting saved/custom faceplate calibrations are preserved during upgrade. To use the new v2.4.0 built-in defaults on an existing switch, open Calibration and reset/reload the faceplate to its current default.\n\nUpdated defaults:\n\n- **UniFi / Ubiquiti models** now default to `unifi-24p-rj45-2sfp.png`.\n- **Stock 24 RJ45 / 4 SFP** calibration defaults were updated.\n- **Stock 24 RJ45 / 2 SFP** calibration defaults were updated.\n'''
-              rollback = '\n## Rollback\n'
-              if rollback not in up_text:
-                  raise SystemExit('STOP: UPGRADING rollback marker not found')
-              up_text = up_text.replace(rollback, note + rollback, 1)
-              upgrading.write_text(up_text, encoding='utf-8', newline='\n')
-          PY
-
-          rm -rf .sv-v240-asset .sv-v240-b64
-          rm -f .sv-v240-pr-trigger
-
-          python3 build.py -v "$VERSION"
-
-          node --check src/js/switch-vision.js
-          node --check src/custom_components/switch_vision/switch-vision-card.js
-          python3 tools/check_core_release_parity.py
-
-          test "$(cat VERSION)" = "$VERSION"
-          grep -F 'const SV_VERSION = "2.4.0";' src/js/switch-vision.js
-          grep -F '"version": "2.4.0"' src/custom_components/switch_vision/manifest.json
-          test -f "$ASSET"
-          test -f "Releases/switch-vision-$VERSION/faceplates/unifi-24p-rj45-2sfp.png"
-          test "$(sha256sum "Releases/switch-vision-$VERSION/faceplates/unifi-24p-rj45-2sfp.png" | awk '{print $1}')" = "$EXPECTED_SHA"
-
-          if find src "Releases/switch-vision-$VERSION" -type d -name __pycache__ -print -quit | grep -q .; then
-            echo 'STOP: __pycache__ found in source/release tree'
-            exit 1
-          fi
-          if find src "Releases/switch-vision-$VERSION" -type f \( -name '*.pyc' -o -name '*.pyo' \) -print -quit | grep -q .; then
-            echo 'STOP: Python cache file found in source/release tree'
-            exit 1
-          fi
-
-          git diff --check
-
+          python3 tools/_sv_v240_build.py "$ASSET_URL"
           git config user.name 'Switch Vision CI'
           git config user.email 'actions@users.noreply.github.com'
           git add -A
           git status --short
+          git diff --cached --quiet && { echo 'STOP: v2.4.0 build produced no commit'; exit 1; }
           git commit -m 'Core v2.4.0: UniFi faceplate defaults'
           git push origin "HEAD:$BRANCH"
