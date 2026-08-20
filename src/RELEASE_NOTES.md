@@ -1,52 +1,47 @@
-# Switch Vision Core v2.3.11 — Calibration Profile Manager relocation
+# Switch Vision Core v2.3.12 — Persistent Calibration LED Test Mode
 
-Switch Vision Core v2.3.11 cleans up the Switch Vision Core Hub by moving Calibration Profile management into the Switch Vision Discovery Hub.
+Switch Vision Core v2.3.12 makes Calibration LED Test Mode useful after the calibration editor is closed, so a completed faceplate can be inspected without the calibration workspace covering it.
 
-## Core Hub cleanup
+## Test Mode remains active after Done
 
-The Core Hub is once again focused on the native Switch Vision dashboard.
+When **Test Mode** is enabled and **Done** is selected:
 
-The temporary Dashboard / Calibration Profiles selector introduced in v2.3.10 has been removed.
+- calibration changes are saved normally
+- the calibration editor closes normally
+- Test Mode remains active
+- Status, RJ45, and SFP/uplink LEDs remain forced into their calibration test state
 
-Calibration Profiles are now managed from:
+Test Mode is now independent of whether the calibration controls are open. Closing the editor no longer silently disables the forced LED display.
 
-**Switch Vision Discovery Hub → Calibration Profiles**
+## Visible TEST MODE reminder
 
-This keeps switch discovery, setup, device management, and calibration-profile management together in one management interface.
+While Test Mode remains active, a small **TEST MODE** indicator is displayed directly beneath the normal **Calibrate** button.
 
-## Calibration backend remains in Core
+This provides a persistent visual reminder that the faceplate is showing forced calibration LED states rather than normal live LED presentation.
 
-Only the Profile Manager frontend has moved.
+## Returning to Calibration
 
-Switch Vision Core continues to own the authoritative calibration storage and API.
+Opening Calibration again while Test Mode is active preserves the active Test Mode state.
 
-The existing Core calibration interfaces remain available, including:
+The existing **Test Mode** control can be used to switch the mode off normally.
 
-- calibration profile listing
-- calibration profile retrieval
-- save calibration
-- delete calibration
-- active-profile protection
-- factory-profile protection
-- stale and duplicate-faceplate metadata
+Choosing **Cancel** continues to close Calibration and explicitly turns Test Mode off, providing a clear reset path.
 
-Switch Vision Discovery v2.1.25 uses these existing Core interfaces rather than reading or modifying Home Assistant `.storage` files directly.
+## Compatibility
 
-No calibration profiles are migrated, renamed, deleted, or recreated by this update.
+This update does not change:
 
-## Existing v2.3.10 calibration tools remain
+- saved calibration profile geometry
+- faceplate assignments
+- switch discovery
+- physical-port mappings
+- live telemetry values
+- Activity LED thresholds or timing
 
-The v2.3.10 calibration features remain available, including:
-
-- Calibration LED Test Mode
-- Refresh Faceplate
-- faceplate-aware calibration profile identity
-- active and factory profile protection
+The change is limited to Calibration Test Mode session behaviour and its visible status indicator.
 
 ## Upgrade note
 
-Switch Vision Core v2.3.11 changes the Home Assistant custom integration files.
+Switch Vision Core v2.3.12 changes the Home Assistant custom integration card files and versioned frontend resources.
 
 After updating Core through Switch Vision Installer, restart Home Assistant Core when prompted.
-
-For Calibration Profile management, use Switch Vision Discovery v2.1.25 or later.

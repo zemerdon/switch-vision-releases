@@ -10,9 +10,9 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current public Core release
 
-### Switch Vision v2.3.11
+### Switch Vision v2.3.12
 
-**v2.3.11** is the current tested public Switch Vision Core/dashboard release.
+**v2.3.12** is the current tested public Switch Vision Core/dashboard release.
 
 This release adds Calibration LED Test Mode, a full Calibration Profile Manager in the Switch Vision Hub, and a runtime Refresh Faceplate action that reloads updated faceplate image bytes without renaming the file or changing calibration profile identity.
 

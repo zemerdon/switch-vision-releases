@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.3.12 — Persistent Calibration LED Test Mode
+
+- Keeps Calibration LED Test Mode active after **Done** closes and saves the calibration editor.
+- Decouples Test Mode from the open calibration-controls state so forced Status, RJ45, and SFP/uplink LEDs remain visible for clean faceplate inspection.
+- Adds a small **TEST MODE** indicator directly beneath the normal Calibrate button while Test Mode remains active.
+- Preserves Test Mode when Calibration is reopened.
+- Keeps **Cancel** as the explicit path that closes Calibration and turns Test Mode off.
+- Does not change saved calibration geometry, faceplate assignments, Discovery, physical-port mappings, live telemetry, or Activity LED tuning.
+- Changes the Home Assistant custom integration/card files; restart Home Assistant Core after updating.
+
 ## v2.3.11 — Calibration Profile Manager relocation
 
 - Moves Calibration Profile management out of the Core Hub and into Switch Vision Discovery Hub v2.1.25.
