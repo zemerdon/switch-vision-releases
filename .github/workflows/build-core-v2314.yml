@@ -53,12 +53,12 @@ jobs:
               raise SystemExit('STOP: expected one v2.3.13 stock Calibrate default')
           text = text.replace(old_default, new_default, 1)
 
-          old_y_check = '    && Number(calibrationButtonUi.y) === 14'
-          old_y_set = '    calibrationButtonUi.y = 372;'
+          old_y_check = '  && Number(calibrationButtonUi.y) === 14'
+          old_y_set = '  calibrationButtonUi.y = 372;'
           if text.count(old_y_check) != 1 or text.count(old_y_set) != 1:
               raise SystemExit('STOP: expected one v2.3.13 Calibrate migration')
-          text = text.replace(old_y_check, '    && Number(calibrationButtonUi.y) === 372', 1)
-          text = text.replace(old_y_set, '    calibrationButtonUi.y = 14;', 1)
+          text = text.replace(old_y_check, '  && Number(calibrationButtonUi.y) === 372', 1)
+          text = text.replace(old_y_set, '  calibrationButtonUi.y = 14;', 1)
 
           old_test_lines = [
               'const testModeBelow = y + height + 4;',
