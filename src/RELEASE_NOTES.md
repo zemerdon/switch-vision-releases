@@ -1,11 +1,11 @@
-# Switch Vision Core v2.3.16 — No-overlap Test Mode placement
+# Switch Vision Core v2.4.0 — UniFi faceplates and refreshed 24-port defaults
 
-- Keeps Calibrate exactly where the profile places it.
-- Measures the actual rendered Calibrate and TEST MODE controls in the browser.
-- Prefers a true 30 px edge-to-edge gap below Calibrate.
-- Falls back above, then left or right when the preferred position does not fit.
-- Recalculates after faceplate image load and when the rendered faceplate resizes.
-- Guarantees TEST MODE will not overlap Calibrate; in an impossibly small stage it hides the faceplate badge rather than overlap the control.
-- Keeps all existing Test Mode persistence behaviour unchanged.
+- Adds the dedicated `unifi-24p-rj45-2sfp.png` faceplate and matching factory calibration baseline.
+- Makes the UniFi faceplate the shipped default artwork for all current UniFi / Ubiquiti model mappings.
+- Updates the factory calibration defaults for Stock 24 RJ45 / 2 SFP.
+- Updates the factory calibration defaults for Stock 24 RJ45 / 4 SFP.
+- Preserves existing saved/custom faceplate calibrations during upgrade.
+- Existing switches that should adopt the new v2.4.0 defaults can open Calibration and reset/reload the faceplate to its current default.
+- Keeps the v2.3.16 browser-geometry TEST MODE no-overlap behaviour unchanged.
 
-After updating Core through Switch Vision Installer, restart Home Assistant Core when prompted.
+After updating Core through Switch Vision Installer, restart Home Assistant Core when prompted and hard-refresh the browser.

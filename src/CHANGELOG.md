@@ -1,3 +1,11 @@
+## v2.4.0
+
+- Added the dedicated `unifi-24p-rj45-2sfp.png` UniFi / Ubiquiti faceplate and authoritative factory calibration.
+- Made UniFi / Ubiquiti an explicit visual family instead of using the generic stock fallback.
+- Updated stock 24 RJ45 / 2 SFP and stock 24 RJ45 / 4 SFP factory calibration defaults.
+- Preserved existing saved/custom calibrations; **Reset Current Faceplate** adopts refreshed defaults.
+- Preserved v2.3.16 TEST MODE no-overlap behavior.
+
 # Changelog
 
 ## v2.3.16 — No-overlap Test Mode placement
