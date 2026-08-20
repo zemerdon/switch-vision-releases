@@ -53,30 +53,20 @@ jobs:
               raise SystemExit('STOP: expected one v2.3.13 stock Calibrate default')
           text = text.replace(old_default, new_default, 1)
 
-          old_migration = '''  if (
-    Number(calibrationButtonUi.x) === 1888
-    && Number(calibrationButtonUi.y) === 14
-    && Number(calibrationButtonUi.width) === 138
-    && Number(calibrationButtonUi.height) === 34
-  ) {
-    calibrationButtonUi.y = 372;
-  }'''
-          new_migration = '''  if (
-    Number(calibrationButtonUi.x) === 1888
-    && Number(calibrationButtonUi.y) === 372
-    && Number(calibrationButtonUi.width) === 138
-    && Number(calibrationButtonUi.height) === 34
-  ) {
-    calibrationButtonUi.y = 14;
-  }'''
-          if text.count(old_migration) != 1:
-              raise SystemExit('STOP: expected one v2.3.13 Calibrate migration block')
-          text = text.replace(old_migration, new_migration, 1)
+          old_y_check = '    && Number(calibrationButtonUi.y) === 14'
+          old_y_set = '    calibrationButtonUi.y = 372;'
+          if text.count(old_y_check) != 1 or text.count(old_y_set) != 1:
+              raise SystemExit('STOP: expected one v2.3.13 Calibrate migration')
+          text = text.replace(old_y_check, '    && Number(calibrationButtonUi.y) === 372', 1)
+          text = text.replace(old_y_set, '    calibrationButtonUi.y = 14;', 1)
 
-          old_test_position = '''const testModeBelow = y + height + 4;
-const testModeTop = (testModeBelow + height <= designHeight - 4)
-  ? testModeBelow
-  : Math.max(4, y - height - 4);'''
+          old_test_lines = [
+              'const testModeBelow = y + height + 4;',
+              'const testModeTop = (testModeBelow + height <= designHeight - 4)',
+              '  ? testModeBelow',
+              '  : Math.max(4, y - height - 4);',
+          ]
+          old_test_position = '\n'.join(old_test_lines)
           new_test_position = 'const testModeTop = Math.min(designHeight - height - 4, y + height + 10);'
           if text.count(old_test_position) != 1:
               raise SystemExit('STOP: expected one v2.3.13 TEST MODE positioning block')
@@ -101,29 +91,17 @@ const testModeTop = (testModeBelow + height <= designHeight - 4)
                   restored.append(str(path))
           if not restored:
               raise SystemExit('STOP: no v2.3.13 stock Calibrate placements were restored')
-          print('Restored stock Calibrate placement:', ', '.join(restored))
 
           notes = [
               '# Switch Vision Core v2.3.14 — Test Mode control spacing',
               '',
               'Switch Vision Core v2.3.14 simplifies the Calibration LED Test Mode control placement.',
               '',
-              '## Placement correction',
-              '',
               '- Restores the normal Calibrate button to its original stock top-right position.',
               '- Places TEST MODE directly beneath Calibrate with a 10 px gap.',
-              '- Keeps TEST MODE the same width and height as Calibrate.',
-              '- Keeps the two controls aligned.',
+              '- Keeps TEST MODE the same width, height and alignment as Calibrate.',
               '- Corrects stock profiles moved by v2.3.13 while preserving genuinely customised Calibrate positions.',
-              '',
-              '## Behaviour unchanged',
-              '',
-              '- Done saves/closes Calibration while Test Mode remains active.',
-              '- Reopening Calibration preserves Test Mode.',
-              '- Cancel closes Calibration and turns Test Mode off.',
-              '- Forced Status, RJ45 and SFP/uplink LED states are unchanged.',
-              '',
-              'No Discovery, port mapping, telemetry, faceplate assignment, calibration geometry or Activity LED tuning behaviour is changed.',
+              '- Keeps all v2.3.12 Test Mode persistence behaviour unchanged.',
               '',
               'After updating Core through Switch Vision Installer, restart Home Assistant Core when prompted.',
               '',
