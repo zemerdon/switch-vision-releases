@@ -110,3 +110,5 @@ const testModeStyle = [
           git diff --cached --check
           git commit -m 'Build Switch Vision Core v2.3.15'
           git push origin "HEAD:$BRANCH"
+
+# retry after branch creation
