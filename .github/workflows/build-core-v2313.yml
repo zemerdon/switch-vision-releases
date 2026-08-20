@@ -122,42 +122,44 @@ jobs:
               raise SystemExit('STOP: no stock calibration-button placements were updated')
           print('Moved stock calibration controls:', ', '.join(moved))
 
-          release_notes = '''# Switch Vision Core v2.3.13 — Bottom-right Calibration controls
-
-Switch Vision Core v2.3.13 polishes the persistent Calibration LED Test Mode controls introduced in v2.3.12.
-
-## Cleaner bottom-right placement
-
-The stock **Calibrate** control now sits in the lower-right faceplate control area instead of covering the upper-right screw/hardware detail.
-
-When Calibration LED Test Mode is active, **TEST MODE** is displayed directly beneath Calibrate as a full-size matching control.
-
-The two controls now form a clean vertical stack:
-
-- Calibrate: 138 × 34
-- TEST MODE: 138 × 34
-- 4 px spacing between the controls
-
-Existing profiles that still use the previous stock Calibrate coordinates are automatically moved to the new stock position. Profiles with genuinely customised Calibrate coordinates are left unchanged.
-
-## Behaviour unchanged
-
-This release does not change Test Mode logic introduced in v2.3.12:
-
-- Done saves and closes Calibration while Test Mode remains active
-- reopening Calibration preserves Test Mode
-- Cancel closes Calibration and turns Test Mode off
-- forced Status, RJ45, and SFP/uplink LED states remain unchanged
-
-No Discovery, physical-port mapping, faceplate assignment, telemetry, calibration geometry, or Activity LED tuning behaviour is changed.
-
-## Upgrade note
-
-Switch Vision Core v2.3.13 changes the Home Assistant custom integration/card files and versioned frontend resources.
-
-After updating Core through Switch Vision Installer, restart Home Assistant Core when prompted.
-'''
-          Path('RELEASE_NOTES.md').write_text(release_notes, encoding='utf-8')
+          release_notes_lines = [
+              '# Switch Vision Core v2.3.13 — Bottom-right Calibration controls',
+              '',
+              'Switch Vision Core v2.3.13 polishes the persistent Calibration LED Test Mode controls introduced in v2.3.12.',
+              '',
+              '## Cleaner bottom-right placement',
+              '',
+              'The stock **Calibrate** control now sits in the lower-right faceplate control area instead of covering the upper-right screw/hardware detail.',
+              '',
+              'When Calibration LED Test Mode is active, **TEST MODE** is displayed directly beneath Calibrate as a full-size matching control.',
+              '',
+              'The two controls now form a clean vertical stack:',
+              '',
+              '- Calibrate: 138 × 34',
+              '- TEST MODE: 138 × 34',
+              '- 4 px spacing between the controls',
+              '',
+              'Existing profiles that still use the previous stock Calibrate coordinates are automatically moved to the new stock position. Profiles with genuinely customised Calibrate coordinates are left unchanged.',
+              '',
+              '## Behaviour unchanged',
+              '',
+              'This release does not change Test Mode logic introduced in v2.3.12:',
+              '',
+              '- Done saves and closes Calibration while Test Mode remains active',
+              '- reopening Calibration preserves Test Mode',
+              '- Cancel closes Calibration and turns Test Mode off',
+              '- forced Status, RJ45, and SFP/uplink LED states remain unchanged',
+              '',
+              'No Discovery, physical-port mapping, faceplate assignment, telemetry, calibration geometry, or Activity LED tuning behaviour is changed.',
+              '',
+              '## Upgrade note',
+              '',
+              'Switch Vision Core v2.3.13 changes the Home Assistant custom integration/card files and versioned frontend resources.',
+              '',
+              'After updating Core through Switch Vision Installer, restart Home Assistant Core when prompted.',
+              '',
+          ]
+          Path('RELEASE_NOTES.md').write_text('\n'.join(release_notes_lines), encoding='utf-8')
 
           changelog_path = Path('CHANGELOG.md')
           changelog = changelog_path.read_text(encoding='utf-8')
@@ -166,19 +168,20 @@ After updating Core through Switch Vision Installer, restart Home Assistant Core
               marker = '# Changelog\n\n'
               if not changelog.startswith(marker):
                   raise SystemExit('STOP: unexpected CHANGELOG.md header')
-              entry = '''## v2.3.13 — Bottom-right Calibration controls
-
-- Moves the stock Calibrate control to the lower-right faceplate control area so the upper-right screw/hardware remains visible.
-- Displays persistent TEST MODE directly beneath Calibrate using the same 138 × 34 control size and a 4 px gap.
-- Reuses the normal Calibrate control styling so the two controls read as one intentional vertical control stack.
-- Automatically relocates profiles still using the previous exact stock Calibrate coordinates while preserving genuinely customised positions.
-- Keeps all v2.3.12 persistent Test Mode behaviour unchanged.
-- Does not change Discovery, physical-port mappings, faceplate assignments, telemetry, calibration geometry, or Activity LED tuning.
-- Changes the Home Assistant custom integration/card files; restart Home Assistant Core after updating.
-
-
-'''
-              changelog_path.write_text(marker + entry + changelog[len(marker):], encoding='utf-8')
+              entry_lines = [
+                  heading,
+                  '',
+                  '- Moves the stock Calibrate control to the lower-right faceplate control area so the upper-right screw/hardware remains visible.',
+                  '- Displays persistent TEST MODE directly beneath Calibrate using the same 138 × 34 control size and a 4 px gap.',
+                  '- Reuses the normal Calibrate control styling so the two controls read as one intentional vertical control stack.',
+                  '- Automatically relocates profiles still using the previous exact stock Calibrate coordinates while preserving genuinely customised positions.',
+                  '- Keeps all v2.3.12 persistent Test Mode behaviour unchanged.',
+                  '- Does not change Discovery, physical-port mappings, faceplate assignments, telemetry, calibration geometry, or Activity LED tuning.',
+                  '- Changes the Home Assistant custom integration/card files; restart Home Assistant Core after updating.',
+                  '',
+                  '',
+              ]
+              changelog_path.write_text(marker + '\n'.join(entry_lines) + changelog[len(marker):], encoding='utf-8')
           PY
 
           node --check src/js/switch-vision.js
