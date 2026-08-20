@@ -1,0 +1,1 @@
+Trigger the guarded Core v2.3.12 calibration Test Mode relocation workflow.
