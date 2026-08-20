@@ -1,0 +1,133 @@
+name: Build Core v2.4.0 from PR
+
+on:
+  pull_request:
+    types: [opened]
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: ${{ github.event.pull_request.head.ref == 'feature/core-2.4.0-unifi-faceplates' }}
+    name: Build Core v2.4.0 UniFi faceplate defaults
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+
+      - name: Install build dependency
+        run: python3 -m pip install --disable-pip-version-check PyYAML
+
+      - name: Build and push v2.4.0 feature branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          BRANCH='feature/core-2.4.0-unifi-faceplates'
+          VERSION='2.4.0'
+          ASSET='/home/zemerdon/unifi-24p-rj45-2sfp.png'
+          EXPECTED_SHA='3843544aedd63e8d591fec3c77741686ce2820a1d49ab464cee2b25f23c1f7b7'
+
+          git config user.name 'Switch Vision CI'
+          git config user.email 'actions@users.noreply.github.com'
+          git fetch origin "$BRANCH"
+          git switch -C "$BRANCH" "origin/$BRANCH"
+
+          test -f "$ASSET"
+          test "$(sha256sum "$ASSET" | awk '{print $1}')" = "$EXPECTED_SHA"
+          cp "$ASSET" src/faceplates/unifi-24p-rj45-2sfp.png
+
+          python3 <<'PY'
+          from pathlib import Path
+          import base64
+          import zlib
+          import yaml
+
+          payloads = {
+              'src/calibration/faceplate-stock-24rj45-2sfp.json': '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',
+              'src/calibration/faceplate-stock-24rj45-4sfp.json': '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',
+              'src/calibration/faceplate-unifi-24p-rj45-2sfp.json': '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'
+          }
+          for path, payload in payloads.items():
+              Path(path).write_bytes(zlib.decompress(base64.b64decode(payload)))
+
+          registry_path = Path('src/devices/supported_devices.yaml')
+          registry = yaml.safe_load(registry_path.read_text(encoding='utf-8'))
+          changed = 0
+          for device in registry.get('devices', []):
+              if str(device.get('vendor', '')).strip().lower() != 'ubiquiti':
+                  continue
+              previous = str(device.get('default_faceplate', '')).strip()
+              device['default_faceplate'] = 'faceplates/unifi-24p-rj45-2sfp.png'
+              visuals = device.setdefault('visuals', {})
+              visuals['recommended_faceplate'] = 'faceplates/unifi-24p-rj45-2sfp.png'
+              notes = device.setdefault('notes', [])
+              note = 'Switch Vision v2.4.0 uses the dedicated UniFi faceplate as the family-wide default artwork while retaining the model-specific topology profile.'
+              if note not in notes:
+                  notes.append(note)
+              changed += 1
+          if changed < 1:
+              raise SystemExit('STOP: no Ubiquiti device entries were updated')
+          registry_path.write_text(yaml.safe_dump(registry, sort_keys=False, allow_unicode=True), encoding='utf-8', newline='\n')
+
+          readme = Path('src/faceplates/README.txt')
+          text = readme.read_text(encoding='utf-8')
+          line = '- unifi-24p-rj45-2sfp.png — dedicated UniFi artwork; family-wide default faceplate for current Ubiquiti/UniFi models in v2.4.0, with its own 24 RJ45 / 2 SFP faceplate calibration defaults\n'
+          if 'unifi-24p-rj45-2sfp.png' not in text:
+              readme.write_text(text.rstrip() + '\n' + line, encoding='utf-8', newline='\n')
+
+          upgrading = Path('src/docs/UPGRADING.md')
+          text = upgrading.read_text(encoding='utf-8')
+          heading = '## v2.4.0 faceplate default changes'
+          if heading not in text:
+              block = '\n'.join([
+                  heading,
+                  '',
+                  'Switch Vision v2.4.0 updates the shipped faceplate defaults. Existing saved/custom calibration profiles are preserved and are not silently overwritten.',
+                  '',
+                  'Affected defaults:',
+                  '',
+                  '- All current Ubiquiti/UniFi models now recommend `unifi-24p-rj45-2sfp.png` as their default faceplate artwork.',
+                  '- The stock `24rj45-2sfp.png` calibration defaults were updated.',
+                  '- The stock `24rj45-4sfp.png` calibration defaults were updated.',
+                  '- The dedicated UniFi faceplate includes its own 24 RJ45 / 2 SFP faceplate calibration defaults.',
+                  '',
+                  'For an existing switch that should adopt the new shipped baseline, open Calibration and use **Reset Current Faceplate** or **Reset Current Switch** as appropriate. This intentionally discards the saved calibration being reset and reloads the current bundled defaults.',
+                  ''
+              ])
+              marker = '## Recommended: Switch Vision Installer'
+              if marker not in text:
+                  raise SystemExit('STOP: UPGRADING.md insertion marker missing')
+              text = text.replace(marker, block + '\n' + marker, 1)
+              upgrading.write_text(text, encoding='utf-8', newline='\n')
+          PY
+
+          rm -f .sv-v240-pr-trigger
+
+          python3 build.py -v "$VERSION"
+          node --check src/js/switch-vision.js
+          node --check src/custom_components/switch_vision/switch-vision-card.js
+          python3 -m py_compile build.py src/devices/generate_supported_devices.py
+          git diff --check
+          test "$(cat VERSION)" = "$VERSION"
+          test -d "Releases/switch-vision-$VERSION"
+          test -f src/faceplates/unifi-24p-rj45-2sfp.png
+          test "$(sha256sum src/faceplates/unifi-24p-rj45-2sfp.png | awk '{print $1}')" = "$EXPECTED_SHA"
+
+          git add VERSION src "Releases/switch-vision-$VERSION" .sv-v240-pr-trigger
+          if git diff --cached --quiet; then
+            echo 'STOP: build produced no staged v2.4.0 changes' >&2
+            exit 1
+          fi
+          git commit -m 'Core v2.4.0: UniFi faceplate defaults'
+          git push origin "HEAD:$BRANCH"
