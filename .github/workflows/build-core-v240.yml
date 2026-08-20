@@ -32,7 +32,7 @@ jobs:
       - name: Build, validate and push Core v2.4.0
         shell: bash
         env:
-          ASSET_URL: 'https://sdmntpraustraliaeast.oaiusercontent.com/files/00000000-9768-81fa-91bb-5d4aad8e59f8/raw?se=2026-08-20T16%3A57%3A52Z&sp=r&sv=2026-02-06&sr=b&scid=1f9977d5-95aa-5713-9ff0-ab5777641884&skoid=697dc613-6c29-4a76-87a7-d1b783c6d43f&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-20T01%3A15%3A41Z&ske=2026-08-21T01%3A15%3A41Z&sks=b&skv=2026-02-06&sig=gJuh2fSav/7pIfD4smAqejcnuhpo9bi3M9SmOCMErVM%3D'
+          ASSET_URL: 'https://sdmntprnznorth.oaiusercontent.com/files/00000000-4450-820b-986f-b18e1fd7437c/raw?se=2026-08-20T17%3A07%3A34Z&sp=r&sv=2026-02-06&sr=b&scid=858a2119-fbbe-5d05-8258-880139b91505&skoid=697dc613-6c29-4a76-87a7-d1b783c6d43f&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-20T00%3A14%3A58Z&ske=2026-08-21T00%3A14%3A58Z&sks=b&skv=2026-02-06&sig=GcdXJKdAAmi3cuR4DsWyx42IBX9qMa7hXOMh3WcK%2Btk%3D'
         run: |
           set -euo pipefail
           BRANCH='feature/core-2.4.0-unifi-faceplates'
@@ -40,7 +40,8 @@ jobs:
             echo 'Core v2.4.0 feature branch is already built; nothing to do.'
             exit 0
           fi
-          python3 tools/_sv_v240_build.py "$ASSET_URL"
+          curl -fL --retry 3 --retry-delay 1 "$ASSET_URL" -o /tmp/core-v240-download.zip
+          python3 tools/_sv_v240_build.py 'file:///tmp/core-v240-download.zip'
           git config user.name 'Switch Vision CI'
           git config user.email 'actions@users.noreply.github.com'
           git add -A
