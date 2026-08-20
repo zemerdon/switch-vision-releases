@@ -1,47 +1,34 @@
-# Switch Vision Core v2.3.12 — Persistent Calibration LED Test Mode
+# Switch Vision Core v2.3.13 — Bottom-right Calibration controls
 
-Switch Vision Core v2.3.12 makes Calibration LED Test Mode useful after the calibration editor is closed, so a completed faceplate can be inspected without the calibration workspace covering it.
+Switch Vision Core v2.3.13 polishes the persistent Calibration LED Test Mode controls introduced in v2.3.12.
 
-## Test Mode remains active after Done
+## Cleaner bottom-right placement
 
-When **Test Mode** is enabled and **Done** is selected:
+The stock **Calibrate** control now sits in the lower-right faceplate control area instead of covering the upper-right screw/hardware detail.
 
-- calibration changes are saved normally
-- the calibration editor closes normally
-- Test Mode remains active
-- Status, RJ45, and SFP/uplink LEDs remain forced into their calibration test state
+When Calibration LED Test Mode is active, **TEST MODE** is displayed directly beneath Calibrate as a full-size matching control.
 
-Test Mode is now independent of whether the calibration controls are open. Closing the editor no longer silently disables the forced LED display.
+The two controls now form a clean vertical stack:
 
-## Visible TEST MODE reminder
+- Calibrate: 138 × 34
+- TEST MODE: 138 × 34
+- 4 px spacing between the controls
 
-While Test Mode remains active, a small **TEST MODE** indicator is displayed directly beneath the normal **Calibrate** button.
+Existing profiles that still use the previous stock Calibrate coordinates are automatically moved to the new stock position. Profiles with genuinely customised Calibrate coordinates are left unchanged.
 
-This provides a persistent visual reminder that the faceplate is showing forced calibration LED states rather than normal live LED presentation.
+## Behaviour unchanged
 
-## Returning to Calibration
+This release does not change Test Mode logic introduced in v2.3.12:
 
-Opening Calibration again while Test Mode is active preserves the active Test Mode state.
+- Done saves and closes Calibration while Test Mode remains active
+- reopening Calibration preserves Test Mode
+- Cancel closes Calibration and turns Test Mode off
+- forced Status, RJ45, and SFP/uplink LED states remain unchanged
 
-The existing **Test Mode** control can be used to switch the mode off normally.
-
-Choosing **Cancel** continues to close Calibration and explicitly turns Test Mode off, providing a clear reset path.
-
-## Compatibility
-
-This update does not change:
-
-- saved calibration profile geometry
-- faceplate assignments
-- switch discovery
-- physical-port mappings
-- live telemetry values
-- Activity LED thresholds or timing
-
-The change is limited to Calibration Test Mode session behaviour and its visible status indicator.
+No Discovery, physical-port mapping, faceplate assignment, telemetry, calibration geometry, or Activity LED tuning behaviour is changed.
 
 ## Upgrade note
 
-Switch Vision Core v2.3.12 changes the Home Assistant custom integration card files and versioned frontend resources.
+Switch Vision Core v2.3.13 changes the Home Assistant custom integration/card files and versioned frontend resources.
 
 After updating Core through Switch Vision Installer, restart Home Assistant Core when prompted.

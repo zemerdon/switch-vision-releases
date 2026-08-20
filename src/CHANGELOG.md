@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.3.13 — Bottom-right Calibration controls
+
+- Moves the stock Calibrate control to the lower-right faceplate control area so the upper-right screw/hardware remains visible.
+- Displays persistent TEST MODE directly beneath Calibrate using the same 138 × 34 control size and a 4 px gap.
+- Reuses the normal Calibrate control styling so the two controls read as one intentional vertical control stack.
+- Automatically relocates profiles still using the previous exact stock Calibrate coordinates while preserving genuinely customised positions.
+- Keeps all v2.3.12 persistent Test Mode behaviour unchanged.
+- Does not change Discovery, physical-port mappings, faceplate assignments, telemetry, calibration geometry, or Activity LED tuning.
+- Changes the Home Assistant custom integration/card files; restart Home Assistant Core after updating.
+
 ## v2.3.12 — Persistent Calibration LED Test Mode
 
 - Keeps Calibration LED Test Mode active after **Done** closes and saves the calibration editor.
