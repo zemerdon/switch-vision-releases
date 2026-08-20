@@ -25,6 +25,13 @@ jobs:
           git fetch origin "$BRANCH"
           git switch -C "$BRANCH" "origin/$BRANCH"
 
+          git config user.name 'Switch Vision CI'
+          git config user.email 'actions@users.noreply.github.com'
+          printf 'started\n' > .svdev-test-mode-workflow-started
+          git add .svdev-test-mode-workflow-started
+          git commit -m 'Mark Test Mode maintenance workflow start'
+          git push origin "HEAD:$BRANCH"
+
           python3 <<'PY'
           from pathlib import Path
           import re
@@ -146,8 +153,7 @@ jobs:
           git diff --check
           git diff -- src/js/switch-vision.js
 
-          git config user.name 'Switch Vision CI'
-          git config user.email 'actions@users.noreply.github.com'
+          git rm .svdev-test-mode-workflow-started
           git add src/js/switch-vision.js
           git diff --cached --check
           git commit -m 'Keep calibration Test Mode active after Done'
