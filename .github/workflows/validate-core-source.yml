@@ -18,14 +18,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
-          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
           fetch-depth: 0
 
-      - name: Relocate calibration Test Mode
-        if: github.event_name == 'pull_request' && github.head_ref == 'feature/core-2.3.12-calibration-test-mode'
+      - name: Relocate calibration Test Mode on feature branch
         shell: bash
         run: |
           set -euo pipefail
+
+          git fetch origin feature/core-2.3.12-calibration-test-mode
+          git switch -C feature/core-2.3.12-calibration-test-mode origin/feature/core-2.3.12-calibration-test-mode
 
           python3 <<'PY'
           from pathlib import Path
@@ -56,19 +57,16 @@ jobs:
           sticky_count = text.count(sticky)
           profile_count = text.count(profile)
           action_count = text.count('data-cv-action="toggle-led-test-mode"')
-
           print(f"sticky Test Mode blocks: {sticky_count}")
           print(f"Profile & Advanced Actions insertion points: {profile_count}")
-          print(f"Test Mode actions before relocation: {action_count}")
-
-          if sticky_count == 0 and profile_count == 0 and action_count == 2:
-              print("Calibration Test Mode already relocated: PASS")
-              raise SystemExit(0)
+          print(f"Test Mode actions: {action_count}")
 
           if sticky_count != 2:
               raise SystemExit(f"expected exactly 2 sticky Test Mode blocks, found {sticky_count}")
           if profile_count != 2:
               raise SystemExit(f"expected exactly 2 Profile & Advanced Actions insertion points, found {profile_count}")
+          if action_count != 2:
+              raise SystemExit(f"expected exactly 2 Test Mode actions before relocation, found {action_count}")
 
           text = text.replace(sticky, "")
           text = text.replace(profile, replacement)
@@ -76,7 +74,7 @@ jobs:
           if text.count(sticky) != 0:
               raise SystemExit("old sticky Test Mode block remains")
           if text.count(replacement) != 2:
-              raise SystemExit("expected Test Mode in both Profile & Advanced Actions renderers")
+              raise SystemExit("Test Mode was not inserted into both Profile & Advanced Actions renderers")
           if text.count('data-cv-action="toggle-led-test-mode"') != 2:
               raise SystemExit("unexpected Test Mode action count after relocation")
 
@@ -86,12 +84,6 @@ jobs:
 
           node --check src/js/switch-vision.js
           git diff --check
-
-          if git diff --quiet -- src/js/switch-vision.js; then
-            echo "No relocation commit required."
-            exit 0
-          fi
-
           echo "===== EXACT RELOCATION DIFF ====="
           git diff -- src/js/switch-vision.js
 
@@ -100,7 +92,7 @@ jobs:
           git add src/js/switch-vision.js
           git diff --cached --check
           git commit -m "Move calibration Test Mode into advanced actions"
-          git push origin HEAD:${{ github.head_ref }}
+          git push origin HEAD:feature/core-2.3.12-calibration-test-mode
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
@@ -126,39 +118,18 @@ jobs:
           root = Path(".")
 
           component = json.loads(
-              (
-                  root
-                  / "src"
-                  / "custom_components"
-                  / "switch_vision"
-                  / "manifest.json"
-              ).read_text(encoding="utf-8")
+              (root / "src" / "custom_components" / "switch_vision" / "manifest.json").read_text(encoding="utf-8")
           )
-
           release_component = json.loads(
-              (
-                  root
-                  / "Releases"
-                  / f"switch-vision-{version}"
-                  / "custom_components"
-                  / "switch_vision"
-                  / "manifest.json"
-              ).read_text(encoding="utf-8")
+              (root / "Releases" / f"switch-vision-{version}" / "custom_components" / "switch_vision" / "manifest.json").read_text(encoding="utf-8")
           )
-
           release = json.loads(
-              (
-                  root
-                  / "Releases"
-                  / f"switch-vision-{version}"
-                  / "manifest.json"
-              ).read_text(encoding="utf-8")
+              (root / "Releases" / f"switch-vision-{version}" / "manifest.json").read_text(encoding="utf-8")
           )
 
           assert component["version"] == version
           assert release_component["version"] == version
           assert release["version"] == version
-
           print(f"Core {version} version contract: PASS")
           PY
 
