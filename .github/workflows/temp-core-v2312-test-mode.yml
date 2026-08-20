@@ -1,15 +1,13 @@
 name: One-shot Core v2.3.12 Test Mode Patch
 
 on:
-  issues:
-    types: [opened]
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
   patch:
-    if: github.event.issue.title == '[SVDEV-84F21] Core v2.3.12 Test Mode patch'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
