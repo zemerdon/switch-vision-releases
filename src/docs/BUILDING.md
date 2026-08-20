@@ -8,18 +8,12 @@ Run the build from the project root.
 python3 build.py -v <version>
 ```
 
-Automatic semantic-version bumps are supported:
-
-```bash
-python3 build.py --bump patch
-python3 build.py --bump minor
-python3 build.py --bump major
-```
+Automatic semantic-version bumping is intentionally disabled. Every release build must supply an explicit `-v/--version` so the requested version is reviewable before packaging.
 
 A wildcard selects the next free patch in a release line:
 
 ```bash
-python3 build.py -v 1.9.x
+python3 build.py -v 2.4.x
 ```
 
 Add `--gold` only when producing an officially promoted Gold baseline.
@@ -127,7 +121,19 @@ A public build validates:
 - repository-managed app exclusion from the main release/source archives;
 - source/release package hygiene.
 
-A failed build must not be published.
+### Mandatory Core release checklist
+
+Before a Core release can be published:
+
+- `VERSION`, the custom-integration manifest, source manifest, extracted release manifest, and card/panel runtime versions must all match the requested release;
+- the HAOS/manual Lovelace resource cache-buster must be exactly `/local/switch-vision/js/switch-vision.js?v=<version>` in both the source and extracted release manifests;
+- the permanent Core validator must pass JavaScript syntax, source/release parity, version/resource contract, cache hygiene, Python compilation, and a deterministic `build.py -v <version>` rebuild with zero repository drift;
+- maintenance regressions, including fractional link-speed display checks, must pass;
+- the release publisher must target the exact clean validated `main` SHA and independently verify the tag, assets, checksum, draft status, and prerelease status.
+
+If a manual Lovelace resource was previously configured in Home Assistant, its `?v=` suffix must be updated to the new Core version after installation so the browser cannot reuse an older cached card resource.
+
+A failed build or release check must not be published.
 
 ## Components requiring runtime action
 
