@@ -17,11 +17,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: "3.12"
+
+      - name: Install build dependency
+        run: python3 -m pip install --disable-pip-version-check PyYAML
+
+      - name: Validate JavaScript syntax
+        run: |
+          node --check src/js/switch-vision.js
+          node --check src/custom_components/switch_vision/switch-vision-card.js
+          node --check src/custom_components/switch_vision/switch-vision-panel.js
+          node --check src/custom_components/switch_vision/switch-vision-dashboard-strategy.js
 
       - name: Validate Core source/release parity
         run: python3 tools/check_core_release_parity.py
@@ -102,3 +114,27 @@ jobs:
             src/custom_components/switch_vision/__init__.py \
             src/custom_components/switch_vision/config_flow.py \
             src/devices/generate_supported_devices.py
+
+      - name: Rebuild current release deterministically
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="$(cat VERSION)"
+
+          python3 build.py -v "$VERSION"
+
+          rm -f \
+            "Releases/switch-vision-$VERSION.zip" \
+            "Releases/switch-vision-$VERSION.zip.sha256" \
+            "Switch_Vision_v${VERSION}_source.zip" \
+            "Switch_Vision_v${VERSION}_SHA256SUMS.txt"
+
+          git diff --exit-code
+
+          if [ -n "$(git status --porcelain --untracked-files=all)" ]; then
+            echo "ERROR: deterministic rebuild left unexpected untracked files:"
+            git status --short --untracked-files=all
+            exit 1
+          fi
+
+          echo "Core deterministic rebuild: PASS"
