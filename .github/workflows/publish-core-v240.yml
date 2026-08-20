@@ -1,0 +1,115 @@
+name: Publish Core v2.4.0
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    if: ${{ github.event.pull_request.head.ref == 'maint/core-2.4.0-publish-trigger' }}
+    name: Publish and verify Core v2.4.0
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      VERSION: "2.4.0"
+      PREVIOUS_VERSION: "2.3.16"
+      TARGET_SHA: "fba327bbd2eea8a03ce1bf28f90342fe064728ba"
+      EXPECTED_FACEPLATE_SHA: "3843544aedd63e8d591fec3c77741686ce2820a1d49ab464cee2b25f23c1f7b7"
+
+    steps:
+      - name: Checkout clean release target
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          ref: ${{ env.TARGET_SHA }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+
+      - name: Install build dependency
+        run: python3 -m pip install --disable-pip-version-check PyYAML
+
+      - name: Rebuild, publish and verify
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if gh release view "$VERSION" >/dev/null 2>&1; then
+            echo "STOP: GitHub Release $VERSION already exists"
+            exit 1
+          fi
+          if git ls-remote --exit-code --tags origin "refs/tags/$VERSION" >/dev/null 2>&1; then
+            echo "STOP: tag $VERSION already exists"
+            exit 1
+          fi
+
+          test "$(cat VERSION)" = "$VERSION"
+          python3 build.py -v "$VERSION"
+          git diff --exit-code
+
+          node --check src/js/switch-vision.js
+          node --check src/custom_components/switch_vision/switch-vision-card.js
+          python3 tools/check_core_release_parity.py
+
+          test "$(sha256sum src/faceplates/unifi-24p-rj45-2sfp.png | awk '{print $1}')" = "$EXPECTED_FACEPLATE_SHA"
+          test "$(sha256sum Releases/switch-vision-$VERSION/faceplates/unifi-24p-rj45-2sfp.png | awk '{print $1}')" = "$EXPECTED_FACEPLATE_SHA"
+
+          previous_assets="$(gh release view "$PREVIOUS_VERSION" --json assets --jq '.assets[].name')"
+          assets=(
+            "Releases/switch-vision-$VERSION.zip"
+            "Releases/switch-vision-$VERSION.zip.sha256"
+          )
+          if grep -Fxq "Switch_Vision_v${PREVIOUS_VERSION}_source.zip" <<<"$previous_assets"; then
+            assets+=("Switch_Vision_v${VERSION}_source.zip")
+          fi
+          if grep -Fxq "Switch_Vision_v${PREVIOUS_VERSION}_SHA256SUMS.txt" <<<"$previous_assets"; then
+            assets+=("Switch_Vision_v${VERSION}_SHA256SUMS.txt")
+          fi
+
+          for asset in "${assets[@]}"; do
+            test -f "$asset"
+          done
+
+          gh release create "$VERSION" \
+            --target "$TARGET_SHA" \
+            --title "Switch Vision Core v$VERSION — UniFi faceplate refresh" \
+            --notes-file RELEASE_NOTES.md \
+            "${assets[@]}"
+
+          current_assets="$(gh release view "$VERSION" --json assets --jq '.assets[].name')"
+          grep -Fxq "switch-vision-$VERSION.zip" <<<"$current_assets"
+          grep -Fxq "switch-vision-$VERSION.zip.sha256" <<<"$current_assets"
+          if grep -Fxq "Switch_Vision_v${PREVIOUS_VERSION}_source.zip" <<<"$previous_assets"; then
+            grep -Fxq "Switch_Vision_v${VERSION}_source.zip" <<<"$current_assets"
+          fi
+          if grep -Fxq "Switch_Vision_v${PREVIOUS_VERSION}_SHA256SUMS.txt" <<<"$previous_assets"; then
+            grep -Fxq "Switch_Vision_v${VERSION}_SHA256SUMS.txt" <<<"$current_assets"
+          fi
+
+          git fetch --force origin "refs/tags/$VERSION:refs/tags/$VERSION"
+          tag_commit="$(git rev-parse "$VERSION^{commit}")"
+          test "$tag_commit" = "$TARGET_SHA"
+          test "$(gh release view "$VERSION" --json isDraft --jq '.isDraft')" = "false"
+          test "$(gh release view "$VERSION" --json isPrerelease --jq '.isPrerelease')" = "false"
+
+          git fetch origin main
+          git switch -C main origin/main
+          {
+            echo "Switch Vision Core v$VERSION release verification: PASS"
+            echo "tag_commit=$tag_commit"
+            echo "approved_unifi_faceplate_sha256=$EXPECTED_FACEPLATE_SHA"
+            echo "assets:"
+            printf '%s\n' "$current_assets"
+          } > .sv-core-v240-release-verified
+
+          git config user.name 'Switch Vision CI'
+          git config user.email 'actions@users.noreply.github.com'
+          git add .sv-core-v240-release-verified
+          git commit -m 'Verify Switch Vision Core v2.4.0 release'
+          git push origin HEAD:main
