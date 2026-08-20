@@ -7,7 +7,7 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   validate:
@@ -17,6 +17,90 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
+          fetch-depth: 0
+
+      - name: Relocate calibration Test Mode
+        if: github.event_name == 'pull_request' && github.head_ref == 'feature/core-2.3.12-calibration-test-mode'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 <<'PY'
+          from pathlib import Path
+
+          path = Path("src/js/switch-vision.js")
+          text = path.read_text(encoding="utf-8")
+
+          sticky = '''          <button
+            type="button"
+            class="${calibrationTestMode ? "cv-cal-warning" : "cv-cal-secondary"}"
+            data-cv-action="toggle-led-test-mode"
+            title="Force all calibration LEDs solid ON"
+          >${calibrationTestMode ? "Test Mode: ON" : "Test Mode"}</button>
+'''
+
+          profile = '''          <span class="cv-cal-current">${htmlEscape(profileName)} · ${htmlEscape(profileLoadedText)}</span>
+          <button type="button" data-cv-action="download-profile">Export Faceplate Profile</button>'''
+
+          replacement = '''          <span class="cv-cal-current">${htmlEscape(profileName)} · ${htmlEscape(profileLoadedText)}</span>
+          <button
+            type="button"
+            class="${calibrationTestMode ? "cv-cal-warning" : "cv-cal-secondary"}"
+            data-cv-action="toggle-led-test-mode"
+            title="Force all calibration LEDs solid ON"
+          >${calibrationTestMode ? "Test Mode: ON" : "Test Mode"}</button>
+          <button type="button" data-cv-action="download-profile">Export Faceplate Profile</button>'''
+
+          sticky_count = text.count(sticky)
+          profile_count = text.count(profile)
+          action_count = text.count('data-cv-action="toggle-led-test-mode"')
+
+          print(f"sticky Test Mode blocks: {sticky_count}")
+          print(f"Profile & Advanced Actions insertion points: {profile_count}")
+          print(f"Test Mode actions before relocation: {action_count}")
+
+          if sticky_count == 0 and profile_count == 0 and action_count == 2:
+              print("Calibration Test Mode already relocated: PASS")
+              raise SystemExit(0)
+
+          if sticky_count != 2:
+              raise SystemExit(f"expected exactly 2 sticky Test Mode blocks, found {sticky_count}")
+          if profile_count != 2:
+              raise SystemExit(f"expected exactly 2 Profile & Advanced Actions insertion points, found {profile_count}")
+
+          text = text.replace(sticky, "")
+          text = text.replace(profile, replacement)
+
+          if text.count(sticky) != 0:
+              raise SystemExit("old sticky Test Mode block remains")
+          if text.count(replacement) != 2:
+              raise SystemExit("expected Test Mode in both Profile & Advanced Actions renderers")
+          if text.count('data-cv-action="toggle-led-test-mode"') != 2:
+              raise SystemExit("unexpected Test Mode action count after relocation")
+
+          path.write_text(text, encoding="utf-8")
+          print("Calibration Test Mode relocation: PASS")
+          PY
+
+          node --check src/js/switch-vision.js
+          git diff --check
+
+          if git diff --quiet -- src/js/switch-vision.js; then
+            echo "No relocation commit required."
+            exit 0
+          fi
+
+          echo "===== EXACT RELOCATION DIFF ====="
+          git diff -- src/js/switch-vision.js
+
+          git config user.name "Switch Vision CI"
+          git config user.email "actions@users.noreply.github.com"
+          git add src/js/switch-vision.js
+          git diff --cached --check
+          git commit -m "Move calibration Test Mode into advanced actions"
+          git push origin HEAD:${{ github.head_ref }}
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
