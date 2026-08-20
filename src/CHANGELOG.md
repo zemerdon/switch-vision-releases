@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.3.16 — No-overlap Test Mode placement
+
+- Positions TEST MODE from actual rendered browser geometry instead of calibration design-space button dimensions.
+- Prefers a real 30 px gap below Calibrate and automatically falls back above or horizontally when needed.
+- Recalculates placement after faceplate load and responsive stage resizing.
+- Prevents TEST MODE from overlapping Calibrate on shallow or unusual-aspect faceplates.
+- Keeps all Test Mode persistence behaviour unchanged.
+- Changes the Home Assistant custom integration/card files; restart Home Assistant Core after updating.
+
 ## v2.3.15 — Consistent Test Mode spacing
 
 - Uses a real 10 CSS px gap between Calibrate and TEST MODE so shallow faceplates do not compress the spacing.
