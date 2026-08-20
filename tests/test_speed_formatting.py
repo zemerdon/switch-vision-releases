@@ -45,7 +45,12 @@ class SpeedFormattingTests(unittest.TestCase):
     def test_fractional_gigabit_speed_is_not_rounded_up(self) -> None:
         source = CARD.read_text(encoding="utf-8")
         function = extract_js_function(source, "function formatSpeedMbps(raw)")
+        # formatSpeedMbps delegates input sanitisation to usableValue().  These
+        # cases are deliberately valid numeric telemetry, so a tiny identity
+        # stub isolates and executes the real formatter without pulling the
+        # whole browser card into Node.
         harness = f"""
+function usableValue(raw) {{ return raw; }}
 {function}
 const cases = [
   [1000, '1G'],
