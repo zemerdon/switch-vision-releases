@@ -1247,7 +1247,11 @@ def validate_device_visual_recommendations(base: Path, source_layout: bool = Fal
         rj45 = int(ports.get("rj45") or 0)
         uplinks = int(ports.get("uplinks") or 0)
 
-        if model in exact_visual_overrides:
+        vendor = str(device.get("vendor") or "").strip()
+        if vendor == "Ubiquiti":
+            expected_profile = "unifi_24p_rj45_2sfp"
+            expected_faceplate = "faceplates/unifi-24p-rj45-2sfp.png"
+        elif model in exact_visual_overrides:
             expected_profile, expected_faceplate = exact_visual_overrides[model]
         else:
             family = 24 if rj45 <= 24 else 48
