@@ -1,0 +1,181 @@
+name: Publish Core Release
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      startsWith(github.event.pull_request.head.ref, 'release/core-')
+    name: Core release request
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
+
+    steps:
+      - name: Checkout release request
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Validate release request
+        id: request
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          test -f .sv-release-request.json
+
+          git fetch origin main --tags
+          mapfile -t changed < <(git diff --name-only "$BASE_SHA...HEAD")
+          if [ "${#changed[@]}" -ne 1 ] || [ "${changed[0]}" != ".sv-release-request.json" ]; then
+            echo "ERROR: release-request PR must change only .sv-release-request.json"
+            printf 'Changed: %s\n' "${changed[@]}"
+            exit 1
+          fi
+
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          import re
+          from pathlib import Path
+
+          data = json.loads(Path('.sv-release-request.json').read_text(encoding='utf-8'))
+          version = str(data.get('version') or '').strip().lstrip('v')
+          target = str(data.get('target_sha') or '').strip()
+          publish = data.get('publish', False)
+          title = str(data.get('title') or f'Switch Vision Core v{version}').strip()
+
+          if not re.fullmatch(r'\d+\.\d+\.\d+', version):
+              raise SystemExit('ERROR: request.version must be an exact semantic version')
+          if not re.fullmatch(r'[0-9a-f]{40}', target):
+              raise SystemExit('ERROR: request.target_sha must be a full 40-character commit SHA')
+          if not isinstance(publish, bool):
+              raise SystemExit('ERROR: request.publish must be true or false')
+          if not title or '\n' in title or '\r' in title:
+              raise SystemExit('ERROR: request.title must be a single non-empty line')
+
+          print(f'version={version}')
+          print(f'target_sha={target}')
+          print(f'publish={str(publish).lower()}')
+          print(f'title={title}')
+          PY
+
+          TARGET_SHA="$(python3 -c 'import json; print(json.load(open(".sv-release-request.json"))["target_sha"])')"
+          git cat-file -e "$TARGET_SHA^{commit}"
+          git merge-base --is-ancestor "$TARGET_SHA" "$BASE_SHA"
+
+          PUBLISH="$(python3 -c 'import json; print(str(bool(json.load(open(".sv-release-request.json")).get("publish", False))).lower())')"
+          if [ "$PUBLISH" = "true" ] && [ "$TARGET_SHA" != "$BASE_SHA" ]; then
+            echo "ERROR: publish requests must target the exact main SHA used as the PR base"
+            echo "target=$TARGET_SHA base=$BASE_SHA"
+            exit 1
+          fi
+
+      - name: Checkout exact release target
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          ref: ${{ steps.request.outputs.target_sha }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+
+      - name: Install build dependency
+        run: python3 -m pip install --disable-pip-version-check PyYAML
+
+      - name: Build and validate exact target
+        shell: bash
+        env:
+          VERSION: ${{ steps.request.outputs.version }}
+        run: |
+          set -euo pipefail
+
+          test "$(cat VERSION)" = "$VERSION"
+          python3 build.py -v "$VERSION"
+          git diff --exit-code
+
+          node --check src/js/switch-vision.js
+          node --check src/custom_components/switch_vision/switch-vision-card.js
+          node --check src/custom_components/switch_vision/switch-vision-panel.js
+          node --check src/custom_components/switch_vision/switch-vision-dashboard-strategy.js
+          python3 tools/check_core_release_parity.py
+
+          test -f "Releases/switch-vision-$VERSION.zip"
+          test -f "Releases/switch-vision-$VERSION.zip.sha256"
+          test -f "Switch_Vision_v${VERSION}_source.zip"
+
+          expected="$(awk '{print $1}' "Releases/switch-vision-$VERSION.zip.sha256")"
+          actual="$(sha256sum "Releases/switch-vision-$VERSION.zip" | awk '{print $1}')"
+          test "$actual" = "$expected"
+
+          echo "Core release preflight for $VERSION: PASS"
+
+      - name: Dry-run complete
+        if: ${{ steps.request.outputs.publish != 'true' }}
+        run: |
+          echo "Core release workflow DRY RUN: PASS"
+          echo "version=${{ steps.request.outputs.version }}"
+          echo "target=${{ steps.request.outputs.target_sha }}"
+
+      - name: Publish and verify release
+        if: ${{ steps.request.outputs.publish == 'true' }}
+        shell: bash
+        env:
+          VERSION: ${{ steps.request.outputs.version }}
+          TARGET_SHA: ${{ steps.request.outputs.target_sha }}
+          RELEASE_TITLE: ${{ steps.request.outputs.title }}
+        run: |
+          set -euo pipefail
+
+          if gh release view "$VERSION" >/dev/null 2>&1; then
+            echo "ERROR: GitHub Release $VERSION already exists"
+            exit 1
+          fi
+          if git ls-remote --exit-code --tags origin "refs/tags/$VERSION" >/dev/null 2>&1; then
+            echo "ERROR: tag $VERSION already exists"
+            exit 1
+          fi
+
+          assets=(
+            "Releases/switch-vision-$VERSION.zip"
+            "Releases/switch-vision-$VERSION.zip.sha256"
+            "Switch_Vision_v${VERSION}_source.zip"
+          )
+
+          gh release create "$VERSION" \
+            --target "$TARGET_SHA" \
+            --title "$RELEASE_TITLE" \
+            --notes-file RELEASE_NOTES.md \
+            "${assets[@]}"
+
+          current_assets="$(gh release view "$VERSION" --json assets --jq '.assets[].name')"
+          for name in \
+            "switch-vision-$VERSION.zip" \
+            "switch-vision-$VERSION.zip.sha256" \
+            "Switch_Vision_v${VERSION}_source.zip"; do
+            grep -Fxq "$name" <<<"$current_assets"
+          done
+
+          asset_count="$(printf '%s\n' "$current_assets" | sed '/^$/d' | wc -l)"
+          test "$asset_count" -eq 3
+
+          git fetch --force origin "refs/tags/$VERSION:refs/tags/$VERSION"
+          test "$(git rev-parse "$VERSION^{commit}")" = "$TARGET_SHA"
+          test "$(gh release view "$VERSION" --json isDraft --jq '.isDraft')" = "false"
+          test "$(gh release view "$VERSION" --json isPrerelease --jq '.isPrerelease')" = "false"
+
+          echo "Core release publication for $VERSION: PASS"
