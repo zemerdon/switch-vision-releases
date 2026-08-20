@@ -1,0 +1,107 @@
+{
+  "title": "Switch Vision",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up Switch Vision",
+        "description": "Create the Switch Vision integration entry. Existing calibration profiles and generated dashboard configuration are preserved."
+      }
+    },
+    "abort": {
+      "already_configured": "Switch Vision is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Switch Vision Core settings",
+        "description": "Configure shared Switch Vision Core dashboard behaviour. Activity LED settings apply integration-wide to Native, Community, and custom Switch Vision cards.",
+        "data": {
+          "reset_to_defaults": "Reset all Switch Vision Core settings to defaults"
+        },
+        "data_description": {
+          "reset_to_defaults": "When enabled, saving this form restores every Switch Vision Core option on this page to the v2.2 factory defaults."
+        },
+        "sections": {
+          "dashboard": {
+            "name": "Dashboard",
+            "description": "Shared dashboard and sidebar controls.",
+            "data": {
+              "show_panel_in_sidebar": "Show automatic Native Switch Vision panel in sidebar",
+              "show_lovelace_dashboard_in_sidebar": "Show Switch Vision Lovelace dashboard in sidebar",
+              "show_calibration_buttons": "Show calibration buttons on switch cards",
+              "show_dashboard_header": "Show dashboard header",
+              "show_card_headers": "Show card headers"
+            },
+            "data_description": {
+              "show_panel_in_sidebar": "Show or hide the automatic Native Switch Vision panel at /switch-vision.",
+              "show_lovelace_dashboard_in_sidebar": "Show or hide Home Assistant dashboards created with the Switch Vision Community dashboard strategy.",
+              "show_calibration_buttons": "Show or hide the on-card Calibration button on the automatic generated Switch Vision dashboard.",
+              "show_dashboard_header": "Show or hide the native dashboard summary row containing switch count, last-generated status, Refresh, and version.",
+              "show_card_headers": "Show or hide the complete header row on every Switch Vision card, including custom YAML cards."
+            }
+          },
+          "activity_leds": {
+            "name": "Activity LEDs",
+            "description": "Activity LED 2.0 maps measured RX + TX throughput to negotiated link utilisation. Presets control when Medium and Fast activity begin; Custom uses the two threshold fields below.",
+            "data": {
+              "activity_led_sensitivity_preset": "Sensitivity preset",
+              "activity_slow_max_utilization_pct": "Custom: Medium starts at link utilisation (%)",
+              "activity_medium_max_utilization_pct": "Custom: Fast starts at link utilisation (%)",
+              "activity_slow_period_ms": "Slow blink period (ms)",
+              "activity_medium_period_ms": "Medium blink period (ms)",
+              "activity_fast_period_ms": "Fast blink period (ms)",
+              "activity_hold_seconds": "Activity hold (seconds)",
+              "activity_hysteresis_pct": "Threshold hysteresis (%)"
+            },
+            "data_description": {
+              "activity_led_sensitivity_preset": "Low is calmer, Normal is the v2.2 default, High reacts to very light traffic, and Custom uses your utilisation thresholds.",
+              "activity_slow_max_utilization_pct": "Used only with Custom. Below this utilisation the LED uses the Slow band.",
+              "activity_medium_max_utilization_pct": "Used only with Custom. At or above this utilisation the LED uses the Fast band.",
+              "activity_slow_period_ms": "Time for one complete Slow blink cycle. Larger values blink more slowly.",
+              "activity_medium_period_ms": "Time for one complete Medium blink cycle.",
+              "activity_fast_period_ms": "Time for one complete Fast blink cycle. Minimum supported value is 120 ms.",
+              "activity_hold_seconds": "Keeps the last detected activity visible between telemetry samples. The default 12 seconds is tuned for the current 10-second traffic cadence.",
+              "activity_hysteresis_pct": "Adds a buffer around utilisation thresholds so activity does not rapidly jump between Slow, Medium, and Fast near a boundary."
+            }
+          },
+          "discovery": {
+            "name": "Switch Vision Discovery",
+            "description": "Shared presentation controls read by supported Switch Vision Discovery versions.",
+            "data": {
+              "discovery_ui_density": "Discovery UI density",
+              "discovery_text_size": "Discovery text size",
+              "discovery_content_width": "Discovery content width",
+              "show_unifi_integration": "Show UniFi2MQTT integration in Switch Vision Hub"
+            },
+            "data_description": {
+              "discovery_ui_density": "Comfortable uses generous spacing; Compact fits more onscreen; Dense maximizes visible information.",
+              "discovery_text_size": "Normal uses the standard Discovery text size; Small uses reduced typography.",
+              "discovery_content_width": "Standard uses the original width; Wide expands the workspace; Full uses the available browser width.",
+              "show_unifi_integration": "Show or hide the UniFi2MQTT section in Switch Vision Hub."
+            }
+          },
+          "installer": {
+            "name": "Switch Vision Installer",
+            "description": "Shared presentation controls read by supported Switch Vision Installer versions.",
+            "data": {
+              "installer_ui_density": "Installer UI density",
+              "installer_text_size": "Installer text size",
+              "installer_content_width": "Installer content width"
+            },
+            "data_description": {
+              "installer_ui_density": "Controls spacing in supported Switch Vision Installer versions.",
+              "installer_text_size": "Controls text size in supported Switch Vision Installer versions.",
+              "installer_content_width": "Controls content width in supported Switch Vision Installer versions."
+            }
+          }
+        }
+      }
+    },
+    "error": {
+      "invalid_activity_thresholds": "Custom Activity LED thresholds must place the Medium threshold below the Fast threshold.",
+      "invalid_activity_periods": "Activity LED blink periods must be ordered Fast \u2264 Medium \u2264 Slow."
+    }
+  },
+  "selector": {}
+}
