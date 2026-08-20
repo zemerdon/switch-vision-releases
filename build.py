@@ -1221,71 +1221,60 @@ def validate_device_visual_recommendations(base: Path, source_layout: bool = Fal
         for key, value in expected.items():
             if item.get(key) != value:
                 errors.append(f"{model}: {key}={item.get(key)!r}, expected {value!r}")
-    # Generic stock visual policy:
-    #   <= 24 RJ45 -> stock 24-port family
-    #   > 24 RJ45  -> stock 48-port family
-    #   0-2 uplinks -> 2-SFP variant
-    #   3-4 uplinks -> 4-SFP variant
-    #
-    # The dedicated WS-C3560CG-8PC-S visual/profile is reserved exclusively
-    # for that exact model and must never be used as a generic fallback.
+    # Registry-authoritative visual policy:
+    # exact-model visual/profile choices are evidence owned by the device
+    # registry. Do not derive them from vendor or coarse port counts here.
+    # This is essential for UniFi hardware whose exact models range from
+    # compact 5/8-port devices through 48-port switches.
     dedicated_model = "WS-C3560CG-8PC-S"
-
-    exact_visual_overrides = {
-        "WS-C3650-48PD-E": ("default_cisco_48_port", "faceplates/48rj45-4sfp.png"),
-        "WS-C3650-48PD-L": ("default_cisco_48_port", "faceplates/48rj45-4sfp.png"),
-        "WS-C2960X-48FPD-L": ("cisco_2960s_48p", "faceplates/48rj45-2sfp.png"),
-        "WS-C2960X-24PS-L": ("cisco_2960x_24p", "faceplates/24rj45-4sfp.png"),
-        "WS-C2960X-24TS-L": ("cisco_2960x_24p", "faceplates/24rj45-4sfp.png"),
-        "WS-C2960S-48FPD-L": ("cisco_2960s_48p", "faceplates/48rj45-2sfp.png"),
-        "WS-C3560CG-8PC-S": ("cisco_3560cg_8pc", "faceplates/c3560cg-8pc-s.png"),
-        "EX3300-48P": ("default_cisco_48_port", "faceplates/48rj45-4sfp.png"),
+    profile_faceplate_pairs = {
+        "stock_24rj45_2sfp": "faceplates/24rj45-2sfp.png",
+        "stock_24rj45_4sfp": "faceplates/24rj45-4sfp.png",
+        "stock_48rj45_2sfp": "faceplates/48rj45-2sfp.png",
+        "stock_48rj45_4sfp": "faceplates/48rj45-4sfp.png",
+        "unifi_24p_rj45_2sfp": "faceplates/unifi-24p-rj45-2sfp.png",
     }
 
     for model, device in devices.items():
-        ports = device.get("ports") if isinstance(device.get("ports"), dict) else {}
-        rj45 = int(ports.get("rj45") or 0)
-        uplinks = int(ports.get("uplinks") or 0)
+        visuals = device.get("visuals") if isinstance(device.get("visuals"), dict) else {}
+        expected_profile = str(device.get("calibration_profile") or "").strip()
+        expected_faceplate = str(device.get("default_faceplate") or "").strip()
 
-        vendor = str(device.get("vendor") or "").strip()
-        if vendor == "Ubiquiti":
-            expected_profile = "unifi_24p_rj45_2sfp"
-            expected_faceplate = "faceplates/unifi-24p-rj45-2sfp.png"
-        elif model in exact_visual_overrides:
-            expected_profile, expected_faceplate = exact_visual_overrides[model]
-        else:
-            family = 24 if rj45 <= 24 else 48
-            sfp = 2 if uplinks <= 2 else 4
-            expected_profile = f"stock_{family}rj45_{sfp}sfp"
-            expected_faceplate = f"faceplates/{family}rj45-{sfp}sfp.png"
+        if not expected_profile:
+            errors.append(f"{model}: registry calibration_profile is missing")
+        if not expected_faceplate:
+            errors.append(f"{model}: registry default_faceplate is missing")
 
-        if device.get("calibration_profile") != expected_profile:
+        paired_faceplate = profile_faceplate_pairs.get(expected_profile)
+        if paired_faceplate and expected_faceplate != paired_faceplate:
             errors.append(
-                f"{model}: registry calibration_profile={device.get('calibration_profile')!r}, "
-                f"expected {expected_profile!r}"
+                f"{model}: profile {expected_profile!r} must use {paired_faceplate!r}, "
+                f"not {expected_faceplate!r}"
             )
 
-        if device.get("default_faceplate") != expected_faceplate:
+        if visuals.get("calibration_profile") != expected_profile:
             errors.append(
-                f"{model}: registry default_faceplate={device.get('default_faceplate')!r}, "
-                f"expected {expected_faceplate!r}"
+                f"{model}: visuals.calibration_profile={visuals.get('calibration_profile')!r}, "
+                f"expected registry calibration_profile {expected_profile!r}"
+            )
+        if visuals.get("recommended_faceplate") != expected_faceplate:
+            errors.append(
+                f"{model}: visuals.recommended_faceplate={visuals.get('recommended_faceplate')!r}, "
+                f"expected registry default_faceplate {expected_faceplate!r}"
             )
 
         item = next(
             (row for row in recommendations if row.get("model") == model),
             None,
         )
-
         if item is None:
             errors.append(f"{model}: embedded model visual recommendation is missing")
             continue
-
         if item.get("profile") != expected_profile:
             errors.append(
                 f"{model}: embedded profile={item.get('profile')!r}, "
                 f"expected {expected_profile!r}"
             )
-
         if item.get("faceplate") != expected_faceplate:
             errors.append(
                 f"{model}: embedded faceplate={item.get('faceplate')!r}, "
@@ -1294,9 +1283,9 @@ def validate_device_visual_recommendations(base: Path, source_layout: bool = Fal
 
         if model != dedicated_model:
             if item.get("profile") == "cisco_3560cg_8pc":
-                errors.append(f"{model}: dedicated 3560CG calibration leaked into fallback")
+                errors.append(f"{model}: dedicated 3560CG calibration leaked into another exact model")
             if item.get("faceplate") == "faceplates/c3560cg-8pc-s.png":
-                errors.append(f"{model}: dedicated 3560CG faceplate leaked into fallback")
+                errors.append(f"{model}: dedicated 3560CG faceplate leaked into another exact model")
 
     if errors:
         raise SystemExit("Device visual recommendation validation failed:\n- " + "\n- ".join(errors))

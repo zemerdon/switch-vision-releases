@@ -1,3 +1,10 @@
+## v2.4.1
+
+- Promoted 11 Discovery-only exact model entries into the Core supported-device index without changing their support status.
+- Preserved Discovery's exact model evidence, geometry, mapping profiles and visual recommendations.
+- Replaced the blanket Ubiquiti 24-port visual validation rule with registry-authoritative per-model visual validation.
+- Kept existing saved/custom calibrations and telemetry contracts unchanged.
+
 ## v2.4.0
 
 - Added the dedicated `unifi-24p-rj45-2sfp.png` UniFi / Ubiquiti faceplate and authoritative factory calibration.
