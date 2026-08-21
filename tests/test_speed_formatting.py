@@ -42,6 +42,24 @@ def extract_js_function(source: str, signature: str) -> str:
 
 
 class SpeedFormattingTests(unittest.TestCase):
+    def test_selected_sfp_link_uses_negotiated_speed(self) -> None:
+        source = CARD.read_text(encoding="utf-8")
+        selected = extract_js_function(
+            source, "function selectedSfpDetails(hass, config, port)"
+        )
+        helper = extract_js_function(
+            source, "function sfpSpeedMbps(hass, config, port)"
+        )
+
+        self.assertNotIn('10G Full', selected)
+        self.assertIn(
+            "link: speedLabel(sfpSpeedMbps(hass, config, n), up)",
+            selected,
+        )
+        self.assertIn("_sfp_1g_", helper)
+        self.assertIn("_sfp_10g_", helper)
+        self.assertIn("_uplink_", helper)
+
     def test_fractional_gigabit_speed_is_not_rounded_up(self) -> None:
         source = CARD.read_text(encoding="utf-8")
         function = extract_js_function(source, "function formatSpeedMbps(raw)")

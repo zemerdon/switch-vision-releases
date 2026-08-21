@@ -1,3 +1,10 @@
+## v2.4.8 — SFP negotiated-speed status labels
+
+- Replace the generic SFP status-panel 10G fallback with the existing live SFP speed resolver.
+- Huawei S5720 1G SFP uplinks now display 1G instead of 10G when negotiated/current speed telemetry reports 1000 Mbps.
+- Preserve UniFi, 10G SFP+, link-down, traffic, Activity LED, calibration, Discovery handoff, and device-mapping behaviour.
+- Add permanent regression coverage preventing a hard-coded 10G SFP status fallback from returning.
+
 ## v2.4.7 — Audit hardening
 
 - Register calibration and Switch Vision UI mutation services with Home Assistant's admin-only service helper, including save/delete/reset/reload calibration actions and UI density changes.
