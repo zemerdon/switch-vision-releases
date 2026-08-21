@@ -58,6 +58,7 @@ jobs:
           exec(compile(prefix, str(path), "exec"), namespace)
           PY
           python3 tools/apply_sv_2026_000002_registry_review.py
+          python3 tools/apply_sv_2026_000002_guard.py
 
       - name: Rebuild patched review tree
         shell: bash
