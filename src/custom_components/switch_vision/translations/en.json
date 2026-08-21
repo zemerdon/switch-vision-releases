@@ -15,7 +15,7 @@
     "step": {
       "init": {
         "title": "Switch Vision Core settings",
-        "description": "Configure shared Switch Vision Core dashboard behaviour. Activity LED settings apply integration-wide to Native, Community, and custom Switch Vision cards.",
+        "description": "Configure Switch Vision sidebar visibility, the Native dashboard shortcut header, shared card presentation, Activity LEDs, Discovery, and Installer presentation.",
         "data": {
           "reset_to_defaults": "Reset all Switch Vision Core settings to defaults"
         },
@@ -23,21 +23,75 @@
           "reset_to_defaults": "When enabled, saving this form restores every Switch Vision Core option on this page to the v2.2 factory defaults."
         },
         "sections": {
-          "dashboard": {
-            "name": "Dashboard",
-            "description": "Shared dashboard and sidebar controls.",
+          "sidebar": {
+            "name": "Sidebar",
+            "description": "Central visibility controls for every installed Switch Vision sidebar-capable panel. Not-installed apps remain visible here as read-only status rows.",
             "data": {
-              "show_panel_in_sidebar": "Show automatic Native Switch Vision panel in sidebar",
-              "show_lovelace_dashboard_in_sidebar": "Show Switch Vision Lovelace dashboard in sidebar",
+              "show_all_switch_vision_sidebar_items": "Show all Switch Vision sidebar items",
+              "show_panel_in_sidebar": "Native Switch Vision",
+              "show_lovelace_dashboard_in_sidebar": "Switch Vision Dashboard",
+              "show_hub_in_sidebar": "Switch Vision Hub",
+              "show_installer_in_sidebar": "Switch Vision Installer",
+              "sidebar_hub_not_installed": "Switch Vision Hub — Not installed",
+              "sidebar_installer_not_installed": "Switch Vision Installer — Not installed"
+            },
+            "data_description": {
+              "show_all_switch_vision_sidebar_items": "Master switch. Turning this off hides all Switch Vision-managed sidebar entries while preserving the individual choices below.",
+              "show_panel_in_sidebar": "Show or hide the automatic Native Switch Vision panel at /switch-vision.",
+              "show_lovelace_dashboard_in_sidebar": "Show or hide Home Assistant dashboards created with the Switch Vision Community dashboard strategy.",
+              "show_hub_in_sidebar": "Show or hide the Switch Vision Hub ingress panel supplied by Discovery.",
+              "show_installer_in_sidebar": "Show or hide the Switch Vision Installer ingress panel.",
+              "sidebar_hub_not_installed": "Install Switch Vision Discovery to enable this sidebar item.",
+              "sidebar_installer_not_installed": "Install Switch Vision Installer to enable this sidebar item."
+            }
+          },
+          "native_header": {
+            "name": "Native Dashboard Header",
+            "description": "Choose what appears above the Native Switch Vision dashboard. Enabled shortcuts can be dragged into any order directly on the dashboard using Customize.",
+            "data": {
+              "show_dashboard_header": "Enable Native Dashboard Header",
+              "native_header_show_summary": "Show status summary",
+              "native_header_show_refresh": "Show Refresh button",
+              "native_header_show_version": "Show version badge",
+              "native_header_shortcut_switch_vision_settings": "Shortcut: Switch Vision Settings",
+              "native_header_shortcut_hub": "Shortcut: Switch Vision Hub",
+              "native_header_shortcut_discovery_settings": "Shortcut: Discovery Settings",
+              "native_header_shortcut_installer": "Shortcut: Switch Vision Installer",
+              "native_header_shortcut_installer_settings": "Shortcut: Installer Settings",
+              "native_header_shortcut_snmp2mqtt_settings": "Shortcut: SNMP2MQTT Settings",
+              "native_header_shortcut_unifi2mqtt_settings": "Shortcut: UniFi2MQTT Settings",
+              "shortcut_discovery_not_installed": "Switch Vision Hub / Discovery Settings — Not installed",
+              "shortcut_installer_not_installed": "Switch Vision Installer / Installer Settings — Not installed",
+              "shortcut_snmp2mqtt_not_installed": "SNMP2MQTT Settings — Not installed",
+              "shortcut_unifi2mqtt_not_installed": "UniFi2MQTT Settings — Not installed"
+            },
+            "data_description": {
+              "show_dashboard_header": "Master switch for the entire Native dashboard header, including shortcuts and the summary row.",
+              "native_header_show_summary": "Show switch count and last-generated status in the Native dashboard header.",
+              "native_header_show_refresh": "Show the manual dashboard Refresh control.",
+              "native_header_show_version": "Show the current Switch Vision Core version badge.",
+              "native_header_shortcut_switch_vision_settings": "Open Settings → Integrations → Switch Vision.",
+              "native_header_shortcut_hub": "Open Switch Vision Hub directly.",
+              "native_header_shortcut_discovery_settings": "Open the Discovery app Configuration page.",
+              "native_header_shortcut_installer": "Open Switch Vision Installer directly.",
+              "native_header_shortcut_installer_settings": "Open the Installer app Configuration page.",
+              "native_header_shortcut_snmp2mqtt_settings": "Open the SNMP2MQTT app Configuration page.",
+              "native_header_shortcut_unifi2mqtt_settings": "Open the UniFi2MQTT app Configuration page.",
+              "shortcut_discovery_not_installed": "Install Switch Vision Discovery to enable these shortcuts.",
+              "shortcut_installer_not_installed": "Install Switch Vision Installer to enable these shortcuts.",
+              "shortcut_snmp2mqtt_not_installed": "Install Switch Vision SNMP2MQTT to enable this shortcut.",
+              "shortcut_unifi2mqtt_not_installed": "Install Switch Vision UniFi2MQTT to enable this shortcut."
+            }
+          },
+          "dashboard": {
+            "name": "Dashboard Cards",
+            "description": "Shared switch-card presentation controls.",
+            "data": {
               "show_calibration_buttons": "Show calibration buttons on switch cards",
-              "show_dashboard_header": "Show dashboard header",
               "show_card_headers": "Show card headers"
             },
             "data_description": {
-              "show_panel_in_sidebar": "Show or hide the automatic Native Switch Vision panel at /switch-vision.",
-              "show_lovelace_dashboard_in_sidebar": "Show or hide Home Assistant dashboards created with the Switch Vision Community dashboard strategy.",
               "show_calibration_buttons": "Show or hide the on-card Calibration button on the automatic generated Switch Vision dashboard.",
-              "show_dashboard_header": "Show or hide the native dashboard summary row containing switch count, last-generated status, Refresh, and version.",
               "show_card_headers": "Show or hide the complete header row on every Switch Vision card, including custom YAML cards."
             }
           },
@@ -100,7 +154,7 @@
     },
     "error": {
       "invalid_activity_thresholds": "Custom Activity LED thresholds must place the Medium threshold below the Fast threshold.",
-      "invalid_activity_periods": "Activity LED blink periods must be ordered Fast \u2264 Medium \u2264 Slow."
+      "invalid_activity_periods": "Activity LED blink periods must be ordered Fast ≤ Medium ≤ Slow."
     }
   },
   "selector": {}

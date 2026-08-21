@@ -1,3 +1,12 @@
+## v2.4.4 — Central sidebar and Native dashboard shortcuts
+
+- Adds a dedicated Switch Vision Integration **Sidebar** section controlling the Native panel, Community dashboard, Switch Vision Hub, and Switch Vision Installer from one place.
+- Uses Home Assistant Supervisor's supported `ingress_panel` option for Hub/Installer visibility; absent apps remain visible in settings as read-only **Not installed** rows.
+- Expands the Native dashboard header with configurable shortcuts to Hub, Switch Vision settings, Discovery settings, Installer, Installer settings, SNMP2MQTT settings, and UniFi2MQTT settings.
+- Adds per-shortcut enable/disable controls, installation-aware availability, drag-to-reorder customization on the Native dashboard, and independent summary/Refresh/version visibility controls.
+- Preserves the existing whole-header master switch and makes the shortcut row horizontally scrollable on narrow/mobile layouts.
+- Keeps card telemetry, calibration, Discovery generation, Activity LED behavior, and device mappings unchanged.
+
 ## v2.4.3 — Huawei faceplate reset hotfix
 
 - Restore Huawei S5720/S5735 neutral 24 RJ45 / 4 SFP factory visual assignments that regressed during the v2.4.2 registry synchronization.

@@ -1060,8 +1060,10 @@ def validate_dashboard_sidebar_controls(base: Path, source_layout: bool = False)
 
     option_step = strings["options"]["step"]["init"]
     option_strings = option_step.get("data", {})
-    dashboard_strings = option_step.get("sections", {}).get("dashboard", {}).get("data", {})
-    combined_option_strings = {**option_strings, **dashboard_strings}
+    sections = option_step.get("sections", {})
+    dashboard_strings = sections.get("dashboard", {}).get("data", {})
+    sidebar_strings = sections.get("sidebar", {}).get("data", {})
+    combined_option_strings = {**option_strings, **dashboard_strings, **sidebar_strings}
     if (
         "show_panel_in_sidebar" not in combined_option_strings
         or "show_lovelace_dashboard_in_sidebar" not in combined_option_strings
