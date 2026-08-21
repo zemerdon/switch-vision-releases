@@ -44,13 +44,19 @@ jobs:
           python3 tests/test_huawei_visual_defaults.py
           python3 tests/test_speed_formatting.py
           python3 tests/test_sidebar_header_contracts.py
-          python3 tools/check_core_release_parity.py
-          git diff --check
-      - name: Validate no source cache material
-        run: |
-          set -euo pipefail
           find src Releases -type d -name '__pycache__' -prune -exec rm -rf {} + || true
           find src Releases -type f \( -name '*.pyc' -o -name '*.pyo' -o -name '.DS_Store' \) -delete
+          python3 tools/check_core_release_parity.py
+          git diff --check
+      - name: Validate source hygiene
+        run: |
+          set -euo pipefail
+          if find src Releases \
+            \( -type d -name '__pycache__' -o -type f -name '*.pyc' -o -type f -name '*.pyo' -o -type f -name '.DS_Store' \) \
+            | grep -q .; then
+            echo 'ERROR: generated cache/junk material found'
+            exit 1
+          fi
           python3 tools/check_core_release_parity.py
       - name: Commit final source back to feature branch
         run: |
