@@ -1,3 +1,9 @@
+## v2.4.3 — Huawei faceplate reset hotfix
+
+- Restore Huawei S5720/S5735 neutral 24 RJ45 / 4 SFP factory visual assignments that regressed during the v2.4.2 registry synchronization.
+- Ensure Reset Current Faceplate and model-aware resets return those switches to `stock_24rj45_4sfp` with `faceplates/24rj45-4sfp.png`, not Cisco 48-port geometry.
+- Add permanent regression coverage for both exact Huawei models.
+
 ## v2.4.2 — Hardware validation safeguards
 
 - Promote five real-hardware-tested exact models to Community Validated while preserving model-specific physical semantics.
