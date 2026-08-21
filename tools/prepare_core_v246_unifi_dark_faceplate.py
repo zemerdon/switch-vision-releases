@@ -65,7 +65,7 @@ for changelog in (ROOT / "CHANGELOG.md", SRC / "CHANGELOG.md"):
 notes = ROOT / "RELEASE_NOTES.md"
 write_text(
     notes,
-    "# Switch Vision Core 2.4.6\n\n"
+    "# Switch Vision Core v2.4.6\n\n"
     "Core 2.4.6 adds the manually selectable `unifi-24-rj45-2sfp-dark.png` faceplate. "
     "It uses the exact factory geometry and presentation defaults from `unifi-24p-rj45-2sfp.png`.\n\n"
     "The new artwork is an alternative only: it is not mapped to any device model, does not replace the existing UniFi faceplate, "
