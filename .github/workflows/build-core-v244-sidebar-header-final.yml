@@ -1,0 +1,77 @@
+name: Build Core v2.4.4 final sidebar and Native header
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install build dependencies
+        run: python3 -m pip install --disable-pip-version-check PyYAML
+      - name: Finalize Core v2.4.4
+        run: python3 tools/finalize_core_v244_sidebar_header.py
+      - name: Build Core v2.4.4
+        run: python3 build.py -v 2.4.4
+      - name: Validate exact source and release tree
+        run: |
+          set -euo pipefail
+          python3 -m py_compile \
+            src/custom_components/switch_vision/__init__.py \
+            src/custom_components/switch_vision/config_flow.py
+          node --check src/js/switch-vision.js
+          node --check src/custom_components/switch_vision/switch-vision-card.js
+          node --check src/custom_components/switch_vision/switch-vision-panel.js
+          node --check src/custom_components/switch_vision/switch-vision-dashboard-strategy.js
+          python3 tests/test_device_registry_contracts.py
+          python3 tests/test_huawei_visual_defaults.py
+          python3 tests/test_speed_formatting.py
+          python3 tests/test_sidebar_header_contracts.py
+          find src Releases -type d -name '__pycache__' -prune -exec rm -rf {} + || true
+          find src Releases -type f \( -name '*.pyc' -o -name '*.pyo' -o -name '.DS_Store' \) -delete
+          python3 tools/check_core_release_parity.py
+          git diff --check
+      - name: Validate import-order and browser API contracts
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          init = Path('src/custom_components/switch_vision/__init__.py').read_text(encoding='utf-8')
+          panel = Path('src/custom_components/switch_vision/switch-vision-panel.js').read_text(encoding='utf-8')
+          assert init.index('NATIVE_HEADER_SHORTCUT_IDS = (') < init.index('SET_NATIVE_HEADER_ORDER_WS_SCHEMA = {')
+          assert 'switch_vision/get_app_states' in init
+          assert 'switch_vision/get_app_states' in panel
+          assert 'type: "supervisor/api"' not in panel
+          assert 'sidebar_master and lovelace_preference' in init
+          print('Core 2.4.4 final import/sidebar/browser contracts: PASS')
+          PY
+      - name: Commit final source back to feature branch
+        run: |
+          set -euo pipefail
+          git config user.name 'switch-vision-release-bot'
+          git config user.email 'switch-vision@users.noreply.github.com'
+          rm -f \
+            .github/workflows/build-core-v244-sidebar-header-final.yml \
+            tools/finalize_core_v244_sidebar_header.py
+          rm -f \
+            Releases/switch-vision-2.4.4.zip \
+            Releases/switch-vision-2.4.4.zip.sha256 \
+            Switch_Vision_v2.4.4_source.zip \
+            Switch_Vision_v2.4.4_SHA256SUMS.txt
+          git add -A
+          git commit -m 'Finalize Switch Vision Core v2.4.4'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
