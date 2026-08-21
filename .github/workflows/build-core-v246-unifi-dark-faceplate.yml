@@ -1,0 +1,76 @@
+name: Build Core v2.4.6 UniFi dark faceplate
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install build dependencies
+        run: python3 -m pip install --disable-pip-version-check PyYAML
+      - name: Validate imported artwork
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          from struct import unpack
+          def png_size(path):
+              data=Path(path).read_bytes()[:24]
+              assert data[:8] == b'\x89PNG\r\n\x1a\n', f'{path} is not a PNG'
+              return unpack('>II', data[16:24])
+          original=png_size('src/faceplates/unifi-24p-rj45-2sfp.png')
+          dark=png_size('src/faceplates/unifi-24-rj45-2sfp-dark.png')
+          print('original dimensions:', original)
+          print('dark dimensions:', dark)
+          assert dark == original, f'dark artwork dimensions {dark} differ from calibrated original {original}'
+          PY
+      - name: Prepare Core v2.4.6
+        run: python3 tools/prepare_core_v246_unifi_dark_faceplate.py
+      - name: Build Core v2.4.6
+        run: python3 build.py -v 2.4.6
+      - name: Validate source and no-mapping contract
+        run: |
+          set -euo pipefail
+          python3 tests/test_device_registry_contracts.py
+          python3 tests/test_huawei_visual_defaults.py
+          python3 tests/test_speed_formatting.py
+          python3 tests/test_sidebar_header_contracts.py
+          python3 tests/test_unifi_dark_faceplate_contract.py
+          node --check src/js/switch-vision.js
+          node --check src/custom_components/switch_vision/switch-vision-card.js
+          python3 -m py_compile src/custom_components/switch_vision/__init__.py src/custom_components/switch_vision/config_flow.py
+          find src Releases -type d -name '__pycache__' -prune -exec rm -rf {} + || true
+          find src Releases -type f \( -name '*.pyc' -o -name '*.pyo' -o -name '.DS_Store' \) -delete
+          python3 tools/check_core_release_parity.py
+          git diff --check
+      - name: Verify generated release contains alternative asset
+        run: |
+          set -euo pipefail
+          test -f Releases/switch-vision-2.4.6/faceplates/unifi-24-rj45-2sfp-dark.png
+          test -f Releases/switch-vision-2.4.6/calibration/faceplate-unifi-24-rj45-2sfp-dark.json
+          cmp src/faceplates/unifi-24-rj45-2sfp-dark.png Releases/switch-vision-2.4.6/faceplates/unifi-24-rj45-2sfp-dark.png
+      - name: Commit clean final source back to feature branch
+        run: |
+          set -euo pipefail
+          git config user.name 'switch-vision-release-bot'
+          git config user.email 'switch-vision@users.noreply.github.com'
+          rm -f .github/workflows/build-core-v246-unifi-dark-faceplate.yml tools/prepare_core_v246_unifi_dark_faceplate.py
+          rm -f Releases/switch-vision-2.4.6.zip Releases/switch-vision-2.4.6.zip.sha256 Switch_Vision_v2.4.6_source.zip Switch_Vision_v2.4.6_SHA256SUMS.txt
+          git add -A
+          git commit -m 'Release Switch Vision Core v2.4.6'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
