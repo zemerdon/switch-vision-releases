@@ -819,12 +819,10 @@ def _validate_calibration(profile: str, calibration: dict[str, Any]) -> dict[str
         else:
             _safe_asset_filename(image_file, allow_special=False)
 
-    if len(ports) > MAX_CALIBRATION_PORTS:
+    if not 1 <= len(ports) <= MAX_CALIBRATION_PORTS:
         raise vol.Invalid(
-            f"calibration contains more than {MAX_CALIBRATION_PORTS} RJ45 ports"
+            f"calibration must contain between 1 and {MAX_CALIBRATION_PORTS} RJ45 ports"
         )
-    if not ports and not uplinks:
-        raise vol.Invalid("calibration must contain at least one RJ45 or optical port")
     if len(uplinks) > MAX_CALIBRATION_UPLINKS:
         raise vol.Invalid(
             f"calibration contains more than {MAX_CALIBRATION_UPLINKS} uplinks"

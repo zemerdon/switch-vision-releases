@@ -1,3 +1,13 @@
+## v2.4.9 — UniFi exact-model API mapping and contribution support
+
+- Add a backward-compatible explicit UniFi visual-port → API-port mapping contract while preserving the legacy sequential/offset path when no explicit map is present.
+- Add exact-model support for `US 48` using the verified 48 × 1G RJ45 + 2 × 10G SFP+ + 2 × 1G SFP geometry and existing truthful 48+4 visual.
+- Add detected hardware contracts for `US XG 16` (12 × 10G SFP+ followed by 4 × 10G RJ45) and `USW Pro Aggregation` (28 × 10G SFP+ + 4 × 25G SFP28) without inventing unverified dashboard faceplates.
+- Keep maximum port capability separate from current negotiated speed, including 10G-capable RJ45 links negotiating at 1G and 25G-capable SFP28 links negotiating at 10G.
+- Add Support My Switch evidence from `SV-2026-000002` for US 8 60W, USW Flex Mini, and US 48 PoE 500W without over-promoting their validation status; credit `bignick8t3`.
+- Preserve the newer validated Zyxel XS1930-10 `jpedrot` evidence while synchronizing the shared Core/Discovery registry.
+- Add permanent regressions for explicit/legacy UniFi mappings, optical-only calibration, speed presentation, exact-model registry contracts, and preserved Zyxel defaults.
+
 ## v2.4.8 — SFP negotiated-speed status labels
 
 - Replace the generic SFP status-panel 10G fallback with the existing live SFP speed resolver.
