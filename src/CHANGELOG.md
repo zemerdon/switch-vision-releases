@@ -1,3 +1,20 @@
+## v2.4.7 — Audit hardening
+
+- Register calibration and Switch Vision UI mutation services with Home Assistant's admin-only service helper, including save/delete/reset/reload calibration actions and UI density changes.
+- Add permanent regression coverage proving those mutation services cannot regress to ordinary service registration.
+- Align Zyxel XS1930-10 visual defaults with its contributed physical 8-RJ45 + 2-SFP+ layout using the existing compact 8+2 calibration/faceplate fallback.
+- Keep the compact 8+2 build anti-leak safeguard, but make its approved exact-model owners explicit (`WS-C3560CG-8PC-S` and `XS1930-10`).
+- Add a permanent XS1930-10 visual-default regression.
+- Make permanent Core CI execute every `tests/test_*.py` regression automatically in isolated Python processes (workflow wiring applied in the release PR).
+- Restore the missing Core 2.4.6 changelog entry.
+
+## v2.4.6 — UniFi dark alternative faceplate
+
+- Add `unifi-24-rj45-2sfp-dark.png` as a manually selectable alternative UniFi faceplate.
+- Use the exact factory calibration geometry/defaults of `unifi-24p-rj45-2sfp.png`.
+- Keep the dark artwork manual-only: no exact-model mapping, no default replacement, and no change to existing UniFi device recommendations.
+- Add permanent regression coverage proving the alternative remains unmapped and calibration-equivalent.
+
 ## v2.4.5 — Native dashboard shortcut editor hotfix
 
 - Fix Native dashboard shortcut navigation by using Home Assistant's current history + `location-changed` navigation contract.

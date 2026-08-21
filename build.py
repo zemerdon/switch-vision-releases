@@ -1228,7 +1228,7 @@ def validate_device_visual_recommendations(base: Path, source_layout: bool = Fal
     # registry. Do not derive them from vendor or coarse port counts here.
     # This is essential for UniFi hardware whose exact models range from
     # compact 5/8-port devices through 48-port switches.
-    dedicated_model = "WS-C3560CG-8PC-S"
+    compact_8x2_visual_models = {"WS-C3560CG-8PC-S", "XS1930-10"}
     profile_faceplate_pairs = {
         "stock_24rj45_2sfp": "faceplates/24rj45-2sfp.png",
         "stock_24rj45_4sfp": "faceplates/24rj45-4sfp.png",
@@ -1283,11 +1283,11 @@ def validate_device_visual_recommendations(base: Path, source_layout: bool = Fal
                 f"expected {expected_faceplate!r}"
             )
 
-        if model != dedicated_model:
+        if model not in compact_8x2_visual_models:
             if item.get("profile") == "cisco_3560cg_8pc":
-                errors.append(f"{model}: dedicated 3560CG calibration leaked into another exact model")
+                errors.append(f"{model}: compact 8+2 calibration leaked into an unapproved exact model")
             if item.get("faceplate") == "faceplates/c3560cg-8pc-s.png":
-                errors.append(f"{model}: dedicated 3560CG faceplate leaked into another exact model")
+                errors.append(f"{model}: compact 8+2 faceplate leaked into an unapproved exact model")
 
     if errors:
         raise SystemExit("Device visual recommendation validation failed:\n- " + "\n- ".join(errors))
