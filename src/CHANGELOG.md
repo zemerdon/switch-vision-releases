@@ -1,3 +1,12 @@
+## v2.4.5 — Native dashboard shortcut editor hotfix
+
+- Fix Native dashboard shortcut navigation by using Home Assistant's current history + `location-changed` navigation contract.
+- Resolve repository-prefixed Supervisor app slugs so installed Switch Vision apps are no longer incorrectly shown as **Not installed**.
+- Use the resolved Supervisor slug for Hub, Installer, and app-configuration shortcut destinations.
+- Replace drag-and-drop shortcut ordering with an explicit Customize editor containing show/hide checkboxes plus Up/Down ordering controls.
+- Stage Customize changes until **Done**, add **Cancel**, and expose Customize only to Home Assistant administrators.
+- Preserve telemetry, calibration geometry, Activity LED behavior, device mappings, Discovery generation, and saved shortcut preferences.
+
 ## v2.4.4 — Central sidebar and Native dashboard shortcuts
 
 - Adds a dedicated Switch Vision Integration **Sidebar** section controlling the Native panel, Community dashboard, Switch Vision Hub, and Switch Vision Installer from one place.
