@@ -48,6 +48,8 @@ entry = textwrap.dedent("""\
 """)
 if changelog.startswith("# Changelog\n\n"):
     changelog = "# Changelog\n\n" + entry + changelog[len("# Changelog\n\n"):]
+elif changelog.startswith("## v"):
+    changelog = entry + changelog
 else:
     raise SystemExit("ERROR: unexpected Core CHANGELOG header")
 changelog_path.write_text(changelog, encoding="utf-8", newline="\n")
