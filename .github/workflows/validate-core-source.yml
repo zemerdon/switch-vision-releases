@@ -7,7 +7,7 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   validate:
@@ -18,8 +18,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
+          ref: review/sv-2026-000002-unifi-mapping
           fetch-depth: 0
-          persist-credentials: false
+          persist-credentials: true
 
       - name: Export review source
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -39,7 +40,51 @@ jobs:
           python-version: "3.12"
 
       - name: Install build dependency
-        run: python3 -m pip install --disable-pip-version-check PyYAML
+        run: python3 -m pip install --disable-pip-version-check PyYAML ruamel.yaml
+
+      - name: Apply SV-2026-000002 review patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path("tools/apply_sv_2026_000002_review.py").resolve()
+          source = path.read_text(encoding="utf-8")
+          marker = "# Registry updates use round-trip YAML"
+          if marker not in source:
+              raise SystemExit("temporary patch helper registry boundary missing")
+          prefix = source.split(marker, 1)[0]
+          namespace = {"__file__": str(path), "__name__": "__main__"}
+          exec(compile(prefix, str(path), "exec"), namespace)
+          PY
+          python3 tools/apply_sv_2026_000002_registry_review.py
+
+      - name: Rebuild patched review tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="$(cat VERSION)"
+          python3 build.py -v "$VERSION"
+          rm -f \
+            "Releases/switch-vision-$VERSION.zip" \
+            "Releases/switch-vision-$VERSION.zip.sha256" \
+            "Switch_Vision_v${VERSION}_source.zip" \
+            "Switch_Vision_v${VERSION}_SHA256SUMS.txt"
+          git diff --check
+
+      - name: Commit patched review tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "switch-vision-review-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m "Implement SV-2026-000002 UniFi mapping contracts"
+            git push origin HEAD:review/sv-2026-000002-unifi-mapping
+          else
+            echo "Review tree already contains the SV-2026-000002 implementation."
+          fi
 
       - name: Validate JavaScript syntax
         run: |
