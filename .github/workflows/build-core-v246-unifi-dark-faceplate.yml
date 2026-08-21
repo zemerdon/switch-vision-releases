@@ -23,6 +23,19 @@ jobs:
           python-version: '3.12'
       - name: Install build dependencies
         run: python3 -m pip install --disable-pip-version-check PyYAML
+      - name: Import verified dark faceplate artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          artifact_url='https://sdmntpraustraliaeast.oaiusercontent.com/files/00000000-0308-81fa-8744-d2597e4f14bc/raw?se=2026-08-21T06%3A41%3A19Z&sp=r&sv=2026-02-06&sr=b&scid=8349544a-8eee-5fcf-802d-2c96ba3bb4c8&skoid=0556a536-9b18-4aa8-bae0-70ed682ee936&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-21T03%3A46%3A02Z&ske=2026-08-22T03%3A46%3A02Z&sks=b&skv=2026-02-06&sig=//QQlOUkKfO0ajJUAklJUZ%2B8Jy9weaAEjRYDkoKTODI%3D'
+          curl -fsSL "$artifact_url" -o "$RUNNER_TEMP/unifi-dark-faceplate.zip"
+          rm -rf "$RUNNER_TEMP/unifi-dark-faceplate"
+          mkdir -p "$RUNNER_TEMP/unifi-dark-faceplate"
+          unzip -q "$RUNNER_TEMP/unifi-dark-faceplate.zip" -d "$RUNNER_TEMP/unifi-dark-faceplate"
+          install -m 0644 \
+            "$RUNNER_TEMP/unifi-dark-faceplate/unifi-24-rj45-2sfp-dark.png" \
+            src/faceplates/unifi-24-rj45-2sfp-dark.png
+          echo '43993a8b19c6330cfbe99f4f9ac1970ef72e16ce52497e2248a4bb628239b0ae  src/faceplates/unifi-24-rj45-2sfp-dark.png' | sha256sum -c -
       - name: Validate imported artwork
         run: |
           set -euo pipefail
