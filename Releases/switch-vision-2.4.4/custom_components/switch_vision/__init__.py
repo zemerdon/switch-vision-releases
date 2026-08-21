@@ -47,6 +47,16 @@ STORAGE_PATH = f".storage/{STORAGE_KEY}"
 EVENT_CALIBRATION_UPDATED = "switch_vision_calibration_updated"
 EVENT_UI_SETTINGS_UPDATED = "switch_vision_ui_settings_updated"
 
+NATIVE_HEADER_SHORTCUT_IDS = (
+    "hub",
+    "switch_vision_settings",
+    "discovery_settings",
+    "installer",
+    "installer_settings",
+    "snmp2mqtt_settings",
+    "unifi2mqtt_settings",
+)
+
 SAVE_SCHEMA = vol.Schema(
     {
         vol.Required("profile"): vol.All(str, vol.Length(min=1)),
@@ -99,6 +109,10 @@ UI_SETTINGS_WS_SCHEMA = {
     vol.Required("type"): "switch_vision/get_ui_settings",
 }
 
+APP_STATES_WS_SCHEMA = {
+    vol.Required("type"): "switch_vision/get_app_states",
+}
+
 SET_NATIVE_HEADER_ORDER_WS_SCHEMA = {
     vol.Required("type"): "switch_vision/set_native_header_shortcut_order",
     vol.Required("order"): [vol.In(NATIVE_HEADER_SHORTCUT_IDS)],
@@ -145,15 +159,6 @@ INSTALLER_APP_SLUG = "switch_vision_installer"
 SNMP2MQTT_APP_SLUG = "switch_vision_snmp2mqtt"
 UNIFI2MQTT_APP_SLUG = "switch_vision_unifi2mqtt"
 
-NATIVE_HEADER_SHORTCUT_IDS = (
-    "hub",
-    "switch_vision_settings",
-    "discovery_settings",
-    "installer",
-    "installer_settings",
-    "snmp2mqtt_settings",
-    "unifi2mqtt_settings",
-)
 CONF_SHOW_UNIFI_INTEGRATION = "show_unifi_integration"
 CONF_SHOW_CALIBRATION_BUTTONS = "show_calibration_buttons"
 CONF_SHOW_DASHBOARD_HEADER = "show_dashboard_header"
@@ -1746,6 +1751,20 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
         )
         connection.send_result(msg["id"], result)
 
+    @websocket_api.websocket_command(APP_STATES_WS_SCHEMA)
+    @websocket_api.async_response
+    async def websocket_get_app_states(hass: HomeAssistant, connection, msg):
+        """Return sanitized Switch Vision app availability to the Native panel."""
+        raw_states = await async_switch_vision_app_states(hass)
+        apps = {}
+        for key, state in raw_states.items():
+            apps[key] = {
+                "installed": bool(state.get("installed", False)),
+                "ingress": bool(state.get("ingress", False)),
+                "available": bool(state.get("available", False)),
+            }
+        connection.send_result(msg["id"], {"apps": apps})
+
     @websocket_api.websocket_command(UI_SETTINGS_WS_SCHEMA)
     @websocket_api.async_response
     async def websocket_get_ui_settings(hass: HomeAssistant, connection, msg):
@@ -1806,6 +1825,7 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
         hass.config_entries.async_update_entry(entry, options=options)
         connection.send_result(msg["id"], {"order": order})
 
+    websocket_api.async_register_command(hass, websocket_get_app_states)
     websocket_api.async_register_command(hass, websocket_get_ui_settings)
     websocket_api.async_register_command(hass, websocket_set_native_header_shortcut_order)
 
@@ -2013,13 +2033,20 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         # Read the current option each time; the config entry is no longer
         # reloaded merely to apply a presentation change.
         try:
+            sidebar_master = bool(
+                entry.options.get(
+                    CONF_SHOW_ALL_SWITCH_VISION_SIDEBAR_ITEMS,
+                    DEFAULT_OPTIONS[CONF_SHOW_ALL_SWITCH_VISION_SIDEBAR_ITEMS],
+                )
+            )
+            lovelace_preference = bool(
+                entry.options.get(
+                    CONF_SHOW_LOVELACE_DASHBOARD_IN_SIDEBAR,
+                    DEFAULT_OPTIONS[CONF_SHOW_LOVELACE_DASHBOARD_IN_SIDEBAR],
+                )
+            )
             await _sync_switch_vision_lovelace_dashboard_sidebar(
-                hass,
-                bool(
-                    entry.options.get(
-                        CONF_SHOW_LOVELACE_DASHBOARD_IN_SIDEBAR, True
-                    )
-                ),
+                hass, sidebar_master and lovelace_preference
             )
         except (OSError, ValueError, TypeError) as err:
             _LOGGER.warning(

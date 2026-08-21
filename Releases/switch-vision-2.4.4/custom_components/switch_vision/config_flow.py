@@ -361,6 +361,15 @@ class SwitchVisionOptionsFlow(OptionsFlow):
                 saved = dict(self.config_entry.options)
                 for group in ("sidebar", "native_header", "dashboard", "activity_leds", "discovery", "installer"):
                     saved.update(dict(user_input.get(group) or {}))
+                for synthetic_key in (
+                    "sidebar_hub_not_installed",
+                    "sidebar_installer_not_installed",
+                    "shortcut_discovery_not_installed",
+                    "shortcut_installer_not_installed",
+                    "shortcut_snmp2mqtt_not_installed",
+                    "shortcut_unifi2mqtt_not_installed",
+                ):
+                    saved.pop(synthetic_key, None)
                 saved.pop(CONF_RESET_TO_DEFAULTS, None)
                 return self.async_create_entry(data=saved)
 

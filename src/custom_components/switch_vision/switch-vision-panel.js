@@ -174,21 +174,14 @@ class SwitchVisionPanel extends HTMLElement {
 
   async _refreshShortcutAvailability() {
     if (!this._hass) return;
-    const slugs = {
-      discovery: "switch_vision_discovery",
-      installer: "switch_vision_installer",
-      snmp2mqtt: "switch_vision_snmp2mqtt",
-      unifi2mqtt: "switch_vision_unifi2mqtt"
-    };
     const next = { discovery: false, installer: false, snmp2mqtt: false, unifi2mqtt: false };
-    await Promise.all(Object.entries(slugs).map(async ([key, slug]) => {
-      try {
-        await this._hass.callWS({ type: "supervisor/api", endpoint: `/addons/${slug}/info`, method: "get" });
-        next[key] = true;
-      } catch (error) {
-        next[key] = false;
-      }
-    }));
+    try {
+      const result = await this._hass.callWS({ type: "switch_vision/get_app_states" });
+      const apps = result?.apps && typeof result.apps === "object" ? result.apps : {};
+      for (const key of Object.keys(next)) next[key] = apps[key]?.installed === true;
+    } catch (error) {
+      console.warn("Switch Vision could not read app availability", error);
+    }
     this._shortcutAvailability = next;
     this._renderShortcuts();
   }
@@ -226,7 +219,10 @@ class SwitchVisionPanel extends HTMLElement {
         if (!this._customizingShortcuts || !this._draggedShortcutId || this._draggedShortcutId === id) return;
         event.preventDefault();
         const dragged = root.querySelector(`[data-shortcut-id="${this._draggedShortcutId}"]`);
-        if (dragged && dragged !== button) root.insertBefore(dragged, button);
+        if (!dragged || dragged === button) return;
+        const rect = button.getBoundingClientRect();
+        const before = event.clientX < rect.left + rect.width / 2;
+        root.insertBefore(dragged, before ? button : button.nextSibling);
       });
       root.appendChild(button);
       rendered.push(id);

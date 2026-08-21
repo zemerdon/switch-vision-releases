@@ -44,4 +44,14 @@ assert 'CONF_SHOW_INSTALLER_IN_SIDEBAR in self.config_entry.options' in FLOW
 assert 'discovery.get("ingress_panel", True)' in FLOW
 assert 'installer.get("ingress_panel", True)' in FLOW
 assert 'Not installed' in STRINGS
+
+# Final 2.4.4 safety contracts.
+assert INIT.index("NATIVE_HEADER_SHORTCUT_IDS = (") < INIT.index("SET_NATIVE_HEADER_ORDER_WS_SCHEMA = {")
+assert 'switch_vision/get_app_states' in INIT
+assert 'websocket_get_app_states' in INIT
+assert 'sidebar_master and lovelace_preference' in INIT
+assert 'saved.pop(synthetic_key, None)' in FLOW
+assert 'switch_vision/get_app_states' in PANEL
+assert 'type: "supervisor/api"' not in PANEL
+assert 'event.clientX < rect.left + rect.width / 2' in PANEL
 print('Core 2.4.4 sidebar/header contracts: PASS')
