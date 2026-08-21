@@ -1,11 +1,9 @@
-# Switch Vision Core v2.4.2 — Hardware validation safeguards
+# Switch Vision Core v2.4.3 — Huawei faceplate reset hotfix
 
-- Promotes `WS-C2960X-24TS-L`, `WS-C3560CG-8PC-S`, `SG500X-24`, `S5735-L8P4X-A1`, and `S5720-12TP-LI-AC` to **Community Validated** from existing real-hardware evidence.
-- Preserves `WS-C3560CG-8PC-S` Gi0/9 and Gi0/10 dual-purpose combo-uplink semantics.
-- Records the Huawei `S5720-12TP-LI-AC` physical layout as 8 RJ45 + 4 physical 1G SFP cages; Discovery v2.1.27 owns the matching 1G speed-cap safeguard.
-- Keeps all 28 exact-model records aligned with Discovery and gives every known Ubiquiti model an explicit non-Cisco faceplate/profile assignment based on its real API geometry.
-- Adds permanent Core regression coverage proving 2500 Mbps renders as `2.5G`, never `3G`.
-- Makes the HAOS/manual Lovelace resource cache-buster a mandatory release contract: `/local/switch-vision/js/switch-vision.js?v=<version>` must match the Core release.
-- Keeps MQTT topics, saved calibrations, Activity LED behaviour, and TEST MODE behaviour unchanged.
+- Restores `S5720-12TP-LI-AC` and `S5735-L8P4X-A1` to the neutral `stock_24rj45_4sfp` factory calibration profile.
+- Restores `faceplates/24rj45-4sfp.png` as the matching default/recommended faceplate for both Huawei 8 RJ45 + 4 SFP models.
+- Fixes Reset Current Faceplate/model-aware reset falling back to Cisco 48-port factory geometry and moving LEDs away from shipped card defaults.
+- Adds a permanent regression so these exact Huawei models cannot silently return to `default_cisco_48_port`.
+- Preserves physical mappings, S5720 1G SFP speed safeguards, telemetry, Activity LEDs and TEST MODE behavior.
 
-After updating Core through Switch Vision Installer, restart Home Assistant Core when prompted and hard-refresh the browser. If a manual Lovelace resource is configured, ensure its `?v=` suffix is `2.4.2`.
+After updating Core through Switch Vision Installer, restart Home Assistant Core when requested and hard-refresh the browser. Existing saved custom calibrations remain preserved until the user chooses a reset.
