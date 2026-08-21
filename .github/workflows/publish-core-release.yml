@@ -113,6 +113,7 @@ jobs:
           node --check src/custom_components/switch_vision/switch-vision-panel.js
           node --check src/custom_components/switch_vision/switch-vision-dashboard-strategy.js
           python3 tools/check_core_release_parity.py
+          python3 tests/test_release_metadata_contract.py
 
           test -f "Releases/switch-vision-$VERSION.zip"
           test -f "Releases/switch-vision-$VERSION.zip.sha256"
