@@ -577,9 +577,9 @@
       "family": "XS1930",
       "model": "XS1930-10",
       "status": "experimental",
-      "confirmed_since": "2.1.5",
-      "last_validated_version": "2.1.5",
-      "evidence": "initial_exact_model_registry_entry",
+      "confirmed_since": "2.1.7",
+      "last_validated_version": "2.1.7",
+      "evidence": "support_my_switch_contribution_SV-2026-000004_plus_vendor_MIB_pack",
       "ports": {
         "rj45": 8,
         "poe": false,
@@ -595,23 +595,29 @@
       "calibration_profile": "cisco_3560cg_8pc",
       "default_faceplate": "faceplates/c3560cg-8pc-s.png",
       "optional_faceplates": [],
-      "tested_firmware": [],
+      "tested_firmware": [
+        "V4.80(ABQE.5)"
+      ],
       "contributor": {
-        "display_name": "",
-        "public_credit": false
+        "display_name": "jpedrot",
+        "public_credit": true
       },
       "notes": [
-        "Initial Experimental exact-model registry entry for the Zyxel XS1930-10.",
-        "Adds card-side exact-model recognition for XS1930-10 text so model-aware visual defaults can resolve when Discovery or manual configuration exposes the model string.",
-        "Uses the existing compact 8-RJ45 + 2-SFP visual as the temporary fallback, matching the contributed physical port count until a Zyxel-specific faceplate is supplied.",
-        "Live Discovery validation, SNMP walk validation, sensor coverage, and sustained dashboard/card validation remain pending."
+        "Initial Experimental Zyxel support derived from Support My Switch contribution SV-2026-000004.",
+        "Contribution confirms sysObjectID 1.3.6.1.4.1.890.1.15 and exact model XS1930-10.",
+        "IF-MIB maps ifIndex 1-10 to swp00-swp09; swp00-swp07 are the eight copper ports and swp08-swp09 are the two 10G SFP+ uplinks.",
+        "Standard ifOperStatus, ifHighSpeed, 64-bit HC RX/TX counters, aliases, and Q-BRIDGE PVID rows are present for all ten physical interfaces.",
+        "Vendor MIBs plus the live walk prove CPU current/5s/1m/5m, memory utilization, FAN1 RPM/status, and MAC/BOARD/PHY temperature/status telemetry.",
+        "PoE is not enabled for this exact model entry because the contribution does not prove PoE capability.",
+        "Trunk/access mode and transceiver DDMI are intentionally not inferred in v2.1.7.",
+        "Uses the existing compact 8-RJ45 + 2-SFP visual as a temporary fallback until a Zyxel-specific faceplate is supplied."
       ],
       "validation": {
-        "exact_model_detection": "card_side_pattern_added_pending_live_validation",
-        "rj45_mapping": "candidate_8_rj45_profile",
-        "poe": "not_applicable",
-        "system_sensors": "pending",
-        "uplinks": "candidate_2x10g_sfp_plus_profile",
+        "exact_model_detection": "contribution_confirmed_sysobjectid_model_and_firmware",
+        "rj45_mapping": "contribution_confirmed_ifindex_1_8_swp00_swp07",
+        "poe": "not_applicable_not_proven_by_contribution",
+        "system_sensors": "contribution_confirmed_vendor_oids_pending_contributor_runtime_validation",
+        "uplinks": "contribution_confirmed_ifindex_9_10_swp08_swp09",
         "stack": "not_applicable"
       },
       "visuals": {

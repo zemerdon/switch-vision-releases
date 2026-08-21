@@ -15,7 +15,7 @@ Only exact model identifiers are listed. Support for one SKU does not imply supp
 | Juniper | EX3300 | `EX3300-48P` | 48 | 4 Gigabit SFP + 4 10G SFP+ | Yes | No | `faceplates/48rj45-4sfp.png` | `default_cisco_48_port` | Confirmed | Confirmed | v1.8.26 |
 | Cisco | Small Business SG500X | `SG500X-24` | 24 | 4 10G SFP+ | No | Yes | `faceplates/24rj45-4sfp.png` | `cisco_2960x_24p` | Candidate | Community Validated | v2.0.22 |
 | Huawei | S5720 | `S5720-12TP-LI-AC` | 8 | 4 Gigabit SFP | No | No | `faceplates/24rj45-4sfp.png` | `stock_24rj45_4sfp` | Exact Model Profile Ports 9 12 1G Sfp Pending Live Card Validation | Community Validated | v2.0.31 |
-| Zyxel | XS1930 | `XS1930-10` | 8 | 2 10G SFP+ | No | No | `faceplates/c3560cg-8pc-s.png` | `cisco_3560cg_8pc` | Candidate 2X10G Sfp Plus Profile | Experimental | v2.1.5 |
+| Zyxel | XS1930 | `XS1930-10` | 8 | 2 10G SFP+ | No | No | `faceplates/c3560cg-8pc-s.png` | `cisco_3560cg_8pc` | Contribution Confirmed Ifindex 9 10 Swp08 Swp09 | Experimental | v2.1.7 |
 | Ubiquiti | UniFi Switch Enterprise | `USW-Enterprise-8-PoE` | 8 | 2 10G SFP+ | Yes | No | `faceplates/24rj45-2sfp.png` | `stock_24rj45_2sfp` | Candidate Repeated Evidence | Experimental | v2.0.32 |
 | Ubiquiti | UniFi Switch Pro | `USW-Pro-24-PoE` | 24 | 2 10G SFP+ | Yes | No | `faceplates/unifi-24p-rj45-2sfp.png` | `unifi_24p_rj45_2sfp` | Candidate Media Pending Validation | Experimental | v2.0.32 |
 | Ubiquiti | UniFi Switch Lite | `USW Lite 16 PoE` | 16 | 0 none | Yes | No | `faceplates/24rj45-2sfp.png` | `stock_24rj45_2sfp` | Not Applicable | Experimental | v2.0.32 |
