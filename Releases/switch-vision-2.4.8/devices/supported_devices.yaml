@@ -35,8 +35,7 @@ devices:
   model: WS-C3650-48PD-E
   notes:
   - Exact model entry; no support is implied for other Catalyst 3650 SKUs.
-  - Validated on real hardware through production and test-rack Support My Switch
-    contributions.
+  - Validated on real hardware through production and test-rack Support My Switch contributions.
   - Standalone and two-member stack layouts validated.
   - Validated for the Switch Vision v1.8.0 Gold baseline.
   mapping_profile: cisco-3650-48p-2x10g
@@ -82,8 +81,7 @@ devices:
   model: WS-C3650-48PD-L
   notes:
   - Exact model entry; no support is implied for other Catalyst 3650 SKUs.
-  - Validated on real hardware through production and test-rack Support My Switch
-    contributions.
+  - Validated on real hardware through production and test-rack Support My Switch contributions.
   - Standalone and two-member stack layouts validated.
   - Validated for the Switch Vision v1.8.0 Gold baseline.
   mapping_profile: cisco-3650-48p-2x10g
@@ -129,10 +127,8 @@ devices:
     display_name: zemerdon
     public_credit: true
   notes:
-  - Exact model detection, RJ45 mapping, generated entities, dashboard operation,
-    PoE, and system sensors validated on real hardware.
-  - Physical SFP/SFP+ uplink link state, activity, and traffic operation validated
-    on real hardware.
+  - Exact model detection, RJ45 mapping, generated entities, dashboard operation, PoE, and system sensors validated on real hardware.
+  - Physical SFP/SFP+ uplink link state, activity, and traffic operation validated on real hardware.
   - Confirmed for standalone Switch Vision operation in v1.8.26.
   validation:
     exact_model_detection: confirmed
@@ -177,8 +173,7 @@ devices:
     public_credit: true
   notes:
   - Exact model detected and mapped from a real test-rack contribution.
-  - RJ45 mapping, generated entities, dashboard operation, PoE, and system sensors
-    validated on real hardware.
+  - RJ45 mapping, generated entities, dashboard operation, PoE, and system sensors validated on real hardware.
   - SFP/SFP+ uplink validation remains pending.
   - Remains Experimental pending SFP/uplink port validation.
   - Model-specific 24-port faceplate and calibration geometry added in v1.8.9.
@@ -224,12 +219,10 @@ devices:
     public_credit: false
   notes:
   - Initial Experimental profile created from Support My Switch contribution SV-2026-000001.
-  - Contribution data reports 24 copper interfaces, four uplinks, and a three-member
-    stack.
+  - Contribution data reports 24 copper interfaces, four uplinks, and a three-member stack.
   - Uses the existing 24 RJ45 / 4 SFP faceplate and calibration geometry.
   - Live dashboard, stack-member, uplink, VLAN, and activity validation remain pending.
-  - Promoted to Community Validated after real-hardware validation; model-specific
-    physical layout remains authoritative.
+  - Promoted to Community Validated after real-hardware validation; model-specific physical layout remains authoritative.
   validation:
     exact_model_detection: contribution_confirmed
     rj45_mapping: contribution_pending_live_validation
@@ -272,13 +265,10 @@ devices:
     display_name: zemerdon
     public_credit: true
   notes:
-  - Exact model detection, RJ45 mapping, generated entities, dashboard operation,
-    PoE, and system sensors validated on real hardware.
-  - Physical SFP/SFP+ uplink link state, activity, and traffic operation validated
-    on real hardware.
+  - Exact model detection, RJ45 mapping, generated entities, dashboard operation, PoE, and system sensors validated on real hardware.
+  - Physical SFP/SFP+ uplink link state, activity, and traffic operation validated on real hardware.
   - Confirmed for standalone Switch Vision operation in v1.8.26.
-  - Model-specific 48-port faceplate and two-uplink calibration geometry added in
-    v1.8.9.
+  - Model-specific 48-port faceplate and two-uplink calibration geometry added in v1.8.9.
   validation:
     exact_model_detection: confirmed
     rj45_mapping: confirmed
@@ -326,12 +316,9 @@ devices:
   - Gi0/9 and Gi0/10 map to the two dual-purpose uplink positions.
   - A dedicated native 2048 x 329 faceplate is bundled and selected by default.
   - The previous 24 RJ45 / 2 SFP faceplate remains available as an optional fallback.
-  - Real-hardware activity, uplink media selection, VLAN, PoE and status validation
-    remain pending contributor testing.
-  - Promoted to Community Validated after real-hardware validation; model-specific
-    physical layout remains authoritative.
-  - Gi0/9 and Gi0/10 remain dual-purpose combo uplink positions; promotion does not
-    change their physical semantics.
+  - Real-hardware activity, uplink media selection, VLAN, PoE and status validation remain pending contributor testing.
+  - Promoted to Community Validated after real-hardware validation; model-specific physical layout remains authoritative.
+  - Gi0/9 and Gi0/10 remain dual-purpose combo uplink positions; promotion does not change their physical semantics.
   validation:
     exact_model_detection: contribution_confirmed
     rj45_mapping: candidate
@@ -375,15 +362,11 @@ devices:
     display_name: zemerdon
     public_credit: true
   notes:
-  - Exact model detection, zero-based copper-port mapping, live entities, PoE, system
-    sensors, and dynamic VLAN presentation validated on real hardware.
-  - Physical SFP/SFP+ uplink link state, activity, and 64-bit traffic counters validated
-    on real hardware.
+  - Exact model detection, zero-based copper-port mapping, live entities, PoE, system sensors, and dynamic VLAN presentation validated on real hardware.
+  - Physical SFP/SFP+ uplink link state, activity, and 64-bit traffic counters validated on real hardware.
   - Confirmed for standalone Switch Vision operation in v1.8.26.
-  - Juniper Virtual Chassis support remains unvalidated and is not included in the
-    confirmed support scope.
-  - Juniper ports use native VLAN plus the optional Juniper-only MODE field for clear
-    ACCESS/TRUNK presentation.
+  - Juniper Virtual Chassis support remains unvalidated and is not included in the confirmed support scope.
+  - Juniper ports use native VLAN plus the optional Juniper-only MODE field for clear ACCESS/TRUNK presentation.
   validation:
     exact_model_detection: confirmed
     rj45_mapping: confirmed
@@ -429,12 +412,9 @@ devices:
   - Contribution sysObjectID is 1.3.6.1.4.1.9.6.1.85.24.1.
   - The supplied walk exposes gi1/1 through gi1/24 and te1/1 through te1/4.
   - The contribution model text identifies 24 Gigabit ports and four 10-Gigabit ports.
-  - Live dashboard, stack, VLAN, PoE, sensor, and sustained traffic validation remain
-    pending.
-  - v2.0.22 audit regression checks passed against the supplied contribution/API sample
-    data; live dashboard validation status is unchanged.
-  - Promoted to Community Validated after real-hardware validation; model-specific
-    physical layout remains authoritative.
+  - Live dashboard, stack, VLAN, PoE, sensor, and sustained traffic validation remain pending.
+  - v2.0.22 audit regression checks passed against the supplied contribution/API sample data; live dashboard validation status is unchanged.
+  - Promoted to Community Validated after real-hardware validation; model-specific physical layout remains authoritative.
   validation:
     exact_model_detection: contribution_confirmed
     rj45_mapping: candidate
@@ -476,23 +456,16 @@ devices:
     display_name: Community contributor
     public_credit: false
   notes:
-  - Initial Experimental registry entry created from Support My Switch contribution
-    SV-2026-000006.
+  - Initial Experimental registry entry created from Support My Switch contribution SV-2026-000006.
   - Contribution SV-2026-000014 confirms sysObjectID 1.3.6.1.4.1.2011.2.23.394.
   - The live full walk omits ifName but exposes GigabitEthernet0/0/1-12 through ifDescr.
-  - v2.0.31 adds a vendor-neutral ifDescr fallback so the switch can be discovered
-    and generated without a model override.
+  - v2.0.31 adds a vendor-neutral ifDescr fallback so the switch can be discovered and generated without a model override.
   - The exact model profile maps ports 1-8 as RJ45 and ports 9-12 as 1G SFP positions.
-  - The generic 48 RJ45 + 4 SFP faceplate is used as a temporary fallback until a
-    smaller generic visual is supplied.
-  - The contribution exposes standard ifOperStatus, ifSpeed and 32-bit ifInOctets/ifOutOctets;
-    v2.0.31 uses those when ifXTable/HC values are absent.
-  - Support remains Experimental pending live dashboard/card validation after this
-    parser update.
-  - Promoted to Community Validated after real-hardware validation; model-specific
-    physical layout remains authoritative.
-  - Ports 9-12 are physical 1G SFP cages; Discovery caps generated speed telemetry
-    for these positions at 1000 Mbps when IF-MIB reports an implausible higher value.
+  - The generic 48 RJ45 + 4 SFP faceplate is used as a temporary fallback until a smaller generic visual is supplied.
+  - The contribution exposes standard ifOperStatus, ifSpeed and 32-bit ifInOctets/ifOutOctets; v2.0.31 uses those when ifXTable/HC values are absent.
+  - Support remains Experimental pending live dashboard/card validation after this parser update.
+  - Promoted to Community Validated after real-hardware validation; model-specific physical layout remains authoritative.
+  - Ports 9-12 are physical 1G SFP cages; Discovery caps generated speed telemetry for these positions at 1000 Mbps when IF-MIB reports an implausible higher value.
   validation:
     exact_model_detection: contribution_confirmed_sysobjectid_and_model
     rj45_mapping: ifdescr_confirmed_ports_1_8
@@ -535,12 +508,9 @@ devices:
     public_credit: false
   notes:
   - Initial Experimental exact-model registry entry for the Zyxel XS1930-10.
-  - Adds card-side exact-model recognition for XS1930-10 text so model-aware visual
-    defaults can resolve when Discovery or manual configuration exposes the model
-    string.
+  - Adds card-side exact-model recognition for XS1930-10 text so model-aware visual defaults can resolve when Discovery or manual configuration exposes the model string.
   - Uses the existing compact 8-RJ45 + 2-SFP visual as the temporary fallback, matching the contributed physical port count until a Zyxel-specific faceplate is supplied.
-  - Live Discovery validation, SNMP walk validation, sensor coverage, and sustained
-    dashboard/card validation remain pending.
+  - Live Discovery validation, SNMP walk validation, sensor coverage, and sustained dashboard/card validation remain pending.
   validation:
     exact_model_detection: card_side_pattern_added_pending_live_validation
     rj45_mapping: candidate_8_rj45_profile
@@ -584,23 +554,15 @@ devices:
     public_credit: false
   notes:
   - Initial Experimental profile created from Support My Switch contribution SV-2026-000013.
-  - Four separate devices in the contribution report the same exact model and interface
-    layout.
+  - Four separate devices in the contribution report the same exact model and interface layout.
   - Interface evidence exposes tw1 through tw8 and te1 through te2.
-  - Candidate mapping uses tw1-tw8 as the eight access ports and te1-te2 as the two
-    uplinks.
-  - Live dashboard, PoE telemetry, VLAN presentation, sensors, and uplink media validation
-    remain pending.
-  - v2.0.22 audit regression checks passed against the supplied contribution/API sample
-    data; live dashboard validation status is unchanged.
-  - v2.0.28 live UniFi2MQTT validation confirmed the normalized API layout on 3 physical
-    device(s).
-  - v2.0.32 uses the generic 48 RJ45 + 4 SFP faceplate as the universal temporary
-    fallback until a smaller matching generic visual is supplied.
-  - v2.0.32 dashboard generation is enabled through the UniFi API/UniFi2MQTT data
-    path; support status remains Experimental pending wider live validation.
-  - UniFi visual selection is explicit for this exact model and follows its validated
-    API port geometry; no Cisco-specific profile fallback is used.
+  - Candidate mapping uses tw1-tw8 as the eight access ports and te1-te2 as the two uplinks.
+  - Live dashboard, PoE telemetry, VLAN presentation, sensors, and uplink media validation remain pending.
+  - v2.0.22 audit regression checks passed against the supplied contribution/API sample data; live dashboard validation status is unchanged.
+  - v2.0.28 live UniFi2MQTT validation confirmed the normalized API layout on 3 physical device(s).
+  - v2.0.32 uses the generic 48 RJ45 + 4 SFP faceplate as the universal temporary fallback until a smaller matching generic visual is supplied.
+  - v2.0.32 dashboard generation is enabled through the UniFi API/UniFi2MQTT data path; support status remains Experimental pending wider live validation.
+  - UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.
   validation:
     exact_model_detection: contribution_confirmed_multiple_devices
     rj45_mapping: candidate_repeated_evidence
@@ -646,18 +608,12 @@ devices:
   notes:
   - Initial Experimental profile created from Support My Switch contribution SV-2026-000013.
   - Interface evidence exposes 0/1 through 0/26.
-  - Candidate mapping treats 0/1 through 0/24 as access ports and 0/25 through 0/26
-    as uplinks.
-  - Uplink media classification, PoE telemetry, system sensors, VLAN presentation,
-    and sustained dashboard validation remain pending.
-  - v2.0.22 audit regression checks passed against the supplied contribution/API sample
-    data; live dashboard validation status is unchanged.
-  - v2.0.28 live UniFi2MQTT validation confirmed the normalized API layout on 1 physical
-    device(s).
-  - v2.0.32 dashboard generation is enabled through the UniFi API/UniFi2MQTT data
-    path; support status remains Experimental pending wider live validation.
-  - UniFi visual selection is explicit for this exact model and follows its validated
-    API port geometry; no Cisco-specific profile fallback is used.
+  - Candidate mapping treats 0/1 through 0/24 as access ports and 0/25 through 0/26 as uplinks.
+  - Uplink media classification, PoE telemetry, system sensors, VLAN presentation, and sustained dashboard validation remain pending.
+  - v2.0.22 audit regression checks passed against the supplied contribution/API sample data; live dashboard validation status is unchanged.
+  - v2.0.28 live UniFi2MQTT validation confirmed the normalized API layout on 1 physical device(s).
+  - v2.0.32 dashboard generation is enabled through the UniFi API/UniFi2MQTT data path; support status remains Experimental pending wider live validation.
+  - UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.
   validation:
     exact_model_detection: contribution_confirmed
     rj45_mapping: candidate
@@ -701,23 +657,15 @@ devices:
     display_name: Community contributor
     public_credit: false
   notes:
-  - Experimental registry entry created from sanitized official UniFi Integration
-    API samples.
-  - API detail identifies 16 RJ45 ports with per-port state, speed and PoE metadata
-    where exposed.
+  - Experimental registry entry created from sanitized official UniFi Integration API samples.
+  - API detail identifies 16 RJ45 ports with per-port state, speed and PoE metadata where exposed.
   - Dedicated 16-port visual geometry remains pending.
-  - v2.0.22 audit regression checks passed against the supplied contribution/API sample
-    data; live dashboard validation status is unchanged.
-  - v2.0.28 live UniFi2MQTT validation confirmed the normalized API layout on 2 physical
-    device(s).
-  - v2.0.32 uses the generic 48 RJ45 + 4 SFP faceplate as the universal temporary
-    fallback until a smaller matching generic visual is supplied.
-  - v2.0.32 dashboard generation is enabled through the UniFi API/UniFi2MQTT data
-    path; support status remains Experimental pending wider live validation.
-  - Live Switch Vision card validation remains pending; the universal generic visual
-    is used until a smaller matching faceplate is supplied.
-  - UniFi visual selection is explicit for this exact model and follows its validated
-    API port geometry; no Cisco-specific profile fallback is used.
+  - v2.0.22 audit regression checks passed against the supplied contribution/API sample data; live dashboard validation status is unchanged.
+  - v2.0.28 live UniFi2MQTT validation confirmed the normalized API layout on 2 physical device(s).
+  - v2.0.32 uses the generic 48 RJ45 + 4 SFP faceplate as the universal temporary fallback until a smaller matching generic visual is supplied.
+  - v2.0.32 dashboard generation is enabled through the UniFi API/UniFi2MQTT data path; support status remains Experimental pending wider live validation.
+  - Live Switch Vision card validation remains pending; the universal generic visual is used until a smaller matching faceplate is supplied.
+  - UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.
   validation:
     exact_model_detection: api_confirmed
     rj45_mapping: api_confirmed_port_indices
@@ -764,16 +712,11 @@ devices:
   - API detail identifies ports 1-8 as RJ45 up to 10G and ports 9-10 as 10G SFP+.
   - Per-port PoE metadata is exposed for the RJ45 ports.
   - Live Switch Vision dashboard validation remains pending.
-  - v2.0.22 audit regression checks passed against the supplied contribution/API sample
-    data; live dashboard validation status is unchanged.
-  - v2.0.28 live UniFi2MQTT validation confirmed the normalized API layout on 1 physical
-    device(s).
-  - v2.0.32 uses the generic 48 RJ45 + 4 SFP faceplate as the universal temporary
-    fallback until a smaller matching generic visual is supplied.
-  - v2.0.32 dashboard generation is enabled through the UniFi API/UniFi2MQTT data
-    path; support status remains Experimental pending wider live validation.
-  - UniFi visual selection is explicit for this exact model and follows its validated
-    API port geometry; no Cisco-specific profile fallback is used.
+  - v2.0.22 audit regression checks passed against the supplied contribution/API sample data; live dashboard validation status is unchanged.
+  - v2.0.28 live UniFi2MQTT validation confirmed the normalized API layout on 1 physical device(s).
+  - v2.0.32 uses the generic 48 RJ45 + 4 SFP faceplate as the universal temporary fallback until a smaller matching generic visual is supplied.
+  - v2.0.32 dashboard generation is enabled through the UniFi API/UniFi2MQTT data path; support status remains Experimental pending wider live validation.
+  - UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.
   validation:
     exact_model_detection: api_confirmed
     rj45_mapping: api_confirmed_port_indices
@@ -816,20 +759,13 @@ devices:
     public_credit: false
   notes:
   - Initial Experimental profile created from Support My Switch contribution SV-2026-000010.
-  - Two separate devices report sysObjectID 1.3.6.1.4.1.2011.2.23.849 and the same
-    physical interface layout.
-  - GigabitEthernet0/0/1 through GigabitEthernet0/0/8 are repeatedly observed as the
-    eight copper ports.
-  - XGigabitEthernet0/0/1 through XGigabitEthernet0/0/4 are repeatedly observed and
-    mapped as the four high-speed uplink positions.
-  - PoE capability is implied by the exact model SKU but live PoE telemetry and system
-    sensors remain pending validation.
-  - v2.0.22 audit regression checks passed against the supplied contribution/API sample
-    data; live dashboard validation status is unchanged.
-  - v2.0.31 uses the generic 48 RJ45 + 4 SFP faceplate as the temporary universal
-    fallback visual.
-  - Promoted to Community Validated after real-hardware validation; model-specific
-    physical layout remains authoritative.
+  - Two separate devices report sysObjectID 1.3.6.1.4.1.2011.2.23.849 and the same physical interface layout.
+  - GigabitEthernet0/0/1 through GigabitEthernet0/0/8 are repeatedly observed as the eight copper ports.
+  - XGigabitEthernet0/0/1 through XGigabitEthernet0/0/4 are repeatedly observed and mapped as the four high-speed uplink positions.
+  - PoE capability is implied by the exact model SKU but live PoE telemetry and system sensors remain pending validation.
+  - v2.0.22 audit regression checks passed against the supplied contribution/API sample data; live dashboard validation status is unchanged.
+  - v2.0.31 uses the generic 48 RJ45 + 4 SFP faceplate as the temporary universal fallback visual.
+  - Promoted to Community Validated after real-hardware validation; model-specific physical layout remains authoritative.
   validation:
     exact_model_detection: contribution_confirmed_two_devices
     rj45_mapping: contribution_confirmed_repeated_evidence
@@ -872,22 +808,15 @@ devices:
     display_name: Community contributor
     public_credit: false
   notes:
-  - Experimental gateway/switch-hybrid entry created from a live Switch Vision UniFi2MQTT
-    snapshot.
-  - The UniFi Integration API exposes nine RJ45 ports and two 10G SFP+ ports for this
-    UDM Pro.
+  - Experimental gateway/switch-hybrid entry created from a live Switch Vision UniFi2MQTT snapshot.
+  - The UniFi Integration API exposes nine RJ45 ports and two 10G SFP+ ports for this UDM Pro.
   - CPU, memory, uptime and aggregate uplink traffic are present in the live API snapshot.
   - Per-port traffic is not exposed by the current Integration API path.
-  - One or more ports may have routed WAN/LAN roles; role semantics are not yet classified
-    by Switch Vision.
-  - v2.0.32 uses the generic 48 RJ45 + 4 SFP faceplate as the universal temporary
-    fallback until a smaller matching generic visual is supplied.
-  - v2.0.32 dashboard generation is enabled through the UniFi API/UniFi2MQTT data
-    path; support status remains Experimental pending wider live validation.
-  - A dedicated 9-RJ45 + 2-SFP visual is not bundled yet; v2.0.32 uses the universal
-    generic fallback while preserving the real port counts.
-  - UniFi visual selection is explicit for this exact model and follows its validated
-    API port geometry; no Cisco-specific profile fallback is used.
+  - One or more ports may have routed WAN/LAN roles; role semantics are not yet classified by Switch Vision.
+  - v2.0.32 uses the generic 48 RJ45 + 4 SFP faceplate as the universal temporary fallback until a smaller matching generic visual is supplied.
+  - v2.0.32 dashboard generation is enabled through the UniFi API/UniFi2MQTT data path; support status remains Experimental pending wider live validation.
+  - A dedicated 9-RJ45 + 2-SFP visual is not bundled yet; v2.0.32 uses the universal generic fallback while preserving the real port counts.
+  - UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.
   validation:
     exact_model_detection: live_api_confirmed
     rj45_mapping: live_api_confirmed_port_indices
@@ -931,21 +860,15 @@ devices:
     display_name: Community contributor
     public_credit: false
   notes:
-  - Experimental Dell EMC Networking N2128PX-ON support derived from the Support My
-    Switch bundle received 2026-08-16.
+  - Experimental Dell EMC Networking N2128PX-ON support derived from the Support My Switch bundle received 2026-08-16.
   - The contributed standalone unit and two-member stack both report sysObjectID 1.3.6.1.4.1.674.10895.3077.
   - Gi<member>/0/1-28 are confirmed as the 28 copper front-panel ports per member.
   - Te<member>/0/1-2 are confirmed as the two 10G SFP+ uplinks per member.
-  - The contribution spans firmware 6.7.1.27 and 6.6.0.7 and preserves the same physical
-    interface topology.
-  - POWER-ETHERNET-MIB discovery exposes PoE candidates; detailed per-port PoE presentation
-    remains pending contributor validation.
-  - The generic 48 RJ45 + 4 SFP visual is used temporarily with the real card port
-    counts constrained to 28 RJ45 + 2 uplinks.
-  - Rendered dashboard, VLAN/trunk semantics and final Dell faceplate calibration
-    remain pending before promotion beyond Experimental.
-  - The contribution ID SV-2026-000004 collides with an older Zyxel contribution ID,
-    so the 2026-08-16 date is retained in evidence metadata to disambiguate this bundle.
+  - The contribution spans firmware 6.7.1.27 and 6.6.0.7 and preserves the same physical interface topology.
+  - POWER-ETHERNET-MIB discovery exposes PoE candidates; detailed per-port PoE presentation remains pending contributor validation.
+  - The generic 48 RJ45 + 4 SFP visual is used temporarily with the real card port counts constrained to 28 RJ45 + 2 uplinks.
+  - Rendered dashboard, VLAN/trunk semantics and final Dell faceplate calibration remain pending before promotion beyond Experimental.
+  - The contribution ID SV-2026-000004 collides with an older Zyxel contribution ID, so the 2026-08-16 date is retained in evidence metadata to disambiguate this bundle.
   validation:
     exact_model_detection: contribution_confirmed_sysobjectid_model_and_two_firmware_versions
     rj45_mapping: contribution_confirmed_standalone_and_two_member_stack
@@ -1001,18 +924,14 @@ devices:
       public_credit: true
   notes:
   - Experimental profile created from Support My Switch live UniFi API evidence.
-  - The contributed device exposes 48 RJ45 ports, two 1G SFP ports and two 10G SFP+
-    ports.
+  - The contributed device exposes 48 RJ45 ports, two 1G SFP ports and two 10G SFP+ ports.
   - PoE information is exposed for all 48 copper ports.
-  - Live API evidence includes link state, connector type, negotiated speed, CPU,
-    memory and uptime.
+  - Live API evidence includes link state, connector type, negotiated speed, CPU, memory and uptime.
   - Per-port RX/TX traffic is not exposed by the current UniFi API path.
   - SNMP is therefore required for Switch Vision per-port Activity LED animation.
-  - The existing 48 RJ45 + 4 SFP Switch Vision visual matches the reported physical
-    port count.
+  - The existing 48 RJ45 + 4 SFP Switch Vision visual matches the reported physical port count.
   - Rendered dashboard validation remains pending before promotion beyond Experimental.
-  - UniFi visual selection is explicit for this exact model and follows its validated
-    API port geometry; no Cisco-specific profile fallback is used.
+  - UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.
   - SV-2026-000002 from bignick8t3 independently reconfirms two units with 48 PoE-capable 1G RJ45 ports, API ports 49-50 as 10G SFP+, and API ports 51-52 as 1G SFP.
   - SV-2026-000002 was captured with UniFi2MQTT 2.0.47 and did not include explicit Switch Vision dashboard/card validation, so Experimental status is unchanged.
   validation:
@@ -1303,11 +1222,9 @@ devices:
   - PoE output capability is exposed only on ports 5 through 8, using 802.3af metadata.
   - The contribution proves link state and PoE-active state are independent.
   - Per-port RX/TX traffic is not exposed by the current UniFi API path.
-  - The universal temporary faceplate is used while preserving the real eight-port
-    count.
+  - The universal temporary faceplate is used while preserving the real eight-port count.
   - Rendered dashboard validation remains pending before promotion beyond Experimental.
-  - UniFi visual selection is explicit for this exact model and follows its validated
-    API port geometry; no Cisco-specific profile fallback is used.
+  - UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.
   - SV-2026-000002 from bignick8t3 independently reconfirms one 8x 1G RJ45 unit with PoE capability limited to physical/API ports 5-8 using 802.3af.
   - SV-2026-000002 was captured with UniFi2MQTT 2.0.47 and did not include explicit Switch Vision dashboard/card validation, so Experimental status is unchanged.
   validation:
@@ -1354,16 +1271,13 @@ devices:
   notes:
   - Experimental profile created from Support My Switch contribution SV-2026-000003.
   - Live UniFi API evidence exposes five 1G RJ45 ports.
-  - Port 1 is non-PoE in the contributed API metadata; ports 2 through 5 expose 802.3af
-    PoE output metadata.
+  - Port 1 is non-PoE in the contributed API metadata; ports 2 through 5 expose 802.3af PoE output metadata.
   - Live evidence includes link state, negotiated speed, CPU, memory and uptime.
   - Per-port RX/TX traffic is not exposed by the current UniFi API path.
   - SNMP is therefore required for Switch Vision per-port Activity LED animation.
-  - No exact five-port Switch Vision visual is assigned yet; the universal temporary
-    fallback preserves the real API port count.
+  - No exact five-port Switch Vision visual is assigned yet; the universal temporary fallback preserves the real API port count.
   - Rendered dashboard validation remains pending before promotion beyond Experimental.
-  - UniFi visual selection is explicit for this exact model and follows its validated
-    API port geometry; no Cisco-specific profile fallback is used.
+  - UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.
   validation:
     exact_model_detection: live_api_confirmed
     rj45_mapping: live_api_confirmed_port_indices
@@ -1407,18 +1321,14 @@ devices:
     public_credit: true
   notes:
   - Experimental profile created from Support My Switch contribution SV-2026-000003.
-  - Live UniFi API evidence exposes ports 1 through 8 as 2.5G-capable PoE RJ45, port
-    9 as 10G-capable RJ45, and port 10 as 10G SFP+.
+  - Live UniFi API evidence exposes ports 1 through 8 as 2.5G-capable PoE RJ45, port 9 as 10G-capable RJ45, and port 10 as 10G SFP+.
   - Ports 1 through 8 expose 802.3bt PoE metadata.
-  - Live evidence includes link state, connector type, negotiated speed, CPU, memory
-    and uptime.
+  - Live evidence includes link state, connector type, negotiated speed, CPU, memory and uptime.
   - Per-port RX/TX traffic is not exposed by the current UniFi API path.
   - SNMP is therefore required for Switch Vision per-port Activity LED animation.
-  - No exact Switch Vision visual exists for the mixed 2.5G/10G RJ45 plus SFP+ layout
-    yet; the universal temporary fallback preserves the real API port counts.
+  - No exact Switch Vision visual exists for the mixed 2.5G/10G RJ45 plus SFP+ layout yet; the universal temporary fallback preserves the real API port counts.
   - Rendered dashboard validation remains pending before promotion beyond Experimental.
-  - UniFi visual selection is explicit for this exact model and follows its validated
-    API port geometry; no Cisco-specific profile fallback is used.
+  - UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.
   validation:
     exact_model_detection: live_api_confirmed
     rj45_mapping: live_api_confirmed_port_indices
@@ -1474,14 +1384,11 @@ devices:
   notes:
   - Experimental profile created from Support My Switch contribution SV-2026-000057.
   - Three independent live UniFi API devices expose the same five 1G RJ45-port topology.
-  - No per-port PoE output capability is exposed by the contributed normalized API
-    data.
+  - No per-port PoE output capability is exposed by the contributed normalized API data.
   - Per-port RX/TX traffic is not exposed by the current UniFi API path.
-  - The universal temporary faceplate is used while preserving the real five-port
-    count.
+  - The universal temporary faceplate is used while preserving the real five-port count.
   - Rendered dashboard validation remains pending before promotion beyond Experimental.
-  - UniFi visual selection is explicit for this exact model and follows its validated
-    API port geometry; no Cisco-specific profile fallback is used.
+  - UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.
   - SV-2026-000002 from bignick8t3 independently reconfirms two additional units with the same five-port 1G RJ45 topology.
   - SV-2026-000002 was captured with UniFi2MQTT 2.0.47 and did not include explicit Switch Vision dashboard/card validation, so Experimental status is unchanged.
   validation:
@@ -1532,8 +1439,7 @@ devices:
   - Per-port RX/TX traffic is not exposed by the current UniFi API path.
   - This exact model remains distinct from USW-24-PoE, whose two uplinks are 1G SFP.
   - Rendered dashboard validation remains pending before promotion beyond Experimental.
-  - UniFi visual selection is explicit for this exact model and follows its validated
-    API port geometry; no Cisco-specific profile fallback is used.
+  - UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.
   validation:
     exact_model_detection: live_api_confirmed
     rj45_mapping: live_api_confirmed_port_indices
@@ -1579,15 +1485,12 @@ devices:
   - Experimental profile created from Support My Switch contribution SV-2026-000003.
   - Live UniFi API evidence exposes 16 1G RJ45 ports and two 1G SFP uplinks.
   - PoE metadata is exposed on copper ports 1 through 8; ports 9 through 16 are non-PoE.
-  - Live evidence includes link state, connector type, negotiated speed, CPU, memory
-    and uptime.
+  - Live evidence includes link state, connector type, negotiated speed, CPU, memory and uptime.
   - Per-port RX/TX traffic is not exposed by the current UniFi API path.
   - SNMP is therefore required for Switch Vision per-port Activity LED animation.
-  - A dedicated 16 RJ45 + 2 SFP Switch Vision visual is not bundled yet; the universal
-    temporary fallback is used while preserving the real port counts.
+  - A dedicated 16 RJ45 + 2 SFP Switch Vision visual is not bundled yet; the universal temporary fallback is used while preserving the real port counts.
   - Rendered dashboard validation remains pending before promotion beyond Experimental.
-  - UniFi visual selection is explicit for this exact model and follows its validated
-    API port geometry; no Cisco-specific profile fallback is used.
+  - UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.
   validation:
     exact_model_detection: live_api_confirmed
     rj45_mapping: live_api_confirmed_port_indices
@@ -1632,20 +1535,15 @@ devices:
   notes:
   - Experimental profile created from Support My Switch contribution SV-2026-000003.
   - Live UniFi API evidence exposes 24 1G RJ45 ports and two 1G SFP uplinks.
-  - PoE metadata is exposed on copper ports 1 through 16; ports 17 through 24 are
-    non-PoE.
-  - Live evidence includes link state, connector type, negotiated speed, CPU, memory
-    and uptime.
+  - PoE metadata is exposed on copper ports 1 through 16; ports 17 through 24 are non-PoE.
+  - Live evidence includes link state, connector type, negotiated speed, CPU, memory and uptime.
   - Per-port RX/TX traffic is not exposed by the current UniFi API path.
   - SNMP is therefore required for Switch Vision per-port Activity LED animation.
-  - The existing 24 RJ45 + 2 SFP generic visual matches the reported physical port
-    count.
+  - The existing 24 RJ45 + 2 SFP generic visual matches the reported physical port count.
   - Rendered dashboard validation remains pending before promotion beyond Experimental.
   - SV-2026-000057 independently reconfirms the exact 24x 1G RJ45 + 2x 1G SFP topology.
-  - SV-2026-000057 independently reconfirms PoE output capability on ports 1 through
-    16 only.
-  - UniFi visual selection is explicit for this exact model and follows its validated
-    API port geometry; no Cisco-specific profile fallback is used.
+  - SV-2026-000057 independently reconfirms PoE output capability on ports 1 through 16 only.
+  - UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.
   validation:
     exact_model_detection: live_api_confirmed
     rj45_mapping: live_api_confirmed_port_indices
@@ -1694,11 +1592,9 @@ devices:
   - Live evidence includes link state, negotiated speed, CPU, memory and uptime.
   - Per-port RX/TX traffic is not exposed by the current UniFi API path.
   - SNMP is therefore required for Switch Vision per-port Activity LED animation.
-  - A dedicated 8-port Switch Vision visual is not currently assigned to this registry
-    profile; the universal temporary fallback preserves the real port count.
+  - A dedicated 8-port Switch Vision visual is not currently assigned to this registry profile; the universal temporary fallback preserves the real port count.
   - Rendered dashboard validation remains pending before promotion beyond Experimental.
-  - UniFi visual selection is explicit for this exact model and follows its validated
-    API port geometry; no Cisco-specific profile fallback is used.
+  - UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.
   validation:
     exact_model_detection: live_api_confirmed
     rj45_mapping: live_api_confirmed_port_indices
@@ -1740,20 +1636,14 @@ devices:
     display_name: Community contributor
     public_credit: false
   notes:
-  - Experimental gateway/switch-hybrid profile created from Support My Switch contribution
-    SV-2026-000057.
-  - Live UniFi API evidence exposes ports 1-8 as 1G PoE RJ45, port 9 as 2.5G RJ45,
-    and ports 10-11 as 10G SFP+.
+  - Experimental gateway/switch-hybrid profile created from Support My Switch contribution SV-2026-000057.
+  - Live UniFi API evidence exposes ports 1-8 as 1G PoE RJ45, port 9 as 2.5G RJ45, and ports 10-11 as 10G SFP+.
   - PoE capability is exposed on ports 1 through 8 only.
-  - Ports 9 through 11 remain role-neutral because the sanitized contribution does
-    not retain enough WAN/LAN role semantics.
+  - Ports 9 through 11 remain role-neutral because the sanitized contribution does not retain enough WAN/LAN role semantics.
   - Per-port RX/TX traffic is not exposed by the current UniFi API path.
-  - The universal temporary faceplate is used while preserving the real eleven-port
-    topology.
-  - Rendered dashboard and WAN/LAN role validation remain pending before promotion
-    beyond Experimental.
-  - UniFi visual selection is explicit for this exact model and follows its validated
-    API port geometry; no Cisco-specific profile fallback is used.
+  - The universal temporary faceplate is used while preserving the real eleven-port topology.
+  - Rendered dashboard and WAN/LAN role validation remain pending before promotion beyond Experimental.
+  - UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.
   validation:
     exact_model_detection: live_api_confirmed
     rj45_mapping: live_api_confirmed_ports_1_9
