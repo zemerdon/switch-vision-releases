@@ -1301,7 +1301,7 @@ def validate_device_visual_recommendations(base: Path, source_layout: bool = Fal
         elif item is not None:
             errors.append(f"{model}: unexpected embedded recommendation without a visual or API-port map")
 
-        if model not in compact_8x2_visual_models:
+        if item is not None and model not in compact_8x2_visual_models:
             if item.get("profile") == "cisco_3560cg_8pc":
                 errors.append(f"{model}: compact 8+2 calibration leaked into an unapproved exact model")
             if item.get("faceplate") == "faceplates/c3560cg-8pc-s.png":
