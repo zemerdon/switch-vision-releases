@@ -1,0 +1,183 @@
+name: Build Core v2.4.3 Huawei reset hotfix
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'hotfix/core-2.4.3-huawei-reset-defaults' }}
+    runs-on:
+      - self-hosted
+      - Linux
+      - X64
+      - switch-vision
+      - sv-dev
+    timeout-minutes: 30
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+
+    steps:
+      - name: Checkout hotfix branch
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Install build dependency
+        run: python3 -m pip install --disable-pip-version-check PyYAML
+
+      - name: Prepare Core 2.4.3 Huawei defaults
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import textwrap
+          import yaml
+
+          root = Path('.')
+          registry_path = root / 'src/devices/supported_devices.yaml'
+          doc = yaml.safe_load(registry_path.read_text(encoding='utf-8'))
+          devices = doc.get('devices', [])
+          targets = {'S5720-12TP-LI-AC', 'S5735-L8P4X-A1'}
+          found = set()
+          for device in devices:
+              if not isinstance(device, dict) or device.get('model') not in targets:
+                  continue
+              model = device['model']
+              found.add(model)
+              device['calibration_profile'] = 'stock_24rj45_4sfp'
+              device['default_faceplate'] = 'faceplates/24rj45-4sfp.png'
+              visuals = device.setdefault('visuals', {})
+              visuals['recommended_faceplate'] = 'faceplates/24rj45-4sfp.png'
+              visuals['calibration_profile'] = 'stock_24rj45_4sfp'
+          if found != targets:
+              raise SystemExit(f'ERROR: Huawei models missing from Core registry: {sorted(targets-found)}')
+          registry_path.write_text(
+              yaml.safe_dump(doc, sort_keys=False, allow_unicode=True),
+              encoding='utf-8', newline='\n'
+          )
+
+          release_notes = '''# Switch Vision Core v2.4.3 — Huawei faceplate reset hotfix
+
+          - Restores `S5720-12TP-LI-AC` and `S5735-L8P4X-A1` to the neutral `stock_24rj45_4sfp` factory calibration profile.
+          - Restores the matching `faceplates/24rj45-4sfp.png` default/recommended faceplate for both Huawei 8 RJ45 + 4 SFP models.
+          - Fixes **Reset Current Faceplate** / model reset falling back to Cisco 48-port factory geometry and moving LEDs away from the shipped card defaults.
+          - Adds a permanent registry regression so these two Huawei models cannot be reintroduced with `default_cisco_48_port` or the 48-port faceplate.
+          - Does not change Huawei physical port mapping, S5720 1G SFP speed safeguards, telemetry, Activity LEDs, or TEST MODE behavior.
+
+          After updating Core through Switch Vision Installer, restart Home Assistant Core when requested and hard-refresh the browser. Existing saved custom calibrations remain preserved until the user chooses a reset.
+          '''
+          (root / 'RELEASE_NOTES.md').write_text(textwrap.dedent(release_notes), encoding='utf-8', newline='\n')
+
+          changelog_path = root / 'CHANGELOG.md'
+          changelog = changelog_path.read_text(encoding='utf-8')
+          entry = textwrap.dedent('''\
+          ## v2.4.3 — Huawei faceplate reset hotfix
+
+          - Restore Huawei S5720/S5735 neutral 24 RJ45 / 4 SFP factory visual assignments that regressed during the v2.4.2 registry synchronization.
+          - Ensure Reset Current Faceplate and model-aware resets return those switches to `stock_24rj45_4sfp` with `faceplates/24rj45-4sfp.png`, not Cisco 48-port geometry.
+          - Add permanent regression coverage for both exact Huawei models.
+
+          ''')
+          if changelog.startswith('# Changelog\n\n'):
+              changelog = '# Changelog\n\n' + entry + changelog[len('# Changelog\n\n'):]
+          else:
+              raise SystemExit('ERROR: unexpected Core CHANGELOG header')
+          changelog_path.write_text(changelog, encoding='utf-8', newline='\n')
+
+          test_path = root / 'tests/test_huawei_visual_defaults.py'
+          test_path.write_text(textwrap.dedent('''\
+          import json
+          import unittest
+          from pathlib import Path
+
+
+          class HuaweiVisualDefaultsRegression(unittest.TestCase):
+              def test_huawei_8_plus_4_models_use_neutral_24_4_factory_visual(self):
+                  root = Path(__file__).resolve().parents[1]
+                  payload = json.loads((root / 'src/devices/supported_devices.json').read_text(encoding='utf-8'))
+                  models = {str(item.get('model')): item for item in payload.get('devices', []) if isinstance(item, dict)}
+                  for model in ('S5720-12TP-LI-AC', 'S5735-L8P4X-A1'):
+                      device = models[model]
+                      self.assertEqual(device.get('calibration_profile'), 'stock_24rj45_4sfp')
+                      self.assertEqual(device.get('default_faceplate'), 'faceplates/24rj45-4sfp.png')
+                      visuals = device.get('visuals') or {}
+                      self.assertEqual(visuals.get('calibration_profile'), 'stock_24rj45_4sfp')
+                      self.assertEqual(visuals.get('recommended_faceplate'), 'faceplates/24rj45-4sfp.png')
+
+
+          if __name__ == '__main__':
+              unittest.main()
+          '''), encoding='utf-8', newline='\n')
+          PY
+
+      - name: Build Core 2.4.3
+        run: python3 build.py -v 2.4.3
+
+      - name: Validate Core 2.4.3
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check src/js/switch-vision.js
+          node --check src/custom_components/switch_vision/switch-vision-card.js
+          node --check src/custom_components/switch_vision/switch-vision-panel.js
+          python3 -m unittest discover -s tests -p 'test_*.py'
+          python3 tools/check_core_release_parity.py
+          git diff --check
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          version = '2.4.3'
+          expected_resource = f'/local/switch-vision/js/switch-vision.js?v={version}'
+          for path in (
+              Path('src/devices/supported_devices.json'),
+              Path(f'Releases/switch-vision-{version}/devices/supported_devices.json'),
+          ):
+              doc = json.loads(path.read_text(encoding='utf-8'))
+              models = {str(x.get('model')): x for x in doc.get('devices', []) if isinstance(x, dict)}
+              for model in ('S5720-12TP-LI-AC', 'S5735-L8P4X-A1'):
+                  d = models[model]
+                  assert d['calibration_profile'] == 'stock_24rj45_4sfp', (path, model)
+                  assert d['default_faceplate'] == 'faceplates/24rj45-4sfp.png', (path, model)
+                  assert d['visuals']['calibration_profile'] == 'stock_24rj45_4sfp', (path, model)
+                  assert d['visuals']['recommended_faceplate'] == 'faceplates/24rj45-4sfp.png', (path, model)
+          source = json.loads(Path('src/manifest.json').read_text())
+          release = json.loads(Path(f'Releases/switch-vision-{version}/manifest.json').read_text())
+          assert source['version'] == release['version'] == version
+          assert source['resource'] == release['resource'] == expected_resource
+          print('Core 2.4.3 Huawei reset/default contract: PASS')
+          PY
+
+      - name: Remove generated archives and temporary builder
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f \
+            Releases/switch-vision-2.4.3.zip \
+            Releases/switch-vision-2.4.3.zip.sha256 \
+            Switch_Vision_v2.4.3_source.zip \
+            Switch_Vision_v2.4.3_SHA256SUMS.txt
+          rm -f .github/workflows/build-core-v243-huawei-reset-hotfix.yml
+          find . -type d -name '__pycache__' -prune -exec rm -rf {} +
+          find . -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
+          git diff --check
+
+      - name: Commit built Core 2.4.3 source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add -A
+          if git diff --cached --quiet; then
+            echo 'ERROR: Core 2.4.3 builder produced no changes.'
+            exit 1
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Core v2.4.3: restore Huawei faceplate reset defaults'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
