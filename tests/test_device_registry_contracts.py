@@ -50,19 +50,115 @@ class DeviceRegistryContractTests(unittest.TestCase):
         self.assertEqual(ports.get("gigabit_sfp"), 4)
         self.assertEqual(ports.get("ten_gigabit_sfp_plus"), 0)
 
-    def test_unifi_models_have_explicit_non_cisco_visual_profiles(self) -> None:
+    def test_unifi_dashboard_visual_contracts_are_explicit(self) -> None:
         for model, device in self.models.items():
             if device.get("vendor") != "Ubiquiti":
                 continue
+
             profile = str(device.get("calibration_profile") or "")
             faceplate = str(device.get("default_faceplate") or "")
             visuals = device.get("visuals") or {}
-            self.assertTrue(profile, model)
-            self.assertTrue(faceplate, model)
-            self.assertFalse(profile.lower().startswith("cisco_"), (model, profile))
-            self.assertNotIn("cisco", faceplate.lower(), (model, faceplate))
+            dashboard_support = device.get("dashboard_support") is True
+
+            # A model that claims dashboard support must have a real, explicit
+            # non-Cisco visual. Never satisfy this by silently falling back to a
+            # Cisco profile or faceplate.
+            if dashboard_support:
+                self.assertTrue(profile, model)
+                self.assertTrue(faceplate, model)
+                self.assertFalse(profile.lower().startswith("cisco_"), (model, profile))
+                self.assertNotIn("cisco", faceplate.lower(), (model, faceplate))
+            else:
+                # New physical/API contracts may deliberately remain visual-pending
+                # until verified faceplate coordinates exist. Keep both fields in
+                # lock-step and keep the support state non-final instead of inventing
+                # a visual just to satisfy the registry.
+                self.assertEqual(bool(profile), bool(faceplate), model)
+                if not profile:
+                    self.assertEqual(device.get("status"), "detected", model)
+
             self.assertEqual(visuals.get("calibration_profile"), profile, model)
             self.assertEqual(visuals.get("recommended_faceplate"), faceplate, model)
+
+    def test_sv_2026_000002_existing_models_gain_evidence_without_promotion(self) -> None:
+        expected_units = {
+            "US 8 60W": 1,
+            "USW Flex Mini": 2,
+            "US 48 PoE 500W": 2,
+        }
+        for model, units in expected_units.items():
+            device = self.models[model]
+            self.assertEqual(device.get("status"), "experimental", model)
+            rows = [
+                row
+                for row in device.get("contributions") or []
+                if isinstance(row, dict) and row.get("id") == "SV-2026-000002"
+            ]
+            self.assertEqual(len(rows), 1, model)
+            row = rows[0]
+            self.assertEqual(row.get("source_component"), "UniFi2MQTT 2.0.47", model)
+            self.assertEqual(row.get("devices_observed"), units, model)
+            self.assertEqual(row.get("dashboard_validation"), "pending", model)
+            self.assertEqual(
+                row.get("api_capabilities"),
+                {"port_detail": True, "per_port_traffic": False},
+                model,
+            )
+            contributor = row.get("contributor") or {}
+            self.assertEqual(contributor.get("display_name"), "bignick8t3", model)
+            self.assertIs(contributor.get("public_credit"), True, model)
+
+    def test_us_48_reuses_verified_geometry_and_legacy_sequential_mapping(self) -> None:
+        device = self.models["US 48"]
+        ports = device.get("ports") or {}
+        self.assertEqual(device.get("status"), "experimental")
+        self.assertIs(device.get("dashboard_support"), True)
+        self.assertEqual(ports.get("rj45"), 48)
+        self.assertIs(ports.get("poe"), False)
+        self.assertEqual(ports.get("uplinks"), 4)
+        self.assertEqual(ports.get("gigabit_sfp"), 2)
+        self.assertEqual(ports.get("ten_gigabit_sfp_plus"), 2)
+        self.assertEqual(device.get("calibration_profile"), "stock_48rj45_4sfp")
+        self.assertEqual(device.get("default_faceplate"), "faceplates/48rj45-4sfp.png")
+        self.assertNotIn("unifi_api_port_map", device)
+
+    def test_us_xg_16_uses_authoritative_optical_first_api_map(self) -> None:
+        device = self.models["US XG 16"]
+        ports = device.get("ports") or {}
+        self.assertEqual(device.get("status"), "detected")
+        self.assertIs(device.get("dashboard_support"), False)
+        self.assertEqual(ports.get("rj45"), 4)
+        self.assertEqual(ports.get("uplinks"), 12)
+        self.assertEqual(ports.get("ten_gigabit_sfp_plus"), 12)
+        self.assertEqual(device.get("calibration_profile"), "")
+        self.assertEqual(device.get("default_faceplate"), "")
+        self.assertEqual(
+            device.get("unifi_api_port_map"),
+            {
+                "rj45": [13, 14, 15, 16],
+                "sfp": list(range(1, 13)),
+            },
+        )
+
+    def test_pro_aggregation_preserves_25g_capability_contract_without_fake_visual(self) -> None:
+        device = self.models["USW Pro Aggregation"]
+        ports = device.get("ports") or {}
+        self.assertEqual(device.get("status"), "detected")
+        self.assertIs(device.get("dashboard_support"), False)
+        self.assertEqual(ports.get("rj45"), 0)
+        self.assertEqual(ports.get("uplinks"), 32)
+        self.assertEqual(ports.get("ten_gigabit_sfp_plus"), 28)
+        self.assertEqual(ports.get("twenty_five_gigabit_sfp28"), 4)
+        self.assertEqual(device.get("calibration_profile"), "")
+        self.assertEqual(device.get("default_faceplate"), "")
+        self.assertEqual(
+            device.get("unifi_api_port_map"),
+            {"rj45": [], "sfp": list(range(1, 33))},
+        )
+        notes = "\n".join(str(note) for note in device.get("notes") or [])
+        self.assertIn("Ports 29 and 30", notes)
+        self.assertIn("negotiating at 10G", notes)
+        self.assertIn("25G", notes)
 
 
 if __name__ == "__main__":

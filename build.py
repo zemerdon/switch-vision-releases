@@ -848,7 +848,7 @@ def sync_authoritative_documents() -> None:
 
 
 def sync_device_visual_recommendations() -> None:
-    """Regenerate the card's exact-model visual table from the authoritative registry."""
+    """Regenerate exact-model visual/API mapping metadata from the registry."""
     registry_path = SRC / "devices" / "supported_devices.yaml"
     data = yaml.safe_load(registry_path.read_text(encoding="utf-8"))
     devices = data.get("devices", []) if isinstance(data, dict) else []
@@ -858,11 +858,13 @@ def sync_device_visual_recommendations() -> None:
             continue
         visuals = device.get("visuals") if isinstance(device.get("visuals"), dict) else {}
         ports = device.get("ports") if isinstance(device.get("ports"), dict) else {}
-        faceplate = visuals.get("recommended_faceplate")
-        profile = visuals.get("calibration_profile")
-        if not faceplate or not profile:
+        faceplate = visuals.get("recommended_faceplate") or ""
+        profile = visuals.get("calibration_profile") or ""
+        api_port_map = device.get("unifi_api_port_map")
+        has_api_port_map = isinstance(api_port_map, dict)
+        if not (faceplate and profile) and not has_api_port_map:
             continue
-        recommendations.append({
+        item = {
             "model": device.get("model"),
             "status": device.get("status"),
             "family": device.get("family"),
@@ -873,7 +875,10 @@ def sync_device_visual_recommendations() -> None:
             "optional_faceplates": visuals.get("optional_faceplates") or [],
             "profile": profile,
             "canvas": visuals.get("canvas"),
-        })
+        }
+        if has_api_port_map:
+            item["unifi_api_port_map"] = api_port_map
+        recommendations.append(item)
     canonical = SRC / "js" / "switch-vision.js"
     text = canonical.read_text(encoding="utf-8", errors="ignore")
     replacement = "const SV_DEVICE_VISUAL_RECOMMENDATIONS = " + json.dumps(
@@ -1219,6 +1224,7 @@ def validate_device_visual_recommendations(base: Path, source_layout: bool = Fal
             "optional_faceplates": visuals.get("optional_faceplates") or [],
             "profile": visuals.get("calibration_profile"),
             "canvas": visuals.get("canvas"),
+            "unifi_api_port_map": device.get("unifi_api_port_map"),
         }
         for key, value in expected.items():
             if item.get(key) != value:
@@ -1242,10 +1248,15 @@ def validate_device_visual_recommendations(base: Path, source_layout: bool = Fal
         expected_profile = str(device.get("calibration_profile") or "").strip()
         expected_faceplate = str(device.get("default_faceplate") or "").strip()
 
-        if not expected_profile:
-            errors.append(f"{model}: registry calibration_profile is missing")
-        if not expected_faceplate:
-            errors.append(f"{model}: registry default_faceplate is missing")
+        dashboard_supported = device.get("dashboard_support") is True
+        api_port_map = device.get("unifi_api_port_map")
+        has_api_port_map = isinstance(api_port_map, dict)
+        has_visual = bool(expected_profile and expected_faceplate)
+
+        if dashboard_supported and not has_visual:
+            errors.append(f"{model}: dashboard_support requires a calibration profile and faceplate")
+        if bool(expected_profile) != bool(expected_faceplate):
+            errors.append(f"{model}: calibration profile and faceplate must either both be set or both be pending")
 
         paired_faceplate = profile_faceplate_pairs.get(expected_profile)
         if paired_faceplate and expected_faceplate != paired_faceplate:
@@ -1269,21 +1280,28 @@ def validate_device_visual_recommendations(base: Path, source_layout: bool = Fal
             (row for row in recommendations if row.get("model") == model),
             None,
         )
-        if item is None:
-            errors.append(f"{model}: embedded model visual recommendation is missing")
-            continue
-        if item.get("profile") != expected_profile:
-            errors.append(
-                f"{model}: embedded profile={item.get('profile')!r}, "
-                f"expected {expected_profile!r}"
-            )
-        if item.get("faceplate") != expected_faceplate:
-            errors.append(
-                f"{model}: embedded faceplate={item.get('faceplate')!r}, "
-                f"expected {expected_faceplate!r}"
-            )
+        if has_visual or has_api_port_map:
+            if item is None:
+                errors.append(f"{model}: embedded model recommendation is missing")
+                continue
+            if item.get("profile") != expected_profile:
+                errors.append(
+                    f"{model}: embedded profile={item.get('profile')!r}, "
+                    f"expected {expected_profile!r}"
+                )
+            if item.get("faceplate") != expected_faceplate:
+                errors.append(
+                    f"{model}: embedded faceplate={item.get('faceplate')!r}, "
+                    f"expected {expected_faceplate!r}"
+                )
+            if item.get("unifi_api_port_map") != (api_port_map if has_api_port_map else None):
+                errors.append(
+                    f"{model}: embedded UniFi API-port map differs from registry"
+                )
+        elif item is not None:
+            errors.append(f"{model}: unexpected embedded recommendation without a visual or API-port map")
 
-        if model not in compact_8x2_visual_models:
+        if item is not None and model not in compact_8x2_visual_models:
             if item.get("profile") == "cisco_3560cg_8pc":
                 errors.append(f"{model}: compact 8+2 calibration leaked into an unapproved exact model")
             if item.get("faceplate") == "faceplates/c3560cg-8pc-s.png":

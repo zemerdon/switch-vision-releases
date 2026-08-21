@@ -17,7 +17,10 @@ assert visuals["canvas"] == {"width": 2048, "height": 329}
 
 build = (ROOT / "build.py").read_text(encoding="utf-8")
 assert 'compact_8x2_visual_models = {"WS-C3560CG-8PC-S", "XS1930-10"}' in build
-assert "if model not in compact_8x2_visual_models:" in build
+assert (
+    "if model not in compact_8x2_visual_models:" in build
+    or "if item is not None and model not in compact_8x2_visual_models:" in build
+)
 assert "compact 8+2 calibration leaked into an unapproved exact model" in build
 assert "compact 8+2 faceplate leaked into an unapproved exact model" in build
 print("Core XS1930-10 visual default contract: PASS")

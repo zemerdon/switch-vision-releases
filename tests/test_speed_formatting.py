@@ -60,6 +60,63 @@ class SpeedFormattingTests(unittest.TestCase):
         self.assertIn("_sfp_10g_", helper)
         self.assertIn("_uplink_", helper)
 
+    def test_unifi_negotiated_speed_executes_independently_from_max_capability(self) -> None:
+        source = CARD.read_text(encoding="utf-8")
+        link_state = extract_js_function(source, "function linkStateIsUp(value)")
+        port_speed = extract_js_function(source, "function portSpeed(hass, config, port)")
+        sfp_speed = extract_js_function(source, "function sfpSpeedMbps(hass, config, port)")
+
+        self.assertNotIn("max_speed_mbps", port_speed)
+        self.assertNotIn("max_speed_mbps", sfp_speed)
+
+        # Execute the real production speed resolvers while stubbing only their
+        # data-access dependencies. These fixtures mirror SV-2026-000002:
+        # - a 10G-capable US XG 16 RJ45 port currently linked at 1G;
+        # - a 25G-capable Pro Aggregation SFP28 port currently linked at 10G.
+        harness = f"""
+function unifiAccessPort(config, port) {{ return config.__test_access || null; }}
+function unifiSfpPort(config, port) {{ return config.__test_sfp || null; }}
+function rawEntityState() {{ return null; }}
+function portEntity() {{ return null; }}
+function normalizeMember() {{ return 'sw1'; }}
+function mappedPortNumber(config, port) {{ return Number(port); }}
+{link_state}
+{port_speed}
+{sfp_speed}
+
+const copper = {{
+  __test_access: {{ state: 'up', speed_mbps: 1000, max_speed_mbps: 10000 }}
+}};
+const optical = {{
+  __test_sfp: {{ state: 'up', speed_mbps: 10000, max_speed_mbps: 25000 }}
+}};
+
+const copperSpeed = portSpeed({{}}, copper, 1);
+if (copperSpeed !== '1000') {{
+  throw new Error(`10G-capable RJ45 negotiated at 1G rendered as ${{copperSpeed}} Mbps`);
+}}
+const opticalSpeed = sfpSpeedMbps({{}}, optical, 29);
+if (opticalSpeed !== 10000) {{
+  throw new Error(`25G-capable SFP28 negotiated at 10G rendered as ${{opticalSpeed}} Mbps`);
+}}
+"""
+        result = subprocess.run(
+            ["node", "-e", harness],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_unifi_current_speed_stays_separate_from_max_capability(self) -> None:
+        source = CARD.read_text(encoding="utf-8")
+        port_speed = extract_js_function(source, "function portSpeed(hass, config, port)")
+        sfp_speed = extract_js_function(source, "function sfpSpeedMbps(hass, config, port)")
+        self.assertIn("unifi.speed_mbps", port_speed)
+        self.assertIn("unifi.speed_mbps", sfp_speed)
+        self.assertNotIn("max_speed_mbps", port_speed)
+        self.assertNotIn("max_speed_mbps", sfp_speed)
+
     def test_fractional_gigabit_speed_is_not_rounded_up(self) -> None:
         source = CARD.read_text(encoding="utf-8")
         function = extract_js_function(source, "function formatSpeedMbps(raw)")
@@ -71,10 +128,12 @@ class SpeedFormattingTests(unittest.TestCase):
 function usableValue(raw) {{ return raw; }}
 {function}
 const cases = [
+  [100, '100M'],
   [1000, '1G'],
   [2500, '2.5G'],
   [5000, '5G'],
   [10000, '10G'],
+  [25000, '25G'],
 ];
 for (const [input, expected] of cases) {{
   const actual = formatSpeedMbps(input);
