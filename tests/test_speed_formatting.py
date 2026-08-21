@@ -60,6 +60,15 @@ class SpeedFormattingTests(unittest.TestCase):
         self.assertIn("_sfp_10g_", helper)
         self.assertIn("_uplink_", helper)
 
+    def test_unifi_current_speed_stays_separate_from_max_capability(self) -> None:
+        source = CARD.read_text(encoding="utf-8")
+        port_speed = extract_js_function(source, "function portSpeed(hass, config, port)")
+        sfp_speed = extract_js_function(source, "function sfpSpeedMbps(hass, config, port)")
+        self.assertIn("unifi.speed_mbps", port_speed)
+        self.assertIn("unifi.speed_mbps", sfp_speed)
+        self.assertNotIn("max_speed_mbps", port_speed)
+        self.assertNotIn("max_speed_mbps", sfp_speed)
+
     def test_fractional_gigabit_speed_is_not_rounded_up(self) -> None:
         source = CARD.read_text(encoding="utf-8")
         function = extract_js_function(source, "function formatSpeedMbps(raw)")
@@ -71,10 +80,12 @@ class SpeedFormattingTests(unittest.TestCase):
 function usableValue(raw) {{ return raw; }}
 {function}
 const cases = [
+  [100, '100M'],
   [1000, '1G'],
   [2500, '2.5G'],
   [5000, '5G'],
   [10000, '10G'],
+  [25000, '25G'],
 ];
 for (const [input, expected] of cases) {{
   const actual = formatSpeedMbps(input);

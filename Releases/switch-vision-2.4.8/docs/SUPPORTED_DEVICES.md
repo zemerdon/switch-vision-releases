@@ -24,6 +24,9 @@ Only exact model identifiers are listed. Support for one SKU does not imply supp
 | Ubiquiti | UniFi Dream Machine Pro | `UDM Pro` | 9 | 2 10G SFP+ | No | No | `faceplates/24rj45-2sfp.png` | `stock_24rj45_2sfp` | Live Api Confirmed Connector And Speed | Experimental | v2.0.32 |
 | Dell | Dell EMC Networking N2000 | `N2128PX-ON` | 28 | 2 10G SFP+ | Yes | Yes | `faceplates/48rj45-4sfp.png` | `default_cisco_48_port` | Contribution Confirmed Te Member 0 1 2 As 10G Sfp Plus | Experimental | v2.1.20 |
 | Ubiquiti | UniFi Switch | `US 48 PoE 500W` | 48 | 2 Gigabit SFP + 2 10G SFP+ | Yes | No | `faceplates/48rj45-4sfp.png` | `stock_48rj45_4sfp` | Live Api Confirmed Connector And Speed | Experimental | v2.1.15 |
+| Ubiquiti | UniFi Switch | `US 48` | 48 | 2 Gigabit SFP + 2 10G SFP+ | No | No | `faceplates/48rj45-4sfp.png` | `stock_48rj45_4sfp` | Live Api Confirmed Ports 49 50 10G Sfp Plus 51 52 1G Sfp | Experimental | v2.4.9 |
+| Ubiquiti | UniFi Switch XG | `US XG 16` | 4 | 12 10G SFP+ | No | No | `Pending` | `Pending` | Live Api Confirmed Api Ports 1 12 10G Sfp Plus | Detected | v2.4.9 |
+| Ubiquiti | UniFi Switch Pro Aggregation | `USW Pro Aggregation` | 0 | 28 10G SFP+ + 4 25G SFP28 | No | No | `Pending` | `Pending` | Live Api Confirmed 28X10G Sfp Plus 4X25G Sfp28 | Detected | v2.4.9 |
 | Ubiquiti | UniFi Switch 8 60W | `US 8 60W` | 8 | 0 none | Yes | No | `faceplates/24rj45-2sfp.png` | `stock_24rj45_2sfp` | Not Applicable | Experimental | v2.1.19 |
 | Ubiquiti | UniFi Switch Flex | `USW Flex` | 5 | 0 none | Yes | No | `faceplates/24rj45-2sfp.png` | `stock_24rj45_2sfp` | Live Api Confirmed Connector And Speed | Experimental | v2.1.16 |
 | Ubiquiti | UniFi Switch Flex 2.5G 8 PoE | `USW Flex 2.5G 8 PoE` | 9 | 1 10G SFP+ | Yes | No | `faceplates/24rj45-2sfp.png` | `stock_24rj45_2sfp` | Live Api Confirmed Connector And Speed | Experimental | v2.1.16 |

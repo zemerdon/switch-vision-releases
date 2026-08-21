@@ -32,12 +32,15 @@ def status_label(value: str) -> str:
 def uplink_text(ports: dict) -> str:
     gigabit = int(ports.get("gigabit_sfp", 0) or 0)
     ten_gigabit = int(ports.get("ten_gigabit_sfp_plus", 0) or 0)
-    if gigabit or ten_gigabit:
+    twenty_five_gigabit = int(ports.get("twenty_five_gigabit_sfp28", 0) or 0)
+    if gigabit or ten_gigabit or twenty_five_gigabit:
         parts = []
         if gigabit:
             parts.append(f"{gigabit} Gigabit SFP")
         if ten_gigabit:
             parts.append(f"{ten_gigabit} 10G SFP+")
+        if twenty_five_gigabit:
+            parts.append(f"{twenty_five_gigabit} 25G SFP28")
         return " + ".join(parts)
     return f"{ports['uplinks']} {ports.get('uplink_type', 'uplinks')}"
 
@@ -71,6 +74,29 @@ def load_registry(path: Path) -> dict:
         ports = device.get("ports")
         if not isinstance(ports, dict) or "rj45" not in ports or "uplinks" not in ports:
             raise SystemExit(f"Port details are incomplete for {model}")
+        api_port_map = device.get("unifi_api_port_map")
+        if api_port_map is not None:
+            if not isinstance(api_port_map, dict):
+                raise SystemExit(f"UniFi API-port map must be a mapping for {model}")
+            if set(api_port_map) != {"rj45", "sfp"}:
+                raise SystemExit(f"UniFi API-port map must contain exactly rj45 and sfp groups for {model}")
+            expected_counts = {
+                "rj45": int(ports.get("rj45", 0) or 0),
+                "sfp": int(ports.get("uplinks", 0) or 0),
+            }
+            mapped_indices: list[int] = []
+            for group, expected_count in expected_counts.items():
+                values = api_port_map.get(group)
+                if not isinstance(values, list) or len(values) != expected_count:
+                    raise SystemExit(
+                        f"UniFi API-port map {group} count differs from physical port count for {model}"
+                    )
+                for value in values:
+                    if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+                        raise SystemExit(f"UniFi API-port map contains an invalid index for {model}")
+                mapped_indices.extend(values)
+            if len(mapped_indices) != len(set(mapped_indices)):
+                raise SystemExit(f"UniFi API-port map reuses an API index for {model}")
         visuals = device.get("visuals")
         if not isinstance(visuals, dict) or "status" not in visuals or "recommended_faceplate" not in visuals or "calibration_profile" not in visuals:
             raise SystemExit(f"Visual recommendation details are incomplete for {model}")
