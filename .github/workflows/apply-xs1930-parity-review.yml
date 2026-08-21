@@ -1,0 +1,164 @@
+name: Apply XS1930 Registry Parity Review
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: write
+
+jobs:
+  apply-xs1930-parity:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Core review branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: review/sv-2026-000002-unifi-mapping
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+
+      - name: Install build dependency
+        run: python3 -m pip install --disable-pip-version-check PyYAML
+
+      - name: Apply validated XS1930 parity repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("src/devices/supported_devices.yaml")
+          text = path.read_text(encoding="utf-8")
+          start = text.index("- vendor: Zyxel\n  family: XS1930\n  model: XS1930-10\n")
+          end = text.index("\n- vendor: ", start + 1)
+          new = '''- vendor: Zyxel
+          family: XS1930
+          model: XS1930-10
+          status: experimental
+          confirmed_since: 2.1.7
+          last_validated_version: 2.1.7
+          evidence: support_my_switch_contribution_SV-2026-000004_plus_vendor_MIB_pack
+          ports:
+            rj45: 8
+            poe: false
+            uplinks: 2
+            uplink_type: 10G SFP+
+            gigabit_sfp: 0
+            ten_gigabit_sfp_plus: 2
+          stack_support: false
+          discovery_support: true
+          dashboard_support: true
+          mapping_profile: zyxel-xs1930-10
+          calibration_profile: cisco_3560cg_8pc
+          default_faceplate: faceplates/c3560cg-8pc-s.png
+          optional_faceplates: []
+          tested_firmware:
+          - V4.80(ABQE.5)
+          contributor:
+            display_name: jpedrot
+            public_credit: true
+          notes:
+          - Initial Experimental Zyxel support derived from Support My Switch contribution SV-2026-000004.
+          - Contribution confirms sysObjectID 1.3.6.1.4.1.890.1.15 and exact model XS1930-10.
+          - IF-MIB maps ifIndex 1-10 to swp00-swp09; swp00-swp07 are the eight copper ports and swp08-swp09 are the two 10G SFP+ uplinks.
+          - Standard ifOperStatus, ifHighSpeed, 64-bit HC RX/TX counters, aliases, and Q-BRIDGE PVID rows are present for all ten physical interfaces.
+          - Vendor MIBs plus the live walk prove CPU current/5s/1m/5m, memory utilization, FAN1 RPM/status, and MAC/BOARD/PHY temperature/status telemetry.
+          - PoE is not enabled for this exact model entry because the contribution does not prove PoE capability.
+          - Trunk/access mode and transceiver DDMI are intentionally not inferred in v2.1.7.
+          - Uses the existing compact 8-RJ45 + 2-SFP visual as a temporary fallback until a Zyxel-specific faceplate is supplied.
+          validation:
+            exact_model_detection: contribution_confirmed_sysobjectid_model_and_firmware
+            rj45_mapping: contribution_confirmed_ifindex_1_8_swp00_swp07
+            poe: not_applicable_not_proven_by_contribution
+            system_sensors: contribution_confirmed_vendor_oids_pending_contributor_runtime_validation
+            uplinks: contribution_confirmed_ifindex_9_10_swp08_swp09
+            stack: not_applicable
+          visuals:
+            status: experimental
+            recommended_faceplate: faceplates/c3560cg-8pc-s.png
+            optional_faceplates: []
+            calibration_profile: cisco_3560cg_8pc
+            canvas:
+              width: 2048
+              height: 329'''
+          # Strip the workflow's Python indentation from the YAML block.
+          new = "\n".join(line[10:] if line.startswith("          ") else line for line in new.splitlines())
+          path.write_text(text[:start] + new + text[end:], encoding="utf-8", newline="\n")
+          PY
+
+      - name: Rebuild and run permanent Core regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="$(cat VERSION)"
+          python3 build.py -v "$VERSION"
+          rm -f \
+            "Releases/switch-vision-$VERSION.zip" \
+            "Releases/switch-vision-$VERSION.zip.sha256" \
+            "Switch_Vision_v${VERSION}_source.zip" \
+            "Switch_Vision_v${VERSION}_SHA256SUMS.txt"
+          python3 -m py_compile \
+            src/custom_components/switch_vision/__init__.py \
+            src/custom_components/switch_vision/config_flow.py \
+            src/devices/generate_supported_devices.py \
+            tests/*.py
+          for test in tests/test_*.py; do
+            echo "::group::$test"
+            python3 "$test"
+            echo "::endgroup::"
+          done
+          find src tests -type d -name '__pycache__' -prune -exec rm -rf {} +
+          find src tests -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
+          git diff --check
+
+      - name: Verify repaired XS1930 contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          registry = json.loads(Path("src/devices/supported_devices.json").read_text(encoding="utf-8"))
+          entry = next(item for item in registry["devices"] if item.get("model") == "XS1930-10")
+          assert entry["confirmed_since"] == "2.1.7"
+          assert entry["last_validated_version"] == "2.1.7"
+          assert entry["evidence"] == "support_my_switch_contribution_SV-2026-000004_plus_vendor_MIB_pack"
+          assert entry["tested_firmware"] == ["V4.80(ABQE.5)"]
+          assert entry["contributor"] == {"display_name": "jpedrot", "public_credit": True}
+          assert entry["validation"]["exact_model_detection"] == "contribution_confirmed_sysobjectid_model_and_firmware"
+          assert entry["validation"]["rj45_mapping"] == "contribution_confirmed_ifindex_1_8_swp00_swp07"
+          assert entry["validation"]["uplinks"] == "contribution_confirmed_ifindex_9_10_swp08_swp09"
+          print("XS1930 validated registry parity repair: PASS")
+          PY
+
+      - name: Commit validated parity repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "switch-vision-review-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            src/devices/supported_devices.yaml \
+            src/devices/supported_devices.json \
+            src/docs/SUPPORTED_DEVICES.md \
+            src/docs/SUPPORTED_DEVICES_FORUM.bbcode \
+            Releases/switch-vision-2.4.8/devices/supported_devices.yaml \
+            Releases/switch-vision-2.4.8/devices/supported_devices.json \
+            Releases/switch-vision-2.4.8/docs/SUPPORTED_DEVICES.md \
+            Releases/switch-vision-2.4.8/docs/SUPPORTED_DEVICES_FORUM.bbcode
+          if git diff --cached --quiet; then
+            echo "No XS1930 parity changes to commit."
+            exit 0
+          fi
+          git commit -m "Preserve validated XS1930 registry evidence"
+          git push origin HEAD:review/sv-2026-000002-unifi-mapping
