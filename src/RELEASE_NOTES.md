@@ -1,5 +1,5 @@
-# Switch Vision Core v2.4.6
+# Switch Vision Core v2.4.7
 
-Core 2.4.6 adds the manually selectable `unifi-24-rj45-2sfp-dark.png` faceplate. It uses the exact factory geometry and presentation defaults from `unifi-24p-rj45-2sfp.png`.
+Core 2.4.7 is an audit-hardening release. Calibration/UI mutation services are now admin-only, permanent regression coverage is expanded, and the Zyxel XS1930-10 factory visual is aligned to its contributed 8-RJ45 + 2-SFP+ physical layout.
 
-The new artwork is an alternative only: it is not mapped to any device model, does not replace the existing UniFi faceplate, and does not change any factory device recommendation.
+No SNMP telemetry, Activity LED, Discovery handoff, saved calibration format, or existing non-Zyxel device mapping semantics are changed by this release.
