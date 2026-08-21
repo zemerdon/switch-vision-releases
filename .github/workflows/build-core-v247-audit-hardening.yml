@@ -42,7 +42,7 @@ jobs:
             echo "::endgroup::"
           done
 
-      - name: Validate syntax, release parity and hygiene
+      - name: Validate release parity, hygiene and syntax
         shell: bash
         run: |
           set -euo pipefail
@@ -50,19 +50,28 @@ jobs:
           node --check src/custom_components/switch_vision/switch-vision-card.js
           node --check src/custom_components/switch_vision/switch-vision-panel.js
           node --check src/custom_components/switch_vision/switch-vision-dashboard-strategy.js
-          python3 -m py_compile \
-            src/custom_components/switch_vision/__init__.py \
-            src/custom_components/switch_vision/config_flow.py \
-            src/devices/generate_supported_devices.py \
-            tests/*.py
+
+          # Validate the built/source tree before syntax compilation creates
+          # transient __pycache__ material.
           python3 tools/check_core_release_parity.py
           test "$(cat VERSION)" = "2.4.7"
           test -f Releases/switch-vision-2.4.7/custom_components/switch_vision/__init__.py
           grep -Fq 'async_register_admin_service' Releases/switch-vision-2.4.7/custom_components/switch_vision/__init__.py
           if find src Releases \( -type d -name '__pycache__' -o -type f -name '*.pyc' -o -type f -name '*.pyo' -o -type f -name '.DS_Store' \) | grep -q .; then
-            echo 'ERROR: generated cache/junk material found'
+            echo 'ERROR: generated cache/junk material found before compile'
             exit 1
           fi
+
+          python3 -m py_compile \
+            src/custom_components/switch_vision/__init__.py \
+            src/custom_components/switch_vision/config_flow.py \
+            src/devices/generate_supported_devices.py \
+            tests/*.py
+
+          # py_compile intentionally creates cache files; remove only those
+          # transient validation artifacts before the clean-tree check.
+          find src tests -type d -name '__pycache__' -prune -exec rm -rf {} +
+          find src tests -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
           git diff --check
 
       - name: Commit tested product source to feature branch
