@@ -36,7 +36,7 @@
         "16.12.14"
       ],
       "contributor": {
-        "display_name": "",
+        "display_name": "community contributor",
         "public_credit": false
       },
       "model": "WS-C3650-48PD-E",
@@ -91,7 +91,7 @@
         "16.12.14"
       ],
       "contributor": {
-        "display_name": "",
+        "display_name": "community contributor",
         "public_credit": false
       },
       "model": "WS-C3650-48PD-L",
@@ -238,7 +238,7 @@
       "status": "community_validated",
       "confirmed_since": "1.8.25",
       "last_validated_version": "1.8.25",
-      "evidence": "support_my_switch_contribution_SV-2026-000001",
+      "evidence": "support_my_switch_contribution_community validation",
       "ports": {
         "rj45": 24,
         "poe": false,
@@ -256,11 +256,11 @@
       "optional_faceplates": [],
       "tested_firmware": [],
       "contributor": {
-        "display_name": "Community contributor",
+        "display_name": "community contributor",
         "public_credit": false
       },
       "notes": [
-        "Initial Experimental profile created from Support My Switch contribution SV-2026-000001.",
+        "Initial Experimental profile created from Support My Switch contribution community validation.",
         "Contribution data reports 24 copper interfaces, four uplinks, and a three-member stack.",
         "Uses the existing 24 RJ45 / 4 SFP faceplate and calibration geometry.",
         "Live dashboard, stack-member, uplink, VLAN, and activity validation remain pending.",
@@ -347,7 +347,7 @@
       "status": "community_validated",
       "confirmed_since": "1.8.24",
       "last_validated_version": "1.8.24",
-      "evidence": "community_contribution_SV-2026-000001",
+      "evidence": "community_contribution_community validation",
       "ports": {
         "rj45": 8,
         "poe": true,
@@ -371,7 +371,7 @@
         "public_credit": false
       },
       "notes": [
-        "Initial Experimental profile created from Support My Switch contribution SV-2026-000001.",
+        "Initial Experimental profile created from Support My Switch contribution community validation.",
         "Gi0/1 through Gi0/8 map to the eight access-port positions.",
         "Gi0/9 and Gi0/10 map to the two dual-purpose uplink positions.",
         "A dedicated native 2048 x 329 faceplate is bundled and selected by default.",
@@ -464,7 +464,7 @@
       "status": "community_validated",
       "confirmed_since": "2.0.18",
       "last_validated_version": "2.0.22",
-      "evidence": "support_my_switch_contribution_SV-2026-000006",
+      "evidence": "support_my_switch_contribution_community validation",
       "ports": {
         "rj45": 24,
         "poe": false,
@@ -482,11 +482,11 @@
       "optional_faceplates": [],
       "tested_firmware": [],
       "contributor": {
-        "display_name": "Community contributor",
+        "display_name": "community contributor",
         "public_credit": false
       },
       "notes": [
-        "Initial Experimental profile created from Support My Switch contribution SV-2026-000006.",
+        "Initial Experimental profile created from Support My Switch contribution community validation.",
         "Contribution sysObjectID is 1.3.6.1.4.1.9.6.1.85.24.1.",
         "The supplied walk exposes gi1/1 through gi1/24 and te1/1 through te1/4.",
         "The contribution model text identifies 24 Gigabit ports and four 10-Gigabit ports.",
@@ -520,7 +520,7 @@
       "status": "community_validated",
       "confirmed_since": "2.0.18",
       "last_validated_version": "2.0.31",
-      "evidence": "support_my_switch_contributions_SV-2026-000006_and_SV-2026-000014",
+      "evidence": "support_my_switch_contributions_community validation_and_community validation",
       "ports": {
         "rj45": 8,
         "poe": false,
@@ -538,12 +538,12 @@
       "optional_faceplates": [],
       "tested_firmware": [],
       "contributor": {
-        "display_name": "Community contributor",
+        "display_name": "community contributor",
         "public_credit": false
       },
       "notes": [
-        "Initial Experimental registry entry created from Support My Switch contribution SV-2026-000006.",
-        "Contribution SV-2026-000014 confirms sysObjectID 1.3.6.1.4.1.2011.2.23.394.",
+        "Initial Experimental registry entry created from Support My Switch contribution community validation.",
+        "Contribution community validation confirms sysObjectID 1.3.6.1.4.1.2011.2.23.394.",
         "The live full walk omits ifName but exposes GigabitEthernet0/0/1-12 through ifDescr.",
         "v2.0.31 adds a vendor-neutral ifDescr fallback so the switch can be discovered and generated without a model override.",
         "The exact model profile maps ports 1-8 as RJ45 and ports 9-12 as 1G SFP positions.",
@@ -579,7 +579,7 @@
       "status": "experimental",
       "confirmed_since": "2.1.7",
       "last_validated_version": "2.1.7",
-      "evidence": "support_my_switch_contribution_SV-2026-000004_plus_vendor_MIB_pack",
+      "evidence": "support_my_switch_contribution_community validation_plus_vendor_MIB_pack",
       "ports": {
         "rj45": 8,
         "poe": false,
@@ -599,11 +599,11 @@
         "V4.80(ABQE.5)"
       ],
       "contributor": {
-        "display_name": "jpedrot",
-        "public_credit": true
+        "display_name": "community contributor",
+        "public_credit": false
       },
       "notes": [
-        "Initial Experimental Zyxel support derived from Support My Switch contribution SV-2026-000004.",
+        "Initial Experimental Zyxel support derived from Support My Switch contribution community validation.",
         "Contribution confirms sysObjectID 1.3.6.1.4.1.890.1.15 and exact model XS1930-10.",
         "IF-MIB maps ifIndex 1-10 to swp00-swp09; swp00-swp07 are the eight copper ports and swp08-swp09 are the two 10G SFP+ uplinks.",
         "Standard ifOperStatus, ifHighSpeed, 64-bit HC RX/TX counters, aliases, and Q-BRIDGE PVID rows are present for all ten physical interfaces.",
@@ -638,7 +638,7 @@
       "status": "experimental",
       "confirmed_since": "2.0.19",
       "last_validated_version": "2.0.32",
-      "evidence": "support_my_switch_contribution_SV-2026-000013_multiple_devices; unifi2mqtt_live_snapshot_2026-08-11",
+      "evidence": "support_my_switch_contribution_community validation_multiple_devices; unifi2mqtt_live_snapshot_2026-08-11",
       "ports": {
         "rj45": 8,
         "poe": true,
@@ -658,11 +658,11 @@
         "7.4.1.16850"
       ],
       "contributor": {
-        "display_name": "Community contributor",
+        "display_name": "community contributor",
         "public_credit": false
       },
       "notes": [
-        "Initial Experimental profile created from Support My Switch contribution SV-2026-000013.",
+        "Initial Experimental profile created from Support My Switch contribution community validation.",
         "Four separate devices in the contribution report the same exact model and interface layout.",
         "Interface evidence exposes tw1 through tw8 and te1 through te2.",
         "Candidate mapping uses tw1-tw8 as the eight access ports and te1-te2 as the two uplinks.",
@@ -699,7 +699,7 @@
       "status": "experimental",
       "confirmed_since": "2.0.19",
       "last_validated_version": "2.0.32",
-      "evidence": "support_my_switch_contribution_SV-2026-000013; unifi2mqtt_live_snapshot_2026-08-11",
+      "evidence": "support_my_switch_contribution_community validation; unifi2mqtt_live_snapshot_2026-08-11",
       "ports": {
         "rj45": 24,
         "poe": true,
@@ -721,11 +721,11 @@
         "7.4.1.16850"
       ],
       "contributor": {
-        "display_name": "Community contributor",
+        "display_name": "community contributor",
         "public_credit": false
       },
       "notes": [
-        "Initial Experimental profile created from Support My Switch contribution SV-2026-000013.",
+        "Initial Experimental profile created from Support My Switch contribution community validation.",
         "Interface evidence exposes 0/1 through 0/26.",
         "Candidate mapping treats 0/1 through 0/24 as access ports and 0/25 through 0/26 as uplinks.",
         "Uplink media classification, PoE telemetry, system sensors, VLAN presentation, and sustained dashboard validation remain pending.",
@@ -782,7 +782,7 @@
         "7.4.1"
       ],
       "contributor": {
-        "display_name": "Community contributor",
+        "display_name": "community contributor",
         "public_credit": false
       },
       "notes": [
@@ -842,7 +842,7 @@
         "7.4.1"
       ],
       "contributor": {
-        "display_name": "Community contributor",
+        "display_name": "community contributor",
         "public_credit": false
       },
       "notes": [
@@ -882,7 +882,7 @@
       "status": "community_validated",
       "confirmed_since": "2.0.21",
       "last_validated_version": "2.0.31",
-      "evidence": "support_my_switch_contribution_SV-2026-000010_two_devices",
+      "evidence": "support_my_switch_contribution_community validation_two_devices",
       "ports": {
         "rj45": 8,
         "poe": true,
@@ -900,11 +900,11 @@
       "optional_faceplates": [],
       "tested_firmware": [],
       "contributor": {
-        "display_name": "Community contributor",
+        "display_name": "community contributor",
         "public_credit": false
       },
       "notes": [
-        "Initial Experimental profile created from Support My Switch contribution SV-2026-000010.",
+        "Initial Experimental profile created from Support My Switch contribution community validation.",
         "Two separate devices report sysObjectID 1.3.6.1.4.1.2011.2.23.849 and the same physical interface layout.",
         "GigabitEthernet0/0/1 through GigabitEthernet0/0/8 are repeatedly observed as the eight copper ports.",
         "XGigabitEthernet0/0/1 through XGigabitEthernet0/0/4 are repeatedly observed and mapped as the four high-speed uplink positions.",
@@ -959,7 +959,7 @@
         "5.1.26"
       ],
       "contributor": {
-        "display_name": "Community contributor",
+        "display_name": "community contributor",
         "public_credit": false
       },
       "notes": [
@@ -999,7 +999,7 @@
       "status": "experimental",
       "confirmed_since": "2.1.20",
       "last_validated_version": "2.1.20",
-      "evidence": "support_my_switch_contribution_SV-2026-000004_20260816_dell",
+      "evidence": "support_my_switch_contribution_community validation_20260816_dell",
       "ports": {
         "rj45": 28,
         "poe": true,
@@ -1020,7 +1020,7 @@
         "6.6.0.7"
       ],
       "contributor": {
-        "display_name": "Community contributor",
+        "display_name": "community contributor",
         "public_credit": false
       },
       "notes": [
@@ -1032,7 +1032,7 @@
         "POWER-ETHERNET-MIB discovery exposes PoE candidates; detailed per-port PoE presentation remains pending contributor validation.",
         "The generic 48 RJ45 + 4 SFP visual is used temporarily with the real card port counts constrained to 28 RJ45 + 2 uplinks.",
         "Rendered dashboard, VLAN/trunk semantics and final Dell faceplate calibration remain pending before promotion beyond Experimental.",
-        "The contribution ID SV-2026-000004 collides with an older Zyxel contribution ID, so the 2026-08-16 date is retained in evidence metadata to disambiguate this bundle."
+        "The contribution ID community validation collides with an older Zyxel contribution ID, so the 2026-08-16 date is retained in evidence metadata to disambiguate this bundle."
       ],
       "validation": {
         "exact_model_detection": "contribution_confirmed_sysobjectid_model_and_two_firmware_versions",
@@ -1080,12 +1080,12 @@
         "7.4.1"
       ],
       "contributor": {
-        "display_name": "Community contributor",
+        "display_name": "community contributor",
         "public_credit": false
       },
       "contributions": [
         {
-          "id": "SV-2026-000002",
+          "id": "community validation",
           "source_component": "UniFi2MQTT 2.0.47",
           "devices_observed": 2,
           "validation_scope": "physical_api_contract",
@@ -1095,8 +1095,8 @@
           },
           "dashboard_validation": "pending",
           "contributor": {
-            "display_name": "bignick8t3",
-            "public_credit": true
+            "display_name": "community contributor",
+            "public_credit": false
           }
         }
       ],
@@ -1110,8 +1110,8 @@
         "The existing 48 RJ45 + 4 SFP Switch Vision visual matches the reported physical port count.",
         "Rendered dashboard validation remains pending before promotion beyond Experimental.",
         "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.",
-        "SV-2026-000002 from bignick8t3 independently reconfirms two units with 48 PoE-capable 1G RJ45 ports, API ports 49-50 as 10G SFP+, and API ports 51-52 as 1G SFP.",
-        "SV-2026-000002 was captured with UniFi2MQTT 2.0.47 and did not include explicit Switch Vision dashboard/card validation, so Experimental status is unchanged."
+        "community validation from community contributor independently reconfirms two units with 48 PoE-capable 1G RJ45 ports, API ports 49-50 as 10G SFP+, and API ports 51-52 as 1G SFP.",
+        "community validation was captured with UniFi2MQTT 2.0.47 and did not include explicit Switch Vision dashboard/card validation, so Experimental status is unchanged."
       ],
       "validation": {
         "exact_model_detection": "live_api_confirmed",
@@ -1139,7 +1139,7 @@
       "status": "experimental",
       "confirmed_since": "2.4.9",
       "last_validated_version": "2.4.9",
-      "evidence": "support_my_switch_SV-2026-000002_unifi_api",
+      "evidence": "support_my_switch_community validation_unifi_api",
       "ports": {
         "rj45": 48,
         "poe": false,
@@ -1157,12 +1157,12 @@
       "optional_faceplates": [],
       "tested_firmware": [],
       "contributor": {
-        "display_name": "bignick8t3",
-        "public_credit": true
+        "display_name": "community contributor",
+        "public_credit": false
       },
       "contributions": [
         {
-          "id": "SV-2026-000002",
+          "id": "community validation",
           "source_component": "UniFi2MQTT 2.0.47",
           "devices_observed": 1,
           "validation_scope": "physical_api_contract",
@@ -1172,13 +1172,13 @@
           },
           "dashboard_validation": "pending",
           "contributor": {
-            "display_name": "bignick8t3",
-            "public_credit": true
+            "display_name": "community contributor",
+            "public_credit": false
           }
         }
       ],
       "notes": [
-        "Support My Switch contribution SV-2026-000002 captured one real US 48 with 48x 1G RJ45, no PoE, API ports 49-50 as 10G SFP+, and API ports 51-52 as 1G SFP.",
+        "Support My Switch contribution community validation captured one real US 48 with 48x 1G RJ45, no PoE, API ports 49-50 as 10G SFP+, and API ports 51-52 as 1G SFP.",
         "The verified physical geometry matches the existing US 48 PoE 500W 48-RJ45 + 4-optical layout, so the existing stock_48rj45_4sfp calibration is reused rather than fabricating a new faceplate.",
         {
           "The model deliberately remains on the legacy sequential UniFi mapping path": "RJ45 API ports 1-48 followed by optical API ports 49-52."
@@ -1212,7 +1212,7 @@
       "status": "detected",
       "confirmed_since": "2.4.9",
       "last_validated_version": "2.4.9",
-      "evidence": "support_my_switch_SV-2026-000002_unifi_api",
+      "evidence": "support_my_switch_community validation_unifi_api",
       "ports": {
         "rj45": 4,
         "poe": false,
@@ -1252,12 +1252,12 @@
       "optional_faceplates": [],
       "tested_firmware": [],
       "contributor": {
-        "display_name": "bignick8t3",
-        "public_credit": true
+        "display_name": "community contributor",
+        "public_credit": false
       },
       "contributions": [
         {
-          "id": "SV-2026-000002",
+          "id": "community validation",
           "source_component": "UniFi2MQTT 2.0.47",
           "devices_observed": 2,
           "validation_scope": "physical_api_contract",
@@ -1267,8 +1267,8 @@
           },
           "dashboard_validation": "pending",
           "contributor": {
-            "display_name": "bignick8t3",
-            "public_credit": true
+            "display_name": "community contributor",
+            "public_credit": false
           }
         }
       ],
@@ -1307,7 +1307,7 @@
       "status": "detected",
       "confirmed_since": "2.4.9",
       "last_validated_version": "2.4.9",
-      "evidence": "support_my_switch_SV-2026-000002_unifi_api",
+      "evidence": "support_my_switch_community validation_unifi_api",
       "ports": {
         "rj45": 0,
         "poe": false,
@@ -1363,12 +1363,12 @@
       "optional_faceplates": [],
       "tested_firmware": [],
       "contributor": {
-        "display_name": "bignick8t3",
-        "public_credit": true
+        "display_name": "community contributor",
+        "public_credit": false
       },
       "contributions": [
         {
-          "id": "SV-2026-000002",
+          "id": "community validation",
           "source_component": "UniFi2MQTT 2.0.47",
           "devices_observed": 1,
           "validation_scope": "physical_api_contract",
@@ -1378,8 +1378,8 @@
           },
           "dashboard_validation": "pending",
           "contributor": {
-            "display_name": "bignick8t3",
-            "public_credit": true
+            "display_name": "community contributor",
+            "public_credit": false
           }
         }
       ],
@@ -1418,7 +1418,7 @@
       "status": "experimental",
       "confirmed_since": "2.1.19",
       "last_validated_version": "2.1.19",
-      "evidence": "support_my_switch_SV-2026-000057_unifi_api",
+      "evidence": "support_my_switch_community validation_unifi_api",
       "ports": {
         "rj45": 8,
         "poe": true,
@@ -1436,12 +1436,12 @@
       "optional_faceplates": [],
       "tested_firmware": [],
       "contributor": {
-        "display_name": "Community contributor",
+        "display_name": "community contributor",
         "public_credit": false
       },
       "contributions": [
         {
-          "id": "SV-2026-000002",
+          "id": "community validation",
           "source_component": "UniFi2MQTT 2.0.47",
           "devices_observed": 1,
           "validation_scope": "physical_api_contract",
@@ -1451,13 +1451,13 @@
           },
           "dashboard_validation": "pending",
           "contributor": {
-            "display_name": "bignick8t3",
-            "public_credit": true
+            "display_name": "community contributor",
+            "public_credit": false
           }
         }
       ],
       "notes": [
-        "Experimental profile created from Support My Switch contribution SV-2026-000057.",
+        "Experimental profile created from Support My Switch contribution community validation.",
         "Live UniFi API evidence exposes eight 1G RJ45 ports.",
         "PoE output capability is exposed only on ports 5 through 8, using 802.3af metadata.",
         "The contribution proves link state and PoE-active state are independent.",
@@ -1465,8 +1465,8 @@
         "The universal temporary faceplate is used while preserving the real eight-port count.",
         "Rendered dashboard validation remains pending before promotion beyond Experimental.",
         "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.",
-        "SV-2026-000002 from bignick8t3 independently reconfirms one 8x 1G RJ45 unit with PoE capability limited to physical/API ports 5-8 using 802.3af.",
-        "SV-2026-000002 was captured with UniFi2MQTT 2.0.47 and did not include explicit Switch Vision dashboard/card validation, so Experimental status is unchanged."
+        "community validation from community contributor independently reconfirms one 8x 1G RJ45 unit with PoE capability limited to physical/API ports 5-8 using 802.3af.",
+        "community validation was captured with UniFi2MQTT 2.0.47 and did not include explicit Switch Vision dashboard/card validation, so Experimental status is unchanged."
       ],
       "validation": {
         "exact_model_detection": "live_api_confirmed",
@@ -1494,7 +1494,7 @@
       "status": "experimental",
       "confirmed_since": "2.1.18",
       "last_validated_version": "2.1.16",
-      "evidence": "support_my_switch_SV-2026-000003_unifi_api",
+      "evidence": "support_my_switch_community validation_unifi_api",
       "ports": {
         "rj45": 5,
         "poe": true,
@@ -1514,11 +1514,11 @@
         "7.4.1"
       ],
       "contributor": {
-        "display_name": "pielangit",
-        "public_credit": true
+        "display_name": "community contributor",
+        "public_credit": false
       },
       "notes": [
-        "Experimental profile created from Support My Switch contribution SV-2026-000003.",
+        "Experimental profile created from Support My Switch contribution community validation.",
         "Live UniFi API evidence exposes five 1G RJ45 ports.",
         "Port 1 is non-PoE in the contributed API metadata; ports 2 through 5 expose 802.3af PoE output metadata.",
         "Live evidence includes link state, negotiated speed, CPU, memory and uptime.",
@@ -1554,7 +1554,7 @@
       "status": "experimental",
       "confirmed_since": "2.1.18",
       "last_validated_version": "2.1.16",
-      "evidence": "support_my_switch_SV-2026-000003_unifi_api",
+      "evidence": "support_my_switch_community validation_unifi_api",
       "ports": {
         "rj45": 9,
         "poe": true,
@@ -1574,11 +1574,11 @@
         "2.1.8"
       ],
       "contributor": {
-        "display_name": "pielangit",
-        "public_credit": true
+        "display_name": "community contributor",
+        "public_credit": false
       },
       "notes": [
-        "Experimental profile created from Support My Switch contribution SV-2026-000003.",
+        "Experimental profile created from Support My Switch contribution community validation.",
         "Live UniFi API evidence exposes ports 1 through 8 as 2.5G-capable PoE RJ45, port 9 as 10G-capable RJ45, and port 10 as 10G SFP+.",
         "Ports 1 through 8 expose 802.3bt PoE metadata.",
         "Live evidence includes link state, connector type, negotiated speed, CPU, memory and uptime.",
@@ -1614,7 +1614,7 @@
       "status": "experimental",
       "confirmed_since": "2.1.19",
       "last_validated_version": "2.1.19",
-      "evidence": "support_my_switch_SV-2026-000057_unifi_api",
+      "evidence": "support_my_switch_community validation_unifi_api",
       "ports": {
         "rj45": 5,
         "poe": false,
@@ -1632,12 +1632,12 @@
       "optional_faceplates": [],
       "tested_firmware": [],
       "contributor": {
-        "display_name": "Community contributor",
+        "display_name": "community contributor",
         "public_credit": false
       },
       "contributions": [
         {
-          "id": "SV-2026-000002",
+          "id": "community validation",
           "source_component": "UniFi2MQTT 2.0.47",
           "devices_observed": 2,
           "validation_scope": "physical_api_contract",
@@ -1647,21 +1647,21 @@
           },
           "dashboard_validation": "pending",
           "contributor": {
-            "display_name": "bignick8t3",
-            "public_credit": true
+            "display_name": "community contributor",
+            "public_credit": false
           }
         }
       ],
       "notes": [
-        "Experimental profile created from Support My Switch contribution SV-2026-000057.",
+        "Experimental profile created from Support My Switch contribution community validation.",
         "Three independent live UniFi API devices expose the same five 1G RJ45-port topology.",
         "No per-port PoE output capability is exposed by the contributed normalized API data.",
         "Per-port RX/TX traffic is not exposed by the current UniFi API path.",
         "The universal temporary faceplate is used while preserving the real five-port count.",
         "Rendered dashboard validation remains pending before promotion beyond Experimental.",
         "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.",
-        "SV-2026-000002 from bignick8t3 independently reconfirms two additional units with the same five-port 1G RJ45 topology.",
-        "SV-2026-000002 was captured with UniFi2MQTT 2.0.47 and did not include explicit Switch Vision dashboard/card validation, so Experimental status is unchanged."
+        "community validation from community contributor independently reconfirms two additional units with the same five-port 1G RJ45 topology.",
+        "community validation was captured with UniFi2MQTT 2.0.47 and did not include explicit Switch Vision dashboard/card validation, so Experimental status is unchanged."
       ],
       "validation": {
         "exact_model_detection": "live_api_confirmed_three_devices",
@@ -1689,7 +1689,7 @@
       "status": "experimental",
       "confirmed_since": "2.1.19",
       "last_validated_version": "2.1.19",
-      "evidence": "support_my_switch_SV-2026-000057_unifi_api",
+      "evidence": "support_my_switch_community validation_unifi_api",
       "ports": {
         "rj45": 24,
         "poe": false,
@@ -1707,11 +1707,11 @@
       "optional_faceplates": [],
       "tested_firmware": [],
       "contributor": {
-        "display_name": "Community contributor",
+        "display_name": "community contributor",
         "public_credit": false
       },
       "notes": [
-        "Experimental profile created from Support My Switch contribution SV-2026-000057.",
+        "Experimental profile created from Support My Switch contribution community validation.",
         "Live UniFi API evidence exposes 24 1G RJ45 ports and two 10G SFP+ uplinks.",
         "Both SFP+ uplinks were observed at 10,000 Mb/s in the contribution.",
         "No per-port PoE output capability is exposed for this exact non-PoE model.",
@@ -1746,7 +1746,7 @@
       "status": "experimental",
       "confirmed_since": "2.1.18",
       "last_validated_version": "2.1.16",
-      "evidence": "support_my_switch_SV-2026-000003_unifi_api",
+      "evidence": "support_my_switch_community validation_unifi_api",
       "ports": {
         "rj45": 16,
         "poe": true,
@@ -1766,11 +1766,11 @@
         "7.4.1"
       ],
       "contributor": {
-        "display_name": "pielangit",
-        "public_credit": true
+        "display_name": "community contributor",
+        "public_credit": false
       },
       "notes": [
-        "Experimental profile created from Support My Switch contribution SV-2026-000003.",
+        "Experimental profile created from Support My Switch contribution community validation.",
         "Live UniFi API evidence exposes 16 1G RJ45 ports and two 1G SFP uplinks.",
         "PoE metadata is exposed on copper ports 1 through 8; ports 9 through 16 are non-PoE.",
         "Live evidence includes link state, connector type, negotiated speed, CPU, memory and uptime.",
@@ -1806,7 +1806,7 @@
       "status": "experimental",
       "confirmed_since": "2.1.18",
       "last_validated_version": "2.1.19",
-      "evidence": "support_my_switch_SV-2026-000003_and_SV-2026-000057_unifi_api",
+      "evidence": "support_my_switch_community validation_and_community validation_unifi_api",
       "ports": {
         "rj45": 24,
         "poe": true,
@@ -1826,11 +1826,11 @@
         "7.4.1"
       ],
       "contributor": {
-        "display_name": "pielangit",
-        "public_credit": true
+        "display_name": "community contributor",
+        "public_credit": false
       },
       "notes": [
-        "Experimental profile created from Support My Switch contribution SV-2026-000003.",
+        "Experimental profile created from Support My Switch contribution community validation.",
         "Live UniFi API evidence exposes 24 1G RJ45 ports and two 1G SFP uplinks.",
         "PoE metadata is exposed on copper ports 1 through 16; ports 17 through 24 are non-PoE.",
         "Live evidence includes link state, connector type, negotiated speed, CPU, memory and uptime.",
@@ -1838,8 +1838,8 @@
         "SNMP is therefore required for Switch Vision per-port Activity LED animation.",
         "The existing 24 RJ45 + 2 SFP generic visual matches the reported physical port count.",
         "Rendered dashboard validation remains pending before promotion beyond Experimental.",
-        "SV-2026-000057 independently reconfirms the exact 24x 1G RJ45 + 2x 1G SFP topology.",
-        "SV-2026-000057 independently reconfirms PoE output capability on ports 1 through 16 only.",
+        "community validation independently reconfirms the exact 24x 1G RJ45 + 2x 1G SFP topology.",
+        "community validation independently reconfirms PoE output capability on ports 1 through 16 only.",
         "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used."
       ],
       "validation": {
@@ -1868,7 +1868,7 @@
       "status": "experimental",
       "confirmed_since": "2.1.18",
       "last_validated_version": "2.1.16",
-      "evidence": "support_my_switch_SV-2026-000003_unifi_api",
+      "evidence": "support_my_switch_community validation_unifi_api",
       "ports": {
         "rj45": 8,
         "poe": true,
@@ -1888,11 +1888,11 @@
         "7.4.1"
       ],
       "contributor": {
-        "display_name": "pielangit",
-        "public_credit": true
+        "display_name": "community contributor",
+        "public_credit": false
       },
       "notes": [
-        "Experimental profile created from Support My Switch contribution SV-2026-000003.",
+        "Experimental profile created from Support My Switch contribution community validation.",
         "Live UniFi API evidence exposes eight 1G RJ45 ports.",
         "PoE metadata is exposed on ports 1 through 4; ports 5 through 8 are non-PoE.",
         "Live evidence includes link state, negotiated speed, CPU, memory and uptime.",
@@ -1928,7 +1928,7 @@
       "status": "experimental",
       "confirmed_since": "2.1.19",
       "last_validated_version": "2.1.19",
-      "evidence": "support_my_switch_SV-2026-000057_unifi_api",
+      "evidence": "support_my_switch_community validation_unifi_api",
       "ports": {
         "rj45": 9,
         "poe": true,
@@ -1946,11 +1946,11 @@
       "optional_faceplates": [],
       "tested_firmware": [],
       "contributor": {
-        "display_name": "Community contributor",
+        "display_name": "community contributor",
         "public_credit": false
       },
       "notes": [
-        "Experimental gateway/switch-hybrid profile created from Support My Switch contribution SV-2026-000057.",
+        "Experimental gateway/switch-hybrid profile created from Support My Switch contribution community validation.",
         "Live UniFi API evidence exposes ports 1-8 as 1G PoE RJ45, port 9 as 2.5G RJ45, and ports 10-11 as 10G SFP+.",
         "PoE capability is exposed on ports 1 through 8 only.",
         "Ports 9 through 11 remain role-neutral because the sanitized contribution does not retain enough WAN/LAN role semantics.",
@@ -1982,14 +1982,14 @@
       "status": "detected",
       "confirmed_since": "2.4.10",
       "last_validated_version": "2.4.10",
-      "evidence": "support_my_switch_SV-2026-000034_and_SV-2026-000036_unifi_api",
+      "evidence": "support_my_switch_community validation_and_community validation_unifi_api",
       "stack_support": false,
       "discovery_support": true,
       "optional_faceplates": [],
       "tested_firmware": [],
       "contributor": {
-        "display_name": "Brendan Pratt",
-        "public_credit": true
+        "display_name": "community contributor",
+        "public_credit": false
       },
       "vendor": "Ubiquiti",
       "family": "UniFi Cloud Gateway Ultra",
@@ -2008,7 +2008,7 @@
       "default_faceplate": "",
       "contributions": [
         {
-          "id": "SV-2026-000034",
+          "id": "community validation",
           "source_component": "UniFi2MQTT 2.0.47",
           "source_discovery_version": "2.1.37",
           "devices_observed": 1,
@@ -2019,12 +2019,12 @@
           },
           "dashboard_validation": "generic_card_generated",
           "contributor": {
-            "display_name": "Anonymous",
+            "display_name": "community contributor",
             "public_credit": false
           }
         },
         {
-          "id": "SV-2026-000036",
+          "id": "community validation",
           "source_component": "UniFi2MQTT 2.0.47",
           "source_discovery_version": "2.1.37",
           "devices_observed": 1,
@@ -2035,13 +2035,13 @@
           },
           "dashboard_validation": "generic_card_generated",
           "contributor": {
-            "display_name": "Brendan Pratt",
-            "public_credit": true
+            "display_name": "community contributor",
+            "public_credit": false
           }
         }
       ],
       "notes": [
-        "SV-2026-000034 and SV-2026-000036 are two corroborating captures of the same physical UCG Ultra and preserve the same five-port topology while normal live counters change.",
+        "community validation and community validation are two corroborating captures of the same physical UCG Ultra and preserve the same five-port topology while normal live counters change.",
         "Live UniFi API evidence exposes four 1G RJ45 ports plus one 2.5G-capable RJ45 port and no PoE output capability.",
         "The device is a Cloud Gateway with integrated switching; Switch Vision accepts it because the UniFi controller advertises switching capability rather than because the model name resembles a switch.",
         "WAN/LAN role is deliberately not inferred from physical port position; controller state remains authoritative for role semantics.",
@@ -2071,14 +2071,14 @@
       "status": "detected",
       "confirmed_since": "2.4.10",
       "last_validated_version": "2.4.10",
-      "evidence": "support_my_switch_SV-2026-000034_and_SV-2026-000036_unifi_api",
+      "evidence": "support_my_switch_community validation_and_community validation_unifi_api",
       "stack_support": false,
       "discovery_support": true,
       "optional_faceplates": [],
       "tested_firmware": [],
       "contributor": {
-        "display_name": "Brendan Pratt",
-        "public_credit": true
+        "display_name": "community contributor",
+        "public_credit": false
       },
       "vendor": "Ubiquiti",
       "family": "UniFi Switch 16 PoE 150W",
@@ -2097,7 +2097,7 @@
       "default_faceplate": "",
       "contributions": [
         {
-          "id": "SV-2026-000034",
+          "id": "community validation",
           "source_component": "UniFi2MQTT 2.0.47",
           "source_discovery_version": "2.1.37",
           "devices_observed": 1,
@@ -2108,12 +2108,12 @@
           },
           "dashboard_validation": "generic_card_generated",
           "contributor": {
-            "display_name": "Anonymous",
+            "display_name": "community contributor",
             "public_credit": false
           }
         },
         {
-          "id": "SV-2026-000036",
+          "id": "community validation",
           "source_component": "UniFi2MQTT 2.0.47",
           "source_discovery_version": "2.1.37",
           "devices_observed": 1,
@@ -2124,13 +2124,13 @@
           },
           "dashboard_validation": "generic_card_generated",
           "contributor": {
-            "display_name": "Brendan Pratt",
-            "public_credit": true
+            "display_name": "community contributor",
+            "public_credit": false
           }
         }
       ],
       "notes": [
-        "SV-2026-000034 and SV-2026-000036 independently repeat the same 16x 1G RJ45 plus 2x 1G SFP topology on the contributed US 16 PoE 150W.",
+        "community validation and community validation independently repeat the same 16x 1G RJ45 plus 2x 1G SFP topology on the contributed US 16 PoE 150W.",
         "All sixteen copper ports expose PoE output capability in the normalized UniFi API evidence; the two SFP ports do not.",
         "The contract records the standardized PoE metadata actually exposed by the API and does not invent legacy passive-24V state that was not present in the contribution.",
         "Port detail is available while per-port RX/TX traffic is unavailable through the contributed UniFi API path.",
@@ -2159,14 +2159,14 @@
       "status": "experimental",
       "confirmed_since": "2.4.10",
       "last_validated_version": "2.4.10",
-      "evidence": "support_my_switch_SV-2026-000034_and_SV-2026-000036_unifi_api",
+      "evidence": "support_my_switch_community validation_and_community validation_unifi_api",
       "stack_support": false,
       "discovery_support": true,
       "optional_faceplates": [],
       "tested_firmware": [],
       "contributor": {
-        "display_name": "Brendan Pratt",
-        "public_credit": true
+        "display_name": "community contributor",
+        "public_credit": false
       },
       "vendor": "Ubiquiti",
       "family": "UniFi Switch Pro Max 24",
@@ -2185,7 +2185,7 @@
       "default_faceplate": "faceplates/unifi-24p-rj45-2sfp.png",
       "contributions": [
         {
-          "id": "SV-2026-000034",
+          "id": "community validation",
           "source_component": "UniFi2MQTT 2.0.47",
           "source_discovery_version": "2.1.37",
           "devices_observed": 1,
@@ -2196,12 +2196,12 @@
           },
           "dashboard_validation": "generic_card_generated",
           "contributor": {
-            "display_name": "Anonymous",
+            "display_name": "community contributor",
             "public_credit": false
           }
         },
         {
-          "id": "SV-2026-000036",
+          "id": "community validation",
           "source_component": "UniFi2MQTT 2.0.47",
           "source_discovery_version": "2.1.37",
           "devices_observed": 1,
@@ -2212,13 +2212,13 @@
           },
           "dashboard_validation": "generic_card_generated",
           "contributor": {
-            "display_name": "Brendan Pratt",
-            "public_credit": true
+            "display_name": "community contributor",
+            "public_credit": false
           }
         }
       ],
       "notes": [
-        "SV-2026-000034 and SV-2026-000036 repeat the same physical/API topology for the non-PoE USW Pro Max 24.",
+        "community validation and community validation repeat the same physical/API topology for the non-PoE USW Pro Max 24.",
         "Ports 1-16 are 1G RJ45, ports 17-24 are 2.5G-capable RJ45, and ports 25-26 are 10G SFP+.",
         "Maximum connector capability remains separate from current negotiated speed so a 2.5G-capable copper port may truthfully display a lower live link speed.",
         "No PoE output capability is reported for this non-PoE model.",
@@ -2248,14 +2248,14 @@
       "status": "detected",
       "confirmed_since": "2.4.10",
       "last_validated_version": "2.4.10",
-      "evidence": "support_my_switch_SV-2026-000034_and_SV-2026-000036_unifi_api",
+      "evidence": "support_my_switch_community validation_and_community validation_unifi_api",
       "stack_support": false,
       "discovery_support": true,
       "optional_faceplates": [],
       "tested_firmware": [],
       "contributor": {
-        "display_name": "Brendan Pratt",
-        "public_credit": true
+        "display_name": "community contributor",
+        "public_credit": false
       },
       "vendor": "Ubiquiti",
       "family": "UniFi Switch Ultra",
@@ -2274,7 +2274,7 @@
       "default_faceplate": "",
       "contributions": [
         {
-          "id": "SV-2026-000034",
+          "id": "community validation",
           "source_component": "UniFi2MQTT 2.0.47",
           "source_discovery_version": "2.1.37",
           "devices_observed": 1,
@@ -2285,12 +2285,12 @@
           },
           "dashboard_validation": "generic_card_generated",
           "contributor": {
-            "display_name": "Anonymous",
+            "display_name": "community contributor",
             "public_credit": false
           }
         },
         {
-          "id": "SV-2026-000036",
+          "id": "community validation",
           "source_component": "UniFi2MQTT 2.0.47",
           "source_discovery_version": "2.1.37",
           "devices_observed": 1,
@@ -2301,13 +2301,13 @@
           },
           "dashboard_validation": "generic_card_generated",
           "contributor": {
-            "display_name": "Brendan Pratt",
-            "public_credit": true
+            "display_name": "community contributor",
+            "public_credit": false
           }
         }
       ],
       "notes": [
-        "SV-2026-000034 and SV-2026-000036 repeat the same eight-port 1G RJ45 topology for USW Ultra.",
+        "community validation and community validation repeat the same eight-port 1G RJ45 topology for USW Ultra.",
         "PoE output capability is exposed on ports 1-7 only; port 8 is not advertised as a PoE output port, preserving the hardware distinction between PoE output and the PoE input/uplink port.",
         "Port detail is available while per-port RX/TX traffic is unavailable through the contributed UniFi API path.",
         "No verified eight-port USW Ultra faceplate exists yet, so exact dashboard visuals remain pending; Discovery may use its safe generic visual while preserving the real eight-port count."

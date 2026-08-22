@@ -1,3 +1,11 @@
+## v2.4.11 — Public attribution privacy policy
+
+- Remove contributor and tester identities from public changelog and release-note history unless explicitly approved by the project owner.
+- Remove submission identifiers, contribution package names, and submission filenames from public release/history text and structured public contributor metadata.
+- Use neutral **Community contributor** wording while preserving technical validation facts.
+- Add permanent privacy regression coverage preventing non-approved public attribution from returning.
+- No telemetry, device mapping, faceplate, calibration, or runtime behaviour changes.
+
 ## v2.4.10 — UniFi exact-model hardware contracts
 
 - Add exact-model UniFi API contracts for `UCG Ultra`, `US 16 PoE 150W`, `USW Pro Max 24`, and `USW Ultra` from community-provided real-hardware validation.
