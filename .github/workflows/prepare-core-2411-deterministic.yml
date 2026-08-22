@@ -1,0 +1,146 @@
+name: Prepare deterministic Core 2.4.11 release
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    if: github.head_ref == 'fix/core-2411-deterministic-release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout review branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: fix/core-2411-deterministic-release
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Install dependency
+        run: python3 -m pip install --disable-pip-version-check PyYAML
+      - name: Make ZIP creation reproducible
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('build.py')
+          text = path.read_text(encoding='utf-8')
+
+          old = '''def zip_directory(source_dir: Path, zip_path: Path, arc_base: Path) -> None:
+    if zip_path.exists():
+        zip_path.unlink()
+    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as archive:
+        for path in sorted(source_dir.rglob("*")):
+            if "__pycache__" in path.parts or ".pytest_cache" in path.parts or path.suffix in {".pyc", ".pyo"}:
+                continue
+            if path.is_file():
+                arcname = path.relative_to(arc_base)
+                if is_shell_script(path):
+                    info = zipfile.ZipInfo.from_file(path, arcname)
+                    info.create_system = 3
+                    info.external_attr = (0o100755 & 0xFFFF) << 16
+                    with path.open("rb") as handle:
+                        archive.writestr(info, handle.read(), compress_type=zipfile.ZIP_DEFLATED)
+                else:
+                    archive.write(path, arcname)
+'''
+          new = '''ZIP_EPOCH = (1980, 1, 1, 0, 0, 0)
+
+
+def write_deterministic_zip_file(archive: zipfile.ZipFile, path: Path, arcname: Path) -> None:
+    """Write one ZIP member with stable timestamps, permissions, ordering, and bytes."""
+    member = arcname.as_posix()
+    info = zipfile.ZipInfo(member, date_time=ZIP_EPOCH)
+    info.create_system = 3
+    mode = 0o100755 if is_shell_script(path) else 0o100644
+    info.external_attr = (mode & 0xFFFF) << 16
+    info.compress_type = zipfile.ZIP_DEFLATED
+    archive.writestr(info, path.read_bytes(), compress_type=zipfile.ZIP_DEFLATED)
+
+
+def zip_directory(source_dir: Path, zip_path: Path, arc_base: Path) -> None:
+    if zip_path.exists():
+        zip_path.unlink()
+    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as archive:
+        for path in sorted(source_dir.rglob("*")):
+            if "__pycache__" in path.parts or ".pytest_cache" in path.parts or path.suffix in {".pyc", ".pyo"}:
+                continue
+            if path.is_file():
+                write_deterministic_zip_file(archive, path, path.relative_to(arc_base))
+'''
+          if old not in text:
+              raise SystemExit('zip_directory block changed unexpectedly')
+          text = text.replace(old, new, 1)
+
+          old_root = '''        for name in root_names:
+            path = PROJECT_ROOT / name
+            if not path.is_file():
+                raise SystemExit(f"Missing source-archive root file: {name}")
+            archive.write(path, path.relative_to(PROJECT_ROOT))
+
+        for source_root in (SRC, release_folder):
+            for path in sorted(source_root.rglob("*")):
+                if not path.is_file():
+                    continue
+                if "__pycache__" in path.parts or ".pytest_cache" in path.parts:
+                    continue
+                if path.suffix in {".pyc", ".pyo"}:
+                    continue
+                archive.write(path, path.relative_to(PROJECT_ROOT))
+'''
+          new_root = '''        for name in root_names:
+            path = PROJECT_ROOT / name
+            if not path.is_file():
+                raise SystemExit(f"Missing source-archive root file: {name}")
+            write_deterministic_zip_file(archive, path, path.relative_to(PROJECT_ROOT))
+
+        for source_root in (SRC, release_folder):
+            for path in sorted(source_root.rglob("*")):
+                if not path.is_file():
+                    continue
+                if "__pycache__" in path.parts or ".pytest_cache" in path.parts:
+                    continue
+                if path.suffix in {".pyc", ".pyo"}:
+                    continue
+                write_deterministic_zip_file(archive, path, path.relative_to(PROJECT_ROOT))
+'''
+          if old_root not in text:
+              raise SystemExit('source ZIP block changed unexpectedly')
+          text = text.replace(old_root, new_root, 1)
+          path.write_text(text, encoding='utf-8', newline='\n')
+          PY
+      - name: Prove deterministic Core archives and validate release
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 build.py -v 2.4.11
+          release_one="$(sha256sum Releases/switch-vision-2.4.11.zip | awk '{print $1}')"
+          source_one="$(sha256sum Switch_Vision_v2.4.11_source.zip | awk '{print $1}')"
+          python3 build.py -v 2.4.11
+          release_two="$(sha256sum Releases/switch-vision-2.4.11.zip | awk '{print $1}')"
+          source_two="$(sha256sum Switch_Vision_v2.4.11_source.zip | awk '{print $1}')"
+          test "$release_one" = "$release_two"
+          test "$source_one" = "$source_two"
+          python3 -m unittest discover -s tests -p 'test_*.py'
+          python3 tools/check_core_release_parity.py
+          node --check src/js/switch-vision.js
+          node --check src/custom_components/switch_vision/switch-vision-card.js
+          git diff --check
+      - name: Remove guarded workflow and commit product tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/prepare-core-2411-deterministic.yml
+          git config user.name 'switch-vision-release-bot'
+          git config user.email 'switch-vision@users.noreply.github.com'
+          git add -A
+          git commit -m 'Make Core release archives reproducible'
+          git push origin HEAD:fix/core-2411-deterministic-release
