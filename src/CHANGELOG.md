@@ -1,3 +1,14 @@
+## v2.4.10 — Brendan UniFi exact-model hardware contracts
+
+- Add exact-model UniFi API contracts from Brendan Pratt's corroborating `SV-2026-000034` and `SV-2026-000036` contributions for `UCG Ultra`, `US 16 PoE 150W`, `USW Pro Max 24`, and `USW Ultra`.
+- Validate `USW Pro Max 24` as 16 × 1G RJ45 + 8 × 2.5G-capable RJ45 + 2 × 10G SFP+ with no PoE, using the existing truthful UniFi 24+2 visual geometry.
+- Validate `US 16 PoE 150W` as 16 × 1G PoE-capable RJ45 + 2 × 1G SFP and `USW Ultra` as eight 1G RJ45 with PoE output capability on ports 1–7 only.
+- Validate `UCG Ultra` as four 1G RJ45 + one 2.5G-capable RJ45 integrated-switch ports with no PoE output, without hard-coding WAN/LAN role by physical position.
+- Keep UCG Ultra, US 16 PoE 150W and USW Ultra exact visuals pending rather than claiming inaccurate small-device artwork; preserve their truthful hardware contracts for Discovery's safe generic-card fallback.
+- Preserve the contributed UniFi API capability boundary: port detail is available but per-port traffic is not, so no synthetic per-port traffic data is introduced.
+- Preserve the anonymous preference of `SV-2026-000034` while applying Brendan Pratt's later explicit full-name recognition preference from `SV-2026-000036`.
+- Add permanent Core registry regressions for all four models and both contribution IDs.
+
 ## v2.4.9 — UniFi exact-model API mapping and contribution support
 
 - Add a backward-compatible explicit UniFi visual-port → API-port mapping contract while preserving the legacy sequential/offset path when no explicit map is present.
