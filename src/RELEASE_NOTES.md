@@ -1,7 +1,9 @@
-# Switch Vision Core v2.4.12
+# Switch Vision Core v2.4.13
 
-Core 2.4.12 adds Experimental exact-model support for the community-observed Cisco `WS-C3750-48P` platform string.
+Core 2.4.13 fixes two dashboard UI regressions observed on a community-validated Zyxel XS1930-10.
 
-The hardware contract deliberately preserves this non-G Catalyst 3750 generation as 48 × 10/100 FastEthernet PoE access ports plus four 1G SFP uplinks. The existing neutral 48+4 visual geometry is used because the socket count matches, while live overlay alignment, uplinks, PoE presentation and multi-member StackWise behaviour remain pending contributor validation.
+Rendered ports now remain selectable when a saved or custom calibration contains the port centre but omits an explicit hitbox. Switch Vision derives the normal visual hitbox for the rendered socket rather than allowing the click to fall through to the switch-summary background handler. Blank interface descriptions continue to display as `DESC —` while the port remains selected.
 
-Public contribution metadata remains anonymous and contains no private submission identifiers or filenames.
+The native dashboard Advanced diagnostics block now uses an explicit light foreground on its fixed dark background, keeping diagnostic text readable under Home Assistant themes whose primary text colour is dark.
+
+No device mapping, telemetry, faceplate geometry, Discovery, SNMP2MQTT, or UniFi2MQTT behaviour changes are included in this corrective release.

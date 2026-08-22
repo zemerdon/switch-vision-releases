@@ -1,3 +1,11 @@
+## v2.4.13 — Port selection and native diagnostics theme fixes
+
+- Keep rendered ports clickable when a saved/custom calibration has a port `center` but no explicit `hitbox`; derive the normal visual hitbox instead of allowing the click to fall through to switch summary.
+- Preserve blank interface descriptions as a selected-port state (`DESC —`) rather than confusing missing description data with selection failure.
+- Give the native dashboard Advanced diagnostics block an explicit light foreground on its fixed dark background so it remains readable under dark-text Home Assistant themes.
+- Add permanent regression coverage for calibration hitbox fallback and native diagnostics contrast.
+- No device mapping, telemetry, faceplate geometry, Discovery, SNMP2MQTT, or UniFi2MQTT behaviour changes.
+
 
 ## v2.4.12 — Catalyst 3750 48-port hardware contract
 
