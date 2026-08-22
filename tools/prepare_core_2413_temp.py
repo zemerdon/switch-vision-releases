@@ -22,8 +22,8 @@ def replace_once(path: Path, old: str, new: str) -> None:
 card = ROOT / "src/js/switch-vision.js"
 replace_once(
     card,
-    """const addHitbox = (type, id, item) => {\n      if (!item?.center || !item?.hitbox) return;\n      const [cx, cy] = item.center;\n      const [w, h] = visualHitboxSize(type, item.hitbox);""",
-    """const addHitbox = (type, id, item) => {\n      if (!item?.center) return;\n      const fallbackHitbox = type === \"port\" ? [34, 56] : [94, 48];\n      const [cx, cy] = item.center;\n      const [w, h] = visualHitboxSize(type, item.hitbox || fallbackHitbox);""",
+    """const addHitbox = (type, id, item) => {\n      if (!item?.center || !item?.hitbox) return;\n\n      const [cx, cy] = item.center;\n      const [w, h] = visualHitboxSize(type, item.hitbox);""",
+    """const addHitbox = (type, id, item) => {\n      if (!item?.center) return;\n\n      const fallbackHitbox = type === \"port\" ? [34, 56] : [94, 48];\n      const [cx, cy] = item.center;\n      const [w, h] = visualHitboxSize(type, item.hitbox || fallbackHitbox);""",
 )
 
 panel = ROOT / "src/custom_components/switch_vision/switch-vision-panel.js"
