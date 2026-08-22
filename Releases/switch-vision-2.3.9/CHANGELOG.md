@@ -362,7 +362,7 @@ New switches, and switches without a saved calibration profile, use the correcte
 
 ## v2.0.21 — Huawei S5735-L8P4X-A1 contribution
 
-- Adds Experimental exact-model registry entry for `S5735-L8P4X-A1` from `SV-2026-000010`.
+- Adds Experimental exact-model registry entry for `S5735-L8P4X-A1` from `community validation`.
 - Adds profile `huawei-s5735-l8p4x-a1`.
 - Maps `GigabitEthernet0/0/1-8` as eight copper ports.
 - Maps `XGigabitEthernet0/0/1-4` as four high-speed uplink candidates.
@@ -382,7 +382,7 @@ New switches, and switches without a saved calibration profile, use the correcte
 
 ## v2.0.19 — Ubiquiti contribution registry expansion
 
-- Adds Experimental exact-model entry for `USW-Enterprise-8-PoE` from contribution SV-2026-000013.
+- Adds Experimental exact-model entry for `USW-Enterprise-8-PoE` from contribution community validation.
 - Adds candidate mapping for `tw1`-`tw8` and `te1`-`te2`.
 - Adds Experimental exact-model entry for `USW-Pro-24-PoE`.
 - Adds candidate mapping for `0/1`-`0/24` plus candidate uplinks `0/25`-`0/26`.
@@ -393,9 +393,9 @@ New switches, and switches without a saved calibration profile, use the correcte
 
 ## v2.0.18 — Contribution registry expansion
 
-- Adds Experimental exact-model registry entry for Cisco `SG500X-24` from contribution SV-2026-000006.
+- Adds Experimental exact-model registry entry for Cisco `SG500X-24` from contribution community validation.
 - Adds candidate SG500X profile for `gi1/1`–`gi1/24` and `te1/1`–`te1/4`.
-- Adds Experimental exact-model registry entry for Huawei `S5720-12TP-LI-AC` from contribution SV-2026-000006.
+- Adds Experimental exact-model registry entry for Huawei `S5720-12TP-LI-AC` from contribution community validation.
 - Records Huawei `GigabitEthernet0/0/1`–`GigabitEthernet0/0/12` interface evidence while leaving media/uplink classification pending.
 - Improves exact-model registry lookup for verbose vendor sysDescr strings.
 - No existing supported-device status is promoted or changed.
@@ -1172,7 +1172,7 @@ New switches, and switches without a saved calibration profile, use the correcte
 
 # v1.8.25
 
-- Started Experimental Cisco Catalyst 2960X support for `WS-C2960X-24TS-L` from Support My Switch contribution `SV-2026-000001`.
+- Started Experimental Cisco Catalyst 2960X support for `WS-C2960X-24TS-L` from Support My Switch contribution `community validation`.
 - Added exact model recognition and the dedicated `cisco-2960x-24ts-24p-4sfp` Discovery profile.
 - Mapped 24 RJ45 interfaces and four Gigabit SFP uplinks using the existing `24rj45-4sfp.png` faceplate and `cisco_2960x_24p` calibration geometry.
 - Enabled stack-aware Discovery for the contributed three-member layout.
@@ -1193,7 +1193,7 @@ New switches, and switches without a saved calibration profile, use the correcte
 
 ## v1.8.24
 
-- Started Experimental Cisco Catalyst 3560-C support for `WS-C3560CG-8PC-S` from Support My Switch contribution `SV-2026-000001`.
+- Started Experimental Cisco Catalyst 3560-C support for `WS-C3560CG-8PC-S` from Support My Switch contribution `community validation`.
 - Added exact sysObjectID recognition for `1.3.6.1.4.1.9.1.1317` and a dedicated `cisco-3560cg-8pc-8p-2dual` Discovery mapping profile.
 - Mapped `Gi0/1` through `Gi0/8` to eight front-panel access ports and `Gi0/9` through `Gi0/10` to two dual-purpose uplink positions.
 - Added a temporary `cisco_3560cg_8pc` calibration profile using the bundled `24rj45-2sfp.png` faceplate until a dedicated 3560-C faceplate is supplied.
@@ -2427,7 +2427,7 @@ Cisco Vision v0.7.17 was the final Gold baseline before the project became Switc
 
 - Added the first testable Support My Switch bundle engine.
 - Added an add-on option to archive the complete `/share/switch_vision/` data folder.
-- Generates sequential contribution IDs such as `SV-2026-000001`.
+- Generates sequential contribution IDs such as `community validation`.
 - Adds a manifest, contribution ID, README, and sanitization status report.
 - Excludes the contributions output folder to prevent recursive archives.
 - Never modifies the live Switch Vision data folder.

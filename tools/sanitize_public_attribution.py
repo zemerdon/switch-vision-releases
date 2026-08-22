@@ -4,26 +4,33 @@ from __future__ import annotations
 
 from pathlib import Path
 import argparse
+import json
 import re
 import yaml
 
-TEXT_SUFFIXES = {
-    ".md", ".bbcode", ".txt", ".json", ".yaml", ".yml", ".py", ".js",
-    ".sh", ".html", ".css", ".xml", ".toml", ".ini", ".cfg", ".csv",
-}
-SUBMISSION_ID_RE = re.compile(r"(?i)SV-[0-9]{4}-[0-9]+")
+PROSE_SUFFIXES = {".md", ".bbcode", ".txt", ".html", ".xml", ".csv"}
+SUBMISSION_ID_RE = re.compile(r"(?i)SV[-_]20\d{2}[-_]\d+")
 PACKAGE_RE = re.compile(r"(?i)Switch[_ -]Vision[_ -]Contribution[^\s`\"']*")
 
 
+def _walk_display_names(value: object) -> list[str]:
+    names: list[str] = []
+    if isinstance(value, dict):
+        if "display_name" in value and "public_credit" in value:
+            names.append(str(value.get("display_name") or "").strip())
+        for child in value.values():
+            names.extend(_walk_display_names(child))
+    elif isinstance(value, list):
+        for child in value:
+            names.extend(_walk_display_names(child))
+    return names
+
+
 def collect_private_identities(registry: Path, owner: str) -> set[str]:
-    data = yaml.safe_load(registry.read_text(encoding="utf-8"))
+    data = yaml.safe_load(registry.read_text(encoding="utf-8")) or {}
     generic = {"", owner.casefold(), "community contributor", "anonymous"}
     identities: set[str] = set()
-    for item in data.get("devices", []):
-        contributor = item.get("contributor") if isinstance(item, dict) else None
-        if not isinstance(contributor, dict):
-            continue
-        name = str(contributor.get("display_name") or "").strip()
+    for name in _walk_display_names(data):
         if name.casefold() in generic:
             continue
         identities.add(name)
@@ -44,38 +51,41 @@ def sanitize_text(text: str, identities: set[str]) -> str:
     return text
 
 
-def neutralize_registry_contributors(registry: Path, owner: str) -> None:
-    lines = registry.read_text(encoding="utf-8").splitlines()
-    out: list[str] = []
-    active = False
-    base_indent = 0
-    neutral = False
-    for line in lines:
-        stripped = line.lstrip()
-        indent = len(line) - len(stripped)
-        if stripped == "contributor:":
-            active = True
-            base_indent = indent
-            neutral = False
-            out.append(line)
-            continue
-        if active and stripped and indent <= base_indent:
-            active = False
-            neutral = False
-        if active and stripped.startswith("display_name:"):
-            value = stripped.split(":", 1)[1].strip().strip("\"'")
-            if value.casefold() != owner.casefold():
-                line = line[:indent] + "display_name: Community contributor"
-                neutral = True
-        elif active and neutral and stripped.startswith("public_credit:"):
-            line = line[:indent] + "public_credit: false"
-        out.append(line)
-    registry.write_text("\n".join(out) + "\n", encoding="utf-8", newline="\n")
+def sanitize_structured(value: object, identities: set[str], owner: str) -> object:
+    if isinstance(value, dict):
+        result = {key: sanitize_structured(child, identities, owner) for key, child in value.items()}
+        if "display_name" in result and "public_credit" in result:
+            name = str(result.get("display_name") or "").strip()
+            if name.casefold() != owner.casefold():
+                result["display_name"] = "community contributor"
+                result["public_credit"] = False
+        contributions = result.get("contributions")
+        if isinstance(contributions, list):
+            for index, row in enumerate(contributions, start=1):
+                if isinstance(row, dict) and SUBMISSION_ID_RE.search(str(row.get("id") or "")):
+                    row["id"] = f"community-validation-{index}"
+        return result
+    if isinstance(value, list):
+        return [sanitize_structured(child, identities, owner) for child in value]
+    if isinstance(value, str):
+        return sanitize_text(value, identities)
+    return value
 
 
-def scrub_tree(root: Path, identities: set[str]) -> None:
+def sanitize_registry(path: Path, identities: set[str], owner: str) -> None:
+    if path.suffix.lower() == ".json":
+        data = json.loads(path.read_text(encoding="utf-8"))
+        data = sanitize_structured(data, identities, owner)
+        path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8", newline="\n")
+        return
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    data = sanitize_structured(data, identities, owner)
+    path.write_text(yaml.safe_dump(data, sort_keys=False, allow_unicode=True), encoding="utf-8", newline="\n")
+
+
+def scrub_public_prose(root: Path, identities: set[str]) -> None:
     for path in sorted(root.rglob("*")):
-        if not path.is_file() or ".git" in path.parts or path.suffix.lower() not in TEXT_SUFFIXES:
+        if not path.is_file() or ".git" in path.parts or path.suffix.lower() not in PROSE_SUFFIXES:
             continue
         try:
             text = path.read_text(encoding="utf-8")
@@ -86,13 +96,22 @@ def scrub_tree(root: Path, identities: set[str]) -> None:
             path.write_text(updated, encoding="utf-8", newline="\n")
 
 
+def sanitize_all_registries(root: Path, identities: set[str], owner: str) -> None:
+    for path in sorted(root.rglob("supported_devices.*")):
+        if not path.is_file() or ".git" in path.parts or "devices" not in path.parts:
+            continue
+        if path.suffix.lower() not in {".json", ".yaml", ".yml"}:
+            continue
+        sanitize_registry(path, identities, owner)
+
+
 def write_core_release_text(root: Path, version: str, identities: set[str]) -> None:
     entry = f"""## v{version} — Public attribution privacy policy
 
 - Remove contributor and tester identities from public changelog and release-note history unless explicitly approved by the project owner.
 - Remove submission identifiers, contribution package names, and submission filenames from public release/history text and structured public contributor metadata.
 - Use neutral **Community contributor** wording while preserving technical validation facts.
-- Add a permanent privacy regression so future public releases reject non-approved attribution or private submission references.
+- Add permanent privacy regression coverage preventing non-approved public attribution from returning.
 - No telemetry, device mapping, faceplate, calibration, or runtime behaviour changes.
 
 """
@@ -123,8 +142,8 @@ def main() -> None:
     root = args.root.resolve()
     registry = root / "src/devices/supported_devices.yaml"
     identities = collect_private_identities(registry, args.owner)
-    scrub_tree(root, identities)
-    neutralize_registry_contributors(registry, args.owner)
+    scrub_public_prose(root, identities)
+    sanitize_all_registries(root, identities, args.owner)
     if args.core_version:
         write_core_release_text(root, args.core_version, identities)
     print(f"Sanitized public attribution metadata; neutralized {len(identities)} identity token(s).")

@@ -26,10 +26,13 @@ for model, (rj45, uplinks, poe, dashboard, profile) in expected.items():
     assert item["ports"]["poe"] is poe, model
     assert item["dashboard_support"] is dashboard, model
     assert item["mapping_profile"] == profile, model
-    assert [c["id"] for c in item["contributions"]] == ["SV-2026-000034", "SV-2026-000036"], model
-    assert item["contributions"][0]["contributor"]["public_credit"] is False, model
-    assert item["contributions"][1]["contributor"] == {"display_name": "Brendan Pratt", "public_credit": True}, model
-    assert all(c["api_capabilities"]["per_port_traffic"] is False for c in item["contributions"]), model
+    contributions = item.get("contributions") or []
+    assert len(contributions) >= 1, model
+    for contribution in contributions:
+        contributor = contribution.get("contributor") or {}
+        assert str(contributor.get("display_name") or "").casefold() == "community contributor", model
+        assert contributor.get("public_credit") is False, model
+        assert contribution["api_capabilities"]["per_port_traffic"] is False, model
 
 promax = source_models["USW Pro Max 24"]
 assert promax["default_faceplate"] == "faceplates/unifi-24p-rj45-2sfp.png"
@@ -54,4 +57,4 @@ generated_models = {d["model"]: d for d in generated["devices"] if isinstance(d,
 for model in expected:
     assert generated_models[model] == source_models[model], model
 
-print("Switch Vision Core Brendan SV-2026-000034/000036 UniFi contracts: PASS")
+print("Switch Vision Core UniFi community hardware contracts: PASS")

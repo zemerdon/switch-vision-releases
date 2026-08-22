@@ -26,11 +26,7 @@ class DeviceRegistryContractTests(unittest.TestCase):
             "S5735-L8P4X-A1",
             "S5720-12TP-LI-AC",
         }:
-            self.assertEqual(
-                self.models[model].get("status"),
-                "community_validated",
-                model,
-            )
+            self.assertEqual(self.models[model].get("status"), "community_validated", model)
 
     def test_3560cg_combo_port_semantics_are_documented(self) -> None:
         device = self.models["WS-C3560CG-8PC-S"]
@@ -54,33 +50,23 @@ class DeviceRegistryContractTests(unittest.TestCase):
         for model, device in self.models.items():
             if device.get("vendor") != "Ubiquiti":
                 continue
-
             profile = str(device.get("calibration_profile") or "")
             faceplate = str(device.get("default_faceplate") or "")
             visuals = device.get("visuals") or {}
             dashboard_support = device.get("dashboard_support") is True
-
-            # A model that claims dashboard support must have a real, explicit
-            # non-Cisco visual. Never satisfy this by silently falling back to a
-            # Cisco profile or faceplate.
             if dashboard_support:
                 self.assertTrue(profile, model)
                 self.assertTrue(faceplate, model)
                 self.assertFalse(profile.lower().startswith("cisco_"), (model, profile))
                 self.assertNotIn("cisco", faceplate.lower(), (model, faceplate))
             else:
-                # New physical/API contracts may deliberately remain visual-pending
-                # until verified faceplate coordinates exist. Keep both fields in
-                # lock-step and keep the support state non-final instead of inventing
-                # a visual just to satisfy the registry.
                 self.assertEqual(bool(profile), bool(faceplate), model)
                 if not profile:
                     self.assertEqual(device.get("status"), "detected", model)
-
             self.assertEqual(visuals.get("calibration_profile"), profile, model)
             self.assertEqual(visuals.get("recommended_faceplate"), faceplate, model)
 
-    def test_sv_2026_000002_existing_models_gain_evidence_without_promotion(self) -> None:
+    def test_existing_models_gain_community_evidence_without_promotion(self) -> None:
         expected_units = {
             "US 8 60W": 1,
             "USW Flex Mini": 2,
@@ -92,12 +78,12 @@ class DeviceRegistryContractTests(unittest.TestCase):
             rows = [
                 row
                 for row in device.get("contributions") or []
-                if isinstance(row, dict) and row.get("id") == "SV-2026-000002"
+                if isinstance(row, dict)
+                and row.get("source_component") == "UniFi2MQTT 2.0.47"
+                and row.get("devices_observed") == units
             ]
             self.assertEqual(len(rows), 1, model)
             row = rows[0]
-            self.assertEqual(row.get("source_component"), "UniFi2MQTT 2.0.47", model)
-            self.assertEqual(row.get("devices_observed"), units, model)
             self.assertEqual(row.get("dashboard_validation"), "pending", model)
             self.assertEqual(
                 row.get("api_capabilities"),
@@ -105,8 +91,8 @@ class DeviceRegistryContractTests(unittest.TestCase):
                 model,
             )
             contributor = row.get("contributor") or {}
-            self.assertEqual(contributor.get("display_name"), "bignick8t3", model)
-            self.assertIs(contributor.get("public_credit"), True, model)
+            self.assertEqual(str(contributor.get("display_name") or "").casefold(), "community contributor", model)
+            self.assertIs(contributor.get("public_credit"), False, model)
 
     def test_us_48_reuses_verified_geometry_and_legacy_sequential_mapping(self) -> None:
         device = self.models["US 48"]
@@ -134,10 +120,7 @@ class DeviceRegistryContractTests(unittest.TestCase):
         self.assertEqual(device.get("default_faceplate"), "")
         self.assertEqual(
             device.get("unifi_api_port_map"),
-            {
-                "rj45": [13, 14, 15, 16],
-                "sfp": list(range(1, 13)),
-            },
+            {"rj45": [13, 14, 15, 16], "sfp": list(range(1, 13))},
         )
 
     def test_pro_aggregation_preserves_25g_capability_contract_without_fake_visual(self) -> None:
@@ -151,10 +134,7 @@ class DeviceRegistryContractTests(unittest.TestCase):
         self.assertEqual(ports.get("twenty_five_gigabit_sfp28"), 4)
         self.assertEqual(device.get("calibration_profile"), "")
         self.assertEqual(device.get("default_faceplate"), "")
-        self.assertEqual(
-            device.get("unifi_api_port_map"),
-            {"rj45": [], "sfp": list(range(1, 33))},
-        )
+        self.assertEqual(device.get("unifi_api_port_map"), {"rj45": [], "sfp": list(range(1, 33))})
         notes = "\n".join(str(note) for note in device.get("notes") or [])
         self.assertIn("Ports 29 and 30", notes)
         self.assertIn("negotiating at 10G", notes)
