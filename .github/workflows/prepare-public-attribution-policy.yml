@@ -1,0 +1,181 @@
+name: Prepare public attribution privacy policy
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    if: github.head_ref == 'privacy/public-attribution-policy'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: privacy/public-attribution-policy
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check PyYAML
+      - name: Sanitize public history and metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          import yaml
+
+          root = Path('.')
+          owner = 'zemerdon'
+          generic = {'', owner.casefold(), 'community contributor', 'anonymous'}
+          registry = root / 'src/devices/supported_devices.yaml'
+          data = yaml.safe_load(registry.read_text(encoding='utf-8'))
+
+          identities = set()
+          for item in data.get('devices', []):
+              contributor = item.get('contributor') if isinstance(item, dict) else None
+              if not isinstance(contributor, dict):
+                  continue
+              name = str(contributor.get('display_name') or '').strip()
+              if name.casefold() not in generic:
+                  identities.add(name)
+                  for token in re.findall(r'[A-Za-z0-9_.@+-]+', name):
+                      if len(token) >= 4 and token.casefold() not in generic:
+                          identities.add(token)
+
+          suffixes = {'.md','.bbcode','.txt','.json','.yaml','.yml','.py','.js','.sh','.html','.css','.xml','.toml','.ini','.cfg','.csv'}
+          submission_id = re.compile(r'(?i)SV-[0-9]{4}-[0-9]+')
+          package_name = re.compile(r'(?i)Switch[_ -]Vision[_ -]Contribution[^\s`"\']*')
+
+          def sanitize(text):
+              for identity in sorted(identities, key=len, reverse=True):
+                  text = re.sub(re.escape(identity), 'community contributor', text, flags=re.I)
+              text = package_name.sub('community submission', text)
+              text = submission_id.sub('community validation', text)
+              text = re.sub(r'(?i)community contributor[\'’]s', 'community-provided', text)
+              return text
+
+          for path in sorted(root.rglob('*')):
+              if not path.is_file() or '.git' in path.parts or path.suffix.lower() not in suffixes:
+                  continue
+              try:
+                  text = path.read_text(encoding='utf-8')
+              except UnicodeDecodeError:
+                  continue
+              new = sanitize(text)
+              if new != text:
+                  path.write_text(new, encoding='utf-8', newline='\n')
+
+          # Neutralize structured contributor fields while preserving owner attribution.
+          text = registry.read_text(encoding='utf-8')
+          lines = text.splitlines()
+          out = []
+          active = False
+          base_indent = 0
+          neutral = False
+          for line in lines:
+              stripped = line.lstrip()
+              indent = len(line) - len(stripped)
+              if stripped == 'contributor:':
+                  active = True
+                  base_indent = indent
+                  neutral = False
+                  out.append(line)
+                  continue
+              if active and stripped and indent <= base_indent:
+                  active = False
+                  neutral = False
+              if active and stripped.startswith('display_name:'):
+                  value = stripped.split(':',1)[1].strip().strip('"\'')
+                  if value.casefold() != owner.casefold():
+                      line = line[:indent] + 'display_name: Community contributor'
+                      neutral = True
+              elif active and neutral and stripped.startswith('public_credit:'):
+                  line = line[:indent] + 'public_credit: false'
+              out.append(line)
+          registry.write_text('\n'.join(out) + '\n', encoding='utf-8', newline='\n')
+
+          entry = '''## v2.4.11 — Public attribution privacy policy
+
+- Remove contributor and tester identities from public changelog and release-note history unless explicitly approved by the project owner.
+- Remove submission identifiers, contribution package names, and submission filenames from public release/history text and structured public contributor metadata.
+- Use neutral **Community contributor** wording while preserving technical validation facts.
+- Add a permanent privacy regression so future public releases reject non-approved attribution or private submission references.
+- No telemetry, device mapping, faceplate, calibration, or runtime behaviour changes.
+
+'''
+          for path in (root/'CHANGELOG.md', root/'src/CHANGELOG.md'):
+              old = sanitize(path.read_text(encoding='utf-8'))
+              old = re.sub(r'^## v2\.4\.11.*?(?=^## |\Z)', '', old, flags=re.M|re.S).lstrip()
+              path.write_text(entry + old, encoding='utf-8', newline='\n')
+
+          notes = '''# Switch Vision Core v2.4.11
+
+This maintenance release applies a general public-attribution privacy policy across Switch Vision release metadata.
+
+Contributor and tester identities are omitted from public changelogs and release notes unless explicitly approved by the project owner. Submission identifiers, contribution package names, and submission filenames are also omitted. Technical validation facts remain intact and use neutral **Community contributor** wording where attribution context is useful.
+
+This release changes privacy/publication policy only; telemetry, device mappings, faceplates, calibration, and runtime behaviour are unchanged.
+'''
+          for path in (root/'RELEASE_NOTES.md', root/'src/RELEASE_NOTES.md'):
+              path.write_text(notes, encoding='utf-8', newline='\n')
+
+          (root/'tests/test_public_attribution_privacy.py').write_text(r'''from pathlib import Path
+import re
+import yaml
+
+ROOT = Path(__file__).resolve().parents[1]
+OWNER = "zemerdon"
+ALLOWED = {"", OWNER.casefold(), "community contributor", "anonymous"}
+SUBMISSION_ID = re.compile(r"(?i)SV-[0-9]{4}-[0-9]+")
+PACKAGE_NAME = re.compile(r"(?i)Switch[_ -]Vision[_ -]Contribution")
+
+
+def test_public_registry_attribution_is_neutral():
+    data = yaml.safe_load((ROOT / "src/devices/supported_devices.yaml").read_text(encoding="utf-8"))
+    for item in data.get("devices", []):
+        contributor = item.get("contributor") if isinstance(item, dict) else None
+        if not isinstance(contributor, dict):
+            continue
+        name = str(contributor.get("display_name") or "").strip()
+        assert name.casefold() in ALLOWED, (item.get("model"), name)
+        if name.casefold() != OWNER.casefold():
+            assert contributor.get("public_credit") is not True, item.get("model")
+
+
+def test_public_release_history_has_no_submission_references():
+    paths = [ROOT/"CHANGELOG.md", ROOT/"RELEASE_NOTES.md", ROOT/"src/CHANGELOG.md", ROOT/"src/RELEASE_NOTES.md"]
+    paths += list((ROOT/"Releases").glob("switch-vision-*/CHANGELOG.md"))
+    paths += list((ROOT/"Releases").glob("switch-vision-*/RELEASE_NOTES.md"))
+    for path in paths:
+        if path.exists():
+            text = path.read_text(encoding="utf-8", errors="ignore")
+            assert not SUBMISSION_ID.search(text), path
+            assert not PACKAGE_NAME.search(text), path
+''', encoding='utf-8', newline='\n')
+          PY
+      - name: Build and validate Core 2.4.11
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 build.py -v 2.4.11
+          python3 -m unittest discover -s tests -p 'test_*.py'
+          python3 tools/check_core_release_parity.py
+          node --check src/js/switch-vision.js
+          node --check src/custom_components/switch_vision/switch-vision-card.js
+          git diff --check
+      - name: Commit tested source
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/prepare-public-attribution-policy.yml
+          git config user.name 'switch-vision-release-bot'
+          git config user.email 'switch-vision@users.noreply.github.com'
+          git add -A
+          git commit -m 'Core v2.4.11: enforce public attribution privacy policy'
+          git push origin HEAD:privacy/public-attribution-policy
