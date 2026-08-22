@@ -46,6 +46,40 @@ jobs:
               for line in match.group(1).splitlines()
           )
           exec(compile(payload, str(workflow), 'exec'), {'__name__': '__main__'})
+
+          # Core's permanent UniFi visual contract requires dashboard-disabled
+          # exact models with no visual to remain detected. Promote only the
+          # Pro Max 24 contract to experimental because its 24+2 visual is safe.
+          registry_path = Path('src/devices/supported_devices.yaml')
+          registry_text = registry_path.read_text(encoding='utf-8')
+          starts = [m.start() for m in re.finditer(r'(?m)^- status: experimental\n  confirmed_since: 2\.4\.10$', registry_text)]
+          starts.append(len(registry_text))
+          pending = {'UCG Ultra', 'US 16 PoE 150W', 'USW Ultra'}
+          rebuilt = []
+          cursor = 0
+          for index in range(len(starts) - 1):
+              start = starts[index]
+              end = starts[index + 1]
+              rebuilt.append(registry_text[cursor:start])
+              segment = registry_text[start:end]
+              model_match = re.search(r'(?m)^  model: (.+)$', segment)
+              model = model_match.group(1).strip() if model_match else ''
+              if model in pending:
+                  segment = segment.replace('- status: experimental\n', '- status: detected\n', 1)
+              rebuilt.append(segment)
+              cursor = end
+          rebuilt.append(registry_text[cursor:])
+          registry_path.write_text(''.join(rebuilt), encoding='utf-8', newline='\n')
+
+          test_path = Path('tests/test_brendan_unifi_contracts.py')
+          test_text = test_path.read_text(encoding='utf-8')
+          test_text = test_text.replace(
+              '    assert item["status"] == "experimental", model\n',
+              '    expected_status = "experimental" if model == "USW Pro Max 24" else "detected"\n'
+              '    assert item["status"] == expected_status, model\n',
+              1,
+          )
+          test_path.write_text(test_text, encoding='utf-8', newline='\n')
           PYRUNNER
           rm -f \
             .github/workflows/prepare-core-v2410-brendan.yml \
