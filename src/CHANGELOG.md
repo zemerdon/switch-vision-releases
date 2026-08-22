@@ -1,3 +1,12 @@
+
+## v2.4.12 — Catalyst 3750 48-port hardware contract
+
+- Add Experimental exact-model handling for the community-observed `WS-C3750-48P` platform string.
+- Preserve the non-G Catalyst 3750 physical contract as 48 × 10/100 FastEthernet PoE access ports plus 4 × 1G SFP uplinks; do not mislabel the copper ports as Gigabit-capable.
+- Reuse the truthful 48-RJ45 + 4-SFP socket geometry while keeping live overlay/uplink/stack validation pending.
+- Keep the public registry anonymous and omit private submission identifiers and filenames.
+- Add permanent regression coverage for model identity, port counts, FastEthernet semantics, visual defaults, and attribution privacy.
+
 ## v2.4.11 — Public attribution privacy policy
 
 - Remove contributor and tester identities from public changelog and release-note history unless explicitly approved by the project owner.

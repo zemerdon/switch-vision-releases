@@ -1,7 +1,7 @@
-# Switch Vision Core v2.4.11
+# Switch Vision Core v2.4.12
 
-This maintenance release applies a general public-attribution privacy policy across Switch Vision release metadata.
+Core 2.4.12 adds Experimental exact-model support for the community-observed Cisco `WS-C3750-48P` platform string.
 
-Contributor and tester identities are omitted from public changelogs and release notes unless explicitly approved by the project owner. Submission identifiers, contribution package names, and submission filenames are also omitted. Technical validation facts remain intact and use neutral **Community contributor** wording where attribution context is useful.
+The hardware contract deliberately preserves this non-G Catalyst 3750 generation as 48 × 10/100 FastEthernet PoE access ports plus four 1G SFP uplinks. The existing neutral 48+4 visual geometry is used because the socket count matches, while live overlay alignment, uplinks, PoE presentation and multi-member StackWise behaviour remain pending contributor validation.
 
-This release changes privacy/publication policy only; telemetry, device mappings, faceplates, calibration, and runtime behaviour are unchanged.
+Public contribution metadata remains anonymous and contains no private submission identifiers or filenames.
