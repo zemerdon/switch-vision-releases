@@ -65,7 +65,7 @@ def neutralize_registry_contributors(registry: Path, owner: str) -> None:
         if active and stripped.startswith("display_name:"):
             value = stripped.split(":", 1)[1].strip().strip("\"'")
             if value.casefold() != owner.casefold():
-                line = line[:indent] + "display_name: Community contributor"
+                line = line[:indent] + "display_name: community contributor"
                 neutral = True
         elif active and neutral and stripped.startswith("public_credit:"):
             line = line[:indent] + "public_credit: false"
