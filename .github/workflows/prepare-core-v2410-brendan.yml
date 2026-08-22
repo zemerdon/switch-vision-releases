@@ -1,0 +1,368 @@
+name: Prepare Core v2.4.10 Brendan UniFi review
+
+on:
+  push:
+    branches:
+      - review/sv-2026-000034-000036-brendan-unifi
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out review branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+
+      - name: Install build dependency
+        run: python -m pip install --disable-pip-version-check PyYAML
+
+      - name: Add Brendan exact-model contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          python3 - <<'PY'
+          from pathlib import Path
+          import textwrap
+          import yaml
+
+          registry_path = Path('src/devices/supported_devices.yaml')
+          registry = yaml.safe_load(registry_path.read_text(encoding='utf-8')) or {}
+          existing = {str(d.get('model')) for d in registry.get('devices', []) if isinstance(d, dict)}
+          wanted = {'UCG Ultra', 'US 16 PoE 150W', 'USW Pro Max 24', 'USW Ultra'}
+          overlap = existing & wanted
+          if overlap:
+              raise SystemExit('Brendan models already exist: ' + ', '.join(sorted(overlap)))
+
+          def contributions():
+              return [
+                  {
+                      'id': 'SV-2026-000034',
+                      'source_component': 'UniFi2MQTT 2.0.47',
+                      'source_discovery_version': '2.1.37',
+                      'devices_observed': 1,
+                      'validation_scope': 'physical_api_contract_repeat_capture',
+                      'api_capabilities': {'port_detail': True, 'per_port_traffic': False},
+                      'dashboard_validation': 'generic_card_generated',
+                      'contributor': {'display_name': 'Anonymous', 'public_credit': False},
+                  },
+                  {
+                      'id': 'SV-2026-000036',
+                      'source_component': 'UniFi2MQTT 2.0.47',
+                      'source_discovery_version': '2.1.37',
+                      'devices_observed': 1,
+                      'validation_scope': 'physical_api_contract_repeat_capture',
+                      'api_capabilities': {'port_detail': True, 'per_port_traffic': False},
+                      'dashboard_validation': 'generic_card_generated',
+                      'contributor': {'display_name': 'Brendan Pratt', 'public_credit': True},
+                  },
+              ]
+
+          common = {
+              'status': 'experimental',
+              'confirmed_since': '2.4.10',
+              'last_validated_version': '2.4.10',
+              'evidence': 'support_my_switch_SV-2026-000034_and_SV-2026-000036_unifi_api',
+              'stack_support': False,
+              'discovery_support': True,
+              'optional_faceplates': [],
+              'tested_firmware': [],
+              'contributor': {'display_name': 'Brendan Pratt', 'public_credit': True},
+          }
+
+          devices = []
+
+          item = dict(common)
+          item.update({
+              'vendor': 'Ubiquiti',
+              'family': 'UniFi Cloud Gateway Ultra',
+              'model': 'UCG Ultra',
+              'ports': {
+                  'rj45': 5, 'poe': False, 'uplinks': 0, 'uplink_type': 'none',
+                  'gigabit_sfp': 0, 'ten_gigabit_sfp_plus': 0,
+              },
+              'dashboard_support': False,
+              'mapping_profile': 'ubiquiti-ucg-ultra-api',
+              'calibration_profile': '',
+              'default_faceplate': '',
+              'contributions': contributions(),
+              'notes': [
+                  'SV-2026-000034 and SV-2026-000036 are two corroborating captures of the same physical UCG Ultra and preserve the same five-port topology while normal live counters change.',
+                  'Live UniFi API evidence exposes four 1G RJ45 ports plus one 2.5G-capable RJ45 port and no PoE output capability.',
+                  'The device is a Cloud Gateway with integrated switching; Switch Vision accepts it because the UniFi controller advertises switching capability rather than because the model name resembles a switch.',
+                  'WAN/LAN role is deliberately not inferred from physical port position; controller state remains authoritative for role semantics.',
+                  'Port detail is available while per-port RX/TX traffic is unavailable through the contributed UniFi API path.',
+                  'No verified five-port UCG Ultra faceplate exists yet, so exact dashboard visuals remain pending; Discovery may use its safe generic visual while retaining the real five-port count.',
+              ],
+              'validation': {
+                  'exact_model_detection': 'live_api_confirmed_two_corroborating_captures',
+                  'rj45_mapping': 'live_api_confirmed_five_physical_ports',
+                  'poe': 'live_api_confirmed_no_poe_output_capability',
+                  'system_sensors': 'live_api_confirmed_cpu_memory_uptime',
+                  'uplinks': 'not_applicable',
+                  'stack': 'not_applicable',
+              },
+              'visuals': {
+                  'status': 'detected', 'recommended_faceplate': '', 'optional_faceplates': [],
+                  'calibration_profile': '', 'canvas': {'width': 2048, 'height': 448},
+              },
+          })
+          devices.append(item)
+
+          item = dict(common)
+          item.update({
+              'vendor': 'Ubiquiti',
+              'family': 'UniFi Switch 16 PoE 150W',
+              'model': 'US 16 PoE 150W',
+              'ports': {
+                  'rj45': 16, 'poe': True, 'uplinks': 2, 'uplink_type': '2x 1G SFP',
+                  'gigabit_sfp': 2, 'ten_gigabit_sfp_plus': 0,
+              },
+              'dashboard_support': False,
+              'mapping_profile': 'ubiquiti-us-16-poe-150w-api',
+              'calibration_profile': '',
+              'default_faceplate': '',
+              'contributions': contributions(),
+              'notes': [
+                  'SV-2026-000034 and SV-2026-000036 independently repeat the same 16x 1G RJ45 plus 2x 1G SFP topology on the contributed US 16 PoE 150W.',
+                  'All sixteen copper ports expose PoE output capability in the normalized UniFi API evidence; the two SFP ports do not.',
+                  'The contract records the standardized PoE metadata actually exposed by the API and does not invent legacy passive-24V state that was not present in the contribution.',
+                  'Port detail is available while per-port RX/TX traffic is unavailable through the contributed UniFi API path.',
+                  'A dedicated 16 RJ45 + 2 SFP faceplate is not yet verified, so exact dashboard visuals remain pending; Discovery may use its safe generic 24+2 visual with the true 16+2 counts.',
+              ],
+              'validation': {
+                  'exact_model_detection': 'live_api_confirmed_two_corroborating_captures',
+                  'rj45_mapping': 'live_api_confirmed_ports_1_16',
+                  'poe': 'live_api_confirmed_output_capability_ports_1_16',
+                  'system_sensors': 'live_api_confirmed_cpu_memory_uptime',
+                  'uplinks': 'live_api_confirmed_ports_17_18_1g_sfp',
+                  'stack': 'not_applicable',
+              },
+              'visuals': {
+                  'status': 'detected', 'recommended_faceplate': '', 'optional_faceplates': [],
+                  'calibration_profile': '', 'canvas': {'width': 2048, 'height': 448},
+              },
+          })
+          devices.append(item)
+
+          item = dict(common)
+          item.update({
+              'vendor': 'Ubiquiti',
+              'family': 'UniFi Switch Pro Max 24',
+              'model': 'USW Pro Max 24',
+              'ports': {
+                  'rj45': 24, 'poe': False, 'uplinks': 2, 'uplink_type': '2x 10G SFP+',
+                  'gigabit_sfp': 0, 'ten_gigabit_sfp_plus': 2,
+              },
+              'dashboard_support': True,
+              'mapping_profile': 'ubiquiti-usw-pro-max-24-api',
+              'calibration_profile': 'unifi_24p_rj45_2sfp',
+              'default_faceplate': 'faceplates/unifi-24p-rj45-2sfp.png',
+              'contributions': contributions(),
+              'notes': [
+                  'SV-2026-000034 and SV-2026-000036 repeat the same physical/API topology for the non-PoE USW Pro Max 24.',
+                  'Ports 1-16 are 1G RJ45, ports 17-24 are 2.5G-capable RJ45, and ports 25-26 are 10G SFP+.',
+                  'Maximum connector capability remains separate from current negotiated speed so a 2.5G-capable copper port may truthfully display a lower live link speed.',
+                  'No PoE output capability is reported for this non-PoE model.',
+                  'Port detail is available while per-port RX/TX traffic is unavailable through the contributed UniFi API path.',
+                  'The existing UniFi 24 RJ45 + 2 SFP generic faceplate has exact physical socket geometry for this model and is therefore safe as its current exact layout visual; model-specific artwork may replace it later without changing the API mapping contract.',
+              ],
+              'validation': {
+                  'exact_model_detection': 'live_api_confirmed_two_corroborating_captures',
+                  'rj45_mapping': 'live_api_confirmed_ports_1_24_with_ports_17_24_2p5g_capable',
+                  'poe': 'live_api_confirmed_no_poe_output_capability',
+                  'system_sensors': 'live_api_confirmed_cpu_memory_uptime',
+                  'uplinks': 'live_api_confirmed_ports_25_26_10g_sfp_plus',
+                  'stack': 'not_applicable',
+              },
+              'visuals': {
+                  'status': 'experimental',
+                  'recommended_faceplate': 'faceplates/unifi-24p-rj45-2sfp.png',
+                  'optional_faceplates': [], 'calibration_profile': 'unifi_24p_rj45_2sfp',
+                  'canvas': {'width': 2048, 'height': 448},
+              },
+          })
+          devices.append(item)
+
+          item = dict(common)
+          item.update({
+              'vendor': 'Ubiquiti',
+              'family': 'UniFi Switch Ultra',
+              'model': 'USW Ultra',
+              'ports': {
+                  'rj45': 8, 'poe': True, 'uplinks': 0, 'uplink_type': 'none',
+                  'gigabit_sfp': 0, 'ten_gigabit_sfp_plus': 0,
+              },
+              'dashboard_support': False,
+              'mapping_profile': 'ubiquiti-usw-ultra-api',
+              'calibration_profile': '',
+              'default_faceplate': '',
+              'contributions': contributions(),
+              'notes': [
+                  'SV-2026-000034 and SV-2026-000036 repeat the same eight-port 1G RJ45 topology for USW Ultra.',
+                  'PoE output capability is exposed on ports 1-7 only; port 8 is not advertised as a PoE output port, preserving the hardware distinction between PoE output and the PoE input/uplink port.',
+                  'Port detail is available while per-port RX/TX traffic is unavailable through the contributed UniFi API path.',
+                  'No verified eight-port USW Ultra faceplate exists yet, so exact dashboard visuals remain pending; Discovery may use its safe generic visual while preserving the real eight-port count.',
+              ],
+              'validation': {
+                  'exact_model_detection': 'live_api_confirmed_two_corroborating_captures',
+                  'rj45_mapping': 'live_api_confirmed_ports_1_8',
+                  'poe': 'live_api_confirmed_output_capability_ports_1_7_only',
+                  'system_sensors': 'live_api_confirmed_cpu_memory_uptime',
+                  'uplinks': 'not_applicable',
+                  'stack': 'not_applicable',
+              },
+              'visuals': {
+                  'status': 'detected', 'recommended_faceplate': '', 'optional_faceplates': [],
+                  'calibration_profile': '', 'canvas': {'width': 2048, 'height': 448},
+              },
+          })
+          devices.append(item)
+
+          block = yaml.safe_dump({'devices': devices}, sort_keys=False, allow_unicode=True)
+          block = block.split('\n', 1)[1]
+          current = registry_path.read_text(encoding='utf-8').rstrip() + '\n'
+          registry_path.write_text(current + block, encoding='utf-8', newline='\n')
+
+          test = r'''from __future__ import annotations
+
+          import json
+          from pathlib import Path
+          import yaml
+
+          ROOT = Path(__file__).resolve().parents[1]
+          SOURCE = ROOT / "src" / "devices" / "supported_devices.yaml"
+          GENERATED = ROOT / "src" / "devices" / "supported_devices.json"
+
+          source_doc = yaml.safe_load(SOURCE.read_text(encoding="utf-8")) or {}
+          source_models = {d["model"]: d for d in source_doc["devices"] if isinstance(d, dict)}
+
+          expected = {
+              "UCG Ultra": (5, 0, False, False, "ubiquiti-ucg-ultra-api"),
+              "US 16 PoE 150W": (16, 2, True, False, "ubiquiti-us-16-poe-150w-api"),
+              "USW Pro Max 24": (24, 2, False, True, "ubiquiti-usw-pro-max-24-api"),
+              "USW Ultra": (8, 0, True, False, "ubiquiti-usw-ultra-api"),
+          }
+          for model, (rj45, uplinks, poe, dashboard, profile) in expected.items():
+              item = source_models[model]
+              assert item["status"] == "experimental", model
+              assert item["ports"]["rj45"] == rj45, model
+              assert item["ports"]["uplinks"] == uplinks, model
+              assert item["ports"]["poe"] is poe, model
+              assert item["dashboard_support"] is dashboard, model
+              assert item["mapping_profile"] == profile, model
+              assert [c["id"] for c in item["contributions"]] == ["SV-2026-000034", "SV-2026-000036"], model
+              assert item["contributions"][0]["contributor"]["public_credit"] is False, model
+              assert item["contributions"][1]["contributor"] == {"display_name": "Brendan Pratt", "public_credit": True}, model
+              assert all(c["api_capabilities"]["per_port_traffic"] is False for c in item["contributions"]), model
+
+          promax = source_models["USW Pro Max 24"]
+          assert promax["default_faceplate"] == "faceplates/unifi-24p-rj45-2sfp.png"
+          assert promax["calibration_profile"] == "unifi_24p_rj45_2sfp"
+          assert "ports 17-24 are 2.5G-capable RJ45" in " ".join(promax["notes"])
+          assert "ports_25_26_10g_sfp_plus" in promax["validation"]["uplinks"]
+
+          us16 = source_models["US 16 PoE 150W"]
+          assert "ports_17_18_1g_sfp" in us16["validation"]["uplinks"]
+          ultra = source_models["USW Ultra"]
+          assert "ports_1_7_only" in ultra["validation"]["poe"]
+          ucg = source_models["UCG Ultra"]
+          assert "no_poe_output" in ucg["validation"]["poe"]
+
+          for model in ("UCG Ultra", "US 16 PoE 150W", "USW Ultra"):
+              item = source_models[model]
+              assert item["default_faceplate"] == "", model
+              assert item["calibration_profile"] == "", model
+
+          generated = json.loads(GENERATED.read_text(encoding="utf-8"))
+          generated_models = {d["model"]: d for d in generated["devices"] if isinstance(d, dict)}
+          for model in expected:
+              assert generated_models[model] == source_models[model], model
+
+          print("Switch Vision Core Brendan SV-2026-000034/000036 UniFi contracts: PASS")
+          '''
+          test = textwrap.dedent(test)
+          Path('tests/test_brendan_unifi_contracts.py').write_text(test, encoding='utf-8', newline='\n')
+
+          changelog = Path('CHANGELOG.md')
+          old = changelog.read_text(encoding='utf-8')
+          if not old.startswith('## v2.4.9'):
+              raise SystemExit('Unexpected Core changelog head')
+          entry = '''## v2.4.10 — Brendan UniFi exact-model hardware contracts
+
+          - Add exact-model UniFi API contracts from Brendan Pratt's corroborating `SV-2026-000034` and `SV-2026-000036` contributions for `UCG Ultra`, `US 16 PoE 150W`, `USW Pro Max 24`, and `USW Ultra`.
+          - Validate `USW Pro Max 24` as 16 × 1G RJ45 + 8 × 2.5G-capable RJ45 + 2 × 10G SFP+ with no PoE, using the existing truthful UniFi 24+2 visual geometry.
+          - Validate `US 16 PoE 150W` as 16 × 1G PoE-capable RJ45 + 2 × 1G SFP and `USW Ultra` as eight 1G RJ45 with PoE output capability on ports 1–7 only.
+          - Validate `UCG Ultra` as four 1G RJ45 + one 2.5G-capable RJ45 integrated-switch ports with no PoE output, without hard-coding WAN/LAN role by physical position.
+          - Keep UCG Ultra, US 16 PoE 150W and USW Ultra exact visuals pending rather than claiming inaccurate small-device artwork; preserve their truthful hardware contracts for Discovery's safe generic-card fallback.
+          - Preserve the contributed UniFi API capability boundary: port detail is available but per-port traffic is not, so no synthetic per-port traffic data is introduced.
+          - Preserve the anonymous preference of `SV-2026-000034` while applying Brendan Pratt's later explicit full-name recognition preference from `SV-2026-000036`.
+          - Add permanent Core registry regressions for all four models and both contribution IDs.
+
+          '''
+          entry = textwrap.dedent(entry)
+          changelog.write_text(entry + old, encoding='utf-8', newline='\n')
+
+          notes = '''# Switch Vision Core v2.4.10
+
+          Core 2.4.10 turns Brendan Pratt's two corroborating Support My Switch captures into formal exact-model UniFi hardware contracts.
+
+          `USW Pro Max 24` receives exact 24+2 dashboard geometry with its verified split of 16 × 1G copper, 8 × 2.5G-capable copper and 2 × 10G SFP+. `US 16 PoE 150W`, `USW Ultra`, and the integrated switch in `UCG Ultra` are now exact hardware/API models while their dedicated small/legacy faceplates remain intentionally pending. Discovery can still render those devices through its safe generic-card fallback while preserving the real observed port counts.
+
+          Both `SV-2026-000034` and `SV-2026-000036` are retained as evidence. The first remains anonymous in contribution metadata; the later contribution explicitly credits Brendan Pratt. The two captures independently preserve the same port topology and capabilities while normal live counters change. Per-port traffic remains unavailable through the contributed UniFi API path and is not fabricated by Switch Vision.
+          '''
+          Path('RELEASE_NOTES.md').write_text(textwrap.dedent(notes), encoding='utf-8', newline='\n')
+          PY
+
+          rm -f .github/workflows/prepare-core-v2410-brendan.yml
+
+      - name: Build and validate Core 2.4.10
+        shell: bash
+        run: |
+          set -euo pipefail
+          python build.py -v 2.4.10
+
+          node --check src/js/switch-vision.js
+          node --check src/custom_components/switch_vision/switch-vision-card.js
+          node --check src/custom_components/switch_vision/switch-vision-panel.js
+          node --check src/custom_components/switch_vision/switch-vision-dashboard-strategy.js
+
+          for test in tests/test_*.py; do
+            echo "::group::$test"
+            PYTHONDONTWRITEBYTECODE=1 python "$test"
+            echo "::endgroup::"
+          done
+
+          PYTHONDONTWRITEBYTECODE=1 python tools/check_core_release_parity.py
+
+          rm -f \
+            Releases/switch-vision-2.4.10.zip \
+            Releases/switch-vision-2.4.10.zip.sha256 \
+            Switch_Vision_v2.4.10_source.zip \
+            Switch_Vision_v2.4.10_SHA256SUMS.txt
+          find src tests tools -type d -name '__pycache__' -prune -exec rm -rf {} +
+          find src tests tools -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
+
+          test "$(cat VERSION)" = "2.4.10"
+          test -d Releases/switch-vision-2.4.10
+          git diff --quiet origin/main -- Releases/switch-vision-2.4.9
+          git diff --check
+
+      - name: Commit tested Core 2.4.10 review source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'switch-vision-release-bot'
+          git config user.email 'switch-vision@users.noreply.github.com'
+          git add -A
+          git commit -m 'Prepare Switch Vision Core v2.4.10 Brendan UniFi contracts'
+          git push origin HEAD:review/sv-2026-000034-000036-brendan-unifi
