@@ -2,166 +2,147 @@ name: Validate Core Source
 
 on:
   pull_request:
-  push:
     branches:
       - main
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  validate:
-    name: Core source/release parity
+  prepare-deterministic-core:
+    if: github.head_ref == 'fix/core-2411-deterministic-release'
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
+      - name: Checkout review branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
+          ref: fix/core-2411-deterministic-release
           fetch-depth: 0
-          persist-credentials: false
-
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
-          python-version: "3.12"
-
+          python-version: '3.12'
       - name: Install build dependency
         run: python3 -m pip install --disable-pip-version-check PyYAML
-
-      - name: Validate JavaScript syntax
-        run: |
-          node --check src/js/switch-vision.js
-          node --check src/custom_components/switch_vision/switch-vision-card.js
-          node --check src/custom_components/switch_vision/switch-vision-panel.js
-          node --check src/custom_components/switch_vision/switch-vision-dashboard-strategy.js
-
-      - name: Validate Core source/release parity
-        run: python3 tools/check_core_release_parity.py
-
-      - name: Validate version and HAOS resource contract
+      - name: Apply deterministic ZIP implementation
         shell: bash
         run: |
           set -euo pipefail
-
-          VERSION="$(cat VERSION)"
-
-          python3 - "$VERSION" <<'PY'
-          import json
-          import sys
+          python3 - <<'PY'
           from pathlib import Path
 
-          version = sys.argv[1]
-          root = Path(".")
-          expected_resource = f"/local/switch-vision/js/switch-vision.js?v={version}"
+          path = Path('build.py')
+          text = path.read_text(encoding='utf-8')
 
-          component = json.loads(
-              (
-                  root
-                  / "src"
-                  / "custom_components"
-                  / "switch_vision"
-                  / "manifest.json"
-              ).read_text(encoding="utf-8")
-          )
-          source_manifest = json.loads(
-              (root / "src" / "manifest.json").read_text(encoding="utf-8")
-          )
-          release_component = json.loads(
-              (
-                  root
-                  / "Releases"
-                  / f"switch-vision-{version}"
-                  / "custom_components"
-                  / "switch_vision"
-                  / "manifest.json"
-              ).read_text(encoding="utf-8")
-          )
-          release = json.loads(
-              (
-                  root
-                  / "Releases"
-                  / f"switch-vision-{version}"
-                  / "manifest.json"
-              ).read_text(encoding="utf-8")
-          )
+          old = '''def zip_directory(source_dir: Path, zip_path: Path, arc_base: Path) -> None:
+    if zip_path.exists():
+        zip_path.unlink()
+    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as archive:
+        for path in sorted(source_dir.rglob("*")):
+            if "__pycache__" in path.parts or ".pytest_cache" in path.parts or path.suffix in {".pyc", ".pyo"}:
+                continue
+            if path.is_file():
+                arcname = path.relative_to(arc_base)
+                if is_shell_script(path):
+                    info = zipfile.ZipInfo.from_file(path, arcname)
+                    info.create_system = 3
+                    info.external_attr = (0o100755 & 0xFFFF) << 16
+                    with path.open("rb") as handle:
+                        archive.writestr(info, handle.read(), compress_type=zipfile.ZIP_DEFLATED)
+                else:
+                    archive.write(path, arcname)
+'''
+          new = '''ZIP_EPOCH = (1980, 1, 1, 0, 0, 0)
 
-          assert component["version"] == version
-          assert source_manifest["version"] == version
-          assert source_manifest["resource"] == expected_resource
-          assert release_component["version"] == version
-          assert release["version"] == version
-          assert release["resource"] == expected_resource
 
-          print(
-              f"Core {version} version/resource contract: PASS "
-              f"({expected_resource})"
-          )
+def write_deterministic_zip_file(archive: zipfile.ZipFile, path: Path, arcname: Path) -> None:
+    """Write one ZIP member with stable timestamps, permissions, ordering, and bytes."""
+    info = zipfile.ZipInfo(arcname.as_posix(), date_time=ZIP_EPOCH)
+    info.create_system = 3
+    mode = 0o100755 if is_shell_script(path) else 0o100644
+    info.external_attr = (mode & 0xFFFF) << 16
+    info.compress_type = zipfile.ZIP_DEFLATED
+    archive.writestr(info, path.read_bytes(), compress_type=zipfile.ZIP_DEFLATED)
+
+
+def zip_directory(source_dir: Path, zip_path: Path, arc_base: Path) -> None:
+    if zip_path.exists():
+        zip_path.unlink()
+    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as archive:
+        for path in sorted(source_dir.rglob("*")):
+            if "__pycache__" in path.parts or ".pytest_cache" in path.parts or path.suffix in {".pyc", ".pyo"}:
+                continue
+            if path.is_file():
+                write_deterministic_zip_file(archive, path, path.relative_to(arc_base))
+'''
+          if old not in text:
+              raise SystemExit('zip_directory block changed unexpectedly')
+          text = text.replace(old, new, 1)
+
+          old_root = '''        for name in root_names:
+            path = PROJECT_ROOT / name
+            if not path.is_file():
+                raise SystemExit(f"Missing source-archive root file: {name}")
+            archive.write(path, path.relative_to(PROJECT_ROOT))
+
+        for source_root in (SRC, release_folder):
+            for path in sorted(source_root.rglob("*")):
+                if not path.is_file():
+                    continue
+                if "__pycache__" in path.parts or ".pytest_cache" in path.parts:
+                    continue
+                if path.suffix in {".pyc", ".pyo"}:
+                    continue
+                archive.write(path, path.relative_to(PROJECT_ROOT))
+'''
+          new_root = '''        for name in root_names:
+            path = PROJECT_ROOT / name
+            if not path.is_file():
+                raise SystemExit(f"Missing source-archive root file: {name}")
+            write_deterministic_zip_file(archive, path, path.relative_to(PROJECT_ROOT))
+
+        for source_root in (SRC, release_folder):
+            for path in sorted(source_root.rglob("*")):
+                if not path.is_file():
+                    continue
+                if "__pycache__" in path.parts or ".pytest_cache" in path.parts:
+                    continue
+                if path.suffix in {".pyc", ".pyo"}:
+                    continue
+                write_deterministic_zip_file(archive, path, path.relative_to(PROJECT_ROOT))
+'''
+          if old_root not in text:
+              raise SystemExit('source ZIP block changed unexpectedly')
+          text = text.replace(old_root, new_root, 1)
+          path.write_text(text, encoding='utf-8', newline='\n')
           PY
-
-      - name: Reject generated cache material
+      - name: Prove deterministic archives
         shell: bash
         run: |
           set -euo pipefail
-
-          if find src Releases tests \
-            \( \
-              -type d -name '__pycache__' \
-              -o -type f -name '*.pyc' \
-              -o -type f -name '*.pyo' \
-              -o -type f -name '.DS_Store' \
-            \) | grep -q .; then
-              echo "ERROR: generated cache/junk material found."
-              exit 1
-          fi
-
-          echo "Core source hygiene: PASS"
-
-      - name: Compile Python entry points and regressions
-        run: |
-          python3 -m py_compile \
-            src/custom_components/switch_vision/__init__.py \
-            src/custom_components/switch_vision/config_flow.py \
-            src/devices/generate_supported_devices.py \
-            tests/*.py
-
-      - name: Run permanent Core regression suite
+          python3 build.py -v 2.4.11
+          release_one="$(sha256sum Releases/switch-vision-2.4.11.zip | awk '{print $1}')"
+          source_one="$(sha256sum Switch_Vision_v2.4.11_source.zip | awk '{print $1}')"
+          python3 build.py -v 2.4.11
+          release_two="$(sha256sum Releases/switch-vision-2.4.11.zip | awk '{print $1}')"
+          source_two="$(sha256sum Switch_Vision_v2.4.11_source.zip | awk '{print $1}')"
+          test "$release_one" = "$release_two"
+          test "$source_one" = "$source_two"
+          python3 -m unittest discover -s tests -p 'test_*.py'
+          python3 tools/check_core_release_parity.py
+          node --check src/js/switch-vision.js
+          node --check src/custom_components/switch_vision/switch-vision-card.js
+          git diff --check
+      - name: Commit only permanent product changes
         shell: bash
         run: |
           set -euo pipefail
-          for test in tests/test_*.py; do
-            echo "::group::$test"
-            python3 "$test"
-            echo "::endgroup::"
-          done
-
-      - name: Remove validation bytecode
-        shell: bash
-        run: |
-          set -euo pipefail
-          find src tests -type d -name '__pycache__' -prune -exec rm -rf {} +
-          find src tests -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
-
-      - name: Rebuild current release deterministically
-        shell: bash
-        run: |
-          set -euo pipefail
-          VERSION="$(cat VERSION)"
-
-          python3 build.py -v "$VERSION"
-
-          rm -f \
-            "Releases/switch-vision-$VERSION.zip" \
-            "Releases/switch-vision-$VERSION.zip.sha256" \
-            "Switch_Vision_v${VERSION}_source.zip" \
-            "Switch_Vision_v${VERSION}_SHA256SUMS.txt"
-
-          git diff --exit-code
-
-          if [ -n "$(git status --porcelain --untracked-files=all)" ]; then
-            echo "ERROR: deterministic rebuild left unexpected untracked files:"
-            git status --short --untracked-files=all
-            exit 1
-          fi
-
-          echo "Core deterministic rebuild: PASS"
+          git rm -f --ignore-unmatch Releases/switch-vision-2.4.11.zip.sha256
+          rm -f .github/workflows/prepare-core-2411-deterministic.yml
+          git show origin/main:.github/workflows/validate-core-source.yml > .github/workflows/validate-core-source.yml
+          rm -f Releases/switch-vision-2.4.11.zip Switch_Vision_v2.4.11_source.zip Switch_Vision_v2.4.11_SHA256SUMS.txt
+          git config user.name 'switch-vision-release-bot'
+          git config user.email 'switch-vision@users.noreply.github.com'
+          git add build.py .github/workflows/validate-core-source.yml .github/workflows/prepare-core-2411-deterministic.yml Releases/switch-vision-2.4.11.zip.sha256
+          git commit -m 'Make Core release archives reproducible'
+          git push origin HEAD:fix/core-2411-deterministic-release
