@@ -1,3 +1,14 @@
+## v2.4.14 — UDM Pro Max and USW Pro XG 24 PoE exact contracts
+
+- Add Experimental exact-model UniFi API support for `UDM Pro Max` using the community-validated 8 × 1G RJ45 + 1 × 2.5G RJ45 + 2 × 10G SFP+ physical contract with no PoE output.
+- Add Experimental exact-model support for `USW Pro XG 24 PoE` as 8 × 2.5G RJ45 + 16 × 10G RJ45 + 2 × 25G SFP28, with 802.3bt Type 4 PoE capability reported on all 24 copper ports.
+- Preserve maximum connector capability separately from negotiated link speed, including observed 10G-capable copper links at 100M/1G and 25G SFP28 links at 10G.
+- Preserve the UniFi API boundary where port detail is available but per-port traffic is not; no synthetic per-port traffic is introduced.
+- Reuse truthful generic socket geometry while keeping dedicated model artwork/rendered alignment validation pending.
+- Keep both models Experimental until real-hardware dashboard alignment, port selection, PoE presentation and optical-position validation are completed.
+- Public release metadata remains anonymous and contains no private contribution identifiers, package names, filenames or contributor identities.
+- Add permanent regression coverage for exact port ordering, SFP28 capability, PoE semantics, firmware evidence, generated-registry parity and public attribution privacy.
+
 ## v2.4.13 — Port selection and native diagnostics theme fixes
 
 - Keep rendered ports clickable when a saved/custom calibration has a port `center` but no explicit `hitbox`; derive the normal visual hitbox instead of allowing the click to fall through to switch summary.
