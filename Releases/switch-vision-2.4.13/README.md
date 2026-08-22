@@ -14,7 +14,7 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 **v2.4.13** is the current tested public Switch Vision Core/dashboard release.
 
-This release adds Calibration LED Test Mode, a full Calibration Profile Manager in the Switch Vision Hub, and a runtime Refresh Faceplate action that reloads updated faceplate image bytes without renaming the file or changing calibration profile identity.
+This corrective release keeps rendered ports selectable when a saved or custom calibration omits an explicit hitbox, and keeps Advanced diagnostics text readable under Home Assistant themes with dark primary text.
 
 Component versions validated when Core v2.2.2 was released:
 
