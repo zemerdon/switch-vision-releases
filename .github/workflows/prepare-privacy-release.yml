@@ -10,13 +10,13 @@ permissions:
 
 jobs:
   prepare:
-    if: github.head_ref == 'privacy/core-public-release-policy-2411'
+    if: github.head_ref == 'privacy/core-public-release-policy-2411-r2'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout review branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: privacy/core-public-release-policy-2411
+          ref: privacy/core-public-release-policy-2411-r2
           fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
@@ -30,11 +30,6 @@ jobs:
           set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
-
-          sanitizer = Path('tools/sanitize_public_attribution.py')
-          text = sanitizer.read_text(encoding='utf-8')
-          text = text.replace('display_name: Community contributor', 'display_name: community contributor')
-          sanitizer.write_text(text, encoding='utf-8', newline='\n')
 
           old = Path('tests/test_brendan_unifi_contracts.py')
           if old.exists():
@@ -137,4 +132,4 @@ print("Switch Vision Core UniFi community hardware contracts: PASS")
           git config user.email 'switch-vision@users.noreply.github.com'
           git add -A
           git commit -m 'Core v2.4.11: enforce public attribution privacy policy'
-          git push origin HEAD:privacy/core-public-release-policy-2411
+          git push origin HEAD:privacy/core-public-release-policy-2411-r2
