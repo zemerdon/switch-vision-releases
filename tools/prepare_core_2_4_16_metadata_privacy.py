@@ -147,10 +147,45 @@ def main() -> int:
     )
     if old_block not in sanitizer:
         raise SystemExit("Could not locate sanitizer submission-ID block")
-    write_lf(sanitizer_path, sanitizer.replace(old_block, new_block, 1))
+    sanitizer = sanitizer.replace(old_block, new_block, 1)
+
+    old_dict_line = (
+        '        result = {key: sanitize_structured(child, identities, owner) for key, child in value.items()}\n'
+    )
+    new_dict_block = (
+        '        result = {}\n'
+        '        for key, child in value.items():\n'
+        '            clean_key = sanitize_text(key, identities) if isinstance(key, str) else key\n'
+        '            if clean_key in result and clean_key != key:\n'
+        '                raise ValueError(f"Public metadata key collision after sanitization: {clean_key!r}")\n'
+        '            result[clean_key] = sanitize_structured(child, identities, owner)\n'
+    )
+    if old_dict_line not in sanitizer:
+        raise SystemExit("Could not locate structured sanitizer dictionary handling")
+    sanitizer = sanitizer.replace(old_dict_line, new_dict_block, 1)
+    write_lf(sanitizer_path, sanitizer)
 
     privacy_test_path = ROOT / "tests/test_public_attribution_privacy.py"
     privacy_test = privacy_test_path.read_text(encoding="utf-8")
+    privacy_dict_marker = (
+        '    if isinstance(value, dict):\n'
+        '        if "display_name" in value and "public_credit" in value:\n'
+    )
+    privacy_dict_replacement = (
+        '    if isinstance(value, dict):\n'
+        '        for key in value:\n'
+        '            key_text = str(key)\n'
+        '            assert not SUBMISSION_ID.search(key_text), (path, key_text)\n'
+        '            assert not PACKAGE_NAME.search(key_text), (path, key_text)\n'
+        '        if "display_name" in value and "public_credit" in value:\n'
+    )
+    if privacy_dict_marker not in privacy_test:
+        raise SystemExit("Could not locate structured privacy regression dictionary handling")
+    privacy_test = privacy_test.replace(
+        privacy_dict_marker,
+        privacy_dict_replacement,
+        1,
+    )
     if 'if __name__ == "__main__":' not in privacy_test:
         privacy_test += (
             '\n\nif __name__ == "__main__":\n'
@@ -183,11 +218,11 @@ def main() -> int:
     )
     write_lf(community_test_path, community_test)
 
-    changelog_entry = f"""## v{NEW_VERSION} — UniFi support-status and privacy synchronization\n\n- Promote `UCG Ultra`, `US 16 PoE 150W`, and `USW Ultra` from Detected to Experimental after corroborating real-hardware UniFi API evidence; keep `USW Pro Max 24` Experimental.\n- Synchronize Core public support evidence with Discovery using neutral community-hardware wording and no private Support My Switch submission identifiers.\n- Activate the permanent public-attribution privacy regression under the repository's direct-test CI runner and improve historical registry sanitization wording.\n- Preserve every existing port count, connector type, PoE mask, API/interface ordering, mapping profile, faceplate/calibration contract, validation field, and maximum-speed contract.\n- No dashboard telemetry, port-selection, LED, SNMP, UniFi API, or other runtime behaviour changes.\n\n"""
+    changelog_entry = f"""## v{NEW_VERSION} — UniFi support-status and privacy synchronization\n\n- Promote `UCG Ultra`, `US 16 PoE 150W`, and `USW Ultra` from Detected to Experimental after corroborating real-hardware UniFi API evidence; keep `USW Pro Max 24` Experimental.\n- Synchronize Core public support evidence with Discovery using neutral community-hardware wording and no private Support My Switch submission identifiers.\n- Activate the permanent public-attribution privacy regression under the repository's direct-test CI runner and extend sanitization/regression coverage to structured public metadata keys.\n- Preserve every existing port count, connector type, PoE mask, API/interface ordering, mapping profile, faceplate/calibration contract, validation field, and maximum-speed contract.\n- No dashboard telemetry, port-selection, LED, SNMP, UniFi API, or other runtime behaviour changes.\n\n"""
     for path in (ROOT / "CHANGELOG.md", ROOT / "src/CHANGELOG.md"):
         prepend_release_entry(path, changelog_entry)
 
-    release_notes = f"""# Switch Vision Core v{NEW_VERSION}\n\nCore {NEW_VERSION} synchronizes public UniFi support status and privacy metadata with the current Discovery evidence.\n\n`UCG Ultra`, `US 16 PoE 150W`, and `USW Ultra` move from Detected to Experimental after corroborating real-hardware UniFi API captures. `USW Pro Max 24` remains Experimental. The release also removes private Support My Switch submission identifiers from public registry history and makes the permanent privacy regression actually execute in the repository's direct-test CI path.\n\nThis is a metadata/privacy maintenance release only. Port counts, connector types, PoE capability, API/interface ordering, maximum speed capability, faceplates, calibration, telemetry, LED behaviour and runtime logic are unchanged.\n"""
+    release_notes = f"""# Switch Vision Core v{NEW_VERSION}\n\nCore {NEW_VERSION} synchronizes public UniFi support status and privacy metadata with the current Discovery evidence.\n\n`UCG Ultra`, `US 16 PoE 150W`, and `USW Ultra` move from Detected to Experimental after corroborating real-hardware UniFi API captures. `USW Pro Max 24` remains Experimental. The release also removes private Support My Switch submission identifiers from public registry history, including structured metadata keys, and makes the permanent privacy regression actually execute in the repository's direct-test CI path.\n\nThis is a metadata/privacy maintenance release only. Port counts, connector types, PoE capability, API/interface ordering, maximum speed capability, faceplates, calibration, telemetry, LED behaviour and runtime logic are unchanged.\n"""
     for path in (ROOT / "RELEASE_NOTES.md", ROOT / "src/RELEASE_NOTES.md"):
         write_lf(path, release_notes)
 
