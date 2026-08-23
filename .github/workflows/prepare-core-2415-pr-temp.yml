@@ -35,13 +35,16 @@ jobs:
             echo 'Review branch is already prepared.'
             exit 0
           fi
+          if [ -f tools/fix_prepare_core_2415_temp.py ]; then
+            python3 tools/fix_prepare_core_2415_temp.py
+          fi
           python3 tools/prepare_core_2415_temp.py
 
       - name: Commit finished review build
         shell: bash
         run: |
           set -euo pipefail
-          rm -f tools/prepare_core_2415_temp.py
+          rm -f tools/prepare_core_2415_temp.py tools/fix_prepare_core_2415_temp.py
           find src tests -type d -name '__pycache__' -prune -exec rm -rf {} +
           find src tests -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
           git add -A
