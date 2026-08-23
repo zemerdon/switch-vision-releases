@@ -11,6 +11,7 @@ def main() -> None:
     for path in FILES:
         text = path.read_text(encoding="utf-8")
         assert "unifi_native_status_fields: true" in text, path
+        assert "config?.unifi_native_status_fields !== false" in text, path
         assert "usableValue(runtime.ip_address)" in text, path
         assert '["model", "ip", "cpu", "memory", "poe", "uptime"]' in text, path
         assert '["model", "ip", "cpu", "memory", "uplink", "uptime"]' in text, path
