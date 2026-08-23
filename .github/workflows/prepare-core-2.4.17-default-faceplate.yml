@@ -1,0 +1,59 @@
+name: Prepare Core 2.4.17 Default faceplate fix
+
+on:
+  push:
+    branches:
+      - fix/core-2.4.17-default-faceplate
+    paths:
+      - tools/prepare_core_2_4_17_default_faceplate.py
+      - tests/test_faceplate_default_profile_contract.py
+      - .github/workflows/prepare-core-2.4.17-default-faceplate.yml
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out target branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: fix/core-2.4.17-default-faceplate
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Install deterministic build dependency
+        run: python3 -m pip install --disable-pip-version-check PyYAML
+
+      - name: Prepare Core 2.4.17
+        run: python3 tools/prepare_core_2_4_17_default_faceplate.py
+
+      - name: Validate generated source before commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check src/js/switch-vision.js
+          node --check src/custom_components/switch_vision/switch-vision-card.js
+          python3 -m py_compile src/custom_components/switch_vision/__init__.py tests/test_faceplate_default_profile_contract.py
+          python3 tests/test_faceplate_default_profile_contract.py
+          python3 tools/check_core_release_parity.py
+
+      - name: Commit deterministic Core 2.4.17 source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'Switch Vision Core Preparer'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then
+            echo 'ERROR: Core preparer produced no changes.'
+            exit 1
+          fi
+          git commit -m 'Core 2.4.17: restore Default faceplate profile'
+          git push origin HEAD:fix/core-2.4.17-default-faceplate
