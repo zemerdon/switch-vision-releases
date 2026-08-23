@@ -1,7 +1,7 @@
-# Switch Vision Core v2.4.16
+# Switch Vision Core v2.4.17
 
-Core 2.4.16 synchronizes public UniFi support status and privacy metadata with the current Discovery evidence.
+Core 2.4.17 fixes the Calibration faceplate selector so choosing **Default / recommended** reliably returns to the switch's independent base calibration profile.
 
-`UCG Ultra`, `US 16 PoE 150W`, and `USW Ultra` move from Detected to Experimental after corroborating real-hardware UniFi API captures. `USW Pro Max 24` remains Experimental. The release also removes private Support My Switch submission identifiers from public registry history, including structured metadata keys, and makes the permanent privacy regression actually execute in the repository's direct-test CI path.
+Previously, the base-profile load followed the saved active custom-faceplate pointer, which could immediately restore the faceplate the user was trying to leave. The websocket contract now supports an exact base-profile read used only for an explicit Default selection; normal profile loads continue to follow the active faceplate as before.
 
-This is a metadata/privacy maintenance release only. Port counts, connector types, PoE capability, API/interface ordering, maximum speed capability, faceplates, calibration, telemetry, LED behaviour and runtime logic are unchanged.
+This release changes the Switch Vision Home Assistant custom component and frontend card. It does not change switch mappings, hardware geometry, polling, telemetry, support status, or device capability data.
