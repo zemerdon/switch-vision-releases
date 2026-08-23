@@ -12,6 +12,7 @@ PACKAGE_NAME = re.compile(r"(?i)Switch[_ -]Vision[_ -]Contribution")
 
 def _assert_structured_private_refs_removed(value, path: Path) -> None:
     if isinstance(value, dict):
+        # Structured metadata keys are public data too; private IDs must not hide there.
         for key in value:
             key_text = str(key)
             assert not SUBMISSION_ID.search(key_text), (path, key_text)
