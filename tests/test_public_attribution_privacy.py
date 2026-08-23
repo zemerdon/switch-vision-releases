@@ -12,6 +12,10 @@ PACKAGE_NAME = re.compile(r"(?i)Switch[_ -]Vision[_ -]Contribution")
 
 def _assert_structured_private_refs_removed(value, path: Path) -> None:
     if isinstance(value, dict):
+        for key in value:
+            key_text = str(key)
+            assert not SUBMISSION_ID.search(key_text), (path, key_text)
+            assert not PACKAGE_NAME.search(key_text), (path, key_text)
         if "display_name" in value and "public_credit" in value:
             name = str(value.get("display_name") or "").strip()
             assert name.casefold() in ALLOWED, (path, name)
@@ -59,3 +63,9 @@ def test_public_release_history_has_no_private_submission_references() -> None:
         text = path.read_text(encoding="utf-8", errors="ignore")
         assert not SUBMISSION_ID.search(text), path
         assert not PACKAGE_NAME.search(text), path
+
+
+if __name__ == "__main__":
+    test_all_public_device_registries_are_neutral()
+    test_public_release_history_has_no_private_submission_references()
+    print("Switch Vision Core public attribution privacy: PASS")

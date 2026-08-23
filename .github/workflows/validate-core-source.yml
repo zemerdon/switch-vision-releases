@@ -10,45 +10,6 @@ permissions:
   contents: read
 
 jobs:
-  prepare_core_2416:
-    name: TEMP prepare Core 2.4.16 branch
-    if: github.event_name == 'pull_request' && github.head_ref == 'workbench/core-2.4.16-metadata-privacy'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-      - name: Check out product branch
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          ref: ${{ github.head_ref }}
-          fetch-depth: 0
-          persist-credentials: true
-
-      - name: Set up Python
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
-        with:
-          python-version: "3.12"
-
-      - name: Install build dependency
-        run: python3 -m pip install --disable-pip-version-check PyYAML
-
-      - name: Generate and validate Core 2.4.16
-        run: python3 tools/prepare_core_2_4_16_metadata_privacy.py
-
-      - name: Remove temporary preparer and publish clean branch commit
-        shell: bash
-        run: |
-          set -euo pipefail
-          git checkout origin/main -- .github/workflows/validate-core-source.yml
-          rm -f tools/prepare_core_2_4_16_metadata_privacy.py
-          git config user.name 'Switch Vision Core Packager'
-          git config user.email 'switch-vision@users.noreply.github.com'
-          git add -A
-          git diff --cached --check
-          git commit -m 'Core 2.4.16: synchronize UniFi support status and privacy metadata'
-          git push origin HEAD:${{ github.head_ref }}
-
   validate:
     name: Core source/release parity
     runs-on: ubuntu-latest

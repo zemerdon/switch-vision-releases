@@ -1169,7 +1169,7 @@ devices:
       display_name: community contributor
       public_credit: false
   notes:
-  - Two independent SV-2026-000002 units expose matching optical-first geometry: API/physical
+  - Two independent community hardware captures expose matching optical-first geometry: API/physical
       ports 1-12 are 10G SFP+ and ports 13-16 are 10G-capable RJ45.
   - The explicit UniFi API-port map is authoritative and must not be replaced with
     a copper-first offset approximation.
@@ -1269,9 +1269,9 @@ devices:
       display_name: community contributor
       public_credit: false
   notes:
-  - SV-2026-000002 confirms a 32-port optical-only switch: physical/API ports 1-28
-      are SFP+ with 10G maximum capability and ports 29-32 are SFP28 with 25G maximum
-      capability.
+  - Community hardware evidence confirms a 32-port optical-only switch: physical/API
+      ports 1-28 are SFP+ with 10G maximum capability and ports 29-32 are SFP28 with
+      25G maximum capability.
   - Ports 29 and 30 were observed negotiating at 10G despite 25G SFP28 capability;
     Switch Vision must display the current 10G link speed while retaining 25G as maximum
     capability metadata.
