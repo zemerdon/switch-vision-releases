@@ -1,3 +1,12 @@
+## v2.4.15 — UniFi-native status telemetry
+
+- Make the primary status panel data-source aware for UniFi API cards so it presents telemetry the Integration API actually exposes instead of defaulting to SNMP-only blank rows.
+- Surface normalized management IP, memory utilization and aggregate uplink RX/TX rate in the UniFi switch summary when available.
+- Derive switch-level PoE availability/activity from real UniFi port metadata and show connector type, maximum physical speed, PoE state and PoE standard in selected-port details.
+- Keep temperature, VLAN/description and per-port RX/TX absent when the current UniFi API path does not expose them; no synthetic telemetry is introduced.
+- Preserve existing SNMP status-panel behavior and explicit field configuration; `unifi_native_status_fields: false` restores the generic UniFi row-selection path.
+- Add permanent regressions for the UniFi-native field contract, management-IP fallback, PoE presentation and preserved per-port-traffic boundary.
+
 ## v2.4.14 — UDM Pro Max and USW Pro XG 24 PoE exact contracts
 
 - Add Experimental exact-model UniFi API support for `UDM Pro Max` using the community-validated 8 × 1G RJ45 + 1 × 2.5G RJ45 + 2 × 10G SFP+ physical contract with no PoE output.

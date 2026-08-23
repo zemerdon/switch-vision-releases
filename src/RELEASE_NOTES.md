@@ -1,9 +1,9 @@
-# Switch Vision Core v2.4.14
+# Switch Vision Core v2.4.15
 
-Core 2.4.14 adds Experimental exact-model UniFi API contracts for UDM Pro Max and USW Pro XG 24 PoE using privacy-processed community real-hardware validation.
+Core 2.4.15 makes the dashboard status panels data-source aware for UniFi API devices.
 
-UDM Pro Max is represented as eight 1G RJ45 ports, one 2.5G-capable RJ45 port, and two 10G SFP+ ports with no PoE output capability. USW Pro XG 24 PoE is represented as eight 2.5G-capable RJ45 ports, sixteen 10G-capable RJ45 ports, and two 25G SFP28 ports, with 802.3bt Type 4 PoE capability on all 24 copper ports.
+The main UniFi switch summary now prioritizes telemetry the official Integration API actually provides: model, management IP when supplied by UniFi2MQTT 2.0.49 or newer, CPU, memory, uptime, real PoE capability/active-port summary where applicable, and live aggregate uplink RX/TX rate where PoE is not available.
 
-Maximum connector capability remains separate from negotiated link speed. The validated hardware includes 10G-capable copper negotiating at lower rates and 25G SFP28 links negotiating at both 10G and 25G. UniFi port detail is retained while unavailable per-port traffic is not synthesized.
+Selected UniFi ports now show negotiated link speed, maximum physical capability, connector/media type, and real PoE state/standard when the API provides it. Switch Vision no longer wastes the default UniFi port panel on VLAN, description, or per-port RX/TX rows that the current Integration API path cannot populate. Temperature and per-port traffic remain absent rather than being synthesized.
 
-Both exact models remain Experimental until rendered physical alignment, port selection, PoE presentation, and optical-position behaviour are validated on contributor hardware. Public release metadata remains anonymous and contains no private submission identifiers, package names, filenames, or contributor identities.
+SNMP-backed cards keep their existing status-panel behavior unchanged. Explicit card-level status-field configuration is respected, and `unifi_native_status_fields: false` restores the generic field-selection path for UniFi cards.
