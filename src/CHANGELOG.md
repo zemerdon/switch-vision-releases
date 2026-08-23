@@ -1,3 +1,11 @@
+## v2.4.20 — HAOS dashboard startup and calibration-v2 compatibility
+
+- Fix the small UniFi factory calibration contract by adding explicit empty `status_leds` objects without inventing device LEDs.
+- Accept calibration schema version 2 in the authenticated Core calibration validator.
+- Bound Community-dashboard runtime-version lookup to one second and fall back to the versioned frontend resource when Home Assistant's WebSocket is congested during startup.
+- Add permanent regressions for the v2 factory-profile contract and bounded dashboard bootstrap.
+- Preserve the authoritative 2.4.19 UniFi PNG payloads/hashes, hardware mappings, PoE semantics, telemetry, privacy metadata, geometry and Experimental support status.
+
 ## v2.4.19 — Correct UniFi small-switch faceplate payloads
 
 - Replace the incorrectly shipped small UniFi faceplate PNG payloads with the authoritative `unifi-5rj45.png` and `unifi-8rj45.png` artwork.
