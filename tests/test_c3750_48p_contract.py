@@ -39,7 +39,7 @@ class Catalyst3750ContractTests(unittest.TestCase):
         self.assertEqual(self.device["calibration_profile"], "default_cisco_48_port")
         self.assertEqual(
             self.device["contributor"],
-            {"display_name": "Community contributor", "public_credit": False},
+            {"display_name": "community contributor", "public_credit": False},
         )
         serialized = json.dumps(self.device)
         self.assertNotIn("SV-2026-", serialized)

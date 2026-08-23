@@ -44,6 +44,16 @@ def sanitize_text(text: str, identities: set[str]) -> str:
     for identity in sorted(identities, key=len, reverse=True):
         text = re.sub(re.escape(identity), "community contributor", text, flags=re.I)
     text = PACKAGE_RE.sub("community submission", text)
+    text = re.sub(
+        r"(?i)Two independent SV[-_]20\d{2}[-_]\d+ units",
+        "Two independent community hardware captures",
+        text,
+    )
+    text = re.sub(
+        r"(?i)SV[-_]20\d{2}[-_]\d+\s+confirms",
+        "Community hardware evidence confirms",
+        text,
+    )
     text = SUBMISSION_ID_RE.sub("community validation", text)
     text = re.sub(r"(?i)community contributor['’]s", "community-provided", text)
     text = re.sub(r"(?i)credit\s+`?community contributor`?", "record community validation", text)
@@ -53,7 +63,12 @@ def sanitize_text(text: str, identities: set[str]) -> str:
 
 def sanitize_structured(value: object, identities: set[str], owner: str) -> object:
     if isinstance(value, dict):
-        result = {key: sanitize_structured(child, identities, owner) for key, child in value.items()}
+        result = {}
+        for key, child in value.items():
+            clean_key = sanitize_text(key, identities) if isinstance(key, str) else key
+            if clean_key in result and clean_key != key:
+                raise ValueError(f"Public metadata key collision after sanitization: {clean_key!r}")
+            result[clean_key] = sanitize_structured(child, identities, owner)
         if "display_name" in result and "public_credit" in result:
             name = str(result.get("display_name") or "").strip()
             if name.casefold() != owner.casefold():

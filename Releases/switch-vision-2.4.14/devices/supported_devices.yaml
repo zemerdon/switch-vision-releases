@@ -1169,7 +1169,7 @@ devices:
       display_name: community contributor
       public_credit: false
   notes:
-  - Two independent SV-2026-000002 units expose matching optical-first geometry: API/physical
+  - Two independent community hardware captures expose matching optical-first geometry: API/physical
       ports 1-12 are 10G SFP+ and ports 13-16 are 10G-capable RJ45.
   - The explicit UniFi API-port map is authoritative and must not be replaced with
     a copper-first offset approximation.
@@ -1269,9 +1269,9 @@ devices:
       display_name: community contributor
       public_credit: false
   notes:
-  - SV-2026-000002 confirms a 32-port optical-only switch: physical/API ports 1-28
-      are SFP+ with 10G maximum capability and ports 29-32 are SFP28 with 25G maximum
-      capability.
+  - Community hardware evidence confirms a 32-port optical-only switch: physical/API
+      ports 1-28 are SFP+ with 10G maximum capability and ports 29-32 are SFP28 with
+      25G maximum capability.
   - Ports 29 and 30 were observed negotiating at 10G despite 25G SFP28 capability;
     Switch Vision must display the current 10G link speed while retaining 25G as maximum
     capability metadata.
@@ -2145,7 +2145,7 @@ devices:
   optional_faceplates: []
   tested_firmware: []
   contributor:
-    display_name: Community contributor
+    display_name: community contributor
     public_credit: false
   notes:
   - A sanitized real-hardware contribution reports the exact SNMP model string WS-C3750-48P.
@@ -2213,18 +2213,20 @@ devices:
     display_name: community contributor
     public_credit: false
   notes:
-  - A privacy-processed community real-hardware UniFi API snapshot confirms eleven physical
-    ports for this exact gateway/switch hybrid.
+  - A privacy-processed community real-hardware UniFi API snapshot confirms eleven
+    physical ports for this exact gateway/switch hybrid.
   - API ports 1-8 are 1G-capable RJ45, API port 9 is 2.5G-capable RJ45, and API ports
     10-11 are 10G SFP+.
-  - The contributed live snapshot observed API port 9 negotiating at 2.5G and API port
-    11 negotiating at 10G; negotiated speed remains independent from maximum capability.
+  - The contributed live snapshot observed API port 9 negotiating at 2.5G and API
+    port 11 negotiating at 10G; negotiated speed remains independent from maximum
+    capability.
   - No RJ45 port reports PoE output capability on the contributed hardware.
   - Port detail is available while per-port traffic is unavailable through the contributed
     UniFi API path; Switch Vision must not synthesize per-port traffic.
   - A temporary generic 24-RJ45 + 2-SFP stock visual is used while the card remains
-    constrained to the real nine-copper + two-optical port contract; this artwork is not
-    treated as exact UDM Pro Max physical geometry and dedicated artwork remains pending.
+    constrained to the real nine-copper + two-optical port contract; this artwork
+    is not treated as exact UDM Pro Max physical geometry and dedicated artwork remains
+    pending.
   - Support remains Experimental until rendered physical alignment and live dashboard
     behaviour are validated on the contributor hardware.
   validation:
@@ -2301,19 +2303,19 @@ devices:
   notes:
   - A privacy-processed community real-hardware UniFi API snapshot confirms 26 physical
     ports for this exact switch.
-  - API ports 1-8 are 2.5G-capable RJ45, API ports 9-24 are 10G-capable RJ45, and API
-    ports 25-26 are 25G SFP28.
+  - API ports 1-8 are 2.5G-capable RJ45, API ports 9-24 are 10G-capable RJ45, and
+    API ports 25-26 are 25G SFP28.
   - All 24 RJ45 ports report PoE capability with 802.3bt Type 4 metadata on the contributed
     hardware.
-  - The contributed live snapshot includes copper links negotiating at 100M, 1G and 10G,
-    plus SFP28 links negotiating at both 10G and 25G; negotiated speed must remain separate
-    from maximum connector capability.
+  - The contributed live snapshot includes copper links negotiating at 100M, 1G and
+    10G, plus SFP28 links negotiating at both 10G and 25G; negotiated speed must remain
+    separate from maximum connector capability.
   - Port detail is available while per-port traffic is unavailable through the contributed
     UniFi API path; Switch Vision must not synthesize per-port traffic.
   - The existing UniFi 24-RJ45 + 2-optical visual has matching physical socket geometry
     and is used provisionally; the two optical positions retain SFP28 capability semantics.
-  - Support remains Experimental until rendered physical alignment, PoE presentation and
-    live dashboard behaviour are validated on the contributor hardware.
+  - Support remains Experimental until rendered physical alignment, PoE presentation
+    and live dashboard behaviour are validated on the contributor hardware.
   validation:
     exact_model_detection: community_real_hardware_api_confirmed
     rj45_mapping: community_api_ports_1_24_confirmed_pending_rendered_validation

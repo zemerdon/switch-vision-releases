@@ -19,13 +19,14 @@ expected = {
 }
 for model, (rj45, uplinks, poe, dashboard, profile) in expected.items():
     item = source_models[model]
-    expected_status = "experimental" if model == "USW Pro Max 24" else "detected"
+    expected_status = "experimental"
     assert item["status"] == expected_status, model
     assert item["ports"]["rj45"] == rj45, model
     assert item["ports"]["uplinks"] == uplinks, model
     assert item["ports"]["poe"] is poe, model
     assert item["dashboard_support"] is dashboard, model
     assert item["mapping_profile"] == profile, model
+    assert item["evidence"] == "multiple_real_hardware_unifi_api_contributions", model
     contributions = item.get("contributions") or []
     assert len(contributions) >= 1, model
     for contribution in contributions:
