@@ -7,15 +7,16 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "src" / "devices" / "supported_devices.yaml"
 GENERATED = ROOT / "src" / "devices" / "supported_devices.json"
+CALIBRATION = ROOT / "src" / "calibration"
 
 source_doc = yaml.safe_load(SOURCE.read_text(encoding="utf-8")) or {}
 source_models = {d["model"]: d for d in source_doc["devices"] if isinstance(d, dict)}
 
 expected = {
-    "UCG Ultra": (5, 0, False, False, "ubiquiti-ucg-ultra-api"),
+    "UCG Ultra": (5, 0, False, True, "ubiquiti-ucg-ultra-api"),
     "US 16 PoE 150W": (16, 2, True, False, "ubiquiti-us-16-poe-150w-api"),
     "USW Pro Max 24": (24, 2, False, True, "ubiquiti-usw-pro-max-24-api"),
-    "USW Ultra": (8, 0, True, False, "ubiquiti-usw-ultra-api"),
+    "USW Ultra": (8, 0, True, True, "ubiquiti-usw-ultra-api"),
 }
 for model, (rj45, uplinks, poe, dashboard, profile) in expected.items():
     item = source_models[model]
@@ -43,15 +44,58 @@ assert "ports_25_26_10g_sfp_plus" in promax["validation"]["uplinks"]
 
 us16 = source_models["US 16 PoE 150W"]
 assert "ports_17_18_1g_sfp" in us16["validation"]["uplinks"]
-ultra = source_models["USW Ultra"]
-assert "ports_1_7_only" in ultra["validation"]["poe"]
+assert us16["default_faceplate"] == ""
+assert us16["calibration_profile"] == ""
+
 ucg = source_models["UCG Ultra"]
 assert "no_poe_output" in ucg["validation"]["poe"]
+assert ucg["default_faceplate"] == "faceplates/unifi-5rj45.png"
+assert ucg["calibration_profile"] == "default_unifi_5_rj45"
+assert ucg["visuals"]["status"] == "experimental"
+assert ucg["visuals"]["recommended_faceplate"] == ucg["default_faceplate"]
+assert ucg["visuals"]["calibration_profile"] == ucg["calibration_profile"]
 
-for model in ("UCG Ultra", "US 16 PoE 150W", "USW Ultra"):
-    item = source_models[model]
-    assert item["default_faceplate"] == "", model
-    assert item["calibration_profile"] == "", model
+ultra = source_models["USW Ultra"]
+assert "ports_1_7_only" in ultra["validation"]["poe"]
+assert ultra["default_faceplate"] == "faceplates/unifi-8rj45.png"
+assert ultra["calibration_profile"] == "default_unifi_8_rj45"
+assert ultra["visuals"]["status"] == "experimental"
+assert ultra["visuals"]["recommended_faceplate"] == ultra["default_faceplate"]
+assert ultra["visuals"]["calibration_profile"] == ultra["calibration_profile"]
+
+small_faceplates = {
+    "faceplate-unifi-5rj45.json": {
+        "profile": "default_unifi_5_rj45",
+        "model": "unifi-5-rj45",
+        "image": "faceplates/unifi-5rj45.png",
+        "ports": 5,
+        "centers": [[1126, 245], [1577, 245], [2021, 245], [2472, 245], [2919, 245]],
+    },
+    "faceplate-unifi-8rj45.json": {
+        "profile": "default_unifi_8_rj45",
+        "model": "unifi-8-rj45",
+        "image": "faceplates/unifi-8rj45.png",
+        "ports": 8,
+        "centers": [
+            [1126, 245], [1407, 245], [1681, 245], [1967, 245],
+            [2244, 245], [2523, 245], [2805, 245], [3087, 245],
+        ],
+    },
+}
+for filename, contract in small_faceplates.items():
+    calibration = json.loads((CALIBRATION / filename).read_text(encoding="utf-8"))
+    assert calibration["profile"] == contract["profile"], filename
+    assert calibration["model"] == contract["model"], filename
+    assert calibration["image"]["file"] == contract["image"], filename
+    assert calibration["ui"]["faceplate"]["file"] == Path(contract["image"]).name, filename
+    assert calibration["stack"] == {
+        "enabled": False, "stack_id": "", "uptime_source": "", "members": {}
+    }, filename
+    assert calibration["management"]["switch_ip"] == "", filename
+    assert calibration["sfp"] == {}, filename
+    assert list(calibration["ports"]) == [str(index) for index in range(1, contract["ports"] + 1)], filename
+    assert [calibration["ports"][str(index)]["center"] for index in range(1, contract["ports"] + 1)] == contract["centers"], filename
+    assert (ROOT / "src" / contract["image"]).is_file(), filename
 
 generated = json.loads(GENERATED.read_text(encoding="utf-8"))
 generated_models = {d["model"]: d for d in generated["devices"] if isinstance(d, dict)}
