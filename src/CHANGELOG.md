@@ -1,3 +1,10 @@
+## v2.4.18 — UniFi small-device faceplates
+
+- Add dedicated five-RJ45 and eight-RJ45 UniFi faceplates with factory calibration geometry.
+- Map `UCG Ultra` to `faceplates/unifi-5rj45.png` / `default_unifi_5_rj45` and `USW Ultra` to `faceplates/unifi-8rj45.png` / `default_unifi_8_rj45`.
+- Preserve the existing Experimental support status and verified UniFi API hardware contracts; rendered alignment remains pending community confirmation.
+- Add permanent regression coverage for the new visual defaults, geometry, privacy-clean factory profiles and generated-registry parity.
+
 ## v2.4.17 — Default faceplate profile restoration
 
 - Fix Calibration → Faceplate → Default / recommended so an explicit Default selection loads the independent switch base profile instead of following the currently active custom-faceplate pointer back into that faceplate.
