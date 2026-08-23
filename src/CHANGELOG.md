@@ -1,3 +1,10 @@
+## v2.4.17 — Default faceplate profile restoration
+
+- Fix Calibration → Faceplate → Default / recommended so an explicit Default selection loads the independent switch base profile instead of following the currently active custom-faceplate pointer back into that faceplate.
+- Add an exact-profile option to the authenticated `switch_vision/get_calibration` websocket command; normal card/profile loads keep the existing active-faceplate behaviour.
+- Add a permanent regression covering the backend pointer bypass and frontend Default-selection contract.
+- No switch mapping, port geometry, SNMP/UniFi polling, telemetry, LED sensitivity, support status, or device capability changes.
+
 ## v2.4.16 — UniFi support-status and privacy synchronization
 
 - Promote `UCG Ultra`, `US 16 PoE 150W`, and `USW Ultra` from Detected to Experimental after corroborating real-hardware UniFi API evidence; keep `USW Pro Max 24` Experimental.
