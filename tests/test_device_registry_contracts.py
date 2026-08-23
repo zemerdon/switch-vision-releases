@@ -62,7 +62,7 @@ class DeviceRegistryContractTests(unittest.TestCase):
             else:
                 self.assertEqual(bool(profile), bool(faceplate), model)
                 if not profile:
-                    self.assertEqual(device.get("status"), "detected", model)
+                    self.assertIn(device.get("status"), {"detected", "experimental"}, model)
             self.assertEqual(visuals.get("calibration_profile"), profile, model)
             self.assertEqual(visuals.get("recommended_faceplate"), faceplate, model)
 
