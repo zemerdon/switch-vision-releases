@@ -1,3 +1,10 @@
+## v2.4.19 — Correct UniFi small-switch faceplate payloads
+
+- Replace the incorrectly shipped small UniFi faceplate PNG payloads with the authoritative `unifi-5rj45.png` and `unifi-8rj45.png` artwork.
+- Preserve the existing canonical filenames, UCG Ultra / USW Ultra model mappings, factory calibration geometry, hardware contracts and Experimental support status.
+- Add permanent exact byte-size, PNG-signature and SHA-256 regressions for both authoritative faceplates.
+- No polling, telemetry, API ordering, connector, PoE, maximum-speed, privacy, geometry or support-status change.
+
 ## v2.4.18 — UniFi small-device faceplates
 
 - Add dedicated five-RJ45 and eight-RJ45 UniFi faceplates with factory calibration geometry.

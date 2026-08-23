@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 import yaml
@@ -8,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "src" / "devices" / "supported_devices.yaml"
 GENERATED = ROOT / "src" / "devices" / "supported_devices.json"
 CALIBRATION = ROOT / "src" / "calibration"
+FACEPLATES = ROOT / "src" / "faceplates"
 
 source_doc = yaml.safe_load(SOURCE.read_text(encoding="utf-8")) or {}
 source_models = {d["model"]: d for d in source_doc["devices"] if isinstance(d, dict)}
@@ -96,6 +98,22 @@ for filename, contract in small_faceplates.items():
     assert list(calibration["ports"]) == [str(index) for index in range(1, contract["ports"] + 1)], filename
     assert [calibration["ports"][str(index)]["center"] for index in range(1, contract["ports"] + 1)] == contract["centers"], filename
     assert (ROOT / "src" / contract["image"]).is_file(), filename
+
+authoritative_faceplates = {
+    "unifi-5rj45.png": {
+        "size": 273448,
+        "sha256": "8c9bdeb091f477a497579b717fedfc0d87a96c013ddf1def7fb1973f1b896414",
+    },
+    "unifi-8rj45.png": {
+        "size": 261169,
+        "sha256": "c7a04169b5cf6834780a579285250ac00f97f56ac450eb757e1e0ba8dbfaf74f",
+    },
+}
+for filename, contract in authoritative_faceplates.items():
+    payload = (FACEPLATES / filename).read_bytes()
+    assert len(payload) == contract["size"], filename
+    assert payload.startswith(b"\x89PNG\r\n\x1a\n"), filename
+    assert hashlib.sha256(payload).hexdigest() == contract["sha256"], filename
 
 generated = json.loads(GENERATED.read_text(encoding="utf-8"))
 generated_models = {d["model"]: d for d in generated["devices"] if isinstance(d, dict)}
