@@ -1,3 +1,11 @@
+## v2.5.0 — Maintenance Hub
+
+- Add a first-class **Maintenance** shortcut to the Native Switch Vision dashboard header.
+- Open Discovery 2.2.0's Maintenance Hub directly with `?view=maintenance`, keeping MQTT repair logic and destructive safeguards in Discovery rather than duplicating them in Core.
+- Make the Maintenance shortcut installation-aware, configurable and reorderable alongside the existing Native dashboard shortcuts.
+- Add a permanent Core regression covering the shortcut ID, settings option, translation parity and exact Maintenance destination.
+- No switch mapping, geometry, polling, telemetry, PoE, connector, hardware capability, support-status or privacy contract changes.
+
 ## v2.4.20 — HAOS dashboard startup and calibration-v2 compatibility
 
 - Fix the small UniFi factory calibration contract by adding explicit empty `status_leds` objects without inventing device LEDs.
