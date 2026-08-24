@@ -1,3 +1,10 @@
+## v2.5.1 — Exact-model factory UI defaults
+
+- Fix first-load exact-model calibration resolution so cards with no persisted user profile keep the exact model factory UI defaults instead of overlaying the baked generic logo/status/button layout after factory geometry is selected.
+- Preserve user-saved logo/status-panel/button placement, stack, management and faceplate choices when a real persisted calibration profile exists and exact-model geometry reconciliation is required.
+- Add permanent regression coverage for the UCG Ultra and USW Ultra factory UI defaults and the persisted-profile preservation gate.
+- Preserve switch mapping, port geometry, connector type, PoE, polling, telemetry, maximum-capability, support-status, Discovery/UniFi2MQTT handoff and privacy contracts.
+
 ## v2.5.0 — Maintenance Hub
 
 - Add a first-class **Maintenance** shortcut to the Native Switch Vision dashboard header.
