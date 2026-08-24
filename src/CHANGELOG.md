@@ -1,3 +1,12 @@
+## v2.6.0 — Geometry-only calibration profiles
+
+- Add separate **Export Geometry** and **Import Geometry** actions alongside the existing full faceplate-profile workflow.
+- Geometry transfers copy only canvas dimensions, port/uplink/status-LED coordinates and hitbox/size data, plus positional geometry for the logo, status panels/fields and calibration button.
+- Apply imported geometry onto the current destination calibration while preserving faceplate/background artwork, logo asset/source, styles, visibility, labels, stack, management and destination profile identity.
+- Require exact RJ45, SFP/uplink and status-LED key-set parity before geometry can be applied, preventing geometry transfer from becoming a topology or hardware-mapping transplant.
+- Add an executable permanent regression proving hand-edited foreign artwork/source identifiers cannot cross the geometry-only import boundary.
+- No hardware mapping, connector, PoE, telemetry, polling, maximum-capability, support-status, Discovery/UniFi2MQTT or privacy contract changes.
+
 ## v2.5.1 — Exact-model factory UI defaults
 
 - Fix first-load exact-model calibration resolution so cards with no persisted user profile keep the exact model factory UI defaults instead of overlaying the baked generic logo/status/button layout after factory geometry is selected.
