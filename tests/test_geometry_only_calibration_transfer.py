@@ -91,6 +91,7 @@ const current = {
 
 const malicious = {
   transfer_type: SV_GEOMETRY_TRANSFER_TYPE,
+  schema_version: 1,
   geometry: {
     image: {width: 1024, height: 224, file: "foreign-background.png", master: "foreign-master"},
     ports: {
