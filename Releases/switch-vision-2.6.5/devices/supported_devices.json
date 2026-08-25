@@ -999,7 +999,7 @@
       "status": "experimental",
       "confirmed_since": "2.1.20",
       "last_validated_version": "2.1.20",
-      "evidence": "support_my_switch_contribution_community validation_20260816_dell",
+      "evidence": "community_hardware_validation",
       "ports": {
         "rj45": 28,
         "poe": true,
@@ -1024,15 +1024,14 @@
         "public_credit": false
       },
       "notes": [
-        "Experimental Dell EMC Networking N2128PX-ON support derived from the Support My Switch bundle received 2026-08-16.",
+        "Experimental Dell EMC Networking N2128PX-ON support is based on private community hardware evidence; no contributor-identifying evidence is published.",
         "The contributed standalone unit and two-member stack both report sysObjectID 1.3.6.1.4.1.674.10895.3077.",
         "Gi<member>/0/1-28 are confirmed as the 28 copper front-panel ports per member.",
         "Te<member>/0/1-2 are confirmed as the two 10G SFP+ uplinks per member.",
         "The contribution spans firmware 6.7.1.27 and 6.6.0.7 and preserves the same physical interface topology.",
         "POWER-ETHERNET-MIB discovery exposes PoE candidates; detailed per-port PoE presentation remains pending contributor validation.",
         "The dedicated Dell 28 RJ45 + 2 SFP+ faceplate and owner-calibrated factory geometry are selected by default for this exact model.",
-        "Rendered dashboard, VLAN/trunk semantics and final Dell faceplate calibration remain pending before promotion beyond Experimental.",
-        "The contribution ID community validation collides with an older Zyxel contribution ID, so the 2026-08-16 date is retained in evidence metadata to disambiguate this bundle."
+        "Rendered dashboard, VLAN/trunk semantics and final Dell faceplate calibration remain pending before promotion beyond Experimental."
       ],
       "validation": {
         "exact_model_detection": "contribution_confirmed_sysobjectid_model_and_two_firmware_versions",

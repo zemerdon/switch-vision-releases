@@ -2,6 +2,7 @@
 
 - Add the dedicated `dell-28-rj45-2sfp.png` faceplate and owner-calibrated factory profile for the Dell N2128PX-ON while keeping the model **Experimental**.
 - Keep the Dell artwork vendor-scoped: it may only be assigned to Dell models with **28 or fewer RJ45 ports** and **2 or fewer uplinks**; it is not a generic Switch Vision fallback.
+- Replace legacy Dell submission-identifying evidence text with neutral community-hardware wording; no private contribution identifier is published.
 - Preserve the owner-approved Dell status-panel geometry exactly. Factory validation now requires an explicit profile-level opt-in when rows are intentionally suppressed by the runtime bounds safety rule, so all other factory profiles remain strict.
 - Correct the bundled `c3560cg-8pc-s.png` Port 3 factory calibration to the owner-supplied center **[786, 329]** and hitbox **[84, 76]**.
 - Add permanent regressions for the Dell faceplate/vendor/topology boundary, the Dell-only status-panel opt-in, and corrected 3560CG Port 3 geometry.

@@ -16,8 +16,11 @@ class DellFaceplateScopeTests(unittest.TestCase):
         payload = json.loads(REGISTRY.read_text(encoding="utf-8"))
         self.devices = [item for item in payload.get("devices", []) if isinstance(item, dict)]
 
+    def dell_device(self) -> dict:
+        return next(item for item in self.devices if item.get("model") == "N2128PX-ON")
+
     def test_n2128px_on_uses_exact_dell_visual(self) -> None:
-        device = next(item for item in self.devices if item.get("model") == "N2128PX-ON")
+        device = self.dell_device()
         self.assertEqual(device.get("vendor"), "Dell")
         self.assertEqual(device.get("default_faceplate"), DELL_FACEPLATE)
         self.assertEqual(device.get("calibration_profile"), "dell_28rj45_2sfp")
@@ -33,6 +36,13 @@ class DellFaceplateScopeTests(unittest.TestCase):
             self.assertEqual(device.get("vendor"), "Dell", device.get("model"))
             self.assertLessEqual(int(ports.get("rj45") or 0), 28, device.get("model"))
             self.assertLessEqual(int(ports.get("uplinks") or 0), 2, device.get("model"))
+
+    def test_n2128px_on_public_evidence_is_neutral(self) -> None:
+        device = self.dell_device()
+        self.assertEqual(device.get("evidence"), "community_hardware_validation")
+        notes = "\n".join(str(note) for note in device.get("notes") or []).casefold()
+        self.assertNotIn("contribution id", notes)
+        self.assertNotIn("bundle received", notes)
 
     def test_factory_profile_is_dell_only_28_plus_2_and_contains_no_instance_state(self) -> None:
         profile = json.loads(PROFILE.read_text(encoding="utf-8"))
