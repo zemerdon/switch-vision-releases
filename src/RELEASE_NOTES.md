@@ -1,4 +1,14 @@
-# Switch Vision Core v2.6.4
+# Switch Vision Core v2.6.5
+
+Core 2.6.5 adds the dedicated `dell-28-rj45-2sfp.png` faceplate and owner-calibrated factory presentation for the Dell N2128PX-ON. The artwork is deliberately Dell-only and is guarded so it cannot be assigned to non-Dell hardware or to Dell models above **28 RJ45 ports / 2 uplinks**. The N2128PX-ON remains **Experimental**; artwork and calibration do not promote hardware support status.
+
+Legacy Dell submission-identifying evidence text is replaced with neutral community-hardware wording so no private contribution identifier is published. The owner-approved Dell status-panel geometry is preserved exactly. Core's factory validator now supports a narrow, explicit per-profile opt-in for rows that the existing runtime bounds safety rule intentionally suppresses; profiles without that opt-in remain strict. The release also corrects the Cisco WS-C3560CG-8PC-S Port 3 factory center to **[786, 329]** and hitbox to **[84, 76]**. Permanent regressions lock the Dell scope boundary, the Dell-only validation opt-in and the corrected 3560CG geometry.
+
+No connector, PoE, polling, telemetry, support-status, privacy or unrelated model contracts change.
+
+---
+
+# Previous release: Switch Vision Core v2.6.4
 
 Core 2.6.4 makes the owner-approved Hub presentation values the authoritative Core factory/reset defaults: Discovery **Dense / 12 px / Full** and Installer **Comfortable / 12 px / Wide**. Existing saved user choices remain unchanged; these values apply to new/default state and explicit Core reset-to-defaults behavior.
 
