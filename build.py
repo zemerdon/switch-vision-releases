@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import argparse
+import importlib.util
 import json
 import os
 import re
@@ -12,9 +13,15 @@ import zipfile
 
 import yaml
 
-from src.faceplate_native_canvas import normalize_faceplate_factory_calibrations, render_space_calibration
-
 PROJECT_ROOT = Path(__file__).resolve().parent
+_FACEPLATE_CANVAS_HELPER = PROJECT_ROOT / "src" / "faceplate_native_canvas.py"
+_FACEPLATE_CANVAS_SPEC = importlib.util.spec_from_file_location("_switch_vision_faceplate_native_canvas", _FACEPLATE_CANVAS_HELPER)
+if _FACEPLATE_CANVAS_SPEC is None or _FACEPLATE_CANVAS_SPEC.loader is None:
+    raise RuntimeError(f"Unable to load faceplate canvas helper: {_FACEPLATE_CANVAS_HELPER}")
+_FACEPLATE_CANVAS_MODULE = importlib.util.module_from_spec(_FACEPLATE_CANVAS_SPEC)
+_FACEPLATE_CANVAS_SPEC.loader.exec_module(_FACEPLATE_CANVAS_MODULE)
+normalize_faceplate_factory_calibrations = _FACEPLATE_CANVAS_MODULE.normalize_faceplate_factory_calibrations
+render_space_calibration = _FACEPLATE_CANVAS_MODULE.render_space_calibration
 ROOT = PROJECT_ROOT
 SRC = PROJECT_ROOT / "src"
 RELEASES = PROJECT_ROOT / "Releases"
