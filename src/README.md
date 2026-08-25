@@ -10,9 +10,9 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current public Core release
 
-### Switch Vision v2.6.0
+### Switch Vision v2.6.1
 
-**v2.6.0** is the current tested public Switch Vision Core/dashboard release.
+**v2.6.1** is the current tested public Switch Vision Core/dashboard release.
 
 This corrective release keeps rendered ports selectable when a saved or custom calibration omits an explicit hitbox, and keeps Advanced diagnostics text readable under Home Assistant themes with dark primary text.
 

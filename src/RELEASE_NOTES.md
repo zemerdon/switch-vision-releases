@@ -1,11 +1,9 @@
-# Switch Vision Core v2.6.0
+# Switch Vision Core v2.6.1
 
-Core 2.6.0 adds a separate geometry-only calibration transfer workflow without replacing or weakening the existing full faceplate-profile import/export path.
+Core 2.6.1 adds the authenticated settings contract used by the Switch Vision Hub. The Hub can now read and save every normal Core option without creating a second settings store: Home Assistant's existing Switch Vision config-entry options remain authoritative.
 
-**Export Geometry** produces a versioned `switch-vision-geometry-profile-v1` payload containing only canvas dimensions, RJ45/SFP/status-LED coordinates and hitbox/size data, plus positional geometry for the logo, status panels/field coordinates and calibration button. **Import Geometry** applies that geometry onto the current destination calibration rather than replacing the calibration object.
+The grouped contract covers sidebar/navigation visibility, Native dashboard header controls and shortcut order, dashboard presentation, Activity LED sensitivity/threshold/timing controls, Discovery appearance and Installer appearance. Hub writes are admin-only, reject unknown settings, enforce the existing allowed values/ranges and Activity LED ordering rules, and preserve unrelated saved options.
 
-The current destination keeps its faceplate/background artwork, logo asset/source, styles, visibility, labels, stack, management settings and profile identity. Geometry import also requires the same RJ45, SFP/uplink and status-LED key sets as the destination, so it cannot silently alter topology or hardware mapping.
+Home Assistant **Integrations → Switch Vision → Configure** remains available as a synchronized fallback/recovery surface. This Core release provides the backend contract; the matching Hub release provides the user-facing settings page and Save workflow.
 
-A permanent executable regression injects foreign artwork/source identifiers into a hand-edited geometry payload and verifies that those identifiers cannot cross the geometry-only import boundary while legitimate geometry still applies.
-
-No hardware mapping, connector, PoE, polling, telemetry, maximum-capability, support-status, Discovery/UniFi2MQTT or privacy contracts change in Core 2.6.0.
+No switch mapping, port geometry, connector, PoE, polling, telemetry, maximum-capability, support-status, SNMP2MQTT/Discovery runtime or privacy contracts change in Core 2.6.1.
