@@ -1,4 +1,12 @@
-# Switch Vision Core v2.6.4
+# Switch Vision Core v2.6.5
+
+Core 2.6.5 corrects the factory faceplate geometry for Port 3 on the Cisco WS-C3560CG-8PC-S. The owner-supplied calibrated defaults move the Port 3 center to **[786, 329]** and restore its hitbox to **[84, 76]**, preventing the undersized/misplaced selectable region from falling through to switch-level information.
+
+All other 3560CG faceplate geometry and presentation values remain unchanged. A permanent regression now locks the corrected Port 3 position and size. No connector, PoE, polling, telemetry, support-status, privacy or unrelated model contracts change.
+
+---
+
+# Previous release: Switch Vision Core v2.6.4
 
 Core 2.6.4 makes the owner-approved Hub presentation values the authoritative Core factory/reset defaults: Discovery **Dense / 12 px / Full** and Installer **Comfortable / 12 px / Wide**. Existing saved user choices remain unchanged; these values apply to new/default state and explicit Core reset-to-defaults behavior.
 

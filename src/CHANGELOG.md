@@ -1,3 +1,10 @@
+## v2.6.5 — Cisco 3560CG Port 3 factory geometry correction
+
+- Correct the bundled `c3560cg-8pc-s.png` factory calibration for Port 3 using the owner-supplied calibrated defaults: center **[786, 329]** and hitbox **[84, 76]**.
+- Preserve every other Cisco WS-C3560CG-8PC-S faceplate, LED, label, status-panel and hardware-mapping value unchanged.
+- Add a permanent regression that locks the corrected Port 3 position and selectable area.
+- No connector, PoE, polling, telemetry, support-status, privacy or unrelated model contract changes.
+
 ## v2.6.4 — Hub presentation factory defaults
 
 - Make the owner-approved Hub presentation values the Core factory/reset defaults: Discovery **Dense / 12 px / Full** and Installer **Comfortable / 12 px / Wide**.
