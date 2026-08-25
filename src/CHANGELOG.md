@@ -1,3 +1,11 @@
+## v2.6.2 — Geometry export strict-mode fix
+
+- Fix **Export Geometry** in the calibration tool. The geometry-only serializer was incorrectly using the full calibration normalizer to clone primitive canvas dimensions, coordinate arrays and field maps; Home Assistant loads the card as an ES module, so strict-mode assignment to primitive values could throw before the JSON download was created.
+- Use plain-data cloning for geometry-only substructures while keeping full calibration normalization only for complete calibration objects.
+- Prevent geometry export/import from polluting status-panel field maps, status-LED coordinate arrays or the preserved faceplate presentation object with unrelated calibration `ui`, `stack` or `management` properties.
+- Strengthen the permanent geometry-transfer regression to execute under strict-mode semantics, verify canvas/status geometry export, reject substructure pollution and prove same-profile export/import round-trip behaviour.
+- No hardware mapping, port geometry values, connector, PoE, polling, telemetry, maximum-capability, support-status, Hub/Discovery/SNMP2MQTT runtime or privacy contract changes.
+
 ## v2.6.1 — Hub-managed Core settings
 
 - Add authenticated admin WebSocket contracts for the Switch Vision Hub to read and save every normal Core option while preserving the existing Home Assistant config-entry options as the single source of truth.
