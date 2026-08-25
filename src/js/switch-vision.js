@@ -6946,7 +6946,7 @@ const testModeBadge = testModeActive
   redrawSwitchSvg(activeCalibration = null) {
     if (!this.shadowRoot) return;
     const svg = this.shadowRoot.getElementById("s");
-    if (!svg) return;
+   if (!svg) return;
 
     const cal = activeCalibration || this.calibrationData();
     while (svg.firstChild) svg.removeChild(svg.firstChild);
