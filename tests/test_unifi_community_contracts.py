@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 import yaml
 
+from src.faceplate_native_canvas import render_space_calibration
+
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "src" / "devices" / "supported_devices.yaml"
 GENERATED = ROOT / "src" / "devices" / "supported_devices.json"
@@ -86,6 +88,7 @@ small_faceplates = {
 }
 for filename, contract in small_faceplates.items():
     calibration = json.loads((CALIBRATION / filename).read_text(encoding="utf-8"))
+    rendered_calibration = render_space_calibration(calibration)
     assert calibration["profile"] == contract["profile"], filename
     assert calibration["model"] == contract["model"], filename
     assert calibration["image"]["file"] == contract["image"], filename
@@ -96,7 +99,7 @@ for filename, contract in small_faceplates.items():
     assert calibration["management"]["switch_ip"] == "", filename
     assert calibration["sfp"] == {}, filename
     assert list(calibration["ports"]) == [str(index) for index in range(1, contract["ports"] + 1)], filename
-    assert [calibration["ports"][str(index)]["center"] for index in range(1, contract["ports"] + 1)] == contract["centers"], filename
+    assert [rendered_calibration["ports"][str(index)]["center"] for index in range(1, contract["ports"] + 1)] == contract["centers"], filename
     assert (ROOT / "src" / contract["image"]).is_file(), filename
 
 authoritative_faceplates = {
