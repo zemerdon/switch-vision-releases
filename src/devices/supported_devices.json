@@ -235,10 +235,10 @@
       "vendor": "Cisco",
       "family": "Catalyst 2960X",
       "model": "WS-C2960X-24TS-L",
-      "status": "community_validated",
+      "status": "experimental",
       "confirmed_since": "1.8.25",
       "last_validated_version": "1.8.25",
-      "evidence": "support_my_switch_contribution_community validation",
+      "evidence": "support_my_switch_contribution",
       "ports": {
         "rj45": 24,
         "poe": false,
@@ -260,11 +260,11 @@
         "public_credit": false
       },
       "notes": [
-        "Initial Experimental profile created from Support My Switch contribution community validation.",
+        "Initial Experimental profile created from a Support My Switch hardware contribution.",
         "Contribution data reports 24 copper interfaces, four uplinks, and a three-member stack.",
         "Uses the existing 24 RJ45 / 4 SFP faceplate and calibration geometry.",
         "Live dashboard, stack-member, uplink, VLAN, and activity validation remain pending.",
-        "Promoted to Community Validated after real-hardware validation; model-specific physical layout remains authoritative."
+        "Remains Experimental until those real-hardware checks are completed."
       ],
       "validation": {
         "exact_model_detection": "contribution_confirmed",
@@ -344,10 +344,10 @@
       "vendor": "Cisco",
       "family": "Catalyst 3560-C",
       "model": "WS-C3560CG-8PC-S",
-      "status": "community_validated",
+      "status": "experimental",
       "confirmed_since": "1.8.24",
       "last_validated_version": "1.8.24",
-      "evidence": "community_contribution_community validation",
+      "evidence": "community_contribution",
       "ports": {
         "rj45": 8,
         "poe": true,
@@ -371,14 +371,14 @@
         "public_credit": false
       },
       "notes": [
-        "Initial Experimental profile created from Support My Switch contribution community validation.",
+        "Initial Experimental profile created from a community hardware contribution.",
         "Gi0/1 through Gi0/8 map to the eight access-port positions.",
         "Gi0/9 and Gi0/10 map to the two dual-purpose uplink positions.",
         "A dedicated native 2048 x 329 faceplate is bundled and selected by default.",
         "The previous 24 RJ45 / 2 SFP faceplate remains available as an optional fallback.",
         "Real-hardware activity, uplink media selection, VLAN, PoE and status validation remain pending contributor testing.",
-        "Promoted to Community Validated after real-hardware validation; model-specific physical layout remains authoritative.",
-        "Gi0/9 and Gi0/10 remain dual-purpose combo uplink positions; promotion does not change their physical semantics."
+        "Remains Experimental until those real-hardware checks are completed.",
+        "Gi0/9 and Gi0/10 remain dual-purpose combo uplink positions; their physical semantics are unchanged."
       ],
       "validation": {
         "exact_model_detection": "contribution_confirmed",

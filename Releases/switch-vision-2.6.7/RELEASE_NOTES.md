@@ -2,7 +2,9 @@
 
 Core 2.6.7 fixes a status-panel telemetry bug found by the Functional Integrity Audit. When fan or power-supply telemetry is missing, unavailable or unknown, Switch Vision now displays an unknown value (`—`) instead of synthesizing a healthy `OK` state.
 
-Real fan and PSU entity values continue to pass through unchanged. A permanent regression protects both missing-telemetry behavior and the existing entity-candidate paths. No geometry, device mapping, connector, PoE, polling, support-status or other telemetry contract changes.
+Real fan and PSU entity values continue to pass through unchanged. A permanent regression protects both missing-telemetry behavior and the existing entity-candidate paths.
+
+The same Functional Integrity Audit also found two device-support records whose Community Validated label contradicted their own still-pending live-validation fields. WS-C2960X-24TS-L and WS-C3560CG-8PC-S return to Experimental until those checks are completed. Their hardware mapping, geometry, connector and polling contracts are unchanged; this corrects support metadata rather than removing device functionality.
 
 ---
 
