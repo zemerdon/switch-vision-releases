@@ -2,7 +2,7 @@
 
 Core 2.6.6 normalizes bundled faceplate rendering to each artwork file's real native canvas while preserving the current on-screen appearance. A permanent audit records native PNG dimensions and the exact legacy-to-native transform for every factory faceplate before migration. Legacy/custom saved profiles remain on the 2048 × 448 compatibility path unless explicitly marked as normalized.
 
-The final migration will reject negative or out-of-canvas interactive factory geometry and will preserve hardware mapping, connector, PoE, polling, telemetry and support-status contracts.
+The migration rejects negative or out-of-canvas interactive faceplate factory geometry while preserving hardware mapping, connector, PoE, polling, telemetry and support-status contracts. Native factory geometry is converted back to the legacy 2048 × 448 overlay only at render time so the visible switch layout remains unchanged.
 
 ---
 

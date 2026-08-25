@@ -12,6 +12,8 @@ import zipfile
 
 import yaml
 
+from src.faceplate_native_canvas import normalize_faceplate_factory_calibrations, render_space_calibration
+
 PROJECT_ROOT = Path(__file__).resolve().parent
 ROOT = PROJECT_ROOT
 SRC = PROJECT_ROOT / "src"
@@ -528,6 +530,7 @@ def validate_factory_status_panel_bounds(base: Path, source_layout: bool = False
         except (OSError, json.JSONDecodeError) as exc:
             errors.append(f"{path}: invalid JSON: {exc}")
             continue
+        data = render_space_calibration(data)
         ui = data.get("ui") if isinstance(data, dict) else None
         ui = ui if isinstance(ui, dict) else {}
 
@@ -965,6 +968,7 @@ def patch_source_versions(version: str) -> None:
     patch_current_release_metadata(version)
     sync_authoritative_documents()
     validate_factory_calibration_privacy(PROJECT_ROOT, source_layout=True)
+    normalize_faceplate_factory_calibrations(SRC / "calibration", SRC / "faceplates")
     validate_factory_status_panel_bounds(PROJECT_ROOT, source_layout=True)
     sync_primary_factory_calibration()
     sync_faceplate_factory_calibrations()

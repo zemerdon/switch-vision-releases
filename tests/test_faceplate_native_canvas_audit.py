@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 from __future__ import annotations
 
 import json
@@ -7,74 +6,64 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CALIBRATION_DIR = ROOT / "src" / "calibration"
-FACEPLATE_DIR = ROOT / "src" / "faceplates"
-PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
-LEGACY_WIDTH = 2048.0
-LEGACY_HEIGHT = 448.0
+CAL = ROOT / "src" / "calibration"
+FACEPLATES = ROOT / "src" / "faceplates"
+FRONTEND = ROOT / "src" / "js" / "switch-vision.js"
 
 
-def png_dimensions(path: Path) -> tuple[int, int]:
-    with path.open("rb") as handle:
-        header = handle.read(24)
-    if len(header) < 24 or header[:8] != PNG_SIGNATURE or header[12:16] != b"IHDR":
-        raise AssertionError(f"{path}: invalid PNG header")
-    return struct.unpack(">II", header[16:24])
+def png_size(path: Path) -> tuple[int, int]:
+    raw = path.read_bytes()[:24]
+    if len(raw) < 24 or raw[:8] != b"\x89PNG\r\n\x1a\n" or raw[12:16] != b"IHDR":
+        raise AssertionError(f"invalid PNG: {path}")
+    return struct.unpack(">II", raw[16:24])
 
 
-def transform_for_native(width: int, height: int) -> tuple[float, float, float, float]:
-    native_ratio = width / height
-    legacy_ratio = LEGACY_WIDTH / LEGACY_HEIGHT
-    if abs(native_ratio - legacy_ratio) < 1e-12:
-        return width / LEGACY_WIDTH, height / LEGACY_HEIGHT, 0.0, 0.0
-    if native_ratio > legacy_ratio:
-        scale = height / LEGACY_HEIGHT
-        return scale, scale, (width - (LEGACY_WIDTH * scale)) / 2.0, 0.0
-    scale = width / LEGACY_WIDTH
-    return scale, scale, 0.0, (height - (LEGACY_HEIGHT * scale)) / 2.0
+class FaceplateNativeCanvasContract(unittest.TestCase):
+    def test_factory_interactive_geometry_is_native_and_in_bounds(self) -> None:
+        for path in sorted(CAL.glob("faceplate-*.json")):
+            data = json.loads(path.read_text(encoding="utf-8"))
+            image = data["image"]
+            filename = Path(str((data.get("ui") or {}).get("faceplate", {}).get("file") or image["file"])).name
+            width, height = png_size(FACEPLATES / filename)
+            self.assertEqual(image.get("coordinate_space"), "image-native-v1", path.name)
+            self.assertEqual((image.get("width"), image.get("height")), (width, height), path.name)
 
+            for collection_name in ("ports", "sfp"):
+                for key, item in (data.get(collection_name) or {}).items():
+                    for field in ("center", "number", "label", "led_left", "led_right"):
+                        point = item.get(field)
+                        if not isinstance(point, list) or len(point) < 2:
+                            continue
+                        self.assertGreaterEqual(float(point[0]), 0, f"{path.name}:{collection_name}:{key}:{field}:x")
+                        self.assertGreaterEqual(float(point[1]), 0, f"{path.name}:{collection_name}:{key}:{field}:y")
+                        self.assertLessEqual(float(point[0]), width, f"{path.name}:{collection_name}:{key}:{field}:x")
+                        self.assertLessEqual(float(point[1]), height, f"{path.name}:{collection_name}:{key}:{field}:y")
 
-def geometry_extents(data: dict) -> tuple[float, float, float, float]:
-    xs: list[float] = []
-    ys: list[float] = []
-    for collection in (data.get("ports"), data.get("sfp")):
-        if not isinstance(collection, dict):
-            continue
-        for item in collection.values():
-            if not isinstance(item, dict):
-                continue
-            for field in ("center", "led_left", "led_right", "number", "label"):
-                point = item.get(field)
-                if isinstance(point, list) and len(point) >= 2:
-                    xs.append(float(point[0]))
-                    ys.append(float(point[1]))
-    return (min(xs) if xs else 0.0, max(xs) if xs else 0.0, min(ys) if ys else 0.0, max(ys) if ys else 0.0)
+            for name, point in (data.get("status_leds") or {}).items():
+                self.assertGreaterEqual(float(point[0]), 0, f"{path.name}:status:{name}:x")
+                self.assertGreaterEqual(float(point[1]), 0, f"{path.name}:status:{name}:y")
+                self.assertLessEqual(float(point[0]), width, f"{path.name}:status:{name}:x")
+                self.assertLessEqual(float(point[1]), height, f"{path.name}:status:{name}:y")
 
+            ui = data.get("ui") or {}
+            for name in ("calibration_button", "status_panel", "status_panel_2"):
+                box = ui.get(name) or {}
+                x, y = float(box.get("x") or 0), float(box.get("y") or 0)
+                w, h = float(box.get("width") or 0), float(box.get("height") or 0)
+                self.assertGreaterEqual(x, 0, f"{path.name}:{name}:x")
+                self.assertGreaterEqual(y, 0, f"{path.name}:{name}:y")
+                self.assertLessEqual(x + w, width, f"{path.name}:{name}:right")
+                self.assertLessEqual(y + h, height, f"{path.name}:{name}:bottom")
 
-class FaceplateNativeCanvasAudit(unittest.TestCase):
-    def test_bundled_faceplate_native_dimensions_are_auditable(self) -> None:
-        seen = 0
-        for profile_path in sorted(CALIBRATION_DIR.glob("faceplate-*.json")):
-            data = json.loads(profile_path.read_text(encoding="utf-8"))
-            ui = data.get("ui") if isinstance(data.get("ui"), dict) else {}
-            faceplate = ui.get("faceplate") if isinstance(ui.get("faceplate"), dict) else {}
-            image = data.get("image") if isinstance(data.get("image"), dict) else {}
-            filename = Path(str(faceplate.get("file") or image.get("file") or "")).name
-            self.assertTrue(filename, f"{profile_path.name}: missing faceplate filename")
-            png = FACEPLATE_DIR / filename
-            self.assertTrue(png.is_file(), f"{profile_path.name}: missing {filename}")
-            width, height = png_dimensions(png)
-            sx, sy, ox, oy = transform_for_native(width, height)
-            min_x, max_x, min_y, max_y = geometry_extents(data)
-            print(
-                "FACEPLATE_NATIVE_AUDIT "
-                f"profile={profile_path.name} file={filename} native={width}x{height} "
-                f"declared={image.get('width')}x{image.get('height')} "
-                f"legacy_extents=x[{min_x:g},{max_x:g}] y[{min_y:g},{max_y:g}] "
-                f"legacy_to_native=scale({sx:.12g},{sy:.12g}) offset({ox:.12g},{oy:.12g})"
-            )
-            seen += 1
-        self.assertGreater(seen, 0, "no bundled faceplate factory profiles found")
+    def test_renderer_has_native_to_legacy_compatibility_transform(self) -> None:
+        text = FRONTEND.read_text(encoding="utf-8")
+        for needle in (
+            'const SV_FACEPLATE_NATIVE_COORDINATE_SPACE = "image-native-v1";',
+            "function calibrationRenderSpaceData(source)",
+            "const renderCal = calibrationRenderSpaceData(cal);",
+            "uiFromCalibration(calibrationRenderSpaceData(this.calibrationData()))",
+        ):
+            self.assertIn(needle, text)
 
 
 if __name__ == "__main__":
