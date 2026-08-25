@@ -1,13 +1,18 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 import yaml
 
-from src.faceplate_native_canvas import render_space_calibration
-
 ROOT = Path(__file__).resolve().parents[1]
+_HELPER_PATH = ROOT / "src" / "faceplate_native_canvas.py"
+_HELPER_SPEC = importlib.util.spec_from_file_location("_switch_vision_test_faceplate_native_canvas", _HELPER_PATH)
+assert _HELPER_SPEC is not None and _HELPER_SPEC.loader is not None
+_HELPER_MODULE = importlib.util.module_from_spec(_HELPER_SPEC)
+_HELPER_SPEC.loader.exec_module(_HELPER_MODULE)
+render_space_calibration = _HELPER_MODULE.render_space_calibration
 SOURCE = ROOT / "src" / "devices" / "supported_devices.yaml"
 GENERATED = ROOT / "src" / "devices" / "supported_devices.json"
 CALIBRATION = ROOT / "src" / "calibration"
