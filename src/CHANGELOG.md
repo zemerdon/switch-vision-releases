@@ -1,3 +1,12 @@
+## v2.6.1 — Hub-managed Core settings
+
+- Add authenticated admin WebSocket contracts for the Switch Vision Hub to read and save every normal Core option while preserving the existing Home Assistant config-entry options as the single source of truth.
+- Cover sidebar/navigation, Native header visibility and shortcut order, dashboard presentation, Activity LED controls, Discovery appearance and Installer appearance in one grouped browser-safe contract.
+- Validate Hub writes against the same enums/ranges and Activity LED ordering rules used by the native Configure workflow; reject unknown groups/keys and preserve unrelated saved options.
+- Keep Home Assistant **Integrations → Switch Vision → Configure** available and synchronized as a fallback/recovery surface.
+- Add a permanent regression covering the complete Hub/Core settings contract.
+- No hardware mapping, connector, PoE, polling, telemetry, maximum-capability, support-status, Discovery/SNMP2MQTT runtime or privacy contract changes.
+
 ## v2.6.0 — Geometry-only calibration profiles
 
 - Add separate **Export Geometry** and **Import Geometry** actions alongside the existing full faceplate-profile workflow.
