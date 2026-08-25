@@ -1,3 +1,12 @@
+## v2.6.3 — Explicit 10–20 px app text sizing
+
+- Replace the legacy Discovery/Installer **Normal / Small** text-size options with explicit **10–20 px** choices in 1 px steps.
+- Preserve upgrades without invalid saved state: legacy `normal` resolves to **16 px** and legacy `small` resolves to **14 px** until the setting is next saved.
+- Publish only normalized numeric font sizes to the shared `ui-preferences.json` contract consumed by Discovery and Installer.
+- Validate Hub writes and the native Home Assistant Configure fallback against the same 10–20 px range.
+- Add behavioral regression coverage for the complete range, legacy migration and invalid-value fallback.
+- No hardware mapping, port geometry, connector, PoE, polling, telemetry, support-status or privacy contract changes.
+
 ## v2.6.2 — Geometry export strict-mode fix
 
 - Fix **Export Geometry** in the calibration tool. The geometry-only serializer was incorrectly using the full calibration normalizer to clone primitive canvas dimensions, coordinate arrays and field maps; Home Assistant loads the card as an ES module, so strict-mode assignment to primitive values could throw before the JSON download was created.

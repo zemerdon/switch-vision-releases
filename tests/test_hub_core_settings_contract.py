@@ -67,4 +67,35 @@ assert 'DEFAULT_OPTIONS' in FLOW
 assert 'switch_vision/get_ui_settings' in INIT
 assert 'switch_vision/set_native_header_shortcut_order' in INIT
 
+# Explicit 10-20 px text-size contract with backward compatibility for the
+# two legacy labels shipped through Core 2.6.2. Execute the real helper body so
+# this is a behavioral regression rather than a string-only marker check.
+import ast
+
+tree = ast.parse(INIT)
+helper = next(
+    node for node in tree.body
+    if isinstance(node, ast.FunctionDef) and node.name == 'normalise_ui_text_size'
+)
+namespace = {
+    'Any': object,
+    'UI_TEXT_SIZE_MIN_PX': 10,
+    'UI_TEXT_SIZE_MAX_PX': 20,
+    'UI_TEXT_SIZE_DEFAULT_PX': 16,
+    'UI_TEXT_SIZE_LEGACY': {'normal': 16, 'small': 14},
+}
+exec(compile(ast.Module(body=[helper], type_ignores=[]), '<ui-text-size>', 'exec'), namespace)
+normalise = namespace['normalise_ui_text_size']
+assert normalise('normal') == 16
+assert normalise('small') == 14
+for pixels in range(10, 21):
+    assert normalise(pixels) == pixels
+    assert normalise(str(pixels)) == pixels
+    assert normalise(f'{pixels}px') == pixels
+for invalid in (9, 21, '9', '21px', '', 'giant', None, True, 14.5):
+    assert normalise(invalid) == 16
+assert 'CONF_DISCOVERY_TEXT_SIZE: (UI_TEXT_SIZE_MIN_PX, UI_TEXT_SIZE_MAX_PX)' in INIT
+assert 'CONF_INSTALLER_TEXT_SIZE: (UI_TEXT_SIZE_MIN_PX, UI_TEXT_SIZE_MAX_PX)' in INIT
+assert 'vol.In(\n                                list(range(UI_TEXT_SIZE_MIN_PX, UI_TEXT_SIZE_MAX_PX + 1))' in FLOW
+
 print('Core Hub settings contract: PASS')

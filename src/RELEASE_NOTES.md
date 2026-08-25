@@ -1,4 +1,14 @@
-# Switch Vision Core v2.6.2
+# Switch Vision Core v2.6.3
+
+Core 2.6.3 replaces the old Discovery/Installer **Normal / Small** appearance choice with an explicit **10–20 px** body-font setting in one-pixel steps. Existing installations remain valid: `normal` is read as 16 px and `small` as 14 px until the user next saves the setting.
+
+The Hub and Home Assistant Configure fallback use the same range, and the shared UI-preferences document now publishes the normalized numeric value for Discovery and Installer consumers. A behavioral regression exercises every accepted pixel size plus the legacy migration and invalid-value fallback.
+
+This is an appearance-settings contract change only. No switch mapping, physical geometry, connector, PoE, polling, telemetry, maximum-capability, support-status or privacy contracts change.
+
+---
+
+# Previous release: Switch Vision Core v2.6.2
 
 Core 2.6.2 fixes **Export Geometry** in the calibration tool.
 
