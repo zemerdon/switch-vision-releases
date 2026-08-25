@@ -1929,6 +1929,12 @@ def build(version: str, gold: bool = False) -> tuple[Path, Path]:
         if source.exists():
             shutil.copy2(source, release_dir / filename)
 
+    # Build-time faceplate coordinate migration is authoritative source material.
+    # Keep it byte-identical in the release tree so src/release parity remains exact.
+    faceplate_canvas_helper = SRC / "faceplate_native_canvas.py"
+    if faceplate_canvas_helper.exists():
+        shutil.copy2(faceplate_canvas_helper, release_dir / faceplate_canvas_helper.name)
+
     patch_js_version(release_dir / "js" / "switch-vision.js", version)
     component_dir = release_dir / "custom_components" / "switch_vision"
     patch_json_version(component_dir / "manifest.json", version)
