@@ -19,7 +19,12 @@ _FACEPLATE_CANVAS_SPEC = importlib.util.spec_from_file_location("_switch_vision_
 if _FACEPLATE_CANVAS_SPEC is None or _FACEPLATE_CANVAS_SPEC.loader is None:
     raise RuntimeError(f"Unable to load faceplate canvas helper: {_FACEPLATE_CANVAS_HELPER}")
 _FACEPLATE_CANVAS_MODULE = importlib.util.module_from_spec(_FACEPLATE_CANVAS_SPEC)
-_FACEPLATE_CANVAS_SPEC.loader.exec_module(_FACEPLATE_CANVAS_MODULE)
+_FACEPLATE_CANVAS_PREVIOUS_DONT_WRITE_BYTECODE = sys.dont_write_bytecode
+try:
+    sys.dont_write_bytecode = True
+    _FACEPLATE_CANVAS_SPEC.loader.exec_module(_FACEPLATE_CANVAS_MODULE)
+finally:
+    sys.dont_write_bytecode = _FACEPLATE_CANVAS_PREVIOUS_DONT_WRITE_BYTECODE
 normalize_faceplate_factory_calibrations = _FACEPLATE_CANVAS_MODULE.normalize_faceplate_factory_calibrations
 render_space_calibration = _FACEPLATE_CANVAS_MODULE.render_space_calibration
 ROOT = PROJECT_ROOT
