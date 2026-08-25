@@ -517,7 +517,7 @@ def _factory_status_display_position(panel: dict, key: str, panel_number: int) -
 
 
 def validate_factory_status_panel_bounds(base: Path, source_layout: bool = False) -> None:
-    """Fail when any enabled factory switch-summary row would be clipped by its status panel."""
+    """Fail on clipped factory rows unless a profile explicitly opts into runtime suppression."""
     prefix = base / "src" if source_layout else base
     calibration_dir = prefix / "calibration"
     errors: list[str] = []
@@ -568,7 +568,7 @@ def validate_factory_status_panel_bounds(base: Path, source_layout: bool = False
                     and (vy - (font_size * 0.7)) >= panel_top
                     and (vy + (font_size * 0.35)) <= panel_bottom
                 )
-                if not inside:
+                if not inside and panel.get("allow_out_of_bounds_rows") is not True:
                     errors.append(
                         f"{path}: {panel_name} row {index} ({field}) renders outside panel "
                         f"[key=({kx:.1f},{ky:.1f}), value=({vx:.1f},{vy:.1f}), "

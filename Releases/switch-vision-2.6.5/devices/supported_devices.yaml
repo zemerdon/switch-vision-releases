@@ -936,8 +936,8 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: dell-n2128px-on
-  calibration_profile: default_cisco_48_port
-  default_faceplate: faceplates/48rj45-4sfp.png
+  calibration_profile: dell_28rj45_2sfp
+  default_faceplate: faceplates/dell-28-rj45-2sfp.png
   optional_faceplates: []
   tested_firmware:
   - 6.7.1.27
@@ -955,8 +955,8 @@ devices:
     interface topology.
   - POWER-ETHERNET-MIB discovery exposes PoE candidates; detailed per-port PoE presentation
     remains pending contributor validation.
-  - The generic 48 RJ45 + 4 SFP visual is used temporarily with the real card port
-    counts constrained to 28 RJ45 + 2 uplinks.
+  - The dedicated Dell 28 RJ45 + 2 SFP+ faceplate and owner-calibrated factory
+    geometry are selected by default for this exact model.
   - Rendered dashboard, VLAN/trunk semantics and final Dell faceplate calibration
     remain pending before promotion beyond Experimental.
   - The contribution ID community validation collides with an older Zyxel contribution
@@ -971,9 +971,9 @@ devices:
     stack: contribution_confirmed_two_member_interface_numbering
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/48rj45-4sfp.png
+    recommended_faceplate: faceplates/dell-28-rj45-2sfp.png
     optional_faceplates: []
-    calibration_profile: default_cisco_48_port
+    calibration_profile: dell_28rj45_2sfp
     canvas:
       width: 2048
       height: 448
