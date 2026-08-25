@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import argparse
+import importlib.util
 import json
 import os
 import re
@@ -13,6 +14,14 @@ import zipfile
 import yaml
 
 PROJECT_ROOT = Path(__file__).resolve().parent
+_FACEPLATE_CANVAS_HELPER = PROJECT_ROOT / "src" / "faceplate_native_canvas.py"
+_FACEPLATE_CANVAS_SPEC = importlib.util.spec_from_file_location("_switch_vision_faceplate_native_canvas", _FACEPLATE_CANVAS_HELPER)
+if _FACEPLATE_CANVAS_SPEC is None or _FACEPLATE_CANVAS_SPEC.loader is None:
+    raise RuntimeError(f"Unable to load faceplate canvas helper: {_FACEPLATE_CANVAS_HELPER}")
+_FACEPLATE_CANVAS_MODULE = importlib.util.module_from_spec(_FACEPLATE_CANVAS_SPEC)
+_FACEPLATE_CANVAS_SPEC.loader.exec_module(_FACEPLATE_CANVAS_MODULE)
+normalize_faceplate_factory_calibrations = _FACEPLATE_CANVAS_MODULE.normalize_faceplate_factory_calibrations
+render_space_calibration = _FACEPLATE_CANVAS_MODULE.render_space_calibration
 ROOT = PROJECT_ROOT
 SRC = PROJECT_ROOT / "src"
 RELEASES = PROJECT_ROOT / "Releases"
@@ -528,6 +537,7 @@ def validate_factory_status_panel_bounds(base: Path, source_layout: bool = False
         except (OSError, json.JSONDecodeError) as exc:
             errors.append(f"{path}: invalid JSON: {exc}")
             continue
+        data = render_space_calibration(data)
         ui = data.get("ui") if isinstance(data, dict) else None
         ui = ui if isinstance(ui, dict) else {}
 
@@ -965,6 +975,7 @@ def patch_source_versions(version: str) -> None:
     patch_current_release_metadata(version)
     sync_authoritative_documents()
     validate_factory_calibration_privacy(PROJECT_ROOT, source_layout=True)
+    normalize_faceplate_factory_calibrations(SRC / "calibration", SRC / "faceplates")
     validate_factory_status_panel_bounds(PROJECT_ROOT, source_layout=True)
     sync_primary_factory_calibration()
     sync_faceplate_factory_calibrations()
@@ -1924,6 +1935,12 @@ def build(version: str, gold: bool = False) -> tuple[Path, Path]:
         source = ROOT / filename
         if source.exists():
             shutil.copy2(source, release_dir / filename)
+
+    # Build-time faceplate coordinate migration is authoritative source material.
+    # Keep it byte-identical in the release tree so src/release parity remains exact.
+    faceplate_canvas_helper = SRC / "faceplate_native_canvas.py"
+    if faceplate_canvas_helper.exists():
+        shutil.copy2(faceplate_canvas_helper, release_dir / faceplate_canvas_helper.name)
 
     patch_js_version(release_dir / "js" / "switch-vision.js", version)
     component_dir = release_dir / "custom_components" / "switch_vision"

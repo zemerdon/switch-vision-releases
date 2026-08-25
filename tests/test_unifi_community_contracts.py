@@ -1,11 +1,18 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
+_HELPER_PATH = ROOT / "src" / "faceplate_native_canvas.py"
+_HELPER_SPEC = importlib.util.spec_from_file_location("_switch_vision_test_faceplate_native_canvas", _HELPER_PATH)
+assert _HELPER_SPEC is not None and _HELPER_SPEC.loader is not None
+_HELPER_MODULE = importlib.util.module_from_spec(_HELPER_SPEC)
+_HELPER_SPEC.loader.exec_module(_HELPER_MODULE)
+render_space_calibration = _HELPER_MODULE.render_space_calibration
 SOURCE = ROOT / "src" / "devices" / "supported_devices.yaml"
 GENERATED = ROOT / "src" / "devices" / "supported_devices.json"
 CALIBRATION = ROOT / "src" / "calibration"
@@ -86,6 +93,7 @@ small_faceplates = {
 }
 for filename, contract in small_faceplates.items():
     calibration = json.loads((CALIBRATION / filename).read_text(encoding="utf-8"))
+    rendered_calibration = render_space_calibration(calibration)
     assert calibration["profile"] == contract["profile"], filename
     assert calibration["model"] == contract["model"], filename
     assert calibration["image"]["file"] == contract["image"], filename
@@ -96,7 +104,7 @@ for filename, contract in small_faceplates.items():
     assert calibration["management"]["switch_ip"] == "", filename
     assert calibration["sfp"] == {}, filename
     assert list(calibration["ports"]) == [str(index) for index in range(1, contract["ports"] + 1)], filename
-    assert [calibration["ports"][str(index)]["center"] for index in range(1, contract["ports"] + 1)] == contract["centers"], filename
+    assert [rendered_calibration["ports"][str(index)]["center"] for index in range(1, contract["ports"] + 1)] == contract["centers"], filename
     assert (ROOT / "src" / contract["image"]).is_file(), filename
 
 authoritative_faceplates = {

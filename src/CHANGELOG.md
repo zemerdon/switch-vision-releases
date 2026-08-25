@@ -1,3 +1,10 @@
+## v2.6.6 — Faceplate native-canvas normalization
+
+- Audit every bundled factory faceplate against the PNG's real native dimensions and the legacy 2048 × 448 overlay coordinate space.
+- Normalize affected factory profiles and rendering so native artwork, interactive geometry and text preserve their existing on-screen appearance without negative/out-of-canvas compensation coordinates.
+- Keep legacy/custom saved calibration profiles on the existing 2048 × 448 compatibility path unless they explicitly opt into the normalized native-image coordinate space.
+- Add permanent coordinate-space regressions before merge; no hardware mapping, connector, PoE, polling, telemetry or support-status contracts change.
+
 ## v2.6.5 — Dell faceplate and Cisco 3560CG factory geometry
 
 - Add the dedicated `dell-28-rj45-2sfp.png` faceplate and owner-calibrated factory profile for the Dell N2128PX-ON while keeping the model **Experimental**.
