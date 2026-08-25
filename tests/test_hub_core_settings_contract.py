@@ -98,4 +98,17 @@ assert 'CONF_DISCOVERY_TEXT_SIZE: (UI_TEXT_SIZE_MIN_PX, UI_TEXT_SIZE_MAX_PX)' in
 assert 'CONF_INSTALLER_TEXT_SIZE: (UI_TEXT_SIZE_MIN_PX, UI_TEXT_SIZE_MAX_PX)' in INIT
 assert 'vol.In(\n                                list(range(UI_TEXT_SIZE_MIN_PX, UI_TEXT_SIZE_MAX_PX + 1))' in FLOW
 
+# Core 2.6.4 owner-approved factory presentation defaults. These are the
+# authoritative reset/new-entry values consumed by both the Hub and native
+# Configure fallback; do not duplicate fake defaults in Discovery.
+for factory_default in (
+    'CONF_DISCOVERY_UI_DENSITY: "dense"',
+    'CONF_DISCOVERY_TEXT_SIZE: 12',
+    'CONF_DISCOVERY_CONTENT_WIDTH: "full"',
+    'CONF_INSTALLER_UI_DENSITY: "comfortable"',
+    'CONF_INSTALLER_TEXT_SIZE: 12',
+    'CONF_INSTALLER_CONTENT_WIDTH: "wide"',
+):
+    assert factory_default in INIT, factory_default
+
 print('Core Hub settings contract: PASS')

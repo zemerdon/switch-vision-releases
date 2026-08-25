@@ -1,3 +1,11 @@
+## v2.6.4 — Hub presentation factory defaults
+
+- Make the owner-approved Hub presentation values the Core factory/reset defaults: Discovery **Dense / 12 px / Full** and Installer **Comfortable / 12 px / Wide**.
+- Keep Core as the single authoritative owner of these preferences so Discovery and Installer consume the same persisted `ui-preferences.json` values instead of inventing local defaults.
+- Preserve the full 10–20 px selectable range, legacy text-size migration, existing saved user choices and all unrelated Core settings.
+- Add permanent regression coverage for all six factory presentation defaults.
+- No hardware mapping, port geometry, connector, PoE, polling, telemetry, support-status or privacy contract changes.
+
 ## v2.6.3 — Explicit 10–20 px app text sizing
 
 - Replace the legacy Discovery/Installer **Normal / Small** text-size options with explicit **10–20 px** choices in 1 px steps.
