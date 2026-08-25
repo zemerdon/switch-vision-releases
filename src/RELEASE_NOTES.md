@@ -1,4 +1,12 @@
-# Switch Vision Core v2.6.6
+# Switch Vision Core v2.6.7
+
+Core 2.6.7 fixes a status-panel telemetry bug found by the Functional Integrity Audit. When fan or power-supply telemetry is missing, unavailable or unknown, Switch Vision now displays an unknown value (`—`) instead of synthesizing a healthy `OK` state.
+
+Real fan and PSU entity values continue to pass through unchanged. A permanent regression protects both missing-telemetry behavior and the existing entity-candidate paths. No geometry, device mapping, connector, PoE, polling, support-status or other telemetry contract changes.
+
+---
+
+# Previous release: Switch Vision Core v2.6.6
 
 Core 2.6.6 normalizes bundled faceplate rendering to each artwork file's real native canvas while preserving the current on-screen appearance. A permanent audit records native PNG dimensions and the exact legacy-to-native transform for every factory faceplate before migration. Legacy/custom saved profiles remain on the 2048 × 448 compatibility path unless explicitly marked as normalized.
 
