@@ -1,9 +1,10 @@
-## v2.6.7 — Missing fan/PSU telemetry truthfulness
+## v2.6.7 — Functional integrity fixes
 
 - Fix the status panel so absent, unknown or unavailable fan and PSU telemetry displays `—` instead of a synthesized healthy `OK` state.
 - Preserve real fan/PSU entity values and existing candidate resolution unchanged.
-- Add a permanent regression for missing-telemetry truthfulness.
-- No geometry, device mapping, connector, PoE, polling or support-status contracts change.
+- Correct WS-C2960X-24TS-L and WS-C3560CG-8PC-S from Community Validated back to Experimental because their own live-validation records still contain pending/candidate checks.
+- Preserve both models' existing hardware mapping, geometry, dual-personality semantics and polling behavior.
+- Add permanent regressions for missing-telemetry truthfulness and these support-status evidence boundaries.
 
 ## v2.6.6 — Faceplate native-canvas normalization
 

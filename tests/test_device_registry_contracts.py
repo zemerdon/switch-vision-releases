@@ -18,10 +18,8 @@ class DeviceRegistryContractTests(unittest.TestCase):
             if isinstance(item, dict)
         }
 
-    def test_real_hardware_promotions_remain_community_validated(self) -> None:
+    def test_evidence_backed_real_hardware_promotions_remain_community_validated(self) -> None:
         for model in {
-            "WS-C2960X-24TS-L",
-            "WS-C3560CG-8PC-S",
             "SG500X-24",
             "S5735-L8P4X-A1",
             "S5720-12TP-LI-AC",
