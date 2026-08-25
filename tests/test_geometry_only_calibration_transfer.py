@@ -30,9 +30,14 @@ def main() -> None:
     assert node, "Node.js is required for the geometry transfer behavior regression"
 
     prefix = r'''
+"use strict";
 const SV_VERSION = "regression";
-function cloneCalibrationData(value) {
+function clonePlainData(value) {
+  if (value === undefined) return undefined;
   return JSON.parse(JSON.stringify(value));
+}
+function cloneCalibrationData(value) {
+  return ensureCalibrationUi(clonePlainData(value));
 }
 function ensureCalibrationUi(cal) {
   cal.image = cal.image || {};
@@ -157,6 +162,17 @@ assert(!("master" in exported.geometry.image), "export leaked image.master");
 assert(!("file" in exported.geometry.ui.logo), "export leaked logo.file");
 assert(!("source" in exported.geometry.ui.logo), "export leaked logo.source");
 assert(!("faceplate" in exported.geometry.ui), "export included faceplate artwork block");
+assert(exported.geometry.image.width === 2048 && exported.geometry.image.height === 448, "strict-mode export lost canvas dimensions");
+assert(same(exported.geometry.status_leds.STAT, [200, 20]), "strict-mode export corrupted status LED coordinates");
+assert(!("ui" in exported.geometry.ui.status_panel.fields), "geometry export polluted status-panel fields with calibration UI data");
+assert(!("stack" in exported.geometry.ui.status_panel.fields), "geometry export polluted status-panel fields with calibration stack data");
+assert(!("management" in exported.geometry.ui.status_panel.fields), "geometry export polluted status-panel fields with calibration management data");
+
+const roundTrip = applyGeometryTransferData(current, exported);
+assert(roundTrip.valid === true, "exported geometry could not be imported back into the same calibration");
+assert(same(roundTrip.calibration.ui.faceplate, current.ui.faceplate), "geometry round-trip polluted or changed faceplate presentation");
+assert(same(roundTrip.calibration.status_leds.STAT, [200, 20]), "geometry round-trip polluted status LED coordinates");
+assert(Object.keys(roundTrip.calibration.status_leds.STAT).every((key) => key === "0" || key === "1"), "geometry round-trip added non-coordinate properties to a status LED");
 
 const mismatch = cloneCalibrationData(malicious);
 mismatch.geometry.ports["2"] = cloneCalibrationData(mismatch.geometry.ports["1"]);
