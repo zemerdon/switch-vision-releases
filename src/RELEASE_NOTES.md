@@ -1,4 +1,12 @@
-# Switch Vision Core v2.6.5
+# Switch Vision Core v2.6.6
+
+Core 2.6.6 normalizes bundled faceplate rendering to each artwork file's real native canvas while preserving the current on-screen appearance. A permanent audit records native PNG dimensions and the exact legacy-to-native transform for every factory faceplate before migration. Legacy/custom saved profiles remain on the 2048 × 448 compatibility path unless explicitly marked as normalized.
+
+The final migration will reject negative or out-of-canvas interactive factory geometry and will preserve hardware mapping, connector, PoE, polling, telemetry and support-status contracts.
+
+---
+
+# Previous release: Switch Vision Core v2.6.5
 
 Core 2.6.5 adds the dedicated `dell-28-rj45-2sfp.png` faceplate and owner-calibrated factory presentation for the Dell N2128PX-ON. The artwork is deliberately Dell-only and is guarded so it cannot be assigned to non-Dell hardware or to Dell models above **28 RJ45 ports / 2 uplinks**. The N2128PX-ON remains **Experimental**; artwork and calibration do not promote hardware support status.
 
