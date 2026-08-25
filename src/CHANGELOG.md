@@ -1,3 +1,10 @@
+## v2.6.7 — Missing fan/PSU telemetry truthfulness
+
+- Fix the status panel so absent, unknown or unavailable fan and PSU telemetry displays `—` instead of a synthesized healthy `OK` state.
+- Preserve real fan/PSU entity values and existing candidate resolution unchanged.
+- Add a permanent regression for missing-telemetry truthfulness.
+- No geometry, device mapping, connector, PoE, polling or support-status contracts change.
+
 ## v2.6.6 — Faceplate native-canvas normalization
 
 - Audit every bundled factory faceplate against the PNG's real native dimensions and the legacy 2048 × 448 overlay coordinate space.

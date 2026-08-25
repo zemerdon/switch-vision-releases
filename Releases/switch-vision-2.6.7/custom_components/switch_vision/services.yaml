@@ -1,0 +1,82 @@
+save_calibration:
+  name: Save calibration
+  description: Save a Switch Vision calibration profile into Home Assistant storage.
+  fields:
+    profile:
+      name: Profile
+      description: Calibration profile name, usually the switch member such as SW1.
+      required: true
+      selector:
+        text:
+    calibration:
+      name: Calibration JSON
+      description: Calibration profile JSON object or JSON string exported by the Switch Vision card.
+      required: true
+      selector:
+        object:
+    mirror_to_base:
+      name: Activate faceplate for switch
+      description: Internal compatibility flag. Marks the saved faceplate profile active for the stable switch scope without copying calibration content into the base profile.
+      required: false
+      default: false
+      selector:
+        boolean:
+
+delete_calibration:
+  name: Delete calibration
+  description: Delete a saved Switch Vision calibration profile and clear its active-faceplate pointer when applicable.
+  fields:
+    profile:
+      name: Profile
+      description: Calibration profile name to delete.
+      required: true
+      selector:
+        text:
+
+reset_calibrations:
+  name: Reset calibrations
+  description: Reset saved calibration profiles for one switch, one dashboard scope, or every Switch Vision switch.
+  fields:
+    scope:
+      name: Scope
+      description: Reset one switch, the current native/custom namespace, or every saved calibration.
+      required: true
+      selector:
+        select:
+          options:
+            - switch
+            - namespace
+            - native
+            - custom
+            - all
+    scope_prefix:
+      name: Scope prefix
+      description: Internal namespace prefix used for scoped Reset All (native_ or custom_).
+      required: false
+      selector:
+        text:
+    base_profile:
+      name: Base profile
+      description: Base switch profile to reset when scope is switch.
+      required: false
+      selector:
+        text:
+
+reload_calibrations:
+  name: Reload calibrations
+  description: Fire a Switch Vision calibration reload event so dashboard cards can refresh profile data.
+
+set_ui_density:
+  name: Set UI density
+  description: Update the Switch Vision Discovery/Hub management UI density. Dashboard cards are not affected.
+  fields:
+    density:
+      name: Density
+      description: Management UI density for Switch Vision Hub and Discovery views.
+      required: true
+      selector:
+        select:
+          options:
+            - comfortable
+            - compact
+            - dense
