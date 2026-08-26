@@ -1,0 +1,31 @@
+[align=center]
+[size=200][b]Reference — Installer, Discovery, SNMP2MQTT & UniFi2MQTT[/b][/size]
+[/align]
+[hr]
+Switch Vision is a multi-component platform. Components deliberately have independent version numbers.
+
+[notice]Do not expect version numbers to match. Switch Vision Installer is the normal authority for installed/latest component status.[/notice]
+
+[size=150][b]Switch Vision Installer[/b][/size]
+Repository: https://github.com/zemerdon/switch-vision-installer
+Handles Core installation/updates, supporting app registration, component status, dependency-aware Update All, recovery backups, validated restore operations and restart requirements.
+
+[size=150][b]Switch Vision Discovery / Hub[/b][/size]
+Discovery performs current hardware collection, exact-model detection and configuration generation.
+[code]Validate → Collect → Identify → Generate telemetry → Generate dashboard → Verify handoff → Complete[/code]
+[b]Switch Name (Used internally only)[/b] is the stable machine identity. [b]Display name[/b] is the friendly card title.
+
+[size=150][b]SNMP2MQTT[/b][/size]
+Authoritative Discovery-generated handoff:
+[code]/share/switch_vision/generated-snmp2mqtt.yaml[/code]
+Do not maintain a second active copied version of the same generated configuration.
+
+[size=150][b]UniFi2MQTT[/b][/size]
+UniFi2MQTT is optional and provides a read-only path from the official UniFi Network Integration API.
+Configure it from:
+[code]Switch Vision Hub → UniFi2MQTT Settings[/code]
+Secret values are stored through Home Assistant Supervisor and are not read back into the browser.
+Switch Vision does not fabricate missing UniFi telemetry. SNMP2MQTT can remain the source for traffic data the UniFi API does not expose suitably.
+
+[size=150][b]Configuration ownership[/b][/size]
+The Hub provides one management surface, but each component retains ownership of its authoritative settings. Partial cross-component save failures are reported rather than hidden.
