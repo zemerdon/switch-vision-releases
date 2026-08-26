@@ -1,0 +1,106 @@
+{
+  "schema": "switch-vision-forum-desired-state-v1",
+  "revision": 1,
+  "forum_impact": "update",
+  "release_context": {
+    "core": "2.6.8",
+    "core_gold": "2.5.0",
+    "discovery": "2.3.12",
+    "installer": "2.1.32",
+    "snmp_app": "0.9.18",
+    "snmp_engine": "0.9.13",
+    "unifi": "2.0.50"
+  },
+  "posts": [
+    {
+      "name": "welcome",
+      "forum_id": 25,
+      "topic_id": 5,
+      "post_id": 5,
+      "subject": "Welcome to Switch Vision",
+      "body_path": "forum/topics/05_Welcome_to_Switch_Vision.bbcode",
+      "body_sha256": "53d3535a562813ec9b7b1c36b6b862bfbbfb1d9e55e567d61a102858a1e90fd0"
+    },
+    {
+      "name": "support_request",
+      "forum_id": 11,
+      "topic_id": 71,
+      "post_id": 71,
+      "subject": "Switch Vision Support Request Template",
+      "body_path": "forum/topics/71_Support_Request_Template.bbcode",
+      "body_sha256": "ec7ceea32f3623a1ee1a0f50513e41a58f48eef83ad48379061970f9a43439f1"
+    },
+    {
+      "name": "start_here",
+      "forum_id": 54,
+      "topic_id": 81,
+      "post_id": 81,
+      "subject": "Start Here — Install & Update Switch Vision",
+      "body_path": "forum/topics/81_Start_Here_Install_Update.bbcode",
+      "body_sha256": "72cb95bbec35de9b3bb2433e668cdf18b52a79c0ae1630eb1bf9b9943a6f21dd"
+    },
+    {
+      "name": "using",
+      "forum_id": 54,
+      "topic_id": 83,
+      "post_id": 83,
+      "subject": "Using Switch Vision",
+      "body_path": "forum/topics/83_Using_Switch_Vision.bbcode",
+      "body_sha256": "3b411ed1fc4df97afd1a2a5faaf63bb04afd324b25a40d9287fdfdd06587a308"
+    },
+    {
+      "name": "support_my_switch",
+      "forum_id": 54,
+      "topic_id": 85,
+      "post_id": 85,
+      "subject": "Support My Switch",
+      "body_path": "forum/topics/85_Support_My_Switch.bbcode",
+      "body_sha256": "a422fbe83165d93487832e964e3fb6ac3a91dd39abc6d46442062f8210889724"
+    },
+    {
+      "name": "troubleshooting",
+      "forum_id": 11,
+      "topic_id": 86,
+      "post_id": 86,
+      "subject": "Troubleshooting & Recovery",
+      "body_path": "forum/topics/86_Troubleshooting_Recovery.bbcode",
+      "body_sha256": "d98243d3f5d2272b3980d901f0ee1c43ad561ef1ad7e19782028f285b5633c61"
+    },
+    {
+      "name": "core_reference",
+      "forum_id": 54,
+      "topic_id": 95,
+      "post_id": 95,
+      "subject": "Reference — Core, Dashboard & Settings",
+      "body_path": "forum/topics/95_Reference_Core_Dashboard_Settings.bbcode",
+      "body_sha256": "23f59b2181d760947e9dd6131d2bb88ef3f1c3072ffa45e7a644aa27c28b4dc6"
+    },
+    {
+      "name": "components_reference",
+      "forum_id": 54,
+      "topic_id": 96,
+      "post_id": 96,
+      "subject": "Reference — Installer, Discovery, SNMP2MQTT & UniFi2MQTT",
+      "body_path": "forum/topics/96_Reference_Components.bbcode",
+      "body_sha256": "4cafcf818103c80db0eaa3ce639d5ab36fc5e116e0d8daa51939c00cb8e2bc1f"
+    },
+    {
+      "name": "advanced_yaml",
+      "forum_id": 54,
+      "topic_id": 97,
+      "post_id": 97,
+      "subject": "Advanced — Custom Lovelace & YAML Dashboard",
+      "body_path": "forum/topics/97_Advanced_Custom_Lovelace_YAML.bbcode",
+      "body_sha256": "a917b53ad36f0c2b022512b9e071b2f6618275125811452fa735133486827dde"
+    },
+    {
+      "name": "calibration",
+      "forum_id": 54,
+      "topic_id": 99,
+      "post_id": 99,
+      "subject": "Calibration, Faceplates & Card Configuration — Complete Guide",
+      "body_path": "forum/topics/99_Calibration_Faceplates_Card_Configuration.bbcode",
+      "body_sha256": "97b441006607d0e32ac3225597f5037338baa374d48244e5c0f8a0dc8685c8a0"
+    }
+  ]
+}
