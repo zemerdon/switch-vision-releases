@@ -18,20 +18,60 @@ class DeviceRegistryContractTests(unittest.TestCase):
             if isinstance(item, dict)
         }
 
-    def test_partial_real_hardware_validation_remains_experimental_until_full_checklist(self) -> None:
+    def test_completed_real_hardware_checklist_promotes_exact_models(self) -> None:
         expected = {
-            "SG500X-24": ("community_confirmed_ports_1_24", "community_confirmed_four_uplink_positions"),
-            "S5720-12TP-LI-AC": ("community_confirmed_ports_1_8", "community_confirmed_ports_9_12_1g_sfp_link_and_speed"),
-            "S5735-L8P4X-A1": ("community_confirmed_two_devices_ports_1_8", "community_confirmed_two_devices_four_10g_sfp_plus_positions_and_link_speed"),
+            "SG500X-24": {
+                "mapping_profile": "cisco-sg500x-24-24p-4x10g",
+                "rj45": 24,
+                "uplinks": 4,
+                "gigabit_sfp": 0,
+                "ten_gigabit_sfp_plus": 4,
+                "rj45_validation": "community_confirmed_ports_1_24",
+                "poe_validation": "not_applicable",
+                "uplink_validation": "community_confirmed_four_uplink_positions",
+                "stack_validation": "pending",
+            },
+            "S5720-12TP-LI-AC": {
+                "mapping_profile": "huawei-s5720-12tp-li-ac",
+                "rj45": 8,
+                "uplinks": 4,
+                "gigabit_sfp": 4,
+                "ten_gigabit_sfp_plus": 0,
+                "rj45_validation": "community_confirmed_ports_1_8",
+                "poe_validation": "not_applicable_not_exposed",
+                "uplink_validation": "community_confirmed_ports_9_12_1g_sfp_link_and_speed",
+                "stack_validation": "not_applicable",
+            },
+            "S5735-L8P4X-A1": {
+                "mapping_profile": "huawei-s5735-l8p4x-a1",
+                "rj45": 8,
+                "uplinks": 4,
+                "gigabit_sfp": 0,
+                "ten_gigabit_sfp_plus": 4,
+                "rj45_validation": "community_confirmed_two_devices_ports_1_8",
+                "poe_validation": "community_confirmed",
+                "uplink_validation": "community_confirmed_two_devices_four_10g_sfp_plus_positions_and_link_speed",
+                "stack_validation": "not_applicable",
+            },
         }
-        for model, (rj45_validation, uplink_validation) in expected.items():
+        for model, contract in expected.items():
             device = self.models[model]
-            self.assertEqual(device.get("status"), "experimental", model)
-            self.assertEqual((device.get("visuals") or {}).get("status"), "experimental", model)
+            self.assertEqual(device.get("status"), "community_validated", model)
+            self.assertEqual(device.get("last_validated_version"), "2.6.7", model)
+            self.assertEqual(device.get("mapping_profile"), contract["mapping_profile"], model)
+            ports = device.get("ports") or {}
+            for field in ("rj45", "uplinks", "gigabit_sfp", "ten_gigabit_sfp_plus"):
+                self.assertEqual(ports.get(field), contract[field], (model, field))
             validation = device.get("validation") or {}
-            self.assertEqual(validation.get("rj45_mapping"), rj45_validation, model)
-            self.assertEqual(validation.get("uplinks"), uplink_validation, model)
-            self.assertEqual(validation.get("system_sensors"), "pending", model)
+            self.assertEqual(validation.get("rj45_mapping"), contract["rj45_validation"], model)
+            self.assertEqual(validation.get("poe"), contract["poe_validation"], model)
+            self.assertEqual(validation.get("system_sensors"), "community_confirmed", model)
+            self.assertEqual(validation.get("uplinks"), contract["uplink_validation"], model)
+            self.assertEqual(validation.get("stack"), contract["stack_validation"], model)
+            self.assertEqual((device.get("visuals") or {}).get("status"), "community_validated", model)
+            notes = "\n".join(str(note) for note in device.get("notes") or [])
+            self.assertIn("link/activity", notes, model)
+            self.assertIn("rendered alignment", notes, model)
 
         payload = json.loads(REGISTRY.read_text(encoding="utf-8"))
         community_definition = str((payload.get("support_statuses") or {}).get("community_validated") or "")
