@@ -1,4 +1,14 @@
-# Switch Vision Core v2.6.8
+# Switch Vision Core v2.6.9
+
+Core 2.6.9 promotes Cisco SG500X-24, Huawei S5720-12TP-LI-AC, and Huawei S5735-L8P4X-A1 to **Community Validated** after the remaining applicable real-hardware checks were completed. The completed evidence covers physical mapping, port selection, link/activity and speed presentation, optical positions, applicable PoE and sensor/status information, and rendered alignment.
+
+The field confirmation was performed on Core 2.6.7 and is recorded as such. Core 2.6.8 changed these models' support metadata and validation contract only; it did not change their runtime port mapping, connector ordering, polling or speed behavior. The SG500X promotion does not expand separately unvalidated stack-specific, VLAN-presentation or sustained-traffic scope.
+
+All existing exact-model topology and connector contracts remain unchanged, including the S5720's eight RJ45 plus four 1G SFP positions and the S5735's eight RJ45 plus four 10G SFP+ positions. Permanent regression coverage locks both the promotions and those existing physical contracts.
+
+---
+
+# Previous release: Switch Vision Core v2.6.8
 
 Core 2.6.8 corrects three support-status records whose Community Validated label was stronger than their complete recorded validation evidence. Cisco SG500X-24, Huawei S5720-12TP-LI-AC, and Huawei S5735-L8P4X-A1 return to **Experimental** until the remaining applicable checklist items are completed.
 

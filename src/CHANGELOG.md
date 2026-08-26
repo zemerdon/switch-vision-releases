@@ -1,3 +1,12 @@
+## v2.6.9 — Community validation evidence completion
+
+- Promote Cisco SG500X-24, Huawei S5720-12TP-LI-AC, and Huawei S5735-L8P4X-A1 from Experimental to Community Validated after the remaining applicable real-hardware checklist items were confirmed.
+- Preserve all existing exact-model port counts, connector types, mapping profiles, uplink ordering, speed semantics and fallback-faceplate geometry.
+- Record the field-validation baseline accurately as Core 2.6.7; Core 2.6.8 changed support metadata/contracts only and did not alter these models' runtime mapping or polling behaviour.
+- Keep SG500X stack-specific operation, VLAN presentation and sustained-traffic testing separately unvalidated rather than expanding the Community Validated scope beyond the evidence.
+- Add a permanent registry regression locking the three promotions while also protecting their existing physical mapping and connector contracts.
+- No polling, Discovery selection, port ordering, telemetry synthesis or runtime hardware mapping behavior changes.
+
 ## v2.6.8 — Support-status evidence alignment
 
 - Correct SG500X-24, Huawei S5720-12TP-LI-AC, and Huawei S5735-L8P4X-A1 from Community Validated back to Experimental because their complete Community Validated checklists are not yet recorded.
