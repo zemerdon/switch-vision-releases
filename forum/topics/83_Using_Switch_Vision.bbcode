@@ -1,0 +1,61 @@
+[align=center]
+[size=200][b]Using Switch Vision[/b][/size]
+[color=#5B8DEF][i]Discovery, dashboards, devices, settings and day-to-day operation[/i][/color]
+[/align]
+[hr]
+[size=150][b]Switch Vision Hub[/b][/size]
+Switch Vision Discovery provides the management interface called [b]Switch Vision Hub[/b].
+
+The Hub is the normal place to manage:
+[list]
+[*]Discovery
+[*]Devices
+[*]Switch Vision Settings
+[*]Calibration Profiles
+[*]Diagnostics
+[*]Maintenance
+[*]Support My Switch
+[*]Configuration import/export
+[*]UniFi2MQTT settings when installed
+[/list]
+
+[size=150][b]Running Discovery[/b][/size]
+Discovery only starts when you select [b]Run Discovery[/b].
+[code]1. Validates configured switches
+2. Runs the required collection
+3. Identifies exact models and interfaces
+4. Generates SNMP2MQTT configuration when required
+5. Generates dashboard cards
+6. Verifies the runtime handoff
+7. Completes[/code]
+Use [b]Show Debug[/b] when troubleshooting. Communities and other secrets remain masked from normal output.
+
+[size=150][b]Native dashboard[/b][/size]
+The recommended dashboard is the automatic [b]Switch Vision[/b] Home Assistant sidebar panel.
+If a refresh fails, the existing dashboard remains visible.
+
+[size=150][b]Two possible sidebar entries[/b][/size]
+[list]
+[*][b]Native Switch Vision panel[/b] — automatic generated dashboard
+[*][b]Switch Vision Lovelace dashboard[/b] — user-created dashboard using the Switch Vision Community strategy
+[/list]
+Configure them under:
+[code]Settings → Devices & services → Switch Vision → Configure[/code]
+
+[size=150][b]Selecting a switch model[/b][/size]
+Leave [b]Switch Model[/b] on [b]Auto-detect[/b] unless testing a specific compatibility override.
+A recognised exact model receives its registered mapping, calibration profile and recommended faceplate. Unknown hardware receives a visible generic fallback.
+A manually selected registered model is an [b]experimental compatibility override[/b]; the actually detected model is still retained.
+
+[size=150][b]Devices and support state[/b][/size]
+Support state is based on applicable real evidence such as detection, physical port mapping, link/speed, uplinks/media, PoE, system sensors, stack behaviour and rendered alignment.
+
+[size=150][b]Settings[/b][/size]
+The Hub is the normal settings centre for Switch Vision Core, Discovery and SNMP2MQTT. Each component still owns its authoritative configuration.
+Secret values such as SNMP communities, MQTT passwords and API keys are not read back into the browser.
+
+[size=150][b]Maintenance[/b][/size]
+Maintenance provides guarded recovery and diagnostic tools. Do not remove MQTT entities, switch configuration or Discovery data as a routine troubleshooting step.
+
+[size=150][b]Management themes[/b][/size]
+Switch Vision Hub management themes change the Hub appearance only. They do not alter switch cards, faceplates, LEDs or Calibration geometry.
