@@ -1,0 +1,22 @@
+[align=center]
+[size=200][b]Advanced — Custom Lovelace & YAML Dashboard[/b][/size]
+[color=#5B8DEF][i]For custom layouts, development and users who deliberately want manual dashboard control[/i][/color]
+[/align]
+[hr]
+[notice]The automatic Native Switch Vision sidebar dashboard is the recommended workflow. Manual Lovelace/YAML remains supported as an advanced fallback.[/notice]
+
+Discovery writes generated card configuration to:
+[code]/share/switch_vision/generated-dashboard-card.yaml[/code]
+
+A manual dashboard must register:
+[code]/local/switch-vision/js/switch-vision.js?v=<current-core-version>[/code]
+Generated manual layouts using Layout Card also require:
+[code]/hacsfiles/lovelace-layout-card/layout-card.js[/code]
+The Native panel does not require either manual resource entry.
+
+[size=150][b]Typical card type[/b][/size]
+[code]type: custom:switch-vision-3650[/code]
+Despite the historical card-type name, model-aware registry information determines the actual supported switch presentation.
+
+[size=150][b]Do not hand-maintain generated identity[/b][/size]
+Discovery owns generated entity prefixes, model information and generated card bindings. Keep manual custom copies separate from Discovery's generated file.
