@@ -96,6 +96,7 @@ def validate(manifest_path: Path, base_path: Path | None = None) -> None:
         raise SystemExit("manifest must contain the complete exact managed-post set")
 
     seen: set[str] = set()
+    hash_errors: list[str] = []
     for row in rows:
         if not isinstance(row, dict):
             raise SystemExit("post row must be an object")
@@ -125,11 +126,14 @@ def validate(manifest_path: Path, base_path: Path | None = None) -> None:
         body = body_path.read_text(encoding="utf-8")
         privacy_guard(body, expected_path)
         actual = body_sha(body)
+        print(f"{name}: body_sha256={actual}")
         if actual != declared:
-            raise SystemExit(f"{name}: body hash mismatch: declared {declared}, actual {actual}")
+            hash_errors.append(f"{name}: declared {declared}, actual {actual}")
 
     if seen != set(ALLOWED):
         raise SystemExit("managed target set mismatch")
+    if hash_errors:
+        raise SystemExit("body hash mismatch(es):\n" + "\n".join(hash_errors))
 
     if base_path is not None and base_path.exists():
         base_raw = base_path.read_bytes()
