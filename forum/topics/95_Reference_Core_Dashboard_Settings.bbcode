@@ -1,0 +1,30 @@
+[align=center]
+[size=200][b]Reference — Core, Dashboard & Settings[/b][/size]
+[/align]
+[hr]
+[size=150][b]Core[/b][/size]
+Switch Vision Core provides the Home Assistant integration, automatic Native panel, card runtime, dashboard strategy, asset handling, Calibration backend and shared presentation settings.
+Current public Core: [b]v2.6.8[/b]
+Protected Gold baseline: [b]v2.5.0 Gold[/b]
+
+[size=150][b]Integration options[/b][/size]
+Open:
+[code]Settings → Devices & services → Switch Vision → Configure[/code]
+Current options include Native/Lovelace sidebar visibility, Calibration buttons, dashboard/card headers, Hub/Installer presentation and Activity LED behaviour.
+
+[size=150][b]Native dashboard[/b][/size]
+The Native panel is the recommended dashboard. New cards are prepared before replacing the visible set; a failed refresh leaves the existing cards active.
+
+[size=150][b]Activity LEDs[/b][/size]
+Activity intensity is based on traffic relative to negotiated link speed. Controls include Low/Normal/High/Custom sensitivity, Medium/Fast thresholds, Slow/Medium/Fast blink periods, hold time and hysteresis.
+
+[size=150][b]Status information[/b][/size]
+Depending on the hardware and available telemetry, Switch Vision can display model, vendor, management address, CPU, temperature, PoE, uptime, OS, firmware, serial, stack state, fans and power supplies.
+Missing telemetry is shown as unknown rather than invented.
+
+[size=150][b]Port details[/b][/size]
+Depending on source and platform, selected-port information can include VLAN, mode, description, link, RX and TX. Only telemetry actually available from the selected data source should be presented.
+
+[size=150][b]Support-status rule[/b][/size]
+The software Gold baseline and hardware support level are independent.
+[url=https://switch-vision.zemerdon.com/viewtopic.php?t=74]Supported Devices Index[/url]
