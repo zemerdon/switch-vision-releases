@@ -492,7 +492,7 @@
         "The contribution model text identifies 24 Gigabit ports and four 10-Gigabit ports.",
         "Stack, VLAN, system-sensor, sustained-traffic, and final rendered-alignment validation remain pending.",
         "v2.0.22 audit regression checks passed against the supplied contribution/API sample data; live dashboard validation status is unchanged.",
-        "Promoted to Community Validated after real-hardware validation; model-specific physical layout remains authoritative."
+        "Real-hardware mapping evidence is retained; support remains Experimental until the full Community Validated checklist is completed."
       ],
       "validation": {
         "exact_model_detection": "contribution_confirmed",
@@ -550,7 +550,7 @@
         "The generic 24 RJ45 + 4 SFP faceplate is used as a temporary fallback until a smaller exact-model visual is supplied.",
         "The contribution exposes standard ifOperStatus, ifSpeed and 32-bit ifInOctets/ifOutOctets; v2.0.31 uses those when ifXTable/HC values are absent.",
         "Support remains Experimental pending live dashboard/card validation after this parser update.",
-        "Promoted to Community Validated after real-hardware validation; model-specific physical layout remains authoritative.",
+        "Real-hardware mapping evidence is retained; support remains Experimental until the full Community Validated checklist is completed.",
         "Ports 9-12 are physical 1G SFP cages; Discovery caps generated speed telemetry for these positions at 1000 Mbps when IF-MIB reports an implausible higher value."
       ],
       "validation": {
@@ -911,7 +911,7 @@
         "PoE capability is implied by the exact model SKU but live PoE telemetry and system sensors remain pending validation.",
         "v2.0.22 audit regression checks passed against the supplied contribution/API sample data; live dashboard validation status is unchanged.",
         "v2.0.31 uses the generic 24 RJ45 + 4 SFP faceplate as a temporary fallback visual pending exact-model artwork and rendered-alignment validation.",
-        "Promoted to Community Validated after real-hardware validation; model-specific physical layout remains authoritative."
+        "Real-hardware mapping evidence is retained; support remains Experimental until the full Community Validated checklist is completed."
       ],
       "validation": {
         "exact_model_detection": "contribution_confirmed_two_devices",
