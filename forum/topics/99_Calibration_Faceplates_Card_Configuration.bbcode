@@ -1,0 +1,42 @@
+[align=center]
+[size=200][b]Calibration, Faceplates & Card Configuration — Complete Guide[/b][/size]
+[/align]
+[hr]
+A recognised exact model automatically receives its registered hardware profile and recommended visible faceplate.
+Calibration customises visual presentation without changing the underlying physical-device evidence.
+
+[size=150][b]Open Calibration[/b][/size]
+Use the [b]Calibrate[/b] button on a Switch Vision card. Global on-card button visibility is controlled under:
+[code]Settings → Devices & services → Switch Vision → Configure[/code]
+
+[size=150][b]What can be calibrated[/b][/size]
+[list]
+[*]RJ45 port centres and hitboxes
+[*]port numbers
+[*]Link/Speed LEDs
+[*]Activity LEDs
+[*]SFP/uplink positions and labels
+[*]status LEDs and labels
+[*]logos
+[*]Status Box 1 / Status Box 2 / selected-port status box
+[*]faceplate selection
+[/list]
+
+[size=150][b]Calibration Profiles[/b][/size]
+Calibration Profile management is located in [b]Switch Vision Hub[/b]. The Hub can list, identify stale/duplicate, copy, import, export, protect/delete and clean stale profiles.
+Core still owns calibration storage and validation. The Hub does not directly edit Home Assistant internal storage files.
+
+[size=150][b]Faceplates[/b][/size]
+Custom faceplates belong in:
+[code]/config/www/switch-vision/faceplates/[/code]
+Custom logos belong in:
+[code]/config/www/switch-vision/logos/[/code]
+A faceplate cannot be hidden. Keep custom filenames stable because each faceplate has its own saved profile namespace.
+
+[size=150][b]Reset behaviour[/b][/size]
+[b]Reset Current Switch[/b] returns the current switch to its appropriate registered/default profile.
+[b]Reset All Switches[/b] should only be used when you intentionally want to remove saved calibration from every switch.
+[warning]Do not use Reset as a routine troubleshooting step when custom topology should be preserved.[/warning]
+
+[size=150][b]Safety[/b][/size]
+Imported calibration is validated before replacing the active profile. Unsafe coordinates, invalid dimensions, path traversal, excessive payloads or unreasonable element counts are rejected. A rejected import leaves the current profile intact.
