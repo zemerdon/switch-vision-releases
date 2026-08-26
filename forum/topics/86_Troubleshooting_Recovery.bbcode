@@ -1,0 +1,53 @@
+[align=center]
+[size=200][b]Troubleshooting & Recovery[/b][/size]
+[/align]
+[hr]
+[notice][b]Start with the least destructive checks.[/b]
+Do not delete working Switch Vision, MQTT or Discovery state simply because something looks wrong.[/notice]
+
+[size=150][b]First checks[/b][/size]
+[code]1. Open Switch Vision Installer
+2. Use Update All
+3. Restart Home Assistant Core if requested
+4. Hard-refresh the browser
+5. Run Discovery
+6. Check Discovery status
+7. Use Show Debug only if required[/code]
+
+[size=150][b]Sidebar missing[/b][/size]
+Confirm the Switch Vision integration exists, Home Assistant Core was restarted after a Core update, the Native sidebar option is enabled, and the browser is not serving stale frontend data. Incognito/private browsing is a useful cache test.
+
+[size=150][b]Dashboard does not update[/b][/size]
+Confirm Discovery completed successfully. The Native panel keeps existing working cards if refresh fails.
+
+[size=150][b]Discovery timeout[/b][/size]
+[code]Timeout: 3 seconds
+Retries: 1[/code]
+Check management address, routing, UDP/161, read-only community and switch ACLs.
+
+[size=150][b]SNMP2MQTT did not start/restart[/b][/size]
+Check the final Discovery handoff result. Common causes include no newly generated YAML, YAML validation failure, missing/stale SNMP2MQTT, generated mode disabled, Supervisor access unavailable, or deliberate manual-target mode.
+[warning]Current Discovery verifies the handoff and does not treat a restart request alone as proof the new telemetry became active.[/warning]
+
+[size=150][b]Sensors are missing[/b][/size]
+Confirm the switch and expected sensors exist in generated SNMP2MQTT configuration, SNMP2MQTT accepted it, MQTT is connected and the sensor prefix matches the card.
+
+[size=150][b]Old SNMP devices remain after moving to UniFi API only[/b][/size]
+Use:
+[code]Switch Vision Hub → Discovery → SNMP cleanup → Reset SNMP Discovery Data[/code]
+Then run Discovery again. This preserves UniFi API data/settings.
+
+[size=150][b]Stale MQTT entities[/b][/size]
+Use Switch Vision Maintenance. Recovery uses ownership checks, preview and explicit confirmation. Never delete unrelated Home Assistant MQTT state.
+
+[size=150][b]Wrong port or uplink layout[/b][/size]
+Confirm the exact detected SKU first. For unsupported/incomplete hardware, use Support My Switch rather than guessing the mapping.
+
+[size=150][b]Support My Switch says REVIEW REQUIRED[/b][/size]
+Read:
+[code]BUNDLE_QUALITY.txt
+SANITIZATION_REPORT.txt[/code]
+Correct/remove the problem source and create a new contribution.
+
+[size=150][b]Still stuck?[/b][/size]
+[url=https://switch-vision.zemerdon.com/viewtopic.php?t=71]Switch Vision Support Request Template[/url]
