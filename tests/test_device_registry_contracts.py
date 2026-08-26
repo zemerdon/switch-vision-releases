@@ -18,13 +18,24 @@ class DeviceRegistryContractTests(unittest.TestCase):
             if isinstance(item, dict)
         }
 
-    def test_evidence_backed_real_hardware_promotions_remain_community_validated(self) -> None:
-        for model in {
-            "SG500X-24",
-            "S5735-L8P4X-A1",
-            "S5720-12TP-LI-AC",
-        }:
-            self.assertEqual(self.models[model].get("status"), "community_validated", model)
+    def test_partial_real_hardware_validation_remains_experimental_until_full_checklist(self) -> None:
+        expected = {
+            "SG500X-24": ("community_confirmed_ports_1_24", "community_confirmed_four_uplink_positions"),
+            "S5720-12TP-LI-AC": ("community_confirmed_ports_1_8", "community_confirmed_ports_9_12_1g_sfp_link_and_speed"),
+            "S5735-L8P4X-A1": ("community_confirmed_two_devices_ports_1_8", "community_confirmed_two_devices_four_10g_sfp_plus_positions_and_link_speed"),
+        }
+        for model, (rj45_validation, uplink_validation) in expected.items():
+            device = self.models[model]
+            self.assertEqual(device.get("status"), "experimental", model)
+            self.assertEqual((device.get("visuals") or {}).get("status"), "experimental", model)
+            validation = device.get("validation") or {}
+            self.assertEqual(validation.get("rj45_mapping"), rj45_validation, model)
+            self.assertEqual(validation.get("uplinks"), uplink_validation, model)
+            self.assertEqual(validation.get("system_sensors"), "pending", model)
+
+        payload = json.loads(REGISTRY.read_text(encoding="utf-8"))
+        community_definition = str((payload.get("support_statuses") or {}).get("community_validated") or "")
+        self.assertIn("rendered alignment", community_definition)
 
     def test_3560cg_combo_port_semantics_are_documented(self) -> None:
         device = self.models["WS-C3560CG-8PC-S"]
