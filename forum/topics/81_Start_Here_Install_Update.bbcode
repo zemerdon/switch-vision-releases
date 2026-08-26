@@ -1,0 +1,75 @@
+[align=center]
+[img]https://switch-vision.zemerdon.com/icon_pack/installation.png[/img]
+[size=200][b]Start Here — Install & Update Switch Vision[/b][/size]
+[color=#5B8DEF][i]The recommended path from Home Assistant to a working Switch Vision dashboard[/i][/color]
+[/align]
+[hr]
+[notice][b]You only need one repository.[/b]
+https://github.com/zemerdon/switch-vision-installer
+Switch Vision Installer manages the remaining Switch Vision components.[/notice]
+
+[size=150][b]Requirements[/b][/size]
+[list]
+[*]Home Assistant OS or Supervised with App/Supervisor support
+[*]Access to Home Assistant /config and /share
+[*]MQTT available to Home Assistant
+[*]For SNMP switches: read-only SNMP v2c access
+[*]For UniFi API devices: a supported local UniFi controller and read-only Integration API credentials
+[/list]
+
+[size=150][b]Fresh installation[/b][/size]
+[list=1]
+[*]Add the Switch Vision Installer repository.
+[*]Install and open [b]Switch Vision Installer[/b].
+[*]Install the recommended Switch Vision components.
+[*]Restart Home Assistant Core when requested.
+[*]Open [b]Settings → Devices & services[/b].
+[*]Add or confirm the [b]Switch Vision[/b] integration.
+[*]Open [b]Switch Vision Hub[/b]. The Home Assistant app itself is named [b]Switch Vision Discovery[/b].
+[*]Add your switch or switches.
+[*]Normally leave [b]Switch Model[/b] on [b]Auto-detect[/b].
+[*]Run [b]Discovery[/b].
+[*]Open [b]Switch Vision[/b] from the Home Assistant sidebar.
+[/list]
+
+[size=150][b]Updating[/b][/size]
+[code]Switch Vision Installer
+→ Update All
+→ restart Home Assistant Core when requested
+→ hard-refresh the browser if old frontend content remains[/code]
+[b]Update All[/b] is dependency-aware and is the preferred upgrade workflow.
+Do not manually mix Core, Discovery or other files from different release generations.
+
+[size=150][b]Component versions[/b][/size]
+Switch Vision components have independent version lines. That is normal.
+The Installer shows installed and currently available versions and is the normal user-facing version authority.
+Current Core: [b]v2.6.8[/b]. Protected Gold baseline: [b]v2.5.0 Gold[/b].
+
+[size=150][b]Discovery configuration[/b][/size]
+[list]
+[*][b]Switch Name (Used internally only)[/b] — stable unique internal ID
+[*][b]Display name[/b] — friendly dashboard name
+[*][b]Management IP / hostname[/b]
+[*][b]Sensor prefix[/b]
+[*][b]SNMP community[/b] — read-only
+[*][b]Walk mode[/b] — Targeted is normally recommended
+[*][b]Switch Model[/b] — normally Auto-detect
+[/list]
+For a stack, configure the parent switch and add each member with its own member number, display name and sensor prefix.
+
+[size=150][b]What Discovery does[/b][/size]
+[code]Validate switches
+→ collect current switch data
+→ identify exact model and interfaces
+→ match the device registry
+→ generate telemetry configuration
+→ generate dashboard cards
+→ validate the handoff
+→ start/restart SNMP2MQTT when required
+→ update Switch Vision[/code]
+
+[notice]Discovery uses current-run SNMP evidence by default. Old walk files are not silently treated as current switch data.[/notice]
+
+[size=150][b]Existing installations[/b][/size]
+Use the Installer's update path and follow any restart instructions it gives you.
+[url=https://switch-vision.zemerdon.com/viewtopic.php?t=86][b]Troubleshooting & Recovery[/b][/url]
