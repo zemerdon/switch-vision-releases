@@ -1,3 +1,12 @@
+## v2.6.8 — Support-status evidence alignment
+
+- Correct SG500X-24, Huawei S5720-12TP-LI-AC, and Huawei S5735-L8P4X-A1 from Community Validated back to Experimental because their complete Community Validated checklists are not yet recorded.
+- Preserve the real-hardware mapping, optical-position and link/speed validation already confirmed for those exact models; unresolved sensor, PoE, stack and/or rendered-alignment checks remain pending as applicable.
+- Clarify the canonical Community Validated definition so physical mapping, port selection, LEDs, link/speed, PoE, optical positions, sensors and rendered alignment must all be validated where applicable.
+- Correct stale Huawei fallback-faceplate wording and record the S5735-L8P4X-A1 uplinks as four confirmed 10G SFP+ physical positions.
+- Add a permanent registry regression preventing partial hardware validation from overstating support status.
+- No polling, discovery selection, port ordering, telemetry synthesis or runtime hardware mapping behavior changes.
+
 ## v2.6.7 — Functional integrity fixes
 
 - Fix the status panel so absent, unknown or unavailable fan and PSU telemetry displays `—` instead of a synthesized healthy `OK` state.

@@ -1,4 +1,14 @@
-# Switch Vision Core v2.6.7
+# Switch Vision Core v2.6.8
+
+Core 2.6.8 corrects three support-status records whose Community Validated label was stronger than their complete recorded validation evidence. Cisco SG500X-24, Huawei S5720-12TP-LI-AC, and Huawei S5735-L8P4X-A1 return to **Experimental** until the remaining applicable checklist items are completed.
+
+This does not discard their real-hardware validation. The release preserves confirmed physical mapping, optical-position and link/speed evidence, including the S5720's corrected 1G SFP presentation and the S5735's four 10G SFP+ positions. Outstanding sensor, PoE, stack and/or rendered-alignment checks remain explicitly pending where applicable.
+
+The canonical Community Validated definition is tightened to match the project contract, and permanent regression coverage prevents these partially validated models from being promoted again without completing the required evidence. Runtime polling, Discovery selection, port ordering and hardware mapping behavior are otherwise unchanged.
+
+---
+
+# Previous release: Switch Vision Core v2.6.7
 
 Core 2.6.7 fixes a status-panel telemetry bug found by the Functional Integrity Audit. When fan or power-supply telemetry is missing, unavailable or unknown, Switch Vision now displays an unknown value (`—`) instead of synthesizing a healthy `OK` state.
 
