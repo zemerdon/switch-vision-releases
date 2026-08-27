@@ -1,4 +1,14 @@
-# Switch Vision Core v2.6.9
+# Switch Vision Core v2.6.10
+
+Core 2.6.10 tidies the Calibration **Faceplate** selector so every bundled faceplate has a clear human-readable name instead of exposing asset filenames. Stock layouts stay vendor-neutral, while dedicated Cisco, Dell, submarine and UniFi artwork is identified directly.
+
+This is a presentation-only change. The underlying option values remain the exact existing faceplate filenames, so saved calibration profiles, existing installs and custom asset references continue to resolve unchanged. Unknown user-supplied files still receive the existing automatic readable fallback label.
+
+Permanent regression coverage locks the friendly-label catalogue, keeps the two shipped card-source mirrors byte-identical, proves option values remain filenames, and preserves the custom-file fallback path. No device mapping, geometry, polling, telemetry or support-status behavior changes.
+
+---
+
+# Previous release: Switch Vision Core v2.6.9
 
 Core 2.6.9 promotes Cisco SG500X-24, Huawei S5720-12TP-LI-AC, and Huawei S5735-L8P4X-A1 to **Community Validated** after the remaining applicable real-hardware checks were completed. The completed evidence covers physical mapping, port selection, link/activity and speed presentation, optical positions, applicable PoE and sensor/status information, and rendered alignment.
 
