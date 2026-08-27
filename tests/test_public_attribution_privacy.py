@@ -5,7 +5,8 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 OWNER = "zemerdon"
-ALLOWED = {"", OWNER.casefold(), "community contributor", "anonymous"}
+ALLOWED = {"", OWNER.casefold(), "community contributor", "anonymous", "patrik kästel"}
+PUBLIC_CREDIT_ALLOWED = {OWNER.casefold(), "patrik kästel"}
 SUBMISSION_ID = re.compile(r"(?i)SV[-_]20\d{2}[-_]\d+")
 PACKAGE_NAME = re.compile(r"(?i)Switch[_ -]Vision[_ -]Contribution")
 
@@ -19,9 +20,10 @@ def _assert_structured_private_refs_removed(value, path: Path) -> None:
             assert not PACKAGE_NAME.search(key_text), (path, key_text)
         if "display_name" in value and "public_credit" in value:
             name = str(value.get("display_name") or "").strip()
-            assert name.casefold() in ALLOWED, (path, name)
-            if name.casefold() != OWNER.casefold():
-                assert value.get("public_credit") is not True, (path, name)
+            normalized = name.casefold()
+            assert normalized in ALLOWED, (path, name)
+            if value.get("public_credit") is True:
+                assert normalized in PUBLIC_CREDIT_ALLOWED, (path, name)
         for child in value.values():
             _assert_structured_private_refs_removed(child, path)
     elif isinstance(value, list):
@@ -49,6 +51,19 @@ def test_all_public_device_registries_are_neutral() -> None:
         _assert_structured_private_refs_removed(data, path)
 
 
+def test_public_credit_remains_explicit_allowlist() -> None:
+    approved = {"display_name": "Patrik Kästel", "public_credit": True}
+    _assert_structured_private_refs_removed(approved, Path("approved-public-credit"))
+
+    rejected = {"display_name": "Unreviewed Contributor", "public_credit": True}
+    try:
+        _assert_structured_private_refs_removed(rejected, Path("unreviewed-public-credit"))
+    except AssertionError:
+        pass
+    else:
+        raise AssertionError("unreviewed public credit unexpectedly passed")
+
+
 def test_public_release_history_has_no_private_submission_references() -> None:
     paths = [
         ROOT / "CHANGELOG.md",
@@ -68,5 +83,6 @@ def test_public_release_history_has_no_private_submission_references() -> None:
 
 if __name__ == "__main__":
     test_all_public_device_registries_are_neutral()
+    test_public_credit_remains_explicit_allowlist()
     test_public_release_history_has_no_private_submission_references()
     print("Switch Vision Core public attribution privacy: PASS")
