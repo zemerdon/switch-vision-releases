@@ -1,0 +1,183 @@
+name: SV Core 2.6.10 Exact Stage
+
+on:
+  push:
+    branches:
+      - review/core-2.6.10-faceplate-labels
+
+permissions:
+  contents: write
+
+jobs:
+  stage:
+    if: github.ref == 'refs/heads/review/core-2.6.10-faceplate-labels'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reproduce exact validated Core 2.6.10 tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          EXPECTED_MAIN='20493d25b306bd20aa81ca1abfb05ed109d21fcf'
+          EXPECTED_TREE='458a5246b069ea34a0be611c2b25c2f3423ffeb0'
+          BRANCH='review/core-2.6.10-faceplate-labels'
+
+          git fetch --quiet origin main
+          test "$(git rev-parse origin/main)" = "$EXPECTED_MAIN"
+
+          # The workflow commit is transport-only. Reset to the reviewed parent so
+          # the workflow itself cannot enter the product PR/history.
+          git reset --hard "$EXPECTED_MAIN"
+          git clean -fdx
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          files = [
+              Path('src/custom_components/switch_vision/switch-vision-card.js'),
+              Path('src/js/switch-vision.js'),
+          ]
+          old = '''    faceplates: {
+                "48rj45-4sfp.png": "48 RJ45 / 4 SFP",
+                "48rj45-2sfp.png": "48 RJ45 / 2 SFP",
+                "24rj45-4sfp.png": "24 RJ45 / 4 SFP",
+                "24rj45-2sfp.png": "24 RJ45 / 2 SFP"
+              }
+          '''
+          new = '''    faceplates: {
+                "48rj45-4sfp.png": "48-Port · 4 × SFP",
+                "48rj45-2sfp.png": "48-Port · 2 × SFP",
+                "24rj45-4sfp.png": "24-Port · 4 × SFP",
+                "24rj45-2sfp.png": "24-Port · 2 × SFP",
+                "c3560cg-8pc-s.png": "Cisco Catalyst 3560-C · 8-Port · 2 × SFP",
+                "dell-28-rj45-2sfp.png": "Dell N2128PX-ON · 28-Port · 2 × SFP",
+                "submarine-48rj45-4sfp.png": "Submarine 48-Port · 4 × SFP",
+                "unifi-24p-rj45-2sfp.png": "UniFi 24-Port · 2 × SFP",
+                "unifi-24-rj45-2sfp-dark.png": "UniFi 24-Port · 2 × SFP · Dark",
+                "unifi-5rj45.png": "UniFi 5-Port",
+                "unifi-8rj45.png": "UniFi 8-Port"
+              }
+          '''
+          for path in files:
+              text = path.read_text(encoding='utf-8')
+              if text.count(old) != 1:
+                  raise SystemExit(f'unexpected faceplate label block in {path}')
+              path.write_text(text.replace(old, new), encoding='utf-8', newline='\n')
+
+          Path('tests/test_calibration_asset_labels.py').write_text(r'''from pathlib import Path
+          import unittest
+
+          ROOT = Path(__file__).resolve().parents[1]
+          CARD = ROOT / "src/custom_components/switch_vision/switch-vision-card.js"
+          MIRROR = ROOT / "src/js/switch-vision.js"
+
+          EXPECTED = {
+              "48rj45-4sfp.png": "48-Port · 4 × SFP",
+              "48rj45-2sfp.png": "48-Port · 2 × SFP",
+              "24rj45-4sfp.png": "24-Port · 4 × SFP",
+              "24rj45-2sfp.png": "24-Port · 2 × SFP",
+              "c3560cg-8pc-s.png": "Cisco Catalyst 3560-C · 8-Port · 2 × SFP",
+              "dell-28-rj45-2sfp.png": "Dell N2128PX-ON · 28-Port · 2 × SFP",
+              "submarine-48rj45-4sfp.png": "Submarine 48-Port · 4 × SFP",
+              "unifi-24p-rj45-2sfp.png": "UniFi 24-Port · 2 × SFP",
+              "unifi-24-rj45-2sfp-dark.png": "UniFi 24-Port · 2 × SFP · Dark",
+              "unifi-5rj45.png": "UniFi 5-Port",
+              "unifi-8rj45.png": "UniFi 8-Port",
+          }
+
+          class CalibrationAssetLabelTests(unittest.TestCase):
+              def setUp(self):
+                  self.card = CARD.read_text(encoding="utf-8")
+                  self.mirror = MIRROR.read_text(encoding="utf-8")
+
+              def test_shipped_faceplates_have_stable_friendly_labels(self):
+                  for filename, label in EXPECTED.items():
+                      needle = f'"{filename}": "{label}"'
+                      self.assertIn(needle, self.card)
+                      self.assertIn(needle, self.mirror)
+
+              def test_mirrored_card_sources_remain_byte_identical(self):
+                  self.assertEqual(CARD.read_bytes(), MIRROR.read_bytes())
+
+              def test_option_value_remains_original_filename(self):
+                  needle = 'rows.push(option(file, assetDisplayLabel(kind, file)));'
+                  self.assertIn(needle, self.card)
+                  self.assertIn(needle, self.mirror)
+
+              def test_custom_asset_fallback_remains_available(self):
+                  for needle in (
+                      '.replace(/\\.[^.]+$/, "")',
+                      '.replace(/[-_]+/g, " ")',
+                      '.replace(/\\b\\w/g, (char) => char.toUpperCase())',
+                  ):
+                      self.assertIn(needle, self.card)
+                      self.assertIn(needle, self.mirror)
+
+          if __name__ == "__main__":
+              unittest.main()
+          ''', encoding='utf-8', newline='\n')
+
+          changelog = Path('CHANGELOG.md')
+          current = changelog.read_text(encoding='utf-8')
+          entry = '''## v2.6.10 — Calibration faceplate selector cleanup\n\n- Replace filename-derived Calibration faceplate dropdown text with concise, human-readable names for every bundled stock, Cisco, Dell, submarine and UniFi faceplate.\n- Keep each option value and saved calibration/profile filename unchanged, so existing configurations and custom profiles remain backward compatible.\n- Preserve automatic readable fallback labels for user-supplied/custom faceplate files that are not part of the bundled catalogue.\n- Add permanent regression coverage for shipped labels, source-mirror parity, filename-valued options and custom-file fallback behavior.\n- No switch detection, device mapping, calibration geometry, polling, telemetry, support-status or privacy contracts change.\n\n'''
+          changelog.write_text(entry + current, encoding='utf-8', newline='\n')
+
+          notes = Path('RELEASE_NOTES.md')
+          old_notes = notes.read_text(encoding='utf-8')
+          prefix = '# Switch Vision Core v2.6.9\n\n'
+          if not old_notes.startswith(prefix):
+              raise SystemExit('unexpected release notes header')
+          entry = '''# Switch Vision Core v2.6.10\n\nCore 2.6.10 tidies the Calibration **Faceplate** selector so every bundled faceplate has a clear human-readable name instead of exposing asset filenames. Stock layouts stay vendor-neutral, while dedicated Cisco, Dell, submarine and UniFi artwork is identified directly.\n\nThis is a presentation-only change. The underlying option values remain the exact existing faceplate filenames, so saved calibration profiles, existing installs and custom asset references continue to resolve unchanged. Unknown user-supplied files still receive the existing automatic readable fallback label.\n\nPermanent regression coverage locks the friendly-label catalogue, keeps the two shipped card-source mirrors byte-identical, proves option values remain filenames, and preserves the custom-file fallback path. No device mapping, geometry, polling, telemetry or support-status behavior changes.\n\n---\n\n# Previous release: Switch Vision Core v2.6.9\n\n'''
+          notes.write_text(entry + old_notes[len(prefix):], encoding='utf-8', newline='\n')
+          PY
+
+          python3 tests/test_calibration_asset_labels.py
+          node --check src/js/switch-vision.js
+          node --check src/custom_components/switch_vision/switch-vision-card.js
+          cmp -s src/js/switch-vision.js src/custom_components/switch_vision/switch-vision-card.js
+
+          python3 -m venv .release-venv
+          . .release-venv/bin/activate
+          python -m pip install --disable-pip-version-check -q PyYAML
+          python build.py -v 2.6.10
+          python tools/check_core_release_parity.py
+          for test in tests/test_*.py; do PYTHONDONTWRITEBYTECODE=1 python "$test" >/dev/null; done
+          node --check src/js/switch-vision.js
+          node --check src/custom_components/switch_vision/switch-vision-card.js
+          node --check src/custom_components/switch_vision/switch-vision-panel.js
+          node --check src/custom_components/switch_vision/switch-vision-dashboard-strategy.js
+          deactivate
+
+          rm -rf .release-venv
+          rm -f Releases/switch-vision-2.6.10.zip Releases/switch-vision-2.6.10.zip.sha256 Switch_Vision_v2.6.10_source.zip Switch_Vision_v2.6.10_SHA256SUMS.txt
+          find . -type d -name '__pycache__' -prune -exec rm -rf {} +
+          find . -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
+
+          git diff --check
+          test "$(cat VERSION)" = '2.6.10'
+          test -d Releases/switch-vision-2.6.10
+          test ! -e Releases/switch-vision-2.6.10.zip
+          cmp -s src/js/switch-vision.js src/custom_components/switch_vision/switch-vision-card.js
+          python3 tests/test_calibration_asset_labels.py
+
+          if git status --short | grep -E 'Releases/switch-vision-2\.6\.[0-9]+/' | grep -v 'Releases/switch-vision-2\.6\.10/' ; then
+            echo 'unexpected historical release mutation' >&2
+            exit 1
+          fi
+
+          git config user.name 'zemerdon'
+          git config user.email 'zemerdon@hotmail.com'
+          git add -A
+          CANDIDATE_TREE="$(git write-tree)"
+          echo "candidate_tree=$CANDIDATE_TREE"
+          test "$CANDIDATE_TREE" = "$EXPECTED_TREE"
+
+          git commit -m 'Core 2.6.10: clean up calibration faceplate labels'
+          test "$(git rev-parse HEAD^)" = "$EXPECTED_MAIN"
+          test "$(git rev-parse HEAD^{tree})" = "$EXPECTED_TREE"
+
+          git push --force origin "HEAD:refs/heads/$BRANCH"
+          echo 'exact_core_2_6_10_stage=PASS'
