@@ -1,3 +1,11 @@
+## v2.6.10 — Calibration faceplate selector cleanup
+
+- Replace filename-derived Calibration faceplate dropdown text with concise, human-readable names for every bundled stock, Cisco, Dell, submarine and UniFi faceplate.
+- Keep each option value and saved calibration/profile filename unchanged, so existing configurations and custom profiles remain backward compatible.
+- Preserve automatic readable fallback labels for user-supplied/custom faceplate files that are not part of the bundled catalogue.
+- Add permanent regression coverage for shipped labels, source-mirror parity, filename-valued options and custom-file fallback behavior.
+- No switch detection, device mapping, calibration geometry, polling, telemetry, support-status or privacy contracts change.
+
 ## v2.6.9 — Community validation evidence completion
 
 - Promote Cisco SG500X-24, Huawei S5720-12TP-LI-AC, and Huawei S5735-L8P4X-A1 from Experimental to Community Validated after the remaining applicable real-hardware checklist items were confirmed.
