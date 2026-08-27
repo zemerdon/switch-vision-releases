@@ -6,7 +6,7 @@
 - Record the actual field-tested component baseline as Discovery 2.3.21; Core 2.6.11 is registry promotion, not a new hardware-validation claim.
 - Preserve pending boundaries for live SFP+ behaviour, Switch Vision PoE/environment presentation and rendered alignment.
 - Use the existing neutral 24-RJ45 + 4-SFP fallback visual pending MikroTik-specific alignment confirmation.
-- Preserve the contributor's explicit public recognition preference as **Patrik Kästel**.
+- Keep contributor attribution anonymous in public release metadata.
 - Add permanent Core registry regression coverage; no new Core mapper, polling or telemetry implementation is introduced.
 
 ## v2.6.10 — Calibration faceplate selector cleanup
