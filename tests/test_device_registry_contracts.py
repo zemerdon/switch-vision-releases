@@ -97,8 +97,8 @@ class DeviceRegistryContractTests(unittest.TestCase):
         self.assertEqual(ports.get("ten_gigabit_sfp_plus"), 4)
 
         contributor = device.get("contributor") or {}
-        self.assertEqual(contributor.get("display_name"), "Patrik Kästel")
-        self.assertIs(contributor.get("public_credit"), True)
+        self.assertEqual(contributor.get("display_name"), "community contributor")
+        self.assertIs(contributor.get("public_credit"), False)
 
         validation = device.get("validation") or {}
         self.assertEqual(

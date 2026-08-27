@@ -485,8 +485,8 @@
         "RouterOS 7.21.5"
       ],
       "contributor": {
-        "display_name": "Patrik K\u00e4stel",
-        "public_credit": true
+        "display_name": "community contributor",
+        "public_credit": false
       },
       "notes": [
         "Privacy-processed real-hardware evidence reports the local RouterOS model string CRS328-24P-4S+; CRS328-24P-4S+RM is retained here as the exact marketed registry SKU.",
