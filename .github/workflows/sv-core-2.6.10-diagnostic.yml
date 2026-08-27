@@ -1,0 +1,45 @@
+name: SV Core 2.6.10 Hosted Tree Diagnostic
+
+on:
+  push:
+    branches:
+      - diagnostic/core-2.6.10-hosted-tree
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reuse reviewed stage script and dump candidate object diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import textwrap
+
+          p = Path('.github/workflows/sv-core-2.6.10-stage.yml')
+          text = p.read_text(encoding='utf-8')
+          marker = '        run: |\n'
+          if text.count(marker) != 1:
+              raise SystemExit('unexpected stage workflow run block')
+          body = textwrap.dedent(text.split(marker, 1)[1])
+          old = 'test "$CANDIDATE_TREE" = "$EXPECTED_TREE"'
+          new = '''if [[ "$CANDIDATE_TREE" != "$EXPECTED_TREE" ]]; then
+            echo '=== HOSTED CANDIDATE RAW DIFF ==='
+            git diff --cached --raw "$EXPECTED_MAIN"
+            echo '=== HOSTED CANDIDATE NAME STATUS ==='
+            git diff --cached --name-status "$EXPECTED_MAIN"
+            exit 1
+          fi'''
+          if body.count(old) != 1:
+              raise SystemExit('candidate equality gate not found exactly once')
+          body = body.replace(old, new)
+          Path('/tmp/sv-stage-diagnostic.sh').write_text(body, encoding='utf-8', newline='\n')
+          PY
+          bash /tmp/sv-stage-diagnostic.sh
