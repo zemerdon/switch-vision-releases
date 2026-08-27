@@ -1,0 +1,4 @@
+3650_STACK,192.168.1.102,sw5_stack,sw5,readonly,/share/switch_vision/snmpwalks/sw5_stack,Core Stack
+SW7,192.168.1.103,2960x_sw7,sw7,readonly,/share/switch_vision/snmpwalks/2960x_sw7,Access Switch
+SW8,192.168.1.104,2960x_sw8,sw8,readonly,/share/switch_vision/snmpwalks/2960x_sw8,Access Switch
+SW9,192.168.1.106,2960s_sw9,sw9,readonly,/share/switch_vision/snmpwalks/2960s_sw9,Access Switch

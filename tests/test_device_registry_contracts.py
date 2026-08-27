@@ -77,6 +77,55 @@ class DeviceRegistryContractTests(unittest.TestCase):
         community_definition = str((payload.get("support_statuses") or {}).get("community_validated") or "")
         self.assertIn("rendered alignment", community_definition)
 
+    def test_mikrotik_crs328_experimental_registry_contract(self) -> None:
+        device = self.models["CRS328-24P-4S+RM"]
+        self.assertEqual(device.get("vendor"), "MikroTik")
+        self.assertEqual(device.get("family"), "CRS328")
+        self.assertEqual(device.get("status"), "experimental")
+        self.assertEqual(device.get("confirmed_since"), "2.6.11")
+        self.assertEqual(device.get("last_validated_version"), "2.3.21")
+        self.assertEqual(device.get("last_validated_component"), "Discovery")
+        self.assertEqual(device.get("mapping_profile"), "mikrotik-crs328-24p-4splus")
+        self.assertEqual(device.get("calibration_profile"), "stock_24rj45_4sfp")
+        self.assertEqual(device.get("default_faceplate"), "faceplates/24rj45-4sfp.png")
+
+        ports = device.get("ports") or {}
+        self.assertEqual(ports.get("rj45"), 24)
+        self.assertIs(ports.get("poe"), True)
+        self.assertEqual(ports.get("uplinks"), 4)
+        self.assertEqual(ports.get("gigabit_sfp"), 0)
+        self.assertEqual(ports.get("ten_gigabit_sfp_plus"), 4)
+
+        contributor = device.get("contributor") or {}
+        self.assertEqual(contributor.get("display_name"), "community contributor")
+        self.assertIs(contributor.get("public_credit"), False)
+
+        validation = device.get("validation") or {}
+        self.assertEqual(
+            validation.get("exact_model_detection"),
+            "contribution_confirmed_local_routeros_identity",
+        )
+        self.assertEqual(
+            validation.get("rj45_mapping"),
+            "contribution_confirmed_ether1_through_ether24_pending_rendered_validation",
+        )
+        self.assertEqual(
+            validation.get("uplinks"),
+            "contribution_confirmed_four_sfp_plus_positions_live_link_pending",
+        )
+        self.assertEqual(validation.get("stack"), "not_applicable")
+
+        visuals = device.get("visuals") or {}
+        self.assertEqual(visuals.get("status"), "experimental")
+        self.assertEqual(visuals.get("recommended_faceplate"), "faceplates/24rj45-4sfp.png")
+        self.assertEqual(visuals.get("calibration_profile"), "stock_24rj45_4sfp")
+
+        notes = "\n".join(str(note) for note in device.get("notes") or [])
+        self.assertIn("Discovery 2.3.21", notes)
+        self.assertIn("Core 2.6.11", notes)
+        self.assertIn("four SFP+ cages were empty", notes)
+        self.assertIn("rendered", notes.lower())
+
     def test_3560cg_combo_port_semantics_are_documented(self) -> None:
         device = self.models["WS-C3560CG-8PC-S"]
         ports = device.get("ports") or {}

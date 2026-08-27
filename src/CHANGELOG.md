@@ -1,3 +1,14 @@
+## v2.6.11 — MikroTik CRS328 Experimental registry promotion
+
+- Add exact-model **MikroTik CRS328-24P-4S+RM** to the stable Core supported-device registry as Experimental.
+- Preserve the observed RouterOS identity `CRS328-24P-4S+` while treating `CRS328-24P-4S+RM` as the marketed exact registry SKU only.
+- Record the contribution-confirmed physical contract: 24 `ether` RJ45 ports plus four `sfp-sfpplus` 10G SFP+ cages; `bridge` and `lo` remain non-physical.
+- Record the actual field-tested component baseline as Discovery 2.3.21; Core 2.6.11 is registry promotion, not a new hardware-validation claim.
+- Preserve pending boundaries for live SFP+ behaviour, Switch Vision PoE/environment presentation and rendered alignment.
+- Use the existing neutral 24-RJ45 + 4-SFP fallback visual pending MikroTik-specific alignment confirmation.
+- Preserve the contributor's explicit public recognition preference as **Patrik Kästel**.
+- Add permanent Core registry regression coverage; no new Core mapper, polling or telemetry implementation is introduced.
+
 ## v2.6.10 — Calibration faceplate selector cleanup
 
 - Replace filename-derived Calibration faceplate dropdown text with concise, human-readable names for every bundled stock, Cisco, Dell, submarine and UniFi faceplate.
