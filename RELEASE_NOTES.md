@@ -4,7 +4,7 @@ Core 2.6.11 promotes the first MikroTik exact-model support record into the stab
 
 Privacy-processed real-hardware evidence from Discovery 2.3.21 confirms the local RouterOS identity `CRS328-24P-4S+`, 24 physical `ether1`–`ether24` RJ45 ports, and four `sfp-sfpplus1`–`sfp-sfpplus4` SFP+ cages. The marketed `CRS328-24P-4S+RM` name is used only as the exact registry SKU. The four SFP+ cages were empty in the capture; live optical behaviour, Switch Vision PoE/environment presentation, and rendered alignment remain pending.
 
-This is a support-metadata promotion. It does not add a new Core hardware mapper, polling path or telemetry implementation; Discovery 2.3.22 owns the MikroTik detection/mapping and narrow telemetry acquisition. Core's neutral 24-RJ45 + 4-SFP visual remains a temporary fallback. Permanent registry regression coverage locks the exact topology, Experimental boundary, field-tested Discovery version and contributor recognition.
+This is a support-metadata promotion. It does not add a new Core hardware mapper, polling path or telemetry implementation; Discovery 2.3.22 owns the MikroTik detection/mapping and narrow telemetry acquisition. Core's neutral 24-RJ45 + 4-SFP visual remains a temporary fallback. Permanent registry regression coverage locks the exact topology, Experimental boundary and field-tested Discovery version while public contributor attribution remains anonymous.
 
 ---
 
