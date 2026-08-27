@@ -1,3 +1,10 @@
+## v2.6.12 — Attribution privacy and release-integrity supersession
+
+- Supersede Core 2.6.11 as the current installable build without changing the MikroTik Experimental hardware contract.
+- Keep all public contributor attribution anonymous; private evidence provenance remains separate and authoritative.
+- Preserve the same Discovery 2.3.21 field-evidence baseline and pending validation boundaries.
+- No hardware mapping, polling, telemetry, geometry or support-status behavior changes.
+
 ## v2.6.11 — MikroTik CRS328 Experimental registry promotion
 
 - Add exact-model **MikroTik CRS328-24P-4S+RM** to the stable Core supported-device registry as Experimental.

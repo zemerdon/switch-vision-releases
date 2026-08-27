@@ -1,4 +1,14 @@
-# Switch Vision Core v2.6.11
+# Switch Vision Core v2.6.12
+
+Core 2.6.12 supersedes 2.6.11 as the current installable Core build after a public-attribution privacy correction. All public contributor attribution remains anonymous; private Evidence Vault provenance is unchanged and remains authoritative.
+
+The MikroTik CRS328-24P-4S+RM support contract remains Experimental and otherwise unchanged: the same 24 RJ45 + four SFP+ physical contract, the same Discovery 2.3.21 field-evidence baseline, and the same pending live SFP+, PoE/environment presentation and rendered-alignment checks. Discovery 2.3.22 continues to own MikroTik detection/mapping and narrow telemetry acquisition.
+
+This release does not introduce a new Core mapper, polling path, telemetry implementation, geometry change or support-status promotion.
+
+---
+
+# Previous release: Switch Vision Core v2.6.11
 
 Core 2.6.11 promotes the first MikroTik exact-model support record into the stable Core device registry: **CRS328-24P-4S+RM**, remaining **Experimental** while current-build field validation is incomplete.
 
