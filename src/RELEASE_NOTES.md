@@ -1,4 +1,14 @@
-# Switch Vision Core v2.6.12
+# Switch Vision Core v2.6.13
+
+Core 2.6.13 adds first-class SFP/uplink object management to the Calibration Port Manager. Calibration authors can now add SFP objects directly, duplicate the selected RJ45 or SFP object without changing its type, and edit the stored SFP key used to identify each logical uplink.
+
+New SFP objects use canonical `SFP<n>` keys while existing legacy keys such as `G1`, `TE1` and `G3/TE3` remain supported. Exact key duplicates and ambiguous logical-number aliases are rejected, so keys such as `SFP1` and `TE1` cannot silently describe the same logical uplink in one calibration profile. The same collision check is enforced when calibration profiles are imported or saved.
+
+Permanent Core regression coverage locks the Port Manager controls, canonical/runtime card parity, legacy alias handling and bundled-profile logical-SFP uniqueness. This release changes Calibration frontend/runtime files only; it does not change switch detection, physical hardware mappings, polling, telemetry, PoE, support status or existing factory geometry.
+
+---
+
+# Previous release: Switch Vision Core v2.6.12
 
 Core 2.6.12 supersedes 2.6.11 as the current installable Core build after a public-attribution privacy correction. All public contributor attribution remains anonymous; private Evidence Vault provenance is unchanged and remains authoritative.
 
