@@ -1,3 +1,13 @@
+## v2.6.13 — Calibration SFP port manager
+
+- Add separate **Add RJ45** and **Add SFP** actions to Calibration's Port Manager.
+- Make **Duplicate selected** preserve the selected object type, including exact-geometry SFP duplication.
+- Add editable SFP/uplink keys while preserving existing legacy aliases such as `G1` and `G3/TE3`.
+- Allocate newly created SFP objects with canonical `SFP<n>` keys using the next logical uplink number.
+- Reject exact SFP-key duplicates and logical-number collisions such as `SFP1` + `TE1`, including profile import/save validation.
+- Add permanent regression coverage for Port Manager controls, source parity, legacy key parsing and bundled calibration SFP identity uniqueness.
+- No switch detection, physical mapping, polling, telemetry, PoE, support-status or factory-geometry contracts change.
+
 ## v2.6.12 — Attribution privacy and release-integrity supersession
 
 - Supersede Core 2.6.11 as the current installable build without changing the MikroTik Experimental hardware contract.
