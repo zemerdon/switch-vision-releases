@@ -12,7 +12,7 @@ Only exact model identifiers are listed. Support for one SKU does not imply supp
 | Cisco | Catalyst 2960X | `WS-C2960X-24TS-L` | 24 | 4 Gigabit SFP | No | Yes | `faceplates/24rj45-4sfp.png` | `cisco_2960x_24p` | Pending | Experimental | v1.8.25 |
 | Cisco | Catalyst 2960S | `WS-C2960S-48FPD-L` | 48 | 2 10G SFP+ | Yes | No | `faceplates/48rj45-2sfp.png` | `cisco_2960s_48p` | Confirmed | Confirmed | v1.8.26 |
 | Cisco | Catalyst 3560-C | `WS-C3560CG-8PC-S` | 8 | 2 Gigabit SFP | Yes | No | `faceplates/c3560cg-8pc-s.png` | `cisco_3560cg_8pc` | Pending | Experimental | v1.8.24 |
-| Juniper | EX3300 | `EX3300-48P` | 48 | 4 Gigabit SFP + 4 10G SFP+ | Yes | No | `faceplates/48rj45-4sfp.png` | `default_cisco_48_port` | Confirmed | Confirmed | v1.8.26 |
+| Juniper | EX3300 | `EX3300-48P` | 48 | 4 10G SFP+ | Yes | No | `faceplates/48rj45-4sfp.png` | `default_cisco_48_port` | Confirmed | Confirmed | v1.8.26 |
 | MikroTik | CRS328 | `CRS328-24P-4S+RM` | 24 | 4 10G SFP+ | Yes | No | `faceplates/24rj45-4sfp.png` | `stock_24rj45_4sfp` | Contribution Confirmed Four Sfp Plus Positions Live Link Pending | Experimental | v2.3.21 |
 | Cisco | Small Business SG500X | `SG500X-24` | 24 | 4 10G SFP+ | No | Yes | `faceplates/24rj45-4sfp.png` | `cisco_2960x_24p` | Community Confirmed Four Uplink Positions | Community Validated | v2.6.7 |
 | Huawei | S5720 | `S5720-12TP-LI-AC` | 8 | 4 Gigabit SFP | No | No | `faceplates/24rj45-4sfp.png` | `stock_24rj45_4sfp` | Community Confirmed Ports 9 12 1G Sfp Link And Speed | Community Validated | v2.6.7 |
