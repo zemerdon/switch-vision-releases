@@ -4289,6 +4289,9 @@ function validateImportedCalibration(raw, currentCal = null) {
   if (sfpCount > SV_PROFILE_MAX_UPLINKS) errors.push(`The profile contains more than ${SV_PROFILE_MAX_UPLINKS} SFP/uplinks.`);
   if (statusCount > SV_PROFILE_MAX_STATUS_LEDS) errors.push(`The profile contains more than ${SV_PROFILE_MAX_STATUS_LEDS} status LEDs.`);
 
+  const sfpCollision = calibrationSfpKeyCollision(raw.sfp);
+  if (sfpCollision) errors.push(calibrationSfpCollisionMessage(sfpCollision));
+
   const validateEntries = (entries, type) => {
     for (const [key, item] of Object.entries(entries || {})) {
       if (!item || typeof item !== "object" || Array.isArray(item)) { errors.push(`${type} ${key} is not an object.`); continue; }
@@ -4739,6 +4742,69 @@ function cloneCalibrationPort(cal, sourceKey, newKey, offsetX = 12, offsetY = 0)
   delete copy.display_name;
   cal.ports[String(newKey)] = copy;
   return copy;
+}
+
+function sortedCalibrationSfpKeys(cal) {
+  return Object.keys(cal?.sfp || {}).sort((a, b) => {
+    const aNumber = sfpPortNumber(a);
+    const bNumber = sfpPortNumber(b);
+    if (aNumber !== bNumber) return aNumber - bNumber;
+    return String(a).localeCompare(String(b));
+  });
+}
+
+function nextCalibrationSfpNumber(cal) {
+  const nums = sortedCalibrationSfpKeys(cal)
+    .map((key) => sfpPortNumber(key))
+    .filter((number) => Number.isFinite(number) && number > 0);
+  return nums.length ? Math.max(...nums) + 1 : 1;
+}
+
+function cloneCalibrationSfp(cal, sourceKey, newKey, offsetX = 12, offsetY = 0) {
+  cal.sfp = cal.sfp && typeof cal.sfp === "object" ? cal.sfp : {};
+  const source = cal.sfp?.[String(sourceKey)] || Object.values(cal.sfp)[0] || {
+    center: [1710, 246], hitbox: [94, 48]
+  };
+  const copy = JSON.parse(JSON.stringify(source));
+  for (const part of ["center", "label", "led_left", "led_right"]) {
+    movePoint(copy[part], offsetX, offsetY);
+  }
+  delete copy.display_name;
+  cal.sfp[String(newKey)] = copy;
+  return copy;
+}
+
+function calibrationSfpKeyCollision(entries, ignoredKey = null) {
+  const seen = new Map();
+  for (const key of Object.keys(entries || {})) {
+    if (ignoredKey !== null && key === ignoredKey) continue;
+    const number = sfpPortNumber(key);
+    if (!(number > 0)) continue;
+    if (seen.has(number)) {
+      return { number, first: seen.get(number), second: key };
+    }
+    seen.set(number, key);
+  }
+  return null;
+}
+
+function calibrationSfpCollisionMessage(collision) {
+  return `SFP key collision: ${collision.first} and ${collision.second} both resolve to logical uplink ${collision.number}.`;
+}
+
+function normaliseCalibrationSfpKey(value) {
+  return String(value || "").trim().toUpperCase();
+}
+
+function calibrationSfpKeyValidationMessage(value) {
+  const key = normaliseCalibrationSfpKey(value);
+  if (!key) return "SFP key is required.";
+  if (key.length > 32) return "SFP key must be 32 characters or fewer.";
+  if (!/^[A-Z0-9][A-Z0-9._\/-]*$/.test(key)) {
+    return "SFP key may contain letters, numbers, dot, underscore, slash, and hyphen.";
+  }
+  if (!(sfpPortNumber(key) > 0)) return "SFP key must contain a positive logical uplink number.";
+  return "";
 }
 
 function targetOptionsHtml(cal, selected) {
@@ -6712,14 +6778,18 @@ const testModeBadge = testModeActive
         </label>
         <span class="cv-cal-row-divider" aria-hidden="true"></span>
         <span class="cv-cal-quick-label">Port manager</span>
-        <button type="button" data-cv-action="add-port">Add port</button>
-        <button type="button" data-cv-action="duplicate-port">Duplicate port</button>
-        <button type="button" data-cv-action="remove-port" ${["port", "sfp"].includes(editable?.type) ? "" : "disabled"}>Remove port</button>
-        <span class="cv-cal-current">${sortedCalibrationPortKeys(cal).length} visual ports</span>
+        <button type="button" data-cv-action="add-port">Add RJ45</button>
+        <button type="button" data-cv-action="add-sfp">Add SFP</button>
+        <button type="button" data-cv-action="duplicate-port" ${["port", "sfp"].includes(editable?.type) ? "" : "disabled"}>Duplicate selected</button>
+        <button type="button" data-cv-action="remove-port" ${["port", "sfp"].includes(editable?.type) ? "" : "disabled"}>Remove selected</button>
+        <span class="cv-cal-current">${sortedCalibrationPortKeys(cal).length} RJ45 · ${sortedCalibrationSfpKeys(cal).length} SFP</span>
       </div>
       <div class="cv-cal-tools-row cv-cal-port-meta-row">
         <label>RJ45 key<input class="cv-cal-input" data-cv-field="port-number" type="number" min="1" step="1" value="${editable?.type === "port" ? htmlEscape(editable.key) : ""}" ${editable?.type === "port" ? "" : "disabled"}></label>
         <button type="button" data-cv-action="rename-port" ${editable?.type === "port" ? "" : "disabled"}>Renumber</button>
+        <span class="cv-cal-row-divider" aria-hidden="true"></span>
+        <label>SFP key<input class="cv-cal-input" data-cv-field="sfp-key" type="text" maxlength="32" value="${editable?.type === "sfp" ? htmlEscape(editable.key) : ""}" placeholder="SFP12 or G3/TE3" ${editable?.type === "sfp" ? "" : "disabled"}></label>
+        <button type="button" data-cv-action="rename-sfp" ${editable?.type === "sfp" ? "" : "disabled"}>Rename</button>
         <span class="cv-cal-row-divider" aria-hidden="true"></span>
         <label>Display name<input class="cv-cal-input" data-cv-field="port-display-name" maxlength="96" value="${htmlEscape(displayNameValue)}" placeholder="Optional label" ${displayNameEditable ? "" : "disabled"}></label>
         <button type="button" data-cv-action="set-port-display-name" ${displayNameEditable ? "" : "disabled"}>Set name</button>
@@ -8272,7 +8342,27 @@ const testModeBadge = testModeActive
           return;
         }
 
-        if (action === "add-port" || action === "duplicate-port") {
+        if (["add-port", "add-sfp", "duplicate-port"].includes(action)) {
+          const duplicateSfp = action === "duplicate-port" && editable?.type === "sfp";
+          if (action === "duplicate-port" && !["port", "sfp"].includes(editable?.type)) {
+            this.setCalibrationSaveStatus("Select one RJ45 or SFP/uplink before duplicating", true);
+            this.clearCalibrationSaveStatusSoon();
+            return;
+          }
+
+          if (action === "add-sfp" || duplicateSfp) {
+            const selected = editable?.type === "sfp" ? editable.key : sortedCalibrationSfpKeys(cal).at(-1);
+            const sfpNumber = nextCalibrationSfpNumber(cal);
+            const newKey = `SFP${sfpNumber}`;
+            cloneCalibrationSfp(cal, selected, newKey, action === "add-sfp" ? 12 : 0, 0);
+            this.config = { ...this.config, calibration_target: `sfp:${sfpNumber}`, calibration_part: "center" };
+            this.markCalibrationDirty();
+            this.setCalibrationSaveStatus(`${action === "add-sfp" ? "Added" : "Duplicated"} SFP/uplink ${newKey}`, false);
+            this.render();
+            this.clearCalibrationSaveStatusSoon();
+            return;
+          }
+
           const selected = editable?.type === "port" ? editable.key : sortedCalibrationPortKeys(cal).at(-1);
           const newKey = String(nextCalibrationPortNumber(cal));
           cloneCalibrationPort(cal, selected, newKey, action === "add-port" ? 12 : 0, 0);
@@ -8328,6 +8418,44 @@ const testModeBadge = testModeActive
           this.config = { ...this.config, calibration_target: `port:${next}`, calibration_part: this.config.calibration_part || "center" };
           this.markCalibrationDirty();
           this.setCalibrationSaveStatus(`Renamed visual port ${editable.key} to ${next}`, false);
+          this.render();
+          this.clearCalibrationSaveStatusSoon();
+          return;
+        }
+
+        if (action === "rename-sfp" && editable?.type === "sfp") {
+          const input = this.shadowRoot.querySelector('[data-cv-field="sfp-key"]');
+          const next = normaliseCalibrationSfpKey(input?.value);
+          const validationError = calibrationSfpKeyValidationMessage(next);
+          if (validationError) {
+            this.setCalibrationSaveStatus(validationError, true);
+            this.clearCalibrationSaveStatusSoon();
+            return;
+          }
+          if (next !== editable.key && cal.sfp?.[next]) {
+            this.setCalibrationSaveStatus(`SFP key ${next} already exists`, true);
+            this.clearCalibrationSaveStatusSoon();
+            return;
+          }
+          const nextNumber = sfpPortNumber(next);
+          const conflictingKey = sortedCalibrationSfpKeys(cal).find(
+            (key) => key !== editable.key && sfpPortNumber(key) === nextNumber
+          );
+          if (conflictingKey) {
+            this.setCalibrationSaveStatus(
+              calibrationSfpCollisionMessage({ number: nextNumber, first: conflictingKey, second: next }),
+              true
+            );
+            this.clearCalibrationSaveStatusSoon();
+            return;
+          }
+          if (next !== editable.key) {
+            cal.sfp[next] = cal.sfp[editable.key];
+            delete cal.sfp[editable.key];
+          }
+          this.config = { ...this.config, calibration_target: `sfp:${nextNumber}`, calibration_part: this.config.calibration_part || "center" };
+          this.markCalibrationDirty();
+          this.setCalibrationSaveStatus(`Renamed SFP key ${editable.key} to ${next}`, false);
           this.render();
           this.clearCalibrationSaveStatusSoon();
           return;
