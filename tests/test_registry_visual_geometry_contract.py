@@ -31,25 +31,20 @@ def _geometry_count(payload: dict, key: str) -> int:
     return 0
 
 
-def _select_calibration(
-    candidates: list[tuple[Path, dict]], faceplate: str
-) -> tuple[Path, dict] | None:
-    exact = [
-        item
-        for item in candidates
-        if str(((item[1].get("image") or {}).get("file") or "")).strip() == faceplate
-    ]
-    if len(exact) == 1:
-        return exact[0]
-    if len(exact) > 1:
-        return None
-    if len(candidates) == 1:
-        return candidates[0]
-    return None
+def _image_file(payload: dict) -> str:
+    return str(((payload.get("image") or {}).get("file") or "")).strip()
 
 
 class RegistryVisualGeometryContractTests(unittest.TestCase):
-    def test_exact_dashboard_geometry_matches_registry_physical_contract(self) -> None:
+    def test_dashboard_visual_capacity_covers_registry_physical_contract(self) -> None:
+        """Registry defines real hardware; calibration/faceplate may be oversized fallback.
+
+        An exact model may intentionally use a larger generic visual profile when no
+        model-specific faceplate exists yet. That visual geometry is capacity only and
+        must never create additional physical ports downstream. The Core-side contract
+        is therefore: assigned visual capacity must be large enough to draw every real
+        RJ45/uplink position, while registry topology remains authoritative.
+        """
         registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
         profiles = _load_calibration_profiles()
         errors: list[str] = []
@@ -79,36 +74,50 @@ class RegistryVisualGeometryContractTests(unittest.TestCase):
                 )
                 continue
 
-            selected = _select_calibration(candidates, faceplate)
-            if selected is None:
+            matching_faceplate = [item for item in candidates if _image_file(item[1]) == faceplate]
+            usable = matching_faceplate or candidates
+
+            capacities = [
+                (
+                    path,
+                    calibration,
+                    _geometry_count(calibration, "ports"),
+                    _geometry_count(calibration, "sfp"),
+                )
+                for path, calibration in usable
+            ]
+            adequate = [
+                item
+                for item in capacities
+                if item[2] >= expected_rj45 and item[3] >= expected_sfp
+            ]
+
+            if not adequate:
+                described = ", ".join(
+                    f"{path.name}={rj45} RJ45/{sfp} uplink"
+                    for path, _, rj45, sfp in capacities
+                )
+                errors.append(
+                    f"{model}: registry requires at least {expected_rj45} RJ45/"
+                    f"{expected_sfp} uplink positions but profile {profile_name!r} "
+                    f"provides only: {described}"
+                )
+
+            if matching_faceplate:
+                # At least one calibration payload explicitly targets the assigned faceplate.
+                pass
+            elif len(candidates) == 1:
+                calibration_faceplate = _image_file(candidates[0][1])
+                if calibration_faceplate and calibration_faceplate != faceplate:
+                    errors.append(
+                        f"{model}: registry faceplate {faceplate!r} disagrees with "
+                        f"{candidates[0][0].name} image {calibration_faceplate!r}"
+                    )
+            else:
                 names = ", ".join(path.name for path, _ in candidates)
                 errors.append(
-                    f"{model}: calibration profile {profile_name!r} is ambiguous for "
-                    f"faceplate {faceplate!r}; candidates: {names}"
-                )
-                continue
-
-            profile_path, calibration = selected
-            actual_rj45 = _geometry_count(calibration, "ports")
-            actual_sfp = _geometry_count(calibration, "sfp")
-
-            if actual_rj45 != expected_rj45:
-                errors.append(
-                    f"{model}: registry expects {expected_rj45} RJ45 but "
-                    f"{profile_path.name} ({profile_name}) defines {actual_rj45}"
-                )
-            if actual_sfp != expected_sfp:
-                errors.append(
-                    f"{model}: registry expects {expected_sfp} uplink/SFP positions but "
-                    f"{profile_path.name} ({profile_name}) defines {actual_sfp}"
-                )
-
-            image = calibration.get("image") or {}
-            calibration_faceplate = str(image.get("file") or "").strip()
-            if calibration_faceplate and calibration_faceplate != faceplate:
-                errors.append(
-                    f"{model}: registry faceplate {faceplate!r} disagrees with "
-                    f"{profile_path.name} image {calibration_faceplate!r}"
+                    f"{model}: profile {profile_name!r} has multiple calibration payloads "
+                    f"but none targets assigned faceplate {faceplate!r}; candidates: {names}"
                 )
 
             faceplate_name = faceplate.removeprefix("faceplates/")
