@@ -413,8 +413,8 @@
         "rj45": 48,
         "poe": true,
         "uplinks": 4,
-        "uplink_type": "SFP/SFP+",
-        "gigabit_sfp": 4,
+        "uplink_type": "4 dual-speed 1G/10G SFP+ cages",
+        "gigabit_sfp": 0,
         "ten_gigabit_sfp_plus": 4
       },
       "stack_support": false,
@@ -434,6 +434,7 @@
       "notes": [
         "Exact model detection, zero-based copper-port mapping, live entities, PoE, system sensors, and dynamic VLAN presentation validated on real hardware.",
         "Physical SFP/SFP+ uplink link state, activity, and 64-bit traffic counters validated on real hardware.",
+        "The four physical uplink cages are dual-speed: ge-0/1/N and xe-0/1/N are alternate identities for the same four cages and are not additive physical ports.",
         "Confirmed for standalone Switch Vision operation in v1.8.26.",
         "Juniper Virtual Chassis support remains unvalidated and is not included in the confirmed support scope.",
         "Juniper ports use native VLAN plus the optional Juniper-only MODE field for clear ACCESS/TRUNK presentation."
