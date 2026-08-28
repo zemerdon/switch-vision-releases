@@ -11,19 +11,14 @@ CALIBRATION_DIR = ROOT / "src" / "calibration"
 FACEPLATE_DIR = ROOT / "src" / "faceplates"
 
 
-def _load_calibration_profiles() -> dict[str, tuple[Path, dict]]:
-    profiles: dict[str, tuple[Path, dict]] = {}
+def _load_calibration_profiles() -> dict[str, list[tuple[Path, dict]]]:
+    profiles: dict[str, list[tuple[Path, dict]]] = {}
     for path in sorted(CALIBRATION_DIR.glob("*.json")):
         payload = json.loads(path.read_text(encoding="utf-8"))
         profile = str(payload.get("profile") or "").strip()
         if not profile:
             continue
-        if profile in profiles:
-            previous = profiles[profile][0]
-            raise AssertionError(
-                f"duplicate calibration profile {profile!r}: {previous.name}, {path.name}"
-            )
-        profiles[profile] = (path, payload)
+        profiles.setdefault(profile, []).append((path, payload))
     return profiles
 
 
@@ -34,6 +29,23 @@ def _geometry_count(payload: dict, key: str) -> int:
     if isinstance(group, list):
         return len(group)
     return 0
+
+
+def _select_calibration(
+    candidates: list[tuple[Path, dict]], faceplate: str
+) -> tuple[Path, dict] | None:
+    exact = [
+        item
+        for item in candidates
+        if str(((item[1].get("image") or {}).get("file") or "")).strip() == faceplate
+    ]
+    if len(exact) == 1:
+        return exact[0]
+    if len(exact) > 1:
+        return None
+    if len(candidates) == 1:
+        return candidates[0]
+    return None
 
 
 class RegistryVisualGeometryContractTests(unittest.TestCase):
@@ -59,13 +71,24 @@ class RegistryVisualGeometryContractTests(unittest.TestCase):
             if not faceplate:
                 errors.append(f"{model}: dashboard_support=true but default_faceplate is empty")
                 continue
-            if profile_name not in profiles:
+
+            candidates = profiles.get(profile_name) or []
+            if not candidates:
                 errors.append(
                     f"{model}: calibration profile {profile_name!r} has no source JSON in src/calibration"
                 )
                 continue
 
-            profile_path, calibration = profiles[profile_name]
+            selected = _select_calibration(candidates, faceplate)
+            if selected is None:
+                names = ", ".join(path.name for path, _ in candidates)
+                errors.append(
+                    f"{model}: calibration profile {profile_name!r} is ambiguous for "
+                    f"faceplate {faceplate!r}; candidates: {names}"
+                )
+                continue
+
+            profile_path, calibration = selected
             actual_rj45 = _geometry_count(calibration, "ports")
             actual_sfp = _geometry_count(calibration, "sfp")
 
