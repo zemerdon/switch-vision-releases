@@ -14,11 +14,14 @@ def main() -> None:
     frontend = FRONTEND.read_text(encoding="utf-8")
     for marker in (
         'const SV_GEOMETRY_TRANSFER_TYPE = "switch-vision-geometry-profile-v1";',
+        'const SV_FACEPLATE_TRANSFER_TYPE = "switch-vision-faceplate-profile-v2";',
         'data-cv-action="download-geometry"',
         'data-cv-action="import-geometry"',
         "data-cv-geometry-file",
         "geometryTransferExportData(",
+        "geometryTransferImportSource(",
         "applyGeometryTransferData(",
+        "Imported geometry from Switch Vision Faceplate Profile v2",
     ):
         assert marker in frontend, marker
 
@@ -51,15 +54,27 @@ function ensureCalibrationUi(cal) {
   return cal;
 }
 function validateImportedCalibration(raw, currentCal = null) {
+  const errors = [];
+  const warnings = [];
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
+    return { valid: false, errors: ["The imported file must contain one JSON object."], warnings, calibration: null, summary: null };
+  }
+  for (const key of ["image", "ports", "sfp", "status_leds", "ui"]) {
+    if (!raw[key] || typeof raw[key] !== "object" || Array.isArray(raw[key])) errors.push(`Missing or invalid ${key}.`);
+  }
+  const width = Number(raw.image?.width || 0);
+  const height = Number(raw.image?.height || 0);
+  if (!(width > 0 && height > 0)) errors.push("Invalid image dimensions.");
+  if (errors.length) return { valid: false, errors, warnings, calibration: null, summary: null };
   return {
     valid: true,
-    errors: [],
-    warnings: [],
+    errors,
+    warnings,
     calibration: ensureCalibrationUi(cloneCalibrationData(raw)),
     summary: {
       model: String(raw.model || "model"),
-      width: Number(raw.image?.width || 0),
-      height: Number(raw.image?.height || 0),
+      width,
+      height,
       portCount: Object.keys(raw.ports || {}).length,
       sfpCount: Object.keys(raw.sfp || {}).length,
       statusCount: Object.keys(raw.status_leds || {}).length
@@ -178,6 +193,79 @@ const mismatch = cloneCalibrationData(malicious);
 mismatch.geometry.ports["2"] = cloneCalibrationData(mismatch.geometry.ports["1"]);
 const rejected = applyGeometryTransferData(current, mismatch);
 assert(rejected.valid === false, "topology mismatch was accepted");
+
+
+const legacyFaceplate = clonePlainData(current);
+legacyFaceplate.schema_version = 2;
+legacyFaceplate.transfer_type = SV_FACEPLATE_TRANSFER_TYPE;
+legacyFaceplate.generated_by = "Switch Vision v2.6.8";
+legacyFaceplate.source_scope = "custom";
+legacyFaceplate.source_profile = "legacy-profile";
+legacyFaceplate.source_base_profile = "legacy-base";
+legacyFaceplate.required_faceplate = "legacy-faceplate.png";
+legacyFaceplate.image = {
+  ...legacyFaceplate.image,
+  width: 1024,
+  height: 224,
+  file: "foreign-background.png",
+  master: "foreign-master"
+};
+legacyFaceplate.ports["1"] = { ...legacyFaceplate.ports["1"], ...clonePlainData(malicious.geometry.ports["1"]) };
+legacyFaceplate.sfp.G1 = { ...legacyFaceplate.sfp.G1, ...clonePlainData(malicious.geometry.sfp.G1) };
+legacyFaceplate.status_leds = clonePlainData(malicious.geometry.status_leds);
+legacyFaceplate.ui.logo = { ...legacyFaceplate.ui.logo, ...clonePlainData(malicious.geometry.ui.logo) };
+legacyFaceplate.ui.faceplate = { ...legacyFaceplate.ui.faceplate, ...clonePlainData(malicious.geometry.ui.faceplate) };
+legacyFaceplate.ui.status_panel = { ...legacyFaceplate.ui.status_panel, ...clonePlainData(malicious.geometry.ui.status_panel) };
+legacyFaceplate.ui.status_panel_2 = { ...legacyFaceplate.ui.status_panel_2, ...clonePlainData(malicious.geometry.ui.status_panel_2) };
+legacyFaceplate.ui.calibration_button = { ...legacyFaceplate.ui.calibration_button, ...clonePlainData(malicious.geometry.ui.calibration_button) };
+legacyFaceplate.management = {switch_ip: "203.0.113.9"};
+legacyFaceplate.stack = {enabled: false, members: {}};
+legacyFaceplate.profile = "foreign-profile";
+
+const legacyResult = applyGeometryTransferData(current, legacyFaceplate);
+if (!legacyResult.valid) throw new Error(JSON.stringify(legacyResult.errors));
+const legacyApplied = legacyResult.calibration;
+assert(legacyResult.summary?.sourceTransferType === SV_FACEPLATE_TRANSFER_TYPE, "Faceplate Profile v2 source type not reported");
+assert(legacyResult.summary?.convertedFromFaceplateProfileV2 === true, "Faceplate Profile v2 conversion marker missing");
+assert(legacyApplied.image.width === 1024 && legacyApplied.image.height === 224, "Faceplate Profile v2 canvas geometry not applied");
+assert(same(legacyApplied.ports["1"].center, [110, 120]), "Faceplate Profile v2 port geometry not applied");
+assert(same(legacyApplied.sfp.G1.center, [300, 120]), "Faceplate Profile v2 SFP geometry not applied");
+assert(same(legacyApplied.status_leds.STAT, [400, 120]), "Faceplate Profile v2 status LED geometry not applied");
+assert(legacyApplied.ui.logo.x === 21 && legacyApplied.ui.logo.y === 22, "Faceplate Profile v2 logo geometry not applied");
+assert(legacyApplied.ui.status_panel.x === 23 && same(legacyApplied.ui.status_panel.fields.row1_key, [30, 30]), "Faceplate Profile v2 status panel geometry not applied");
+assert(legacyApplied.ui.status_panel_2.x === 25 && same(legacyApplied.ui.status_panel_2.fields.row1_value, [40, 30]), "Faceplate Profile v2 second status panel geometry not applied");
+assert(legacyApplied.ui.calibration_button.anchor === "bottom_left", "Faceplate Profile v2 calibration button geometry not applied");
+
+assert(legacyApplied.image.file === current.image.file && legacyApplied.image.master === current.image.master, "Faceplate Profile v2 changed image identity");
+assert(legacyApplied.management.switch_ip === current.management.switch_ip, "Faceplate Profile v2 changed management IP");
+assert(same(legacyApplied.stack, current.stack), "Faceplate Profile v2 changed stack configuration");
+assert(legacyApplied.profile === current.profile, "Faceplate Profile v2 changed profile destination");
+assert(same(legacyApplied.ui.faceplate, current.ui.faceplate), "Faceplate Profile v2 changed faceplate appearance/source");
+assert(legacyApplied.ui.logo.file === current.ui.logo.file && legacyApplied.ui.logo.source === current.ui.logo.source && legacyApplied.ui.logo.show === current.ui.logo.show, "Faceplate Profile v2 changed logo appearance/source");
+assert(legacyApplied.ui.status_panel.show === current.ui.status_panel.show && legacyApplied.ui.status_panel.font_size === current.ui.status_panel.font_size, "Faceplate Profile v2 changed status panel appearance");
+assert(legacyApplied.ports["1"].display_name === current.ports["1"].display_name && legacyApplied.ports["1"].number_show === current.ports["1"].number_show, "Faceplate Profile v2 changed port non-geometry configuration");
+assert(legacyApplied.sfp.G1.display_name === current.sfp.G1.display_name && legacyApplied.sfp.G1.label_show === current.sfp.G1.label_show, "Faceplate Profile v2 changed SFP non-geometry configuration");
+
+const nativeSourceResult = applyGeometryTransferData(current, exported);
+assert(nativeSourceResult.valid === true, "native geometry transfer behavior regressed");
+assert(nativeSourceResult.summary?.sourceTransferType === SV_GEOMETRY_TRANSFER_TYPE, "native geometry source type changed");
+assert(nativeSourceResult.summary?.convertedFromFaceplateProfileV2 === false, "native geometry was incorrectly marked converted");
+
+const unknownTransfer = clonePlainData(legacyFaceplate);
+unknownTransfer.transfer_type = "unknown-transfer-type";
+const unknownTransferResult = applyGeometryTransferData(current, unknownTransfer);
+assert(unknownTransferResult.valid === false, "unknown transfer_type was accepted");
+
+const wrongFaceplateSchema = clonePlainData(legacyFaceplate);
+wrongFaceplateSchema.schema_version = 3;
+const wrongFaceplateSchemaResult = applyGeometryTransferData(current, wrongFaceplateSchema);
+assert(wrongFaceplateSchemaResult.valid === false, "unsupported Faceplate Profile schema was accepted");
+assert(wrongFaceplateSchemaResult.errors.some((value) => String(value).includes("schema_version")), "unsupported Faceplate Profile schema did not report schema_version");
+
+const malformedFaceplate = clonePlainData(legacyFaceplate);
+delete malformedFaceplate.ports;
+const malformedFaceplateResult = applyGeometryTransferData(current, malformedFaceplate);
+assert(malformedFaceplateResult.valid === false, "malformed Faceplate Profile v2 was accepted");
 
 console.log("Core geometry-only calibration transfer: PASS");
 '''

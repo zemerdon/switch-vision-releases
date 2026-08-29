@@ -1,3 +1,13 @@
+## v2.6.16 — Geometry Import Faceplate Profile v2 compatibility
+
+- Keep native `switch-vision-geometry-profile-v1` / schema 1 Geometry Import behavior unchanged.
+- Accept only the explicitly recognised legacy/full `switch-vision-faceplate-profile-v2` / schema 2 format as the additional source type.
+- Validate Faceplate Profile v2 input first, reduce it through the existing geometry exporter allow-list, then feed the resulting native geometry transfer through the existing validator/applicator.
+- Import only image coordinate dimensions, permitted RJ45/SFP geometry, status LED positions, logo geometry, status-panel geometry/fields and calibration-button geometry/anchor.
+- Preserve target management, stack/member settings, profile identity, selected faceplate/artwork source, fit/opacity, colours, fonts, visibility flags, status-panel styling and all other non-geometry configuration.
+- Keep unknown transfer types, unsupported Faceplate Profile schema versions and malformed v2 profiles fail-closed.
+- Add permanent Node-backed regression coverage for v2.6.8-style Faceplate Profile import, native-v1 compatibility and non-geometry isolation.
+
 ## v2.6.15 — UniFi 24-port factory geometry
 
 - Update both bundled UniFi 24-RJ45 + 2-SFP factory profiles from the newly calibrated RJ45 port geometry.

@@ -1,4 +1,14 @@
-# Switch Vision Core v2.6.15
+# Switch Vision Core v2.6.16
+
+Core 2.6.16 makes Calibration → Import Geometry backward compatible with full Switch Vision Faceplate Profile v2 exports while preserving the strict geometry-only contract. Native `switch-vision-geometry-profile-v1` / schema 1 files continue through the existing path unchanged. Recognised `switch-vision-faceplate-profile-v2` / schema 2 files are first validated as Faceplate Profiles, reduced through the existing geometry exporter allow-list, and then consumed by the same geometry validator/applicator.
+
+The compatibility adapter imports only coordinate-space dimensions, permitted RJ45/SFP geometry, status LED positions, logo box geometry, both status-panel boxes plus their field coordinates, and calibration-button box/anchor geometry. Management IP, stack/member configuration, profile identity/destination, faceplate artwork/source/fit/opacity, colours, fonts, visibility flags, status-panel styling and other non-geometry configuration remain owned by the current target profile and cannot be overwritten through Import Geometry.
+
+Unknown transfer types remain fail-closed, unsupported Faceplate Profile schema versions are rejected, malformed Faceplate Profile v2 inputs must pass the existing calibration validator before conversion, and permanent regression coverage locks native-v1 behavior plus v2.6.8-style Faceplate Profile compatibility and non-geometry isolation.
+
+---
+
+# Previous release: Switch Vision Core v2.6.15
 
 Core 2.6.15 updates the bundled factory port geometry for the light and dark UniFi 24-RJ45 + 2-SFP faceplates from newly calibrated defaults. The change is limited to RJ45 port geometry: corrected left-LED placement on ports 5, 6 and 7 and exact 4 x 3 port LED sizes across all 24 RJ45 positions.
 
