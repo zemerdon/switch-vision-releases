@@ -1,4 +1,15 @@
-# Switch Vision Core v2.6.13
+# Switch Vision Core v2.6.14
+
+Core 2.6.14 fixes a generic multi-uplink traffic binding gap in the dashboard runtime. Clean `sensor.<member>_uplink_<n>_rx_bytes` and `_tx_bytes` entities are now valid fallbacks for every logical SFP/uplink number instead of only uplinks 1 and 2.
+
+This restores traffic-rate and activity-LED sampling on four-uplink hardware such as the HP J8693A when Discovery emits generic `uplink_3` and `uplink_4` byte counters. Existing `sfp_10g` and `sfp_1g` candidates remain preferred, legacy Cisco-style candidates remain available, and the UniFi per-port-traffic guard is unchanged. Negotiated-speed lookup required no fix because it already accepts generic `uplink_<n>_speed_mbps/bps` telemetry for arbitrary uplink numbers.
+
+Permanent Core regression coverage locks generic RX/TX byte-counter binding across uplinks 1–4 and proves that both traffic-rate reporting and activity detection continue to share the same resolver. This release does not change physical topology, STATUS mapping, polling cadence, activity timing/sensitivity/hold behavior, PoE, support status or factory geometry.
+
+---
+
+# Previous release: Switch Vision Core v2.6.13
+
 
 Core 2.6.13 adds first-class SFP/uplink object management to the Calibration Port Manager. Calibration authors can now add SFP objects directly, duplicate the selected RJ45 or SFP object without changing its type, and edit the stored SFP key used to identify each logical uplink.
 

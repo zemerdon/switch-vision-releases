@@ -1,0 +1,542 @@
+{
+  "schema_version": 2,
+  "schema": "switch-vision-interactive-calibration-v1",
+  "model": "unifi-8-rj45",
+  "profile": "default_unifi_8_rj45",
+  "generated_by": "Switch Vision v2.4.18",
+  "image": {
+    "file": "faceplates/unifi-8rj45.png",
+    "width": 1592,
+    "height": 149,
+    "master": "unifi-8-rj45-v2.4.18",
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "coordinate_space": "image-native-v1"
+  },
+  "ports": {
+    "1": {
+      "center": [
+        829.924107143,
+        81.484375
+      ],
+      "number": [
+        829.924107143,
+        33.258928571
+      ],
+      "led_left": [
+        805.977678571,
+        57.870535714
+      ],
+      "led_right": [
+        854.203125,
+        57.870535714
+      ],
+      "hitbox": [
+        61.196428571,
+        58.535714286
+      ],
+      "led_left_size": [
+        10.310267857,
+        5.986607143
+      ],
+      "led_right_size": [
+        10.310267857,
+        5.986607143
+      ],
+      "number_show": true
+    },
+    "2": {
+      "center": [
+        923.381696429,
+        81.484375
+      ],
+      "number": [
+        923.049107143,
+        36.584821429
+      ],
+      "led_left": [
+        898.770089286,
+        57.537946429
+      ],
+      "led_right": [
+        947.328125,
+        57.870535714
+      ],
+      "hitbox": [
+        61.196428571,
+        58.535714286
+      ],
+      "led_left_size": [
+        10.310267857,
+        5.986607143
+      ],
+      "led_right_size": [
+        10.310267857,
+        5.986607143
+      ],
+      "number_show": true
+    },
+    "3": {
+      "center": [
+        1014.511160714,
+        81.484375
+      ],
+      "number": [
+        1016.506696429,
+        33.258928571
+      ],
+      "led_left": [
+        991.895089286,
+        57.870535714
+      ],
+      "led_right": [
+        1040.120535714,
+        57.870535714
+      ],
+      "hitbox": [
+        61.196428571,
+        58.535714286
+      ],
+      "led_left_size": [
+        10.310267857,
+        5.986607143
+      ],
+      "led_right_size": [
+        10.310267857,
+        5.986607143
+      ],
+      "number_show": true
+    },
+    "4": {
+      "center": [
+        1109.631696429,
+        81.484375
+      ],
+      "number": [
+        1106.305803571,
+        36.584821429
+      ],
+      "led_left": [
+        1085.020089286,
+        57.870535714
+      ],
+      "led_right": [
+        1133.245535714,
+        57.870535714
+      ],
+      "hitbox": [
+        61.196428571,
+        58.535714286
+      ],
+      "led_left_size": [
+        10.310267857,
+        5.986607143
+      ],
+      "led_right_size": [
+        10.310267857,
+        5.986607143
+      ],
+      "number_show": true
+    },
+    "5": {
+      "center": [
+        1201.758928571,
+        81.484375
+      ],
+      "number": [
+        1202.424107143,
+        33.258928571
+      ],
+      "led_left": [
+        1177.8125,
+        57.870535714
+      ],
+      "led_right": [
+        1226.370535714,
+        57.870535714
+      ],
+      "hitbox": [
+        61.196428571,
+        58.535714286
+      ],
+      "led_left_size": [
+        10.310267857,
+        5.986607143
+      ],
+      "led_right_size": [
+        10.310267857,
+        5.986607143
+      ],
+      "number_show": true
+    },
+    "6": {
+      "center": [
+        1294.551339286,
+        81.484375
+      ],
+      "number": [
+        1297.544642857,
+        36.584821429
+      ],
+      "led_left": [
+        1270.9375,
+        57.870535714
+      ],
+      "led_right": [
+        1319.495535714,
+        57.870535714
+      ],
+      "hitbox": [
+        61.196428571,
+        58.535714286
+      ],
+      "led_left_size": [
+        10.310267857,
+        5.986607143
+      ],
+      "led_right_size": [
+        10.310267857,
+        5.986607143
+      ],
+      "number_show": true
+    },
+    "7": {
+      "center": [
+        1388.341517857,
+        81.484375
+      ],
+      "number": [
+        1388.674107143,
+        33.258928571
+      ],
+      "led_left": [
+        1364.0625,
+        57.870535714
+      ],
+      "led_right": [
+        1412.287946429,
+        57.870535714
+      ],
+      "hitbox": [
+        61.196428571,
+        58.535714286
+      ],
+      "led_left_size": [
+        10.310267857,
+        5.986607143
+      ],
+      "led_right_size": [
+        10.310267857,
+        5.986607143
+      ],
+      "number_show": true
+    },
+    "8": {
+      "center": [
+        1482.131696429,
+        81.484375
+      ],
+      "number": [
+        1476.477678571,
+        33.258928571
+      ],
+      "led_left": [
+        1456.854910714,
+        57.870535714
+      ],
+      "led_right": [
+        1505.412946429,
+        57.870535714
+      ],
+      "hitbox": [
+        61.196428571,
+        58.535714286
+      ],
+      "led_left_size": [
+        10.310267857,
+        5.986607143
+      ],
+      "led_right_size": [
+        10.310267857,
+        5.986607143
+      ],
+      "number_show": true
+    }
+  },
+  "sfp": {},
+  "status_leds": {},
+  "ui": {
+    "logo": {
+      "show": true,
+      "file": "sv-logo.png",
+      "source": "default",
+      "x": 198.669642857,
+      "y": 26.274553571,
+      "width": 130.375,
+      "height": 104.100446429
+    },
+    "status_panel": {
+      "show": true,
+      "x": 348.334821429,
+      "y": 33.258928571,
+      "width": 189.575892857,
+      "height": 93.125,
+      "font_family": "SwitchVisionCustom, Arial, Helvetica, sans-serif",
+      "font_size": 11.640625,
+      "title_font_size": 5.321428571,
+      "font_weight": "bold",
+      "text_color": "#000000",
+      "label_color": "#000000",
+      "title_color": "#000000",
+      "background_color": "rgba(0,0,0,.06)",
+      "border_color": "#000000",
+      "border_show": true,
+      "field_order": {
+        "switch": [
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "uptime",
+          "vendor",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ],
+        "sfp": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ]
+      },
+      "hidden_fields": {
+        "switch": [
+          "vendor",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [],
+        "sfp": []
+      },
+      "fields": {
+        "row1_key": [
+          6.319196429,
+          12.970982143
+        ],
+        "row1_value": [
+          68.845982143,
+          12.970982143
+        ],
+        "row2_key": [
+          6.319196429,
+          19.290178571
+        ],
+        "row2_value": [
+          68.845982143,
+          19.290178571
+        ],
+        "row3_key": [
+          6.319196429,
+          25.941964286
+        ],
+        "row3_value": [
+          68.845982143,
+          25.941964286
+        ],
+        "row4_key": [
+          6.319196429,
+          32.261160714
+        ],
+        "row4_value": [
+          68.845982143,
+          32.261160714
+        ],
+        "row5_key": [
+          6.319196429,
+          38.580357143
+        ],
+        "row5_value": [
+          68.845982143,
+          38.580357143
+        ],
+        "row6_key": [
+          6.319196429,
+          44.899553571
+        ],
+        "row6_value": [
+          68.845982143,
+          44.899553571
+        ]
+      }
+    },
+    "faceplate": {
+      "fit": "fill",
+      "opacity": 1,
+      "show": true,
+      "file": "unifi-8rj45.png",
+      "source": "custom"
+    },
+    "calibration_button": {
+      "show": true,
+      "x": 1083.357142857,
+      "y": 4.65625,
+      "width": 45.897321429,
+      "height": 11.308035714,
+      "anchor": "top_right"
+    },
+    "status_panel_2": {
+      "show": true,
+      "x": 575.160714286,
+      "y": 33.258928571,
+      "width": 189.575892857,
+      "height": 93.125,
+      "font_family": "SwitchVisionCustom, Arial, Helvetica, sans-serif",
+      "font_size": 11.640625,
+      "title_font_size": 5.321428571,
+      "font_weight": "bold",
+      "text_color": "#000000",
+      "label_color": "#000000",
+      "title_color": "#000000",
+      "background_color": "rgba(0,0,0,.06)",
+      "border_color": "#000000",
+      "border_show": true,
+      "title_mode": "custom",
+      "title_field": "model",
+      "custom_title": "",
+      "field_order": {
+        "switch": [
+          "vendor",
+          "uptime",
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ],
+        "sfp": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ]
+      },
+      "hidden_fields": {
+        "switch": [
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [],
+        "sfp": []
+      },
+      "fields": {
+        "row1_key": [
+          11.308035714,
+          18.292410714
+        ],
+        "row1_value": [
+          68.845982143,
+          18.292410714
+        ],
+        "row2_key": [
+          11.308035714,
+          23.946428571
+        ],
+        "row2_value": [
+          68.845982143,
+          23.946428571
+        ],
+        "row3_key": [
+          11.308035714,
+          29.600446429
+        ],
+        "row3_value": [
+          68.845982143,
+          29.600446429
+        ],
+        "row4_key": [
+          11.308035714,
+          35.254464286
+        ],
+        "row4_value": [
+          68.845982143,
+          35.254464286
+        ],
+        "row5_key": [
+          11.308035714,
+          40.908482143
+        ],
+        "row5_value": [
+          68.845982143,
+          40.908482143
+        ],
+        "row6_key": [
+          11.308035714,
+          46.5625
+        ],
+        "row6_value": [
+          68.845982143,
+          46.5625
+        ]
+      }
+    },
+    "port_led_shape": "rectangle",
+    "port_label_color": "#eef7ff",
+    "port_number_color": "#000000",
+    "port_label_font_weight": "bold",
+    "port_number_font_size": 13.303571429,
+    "sfp_label_font_size": 4.489955357
+  },
+  "stack": {
+    "enabled": false,
+    "stack_id": "",
+    "uptime_source": "",
+    "members": {}
+  },
+  "management": {
+    "switch_ip": ""
+  }
+}

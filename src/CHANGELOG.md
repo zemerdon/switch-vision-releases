@@ -1,3 +1,12 @@
+## v2.6.14 — Multi-uplink activity binding
+
+- Extend the clean generic `sensor.<member>_uplink_<n>_{rx,tx}_bytes` fallback from uplinks 1–2 to every logical SFP/uplink number.
+- Preserve `sfp_10g` and `sfp_1g` as the preferred clean candidates and preserve existing legacy Cisco-style fallbacks.
+- Restore traffic-rate and activity-LED binding for four-uplink hardware such as the HP J8693A when Discovery emits generic `uplink_3` / `uplink_4` byte counters.
+- Keep negotiated-speed binding unchanged; `sfpSpeedMbps()` already accepts generic `uplink_<n>_speed_mbps/bps` telemetry for arbitrary uplink numbers.
+- Add permanent Core regressions across uplinks 1–4, RX/TX directions, the shared activity/rate call chain, and the existing UniFi per-port-traffic guard.
+- No physical topology, STATUS binding, polling cadence, activity timing/sensitivity/hold, PoE, support-status or factory-geometry contracts change.
+
 ## v2.6.13 — Calibration SFP port manager
 
 - Add separate **Add RJ45** and **Add SFP** actions to Calibration's Port Manager.
