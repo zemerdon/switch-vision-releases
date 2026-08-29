@@ -10,11 +10,11 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current public Core release
 
-### Switch Vision v2.6.13
+### Switch Vision v2.6.14
 
-**v2.6.13** is the current tested public Switch Vision Core/dashboard release.
+**v2.6.14** is the current tested public Switch Vision Core/dashboard release.
 
-This corrective release keeps rendered ports selectable when a saved or custom calibration omits an explicit hitbox, and keeps Advanced diagnostics text readable under Home Assistant themes with dark primary text.
+This corrective release restores generic byte-counter traffic and activity binding across every logical SFP/uplink number, including four-uplink hardware, while preserving existing SFP-specific and legacy fallback precedence.
 
 Component versions validated when Core v2.2.2 was released:
 
