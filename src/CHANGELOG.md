@@ -1,3 +1,11 @@
+## v2.6.17 — Dell and Zyxel bundled logos
+
+- Add four bundled Dell logo PNGs: Black, Blue, Modern and White.
+- Add five bundled Zyxel logo PNGs: 2019, Black, Networks, Pre 2016 and White.
+- Reuse Calibration's existing folder-driven logo discovery and automatic readable filename labels; no new logo-picker code path is introduced.
+- Keep custom logo files, logo placement/calibration behavior and existing default-logo handling unchanged.
+- Keep switch detection, hardware mapping, geometry, polling, telemetry, PoE and support-status contracts unchanged.
+
 ## v2.6.16 — Geometry Import Faceplate Profile v2 compatibility
 
 - Keep native `switch-vision-geometry-profile-v1` / schema 1 Geometry Import behavior unchanged.

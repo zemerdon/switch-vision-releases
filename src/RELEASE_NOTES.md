@@ -1,4 +1,14 @@
-# Switch Vision Core v2.6.16
+# Switch Vision Core v2.6.17
+
+Core 2.6.17 adds nine bundled vendor logo assets for Dell and Zyxel switches. The new transparent PNGs are shipped under `logos/` and become available automatically in Calibration's existing Logo selector alongside custom logo files.
+
+The bundled Dell choices are Black, Blue, Modern and White. The bundled Zyxel choices are 2019, Black, Networks, Pre 2016 and White. Existing automatic filename-to-display-label handling provides readable picker names without introducing a separate hard-coded logo catalogue.
+
+This release does not change switch detection, physical topology, calibration geometry, polling, telemetry, PoE, support status or logo placement behavior. The existing package path already copies the complete source `logos/` tree into the installable Core release.
+
+---
+
+# Previous release: Switch Vision Core v2.6.16
 
 Core 2.6.16 makes Calibration → Import Geometry backward compatible with full Switch Vision Faceplate Profile v2 exports while preserving the strict geometry-only contract. Native `switch-vision-geometry-profile-v1` / schema 1 files continue through the existing path unchanged. Recognised `switch-vision-faceplate-profile-v2` / schema 2 files are first validated as Faceplate Profiles, reduced through the existing geometry exporter allow-list, and then consumed by the same geometry validator/applicator.
 
