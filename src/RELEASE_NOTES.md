@@ -1,4 +1,12 @@
-# Switch Vision Core v2.6.14
+# Switch Vision Core v2.6.15
+
+Core 2.6.15 updates the bundled factory port geometry for the light and dark UniFi 24-RJ45 + 2-SFP faceplates from newly calibrated defaults. The change is limited to RJ45 port geometry: corrected left-LED placement on ports 5, 6 and 7 and exact 4 x 3 port LED sizes across all 24 RJ45 positions.
+
+SFP geometry, status LEDs, status panels, logo, calibration button, colours, fonts, stack/management defaults, device topology, polling, telemetry and support status are unchanged.
+
+---
+
+# Previous release: Switch Vision Core v2.6.14
 
 Core 2.6.14 fixes a generic multi-uplink traffic binding gap in the dashboard runtime. Clean `sensor.<member>_uplink_<n>_rx_bytes` and `_tx_bytes` entities are now valid fallbacks for every logical SFP/uplink number instead of only uplinks 1 and 2.
 

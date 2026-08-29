@@ -1,3 +1,10 @@
+## v2.6.15 — UniFi 24-port factory geometry
+
+- Update both bundled UniFi 24-RJ45 + 2-SFP factory profiles from the newly calibrated RJ45 port geometry.
+- Correct left-LED placement on RJ45 ports 5, 6 and 7.
+- Normalize all 24 RJ45 left/right LED sizes to exact 4 x 3 geometry.
+- Leave SFP geometry, status LEDs, UI/status-panel settings, topology, polling, telemetry and support status unchanged.
+
 ## v2.6.14 — Multi-uplink activity binding
 
 - Extend the clean generic `sensor.<member>_uplink_<n>_{rx,tx}_bytes` fallback from uplinks 1–2 to every logical SFP/uplink number.
