@@ -52,6 +52,10 @@ def main() -> int:
         "calibrationSfpCollisionMessage(sfpCollision)",
         'if (!calibrationEnabled(config) && !configuredPortCountAllows(config, "port_count", n)) continue;',
         'if (!calibrationEnabled(config) && !configuredPortCountAllows(config, "sfp_port_count", sfpPort)) continue;',
+        'if (!portCount && !sfpCount) errors.push("The profile contains no RJ45 or SFP/uplink positions.");',
+        'const firstSfpKey = sortedCalibrationSfpKeys(cal)[0];',
+        'firstSfpKey ? `sfp:${sfpPortNumber(firstSfpKey)}` : "all"',
+        'firstPortKey ? `port:${firstPortKey}` : "all"',
     ]
     for marker in required:
         assert marker in source, f"missing SFP port-manager contract marker: {marker}"
@@ -60,6 +64,10 @@ def main() -> int:
     assert 'data-cv-action="duplicate-port">Duplicate port</button>' not in source, "legacy duplicate label returned"
     assert 'if (!configuredPortCountAllows(config, "port_count", n)) continue;' not in source, "Calibration RJ45 rendering is still capped by physical port_count"
     assert 'if (!configuredPortCountAllows(config, "sfp_port_count", sfpPort)) continue;' not in source, "Calibration SFP rendering is still capped by physical sfp_port_count"
+    assert 'At least one visual RJ45 port must remain' not in source, "final RJ45 deletion is still blocked"
+    assert 'The profile contains no RJ45 port positions.' not in source, "SFP-only calibration profiles are still rejected"
+    assert 'calibration_target: `port:${nextKey}`' not in source, "final RJ45 deletion can still select port:undefined"
+    assert 'calibration_target: nextKey ? `sfp:${sfpPortNumber(nextKey)}` : `port:${sortedCalibrationPortKeys(cal)[0]}`' not in source, "final SFP deletion can still select port:undefined"
 
     for path in sorted(CALIBRATION_DIR.glob("*.json")):
         assert_no_logical_sfp_collisions(path)

@@ -1,3 +1,13 @@
+## v2.6.19 — Calibration zero-RJ45 / optical-only profiles
+
+- Allow Calibration Port Manager to remove the final visual RJ45 port instead of forcing one fake copper position to remain.
+- Permit saved calibration profiles with zero RJ45 positions when one or more SFP/uplink positions exist, enabling genuine optical-only layouts.
+- After deleting the final RJ45 port, move the editor selection to the first remaining SFP/uplink; if no visual ports remain temporarily, fall back safely to the all-elements target instead of `port:undefined`.
+- Apply the same safe empty-selection fallback when the final SFP/uplink is removed.
+- Preserve the guard against saving a completely portless profile: at least one RJ45 or SFP/uplink position must exist at save/import validation time.
+- Keep Add RJ45 recovery from an empty copper set: numbering restarts at 1 and the existing default starter geometry is used.
+- Add permanent regression coverage for final-RJ45 deletion, SFP-only profile validation and empty-selection safety.
+
 ## v2.6.18 — Calibration duplicated-port rendering
 
 - Fix Calibration Port Manager duplicates whose logical RJ45/SFP number exceeds the live card's configured physical port count.
