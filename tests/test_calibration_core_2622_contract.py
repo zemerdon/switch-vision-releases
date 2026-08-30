@@ -6,6 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CANONICAL = ROOT / "src" / "js" / "switch-vision.js"
 COMPONENT = ROOT / "src" / "custom_components" / "switch_vision" / "switch-vision-card.js"
+VERSION = ROOT / "VERSION"
 
 
 def main() -> int:
@@ -13,8 +14,12 @@ def main() -> int:
     component = COMPONENT.read_text(encoding="utf-8")
     assert source == component, "canonical and Home Assistant card JavaScript must remain byte-identical"
 
+    version_text = VERSION.read_text(encoding="utf-8").strip()
+    version = tuple(int(part) for part in version_text.split("."))
+    assert version >= (2, 6, 22), f"v2.6.22 contract requires Core 2.6.22+, got {version_text}"
+    assert f'const SV_VERSION = "{version_text}";' in source, "JavaScript version must match VERSION"
+
     required = [
-        'const SV_VERSION = "2.6.22";',
         'const SV_GEOMETRY_RENDER_COORDINATE_SPACE = "switch-vision-render-2048x448-v1";',
         'calibrationRenderSpaceData(cloneCalibrationData(cal || {}))',
         'schema_version: 2,',
