@@ -23,7 +23,7 @@ def main() -> int:
         'const current = ensureCalibrationUi(calibrationRenderSpaceData(cloneCalibrationData(currentCal || {})));',
         'presentationTransferred: geometrySchemaVersion >= 2',
         'function portNumberRenderOffset(portNumber, layout = null)',
-        'return Number(point[1]) + portNumberRenderOffset(portNumber)',
+        'Number(point[1]) + portNumberRenderOffset(portNumber)',
         'const setPortNumberPoint = (portNumber, point) => {',
         'point[1] = rounded(yValue - portNumberRenderOffset(portNumber));',
         'setPortNumberPoint(key, port?.number)',
