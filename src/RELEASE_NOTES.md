@@ -1,4 +1,14 @@
-# Switch Vision Core v2.6.23
+# Switch Vision Core v2.6.24
+
+Core 2.6.24 fixes native UniFi faceplate/calibration isolation when multiple devices are managed by the same controller. Previous releases derived the persistent calibration base only from the controller-scoped `selected_switch` value, so different devices could share one active faceplate pointer even though their faceplate-specific profiles were distinct.
+
+UniFi calibration bases now retain the controller scope and add a deterministic opaque token derived from that card's `unifi_device_id`. The raw device ID is not written into the calibration profile name. This keeps UCG Fiber, USW Pro XG 8 PoE and other same-controller devices independent without changing UniFi telemetry IDs, MQTT/controller routing, or non-UniFi calibration behaviour.
+
+Existing legacy controller-wide child profiles remain stored, but an ambiguous shared active selection is not automatically migrated to a device. This deliberately avoids assigning a previously shared faceplate to the wrong switch. A newly saved or selected faceplate is persisted under the new device-specific calibration base.
+
+---
+
+# Previous release: Switch Vision Core v2.6.23
 
 Core 2.6.23 adds a display-only SFP/uplink label suffix control to Calibration. The Port labels row now includes an SFP suffix box and Apply action. Enter text such as `SFP`, `UPLINK` or `FIBRE` to render default uplink labels as the logical uplink number plus that suffix; leave the box blank and apply it to show only the number.
 
