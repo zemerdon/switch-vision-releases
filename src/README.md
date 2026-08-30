@@ -14,7 +14,7 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 **v2.6.22** is the current tested public Switch Vision Core/dashboard release.
 
-This Calibration release makes Geometry Transfer portable in the dashboard's fixed render-space, adds presentation-style transfer while preserving destination artwork/identity, retains legacy Geometry v1 import compatibility, and makes RJ45 number-label Direct Y represent the actual visible coordinate instead of the hidden odd/even storage offset.
+This Calibration release makes Geometry Transfer portable in the dashboard's fixed render-space, transfers the complete calibrated visual presentation while retaining only the destination faceplate artwork and switch/runtime identity, retains legacy Geometry v1 import compatibility, and makes RJ45 number-label Direct Y represent the actual visible coordinate instead of the hidden odd/even storage offset.
 
 Component versions validated when Core v2.2.2 was released:
 

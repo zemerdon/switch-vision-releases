@@ -4110,27 +4110,23 @@ function geometryTransferPresentationUi(source) {
   const ui = source && typeof source === "object" && !Array.isArray(source)
     ? clonePlainData(source)
     : {};
-  // Geometry transfer owns presentation, never artwork identity. Keep the
-  // destination faceplate and logo asset/source while transferring positions,
-  // sizes, visibility, colours, typography, LED style and status-box settings.
-  delete ui.faceplate;
-  if (ui.logo && typeof ui.logo === "object" && !Array.isArray(ui.logo)) {
-    delete ui.logo.file;
-    delete ui.logo.source;
+  // Geometry v2 owns the calibrated visual presentation. Only the actual
+  // destination faceplate asset identity is excluded from the transfer.
+  if (ui.faceplate && typeof ui.faceplate === "object" && !Array.isArray(ui.faceplate)) {
+    delete ui.faceplate.file;
+    delete ui.faceplate.source;
   }
   return ui;
 }
 
 function geometryTransferExportData(cal, { scope, baseProfile, profile } = {}) {
-  // Export the exact coordinate space the SVG renderer consumes. Native-image
-  // factory profiles are normalised first so a Geometry file is portable
-  // between switch/faceplate profile namespaces instead of leaking native
-  // canvas coordinates into the fixed 2048 x 448 card viewBox.
+  // Export the exact fixed coordinate space consumed by the dashboard. Geometry
+  // v2 is a visual/presentation snapshot, not a selective geometry overlay.
   const source = ensureCalibrationUi(calibrationRenderSpaceData(cloneCalibrationData(cal || {})));
-  const statusLeds = {};
-  for (const [key, point] of Object.entries(source.status_leds || {})) {
-    if (String(key).toUpperCase() === "MODE") continue;
-    statusLeds[key] = clonePlainData(point);
+  const geometryUi = clonePlainData(source.ui || {});
+  if (geometryUi.faceplate && typeof geometryUi.faceplate === "object" && !Array.isArray(geometryUi.faceplate)) {
+    delete geometryUi.faceplate.file;
+    delete geometryUi.faceplate.source;
   }
   return {
     schema_version: 2,
@@ -4146,10 +4142,10 @@ function geometryTransferExportData(cal, { scope, baseProfile, profile } = {}) {
         height: SV_FACEPLATE_RENDER_HEIGHT,
         coordinate_space: SV_GEOMETRY_RENDER_COORDINATE_SPACE
       },
-      ports: geometryTransferEntryMap(source.ports),
-      sfp: geometryTransferEntryMap(source.sfp),
-      status_leds: statusLeds,
-      ui: geometryTransferPresentationUi(source.ui)
+      ports: clonePlainData(source.ports || {}),
+      sfp: clonePlainData(source.sfp || {}),
+      status_leds: clonePlainData(source.status_leds || {}),
+      ui: geometryUi
     }
   };
 }
@@ -4189,6 +4185,74 @@ function geometryTransferImportSource(raw) {
   };
 }
 
+function geometryTransferLegacyRenderSpace(geometry) {
+  const source = geometry && typeof geometry === "object" && !Array.isArray(geometry)
+    ? clonePlainData(geometry)
+    : {};
+  const image = source.image && typeof source.image === "object" && !Array.isArray(source.image)
+    ? clonePlainData(source.image)
+    : {};
+  const rendered = calibrationRenderSpaceData(ensureCalibrationUi({
+    image: {
+      ...image,
+      coordinate_space: SV_FACEPLATE_NATIVE_COORDINATE_SPACE
+    },
+    ports: clonePlainData(source.ports || {}),
+    sfp: clonePlainData(source.sfp || {}),
+    status_leds: clonePlainData(source.status_leds || {}),
+    ui: clonePlainData(source.ui || {})
+  }));
+  return {
+    ...source,
+    image: {
+      ...clonePlainData(rendered.image || {}),
+      width: SV_FACEPLATE_RENDER_WIDTH,
+      height: SV_FACEPLATE_RENDER_HEIGHT,
+      coordinate_space: SV_GEOMETRY_RENDER_COORDINATE_SPACE
+    },
+    ports: clonePlainData(rendered.ports || {}),
+    sfp: clonePlainData(rendered.sfp || {}),
+    status_leds: clonePlainData(rendered.status_leds || {}),
+    ui: clonePlainData(rendered.ui || {})
+  };
+}
+
+function geometryTransferPresentationV2(currentCal, geometry) {
+  const current = ensureCalibrationUi(calibrationRenderSpaceData(cloneCalibrationData(currentCal || {})));
+  const next = ensureCalibrationUi(cloneCalibrationData(current));
+  const geometryImage = geometry?.image && typeof geometry.image === "object" && !Array.isArray(geometry.image)
+    ? geometry.image
+    : {};
+
+  next.ports = clonePlainData(geometry.ports || {});
+  next.sfp = clonePlainData(geometry.sfp || {});
+  next.status_leds = clonePlainData(geometry.status_leds || {});
+  next.ui = clonePlainData(geometry.ui || {});
+  next.image = {
+    ...next.image,
+    ...clonePlainData(geometryImage),
+    width: SV_FACEPLATE_RENDER_WIDTH,
+    height: SV_FACEPLATE_RENDER_HEIGHT
+  };
+  delete next.image.coordinate_space;
+
+  // Preserve only destination faceplate artwork and runtime/profile identity.
+  next.image.file = current.image?.file;
+  next.image.master = current.image?.master;
+  next.ui = next.ui && typeof next.ui === "object" && !Array.isArray(next.ui) ? next.ui : {};
+  next.ui.faceplate = next.ui.faceplate && typeof next.ui.faceplate === "object" && !Array.isArray(next.ui.faceplate)
+    ? next.ui.faceplate
+    : {};
+  next.ui.faceplate.file = current.ui?.faceplate?.file;
+  next.ui.faceplate.source = current.ui?.faceplate?.source;
+  next.model = current.model;
+  next.profile = current.profile;
+  next.stack = clonePlainData(current.stack || {});
+  next.management = clonePlainData(current.management || {});
+
+  return ensureCalibrationUi(next);
+}
+
 function applyGeometryTransferData(currentCal, raw) {
   const importSource = geometryTransferImportSource(raw);
   if (importSource.errors.length) {
@@ -4211,47 +4275,37 @@ function applyGeometryTransferData(currentCal, raw) {
   }
   const geometrySchemaVersion = Number(raw.schema_version || 0);
   if (![1, 2].includes(geometrySchemaVersion)) errors.push("Unsupported geometry schema_version; this release supports versions 1 and 2.");
-  const geometry = raw.geometry;
+  let geometry = raw.geometry;
   if (!geometry || typeof geometry !== "object" || Array.isArray(geometry)) errors.push("Missing or invalid geometry object.");
   const current = ensureCalibrationUi(calibrationRenderSpaceData(cloneCalibrationData(currentCal || {})));
-  if (geometrySchemaVersion === 1) {
-    warnings.push("Legacy Geometry v1 contains geometry-only fields. It remains supported, but re-export with Core 2.6.22 for render-space presentation portability.");
-  }
-  if (!errors.length) {
-    // RJ45 and SFP/uplink geometry is mergeable across compatible faceplates.
-    // Matching imported keys update, extras are added, and omitted current ports remain.
-    if (!geometryTransferKeysMatch(current.status_leds, geometry.status_leds, { ignoreMode: true })) errors.push("Status LED geometry does not match the current calibration topology.");
+  if (geometrySchemaVersion === 1 && !errors.length) {
+    geometry = geometryTransferLegacyRenderSpace(geometry);
+    warnings.push("Legacy Geometry v1 contains geometry-only fields. It remains supported and is normalized to render-space; re-export with Core 2.6.22 for complete presentation portability.");
   }
   if (errors.length) return { valid: false, errors, warnings, calibration: null, summary: null };
 
-  const next = ensureCalibrationUi(cloneCalibrationData(current));
-  const imageGeometry = geometry.image && typeof geometry.image === "object" && !Array.isArray(geometry.image) ? geometry.image : {};
-  for (const key of ["width", "height"]) {
-    if (imageGeometry[key] !== undefined) next.image[key] = clonePlainData(imageGeometry[key]);
-  }
-  // The merged destination is deliberately stored in render-space. This keeps
-  // imported coordinates and the destination artwork on one stable canvas.
-  next.image.width = SV_FACEPLATE_RENDER_WIDTH;
-  next.image.height = SV_FACEPLATE_RENDER_HEIGHT;
-  delete next.image.coordinate_space;
-
-  for (const [key, item] of Object.entries(geometry.ports || {})) {
-    const picked = geometryTransferPick(item, SV_GEOMETRY_ENTRY_KEYS);
-    next.ports[key] = { ...next.ports[key], ...picked };
-  }
-  for (const [key, item] of Object.entries(geometry.sfp || {})) {
-    const picked = geometryTransferPick(item, SV_GEOMETRY_ENTRY_KEYS);
-    next.sfp[key] = { ...next.sfp[key], ...picked };
-  }
-  for (const key of geometryTransferKeySet(current.status_leds, { ignoreMode: true })) {
-    next.status_leds[key] = clonePlainData(geometry.status_leds[key]);
-  }
-
-  const geometryUi = geometry.ui && typeof geometry.ui === "object" && !Array.isArray(geometry.ui) ? geometry.ui : {};
-  if (geometrySchemaVersion >= 2) {
-    const presentationUi = geometryTransferPresentationUi(geometryUi);
-    next.ui = { ...next.ui, ...presentationUi };
+  let next;
+  if (geometrySchemaVersion === 2) {
+    next = geometryTransferPresentationV2(current, geometry);
   } else {
+    next = ensureCalibrationUi(cloneCalibrationData(current));
+    next.image.width = SV_FACEPLATE_RENDER_WIDTH;
+    next.image.height = SV_FACEPLATE_RENDER_HEIGHT;
+    delete next.image.coordinate_space;
+
+    for (const [key, item] of Object.entries(geometry.ports || {})) {
+      const picked = geometryTransferPick(item, SV_GEOMETRY_ENTRY_KEYS);
+      next.ports[key] = { ...next.ports[key], ...picked };
+    }
+    for (const [key, item] of Object.entries(geometry.sfp || {})) {
+      const picked = geometryTransferPick(item, SV_GEOMETRY_ENTRY_KEYS);
+      next.sfp[key] = { ...next.sfp[key], ...picked };
+    }
+    for (const [key, point] of Object.entries(geometry.status_leds || {})) {
+      next.status_leds[key] = clonePlainData(point);
+    }
+
+    const geometryUi = geometry.ui && typeof geometry.ui === "object" && !Array.isArray(geometry.ui) ? geometry.ui : {};
     for (const key of ["logo", "status_panel", "status_panel_2", "calibration_button"]) {
       const imported = geometryUi[key];
       if (!imported || typeof imported !== "object" || Array.isArray(imported)) continue;
@@ -4267,14 +4321,19 @@ function applyGeometryTransferData(currentCal, raw) {
   if (!checked.valid) return { ...checked, calibration: null };
   const applied = ensureCalibrationUi(cloneCalibrationData(checked.calibration));
 
-  // Geometry transfer never owns artwork or asset-source identity. Restore the
-  // current values explicitly even though the selective merge above never reads
-  // these fields from the transfer file.
+  // The destination switch/runtime identity remains authoritative. Geometry v2
+  // owns all calibrated presentation except the actual faceplate artwork.
   applied.image.file = current.image?.file;
   applied.image.master = current.image?.master;
-  applied.ui.faceplate = clonePlainData(current.ui?.faceplate || {});
-  applied.ui.logo.file = current.ui?.logo?.file;
-  applied.ui.logo.source = current.ui?.logo?.source;
+  applied.model = current.model;
+  applied.profile = current.profile;
+  applied.stack = clonePlainData(current.stack || {});
+  applied.management = clonePlainData(current.management || {});
+  applied.ui.faceplate = applied.ui.faceplate && typeof applied.ui.faceplate === "object" && !Array.isArray(applied.ui.faceplate)
+    ? applied.ui.faceplate
+    : {};
+  applied.ui.faceplate.file = current.ui?.faceplate?.file;
+  applied.ui.faceplate.source = current.ui?.faceplate?.source;
 
   return {
     ...checked,
@@ -9259,7 +9318,7 @@ const testModeBadge = testModeActive
             `Status LEDs: ${summary.statusCount}`,
             "",
             presentationNote,
-            "The destination faceplate/background artwork, logo asset identity, switch-specific display names, stack and management settings are kept."
+            "Only the destination faceplate/background artwork and switch/runtime identity are kept; calibrated logo, labels, port/uplink presentation, status LEDs/boxes, fonts and visibility come from the imported Geometry v2 profile."
           ];
           if (result.warnings.length) details.push("", "Warnings:", ...result.warnings.map((warning) => `• ${warning}`));
           if (!(await this.showConfirmation(`Import this Switch Vision geometry profile?\n\n${details.join("\n")}`, { title: "Import Geometry", confirmLabel: "Import Geometry" }))) return;

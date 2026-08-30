@@ -1,6 +1,6 @@
 # Switch Vision Core v2.6.22
 
-Core 2.6.22 fixes two Calibration portability/coordinate defects. Geometry Export now serializes the same fixed 2048 × 448 render-space consumed by the dashboard instead of leaking profile-native canvas coordinates. Geometry v2 also carries presentation styling and visibility while continuing to preserve the destination faceplate/background artwork, logo asset identity, switch-specific display names, stack and management settings.
+Core 2.6.22 fixes two Calibration portability/coordinate defects. Geometry Export now serializes the same fixed 2048 × 448 render-space consumed by the dashboard instead of leaking profile-native canvas coordinates. Geometry v2 carries the complete calibrated visual presentation — port/uplink sizing and labels, LED geometry, logo selection/placement, status boxes, fonts, colours and visibility — while preserving only the destination faceplate/background artwork and switch/runtime identity such as profile, stack and management state.
 
 Geometry Import accepts both the new schema v2 and legacy schema v1. The destination calibration is normalized to render-space before merge, compatible differing RJ45/SFP counts remain supported, and v1 imports retain their geometry-only compatibility with a warning to re-export under 2.6.22 when full render-space presentation portability is required.
 
