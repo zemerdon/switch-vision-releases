@@ -10,11 +10,11 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current public Core release
 
-### Switch Vision v2.6.17
+### Switch Vision v2.6.18
 
-**v2.6.17** is the current tested public Switch Vision Core/dashboard release.
+**v2.6.18** is the current tested public Switch Vision Core/dashboard release.
 
-This corrective release restores generic byte-counter traffic and activity binding across every logical SFP/uplink number, including four-uplink hardware, while preserving existing SFP-specific and legacy fallback precedence.
+This corrective release fixes Calibration Port Manager duplicate rendering so newly duplicated RJ45/SFP geometry remains fully visible and editable in Calibration even when its logical number exceeds the live card's configured physical port count. Normal dashboard rendering remains strictly capped to real configured/registry hardware.
 
 Component versions validated when Core v2.2.2 was released:
 
