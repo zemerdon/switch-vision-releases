@@ -189,10 +189,38 @@ assert(same(roundTrip.calibration.ui.faceplate, current.ui.faceplate), "geometry
 assert(same(roundTrip.calibration.status_leds.STAT, [200, 20]), "geometry round-trip polluted status LED coordinates");
 assert(Object.keys(roundTrip.calibration.status_leds.STAT).every((key) => key === "0" || key === "1"), "geometry round-trip added non-coordinate properties to a status LED");
 
-const mismatch = cloneCalibrationData(malicious);
-mismatch.geometry.ports["2"] = cloneCalibrationData(mismatch.geometry.ports["1"]);
-const rejected = applyGeometryTransferData(current, mismatch);
-assert(rejected.valid === false, "topology mismatch was accepted");
+const portable = cloneCalibrationData(malicious);
+portable.geometry.ports["2"] = {
+  ...cloneCalibrationData(portable.geometry.ports["1"]),
+  center: [210, 220], number: [210, 205], led_left: [208, 215], led_right: [212, 215]
+};
+portable.geometry.sfp.G2 = {
+  ...cloneCalibrationData(portable.geometry.sfp.G1),
+  center: [500, 120], label: [500, 105]
+};
+const portableResult = applyGeometryTransferData(current, portable);
+assert(portableResult.valid === true, "cross-count geometry import was rejected");
+assert(same(portableResult.calibration.ports["2"].center, [210, 220]), "imported extra RJ45 geometry was not added");
+assert(same(portableResult.calibration.sfp.G2.center, [500, 120]), "imported extra SFP geometry was not added");
+
+const currentWithExtras = cloneCalibrationData(current);
+currentWithExtras.ports["2"] = {
+  ...cloneCalibrationData(current.ports["1"]),
+  center: [20, 20], number: [20, 5], led_left: [18, 15], led_right: [22, 15]
+};
+currentWithExtras.sfp.G2 = {
+  ...cloneCalibrationData(current.sfp.G1),
+  center: [150, 20], label: [150, 5]
+};
+const subsetResult = applyGeometryTransferData(currentWithExtras, malicious);
+assert(subsetResult.valid === true, "smaller geometry import was rejected");
+assert(same(subsetResult.calibration.ports["2"].center, [20, 20]), "current RJ45 omitted by import was deleted or changed");
+assert(same(subsetResult.calibration.sfp.G2.center, [150, 20]), "current SFP omitted by import was deleted or changed");
+
+const statusMismatch = cloneCalibrationData(malicious);
+statusMismatch.geometry.status_leds.EXTRA = [410, 120];
+const rejectedStatus = applyGeometryTransferData(current, statusMismatch);
+assert(rejectedStatus.valid === false, "status LED topology mismatch was accepted");
 
 
 const legacyFaceplate = clonePlainData(current);
