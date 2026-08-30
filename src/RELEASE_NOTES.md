@@ -1,4 +1,14 @@
-# Switch Vision Core v2.6.20
+# Switch Vision Core v2.6.21
+
+Core 2.6.21 tightens Calibration selection behavior without changing hardware mappings or saved geometry contracts. Custom SFP/uplink selections now preserve `Entire port`; newly added or duplicated RJ45/SFP objects select their whole port immediately, and cloned labels start centred on the new port box rather than inheriting the source label offset.
+
+Calibration now starts each session with Assets collapsed, while manual section expansion remains session-local. Odd/Even Quick Selection covers SFP/uplinks as well as RJ45, including whole ports, link LEDs, activity LEDs and labels; SFP parity is derived from the logical uplink number, so aliases such as `G3/TE3` are treated as uplink 3.
+
+Selecting an individual RJ45 or SFP/uplink in the Target menu now updates the matching Custom Ports value immediately. Grouped and quick-selection targets likewise expose their resolved set, keeping Target and Custom Ports synchronized for subsequent editing.
+
+---
+
+# Previous release: Switch Vision Core v2.6.20
 
 Core 2.6.20 improves Calibration portability in two places. SFP/uplink targets now expose `Entire port`, so moving a selected uplink moves its port box, link/speed LED, activity LED and label together while preserving their relative layout. Nudge and Direct X/Y use the same grouped delta; individual SFP parts remain separately editable, and Direct W/H continues to resize only the SFP hitbox.
 

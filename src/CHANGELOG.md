@@ -1,3 +1,13 @@
+## v2.6.21 — Calibration selection consistency
+
+- Preserve `Entire port` when Custom Ports resolves to SFP/uplink targets instead of translating it to SFP center.
+- Select `Entire port` after Add RJ45, Add SFP or Duplicate selected, and immediately populate the matching Custom Ports value.
+- Reset newly added/duplicated RJ45 number labels and SFP labels to the centre of the new port box.
+- Start Assets collapsed for each new Calibration session while keeping manual section state session-local.
+- Extend Odd/Even Quick Selection to SFP/uplinks for whole ports, link LEDs, activity LEDs and labels, using the logical SFP/uplink number for aliases such as `G3/TE3`.
+- Keep Target and Custom Ports synchronized for individual, grouped and quick RJ45/SFP selections.
+- Add permanent regression coverage for the v2.6.21 Calibration selection contract.
+
 ## v2.6.20 — Calibration SFP grouping and portable geometry import
 
 - Add `Entire port` to individual and grouped SFP/uplink Calibration targets.
