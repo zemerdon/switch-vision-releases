@@ -1,3 +1,12 @@
+## v2.6.24 — UniFi faceplate profile isolation
+
+- Scope native UniFi calibration/faceplate profiles to the individual device as well as the controller namespace.
+- Prevent two different UniFi devices on one controller from sharing the same active faceplate pointer.
+- Derive only an opaque deterministic device token for calibration storage; never place the raw UniFi device ID in profile names.
+- Preserve existing SNMP/custom-card switch-scoped calibration behaviour and leave UniFi telemetry/controller routing unchanged.
+- Keep ambiguous legacy controller-wide faceplate selections out of automatic migration so a previous shared pointer cannot be assigned to the wrong device.
+- Add permanent regression coverage using two synthetic UniFi devices on one controller.
+
 ## v2.6.23 — Custom SFP/uplink label suffix
 
 - Add a Calibration SFP/uplink suffix field beside the existing port-label controls.
