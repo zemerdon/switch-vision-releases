@@ -1,3 +1,12 @@
+## v2.6.22 — Render-space Geometry Transfer and absolute label Y
+
+- Export Geometry schema v2 from the dashboard's fixed 2048 × 448 render-space so native/high-resolution faceplate coordinates do not leak into another switch profile.
+- Transfer Calibration presentation styling and visibility with Geometry v2 while preserving destination faceplate/background artwork, logo asset identity, switch-specific display names, stack and management data.
+- Keep Geometry schema v1 import compatibility and normalize the destination to render-space before merge; retain compatible differing RJ45/SFP visual counts.
+- Make RJ45 number-label Direct Y use the actual visible coordinate while preserving the legacy odd/even render compensation for existing saved profiles.
+- Report RJ45 number-label coordinates in rendered space so grouped labels aligned to one Y retain a common Direct Y readout.
+- Add permanent regression coverage for Geometry v2/render-space and absolute label-Y behavior.
+
 ## v2.6.21 — Calibration selection consistency
 
 - Preserve `Entire port` when Custom Ports resolves to SFP/uplink targets instead of translating it to SFP center.
