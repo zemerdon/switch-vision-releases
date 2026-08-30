@@ -1,3 +1,12 @@
+## v2.6.23 — Custom SFP/uplink label suffix
+
+- Add a Calibration SFP/uplink suffix field beside the existing port-label controls.
+- Apply a custom suffix to default SFP/uplink display labels, or leave the suffix blank to show only the logical uplink number.
+- Preserve explicit per-port display names and keep logical SFP keys, telemetry mappings, entities, numbering and geometry unchanged.
+- Make newly added or duplicated SFP/uplink ports inherit the profile-level display suffix automatically.
+- Preserve legacy/factory label behaviour until a suffix setting is explicitly applied to the calibration profile.
+- Add permanent regression coverage for the display-only suffix contract.
+
 ## v2.6.22 — Render-space Geometry Transfer and absolute label Y
 
 - Export Geometry schema v2 from the dashboard's fixed 2048 × 448 render-space so native/high-resolution faceplate coordinates do not leak into another switch profile.

@@ -1,4 +1,14 @@
-# Switch Vision Core v2.6.22
+# Switch Vision Core v2.6.23
+
+Core 2.6.23 adds a display-only SFP/uplink label suffix control to Calibration. The Port labels row now includes an SFP suffix box and Apply action. Enter text such as `SFP`, `UPLINK` or `FIBRE` to render default uplink labels as the logical uplink number plus that suffix; leave the box blank and apply it to show only the number.
+
+The setting is stored as presentation data in the calibration profile. Existing explicit per-port display names remain authoritative and are not rewritten. Logical SFP/uplink keys, telemetry mappings, Home Assistant entities, numbering and geometry are unchanged. Newly added or duplicated SFP/uplink ports have no copied custom display name, so they automatically use the configured profile suffix.
+
+Profiles that have never applied this setting retain their existing factory/vendor label behaviour. This keeps current saved profiles backward-compatible while allowing an explicit suffix choice to override only the visible default label presentation.
+
+---
+
+# Previous release: Switch Vision Core v2.6.22
 
 Core 2.6.22 fixes two Calibration portability/coordinate defects. Geometry Export now serializes the same fixed 2048 × 448 render-space consumed by the dashboard instead of leaking profile-native canvas coordinates. Geometry v2 carries the complete calibrated visual presentation — port/uplink sizing and labels, LED geometry, logo selection/placement, status boxes, fonts, colours and visibility — while preserving only the destination faceplate/background artwork and switch/runtime identity such as profile, stack and management state.
 
