@@ -1,0 +1,2615 @@
+{
+  "schema_version": 1,
+  "generated_documents": {
+    "markdown": "docs/SUPPORTED_DEVICES.md",
+    "forum_bbcode": "docs/SUPPORTED_DEVICES_FORUM.bbcode"
+  },
+  "support_statuses": {
+    "detected": "Model identification works, but telemetry and layout are not validated.",
+    "experimental": "A profile exists, but real-hardware validation is incomplete.",
+    "community_validated": "A real user has validated the applicable physical mapping, port selection, LEDs, link/speed behaviour, PoE, optical positions, sensors and rendered alignment.",
+    "confirmed": "Repeatably tested and treated as officially supported."
+  },
+  "devices": [
+    {
+      "vendor": "Cisco",
+      "family": "Catalyst 3650",
+      "status": "confirmed",
+      "confirmed_since": "1.2.26",
+      "last_validated_version": "1.8.0",
+      "evidence": "production_and_test_hardware_contributions",
+      "ports": {
+        "rj45": 48,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "SFP/SFP+",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": true,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "calibration_profile": "default_cisco_48_port",
+      "default_faceplate": "faceplates/48rj45-4sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "16.12.14"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "model": "WS-C3650-48PD-E",
+      "notes": [
+        "Exact model entry; no support is implied for other Catalyst 3650 SKUs.",
+        "Validated on real hardware through production and test-rack Support My Switch contributions.",
+        "Standalone and two-member stack layouts validated.",
+        "Validated for the Switch Vision v1.8.0 Gold baseline."
+      ],
+      "mapping_profile": "cisco-3650-48p-2x10g",
+      "validation": {
+        "exact_model_detection": "confirmed",
+        "rj45_mapping": "confirmed",
+        "poe": "confirmed",
+        "system_sensors": "confirmed",
+        "uplinks": "confirmed",
+        "stack": "confirmed"
+      },
+      "visuals": {
+        "status": "confirmed",
+        "recommended_faceplate": "faceplates/48rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "default_cisco_48_port",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Catalyst 3650",
+      "status": "confirmed",
+      "confirmed_since": "1.2.26",
+      "last_validated_version": "1.8.0",
+      "evidence": "production_and_test_hardware_contributions",
+      "ports": {
+        "rj45": 48,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "SFP/SFP+",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": true,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "calibration_profile": "default_cisco_48_port",
+      "default_faceplate": "faceplates/48rj45-4sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "16.12.14"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "model": "WS-C3650-48PD-L",
+      "notes": [
+        "Exact model entry; no support is implied for other Catalyst 3650 SKUs.",
+        "Validated on real hardware through production and test-rack Support My Switch contributions.",
+        "Standalone and two-member stack layouts validated.",
+        "Validated for the Switch Vision v1.8.0 Gold baseline."
+      ],
+      "mapping_profile": "cisco-3650-48p-2x10g",
+      "validation": {
+        "exact_model_detection": "confirmed",
+        "rj45_mapping": "confirmed",
+        "poe": "confirmed",
+        "system_sensors": "confirmed",
+        "uplinks": "confirmed",
+        "stack": "confirmed"
+      },
+      "visuals": {
+        "status": "confirmed",
+        "recommended_faceplate": "faceplates/48rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "default_cisco_48_port",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Catalyst 2960X",
+      "model": "WS-C2960X-48FPD-L",
+      "status": "confirmed",
+      "confirmed_since": "1.8.26",
+      "last_validated_version": "1.8.26",
+      "evidence": "real_hardware_full_port_and_uplink_validation",
+      "ports": {
+        "rj45": 48,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-2960x-48fpd-48p-2x10g",
+      "calibration_profile": "cisco_2960s_48p",
+      "default_faceplate": "faceplates/48rj45-2sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "15.2(7)E14"
+      ],
+      "contributor": {
+        "display_name": "zemerdon",
+        "public_credit": true
+      },
+      "notes": [
+        "Exact model detection, RJ45 mapping, generated entities, dashboard operation, PoE, and system sensors validated on real hardware.",
+        "Physical SFP/SFP+ uplink link state, activity, and traffic operation validated on real hardware.",
+        "Confirmed for standalone Switch Vision operation in v1.8.26."
+      ],
+      "validation": {
+        "exact_model_detection": "confirmed",
+        "rj45_mapping": "confirmed",
+        "poe": "confirmed",
+        "system_sensors": "confirmed",
+        "uplinks": "confirmed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "confirmed",
+        "recommended_faceplate": "faceplates/48rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "cisco_2960s_48p",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Catalyst 2960X",
+      "model": "WS-C2960X-24PS-L",
+      "status": "experimental",
+      "confirmed_since": "1.4.2",
+      "last_validated_version": "1.8.0",
+      "evidence": "test_rack_contribution",
+      "ports": {
+        "rj45": 24,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "Gigabit SFP",
+        "gigabit_sfp": 4,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-2960x-24ps-24p-4sfp",
+      "calibration_profile": "cisco_2960x_24p",
+      "default_faceplate": "faceplates/24rj45-4sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "15.2(7)E14"
+      ],
+      "contributor": {
+        "display_name": "zemerdon",
+        "public_credit": true
+      },
+      "notes": [
+        "Exact model detected and mapped from a real test-rack contribution.",
+        "RJ45 mapping, generated entities, dashboard operation, PoE, and system sensors validated on real hardware.",
+        "SFP/SFP+ uplink validation remains pending.",
+        "Remains Experimental pending SFP/uplink port validation.",
+        "Model-specific 24-port faceplate and calibration geometry added in v1.8.9."
+      ],
+      "validation": {
+        "exact_model_detection": "confirmed",
+        "rj45_mapping": "confirmed",
+        "poe": "confirmed",
+        "system_sensors": "confirmed",
+        "uplinks": "pending",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "confirmed",
+        "recommended_faceplate": "faceplates/24rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "cisco_2960x_24p",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Catalyst 2960X",
+      "model": "WS-C2960X-24TS-L",
+      "status": "experimental",
+      "confirmed_since": "1.8.25",
+      "last_validated_version": "1.8.25",
+      "evidence": "support_my_switch_contribution",
+      "ports": {
+        "rj45": 24,
+        "poe": false,
+        "uplinks": 4,
+        "uplink_type": "Gigabit SFP",
+        "gigabit_sfp": 4,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": true,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-2960x-24ts-24p-4sfp",
+      "calibration_profile": "cisco_2960x_24p",
+      "default_faceplate": "faceplates/24rj45-4sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Initial Experimental profile created from a Support My Switch hardware contribution.",
+        "Contribution data reports 24 copper interfaces, four uplinks, and a three-member stack.",
+        "Uses the existing 24 RJ45 / 4 SFP faceplate and calibration geometry.",
+        "Live dashboard, stack-member, uplink, VLAN, and activity validation remain pending.",
+        "Remains Experimental until those real-hardware checks are completed."
+      ],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed",
+        "rj45_mapping": "contribution_pending_live_validation",
+        "poe": "not_applicable",
+        "system_sensors": "pending",
+        "uplinks": "pending",
+        "stack": "contribution_detected_pending_live_validation"
+      },
+      "visuals": {
+        "status": "confirmed",
+        "recommended_faceplate": "faceplates/24rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "cisco_2960x_24p",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Catalyst 2960S",
+      "model": "WS-C2960S-48FPD-L",
+      "status": "confirmed",
+      "confirmed_since": "1.8.26",
+      "last_validated_version": "1.8.26",
+      "evidence": "real_hardware_full_port_and_uplink_validation",
+      "ports": {
+        "rj45": 48,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-2960s-48fpd-48p-2x10g",
+      "calibration_profile": "cisco_2960s_48p",
+      "default_faceplate": "faceplates/48rj45-2sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "15.2(2)E9"
+      ],
+      "contributor": {
+        "display_name": "zemerdon",
+        "public_credit": true
+      },
+      "notes": [
+        "Exact model detection, RJ45 mapping, generated entities, dashboard operation, PoE, and system sensors validated on real hardware.",
+        "Physical SFP/SFP+ uplink link state, activity, and traffic operation validated on real hardware.",
+        "Confirmed for standalone Switch Vision operation in v1.8.26.",
+        "Model-specific 48-port faceplate and two-uplink calibration geometry added in v1.8.9."
+      ],
+      "validation": {
+        "exact_model_detection": "confirmed",
+        "rj45_mapping": "confirmed",
+        "poe": "confirmed",
+        "system_sensors": "confirmed",
+        "uplinks": "confirmed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "confirmed",
+        "recommended_faceplate": "faceplates/48rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "cisco_2960s_48p",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Catalyst 3560-C",
+      "model": "WS-C3560CG-8PC-S",
+      "status": "experimental",
+      "confirmed_since": "1.8.24",
+      "last_validated_version": "1.8.24",
+      "evidence": "community_contribution",
+      "ports": {
+        "rj45": 8,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "dual-purpose Gigabit copper/SFP",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-3560cg-8pc-8p-2dual",
+      "calibration_profile": "cisco_3560cg_8pc",
+      "default_faceplate": "faceplates/c3560cg-8pc-s.png",
+      "optional_faceplates": [
+        "faceplates/24rj45-2sfp.png"
+      ],
+      "tested_firmware": [],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Initial Experimental profile created from a community hardware contribution.",
+        "Gi0/1 through Gi0/8 map to the eight access-port positions.",
+        "Gi0/9 and Gi0/10 map to the two dual-purpose uplink positions.",
+        "A dedicated native 2048 x 329 faceplate is bundled and selected by default.",
+        "The previous 24 RJ45 / 2 SFP faceplate remains available as an optional fallback.",
+        "Real-hardware activity, uplink media selection, VLAN, PoE and status validation remain pending contributor testing.",
+        "Remains Experimental until those real-hardware checks are completed.",
+        "Gi0/9 and Gi0/10 remain dual-purpose combo uplink positions; their physical semantics are unchanged."
+      ],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed",
+        "rj45_mapping": "candidate",
+        "poe": "candidate",
+        "system_sensors": "pending",
+        "uplinks": "pending",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "confirmed",
+        "recommended_faceplate": "faceplates/c3560cg-8pc-s.png",
+        "optional_faceplates": [
+          "faceplates/24rj45-2sfp.png"
+        ],
+        "calibration_profile": "cisco_3560cg_8pc",
+        "canvas": {
+          "width": 2048,
+          "height": 329
+        }
+      }
+    },
+    {
+      "vendor": "Juniper",
+      "family": "EX3300",
+      "model": "EX3300-48P",
+      "status": "confirmed",
+      "confirmed_since": "1.8.26",
+      "last_validated_version": "1.8.26",
+      "evidence": "real_hardware_standalone_full_port_and_uplink_validation",
+      "ports": {
+        "rj45": 48,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "4 dual-speed 1G/10G SFP+ cages",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 4
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "juniper-ex3300-48p",
+      "calibration_profile": "default_cisco_48_port",
+      "default_faceplate": "faceplates/48rj45-4sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "JUNOS 15.1R7.9"
+      ],
+      "contributor": {
+        "display_name": "zemerdon",
+        "public_credit": true
+      },
+      "notes": [
+        "Exact model detection, zero-based copper-port mapping, live entities, PoE, system sensors, and dynamic VLAN presentation validated on real hardware.",
+        "Physical SFP/SFP+ uplink link state, activity, and 64-bit traffic counters validated on real hardware.",
+        "The four physical uplink cages are dual-speed; ge-0/1/N and xe-0/1/N are alternate identities for the same four cages and are not additive physical ports.",
+        "Confirmed for standalone Switch Vision operation in v1.8.26.",
+        "Juniper Virtual Chassis support remains unvalidated and is not included in the confirmed support scope.",
+        "Juniper ports use native VLAN plus the optional Juniper-only MODE field for clear ACCESS/TRUNK presentation."
+      ],
+      "validation": {
+        "exact_model_detection": "confirmed",
+        "rj45_mapping": "confirmed",
+        "poe": "confirmed",
+        "system_sensors": "confirmed",
+        "uplinks": "confirmed",
+        "stack": "not_validated"
+      },
+      "visuals": {
+        "status": "confirmed",
+        "recommended_faceplate": "faceplates/48rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "default_cisco_48_port",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "MikroTik",
+      "family": "CRS328",
+      "model": "CRS328-24P-4S+RM",
+      "status": "experimental",
+      "confirmed_since": "2.6.11",
+      "last_validated_version": "2.3.21",
+      "last_validated_component": "Discovery",
+      "evidence": "privacy_processed_real_hardware_snmp_contribution",
+      "ports": {
+        "rj45": 24,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "4x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 4
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "mikrotik-crs328-24p-4splus",
+      "calibration_profile": "stock_24rj45_4sfp",
+      "default_faceplate": "faceplates/24rj45-4sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "RouterOS 7.21.5"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Privacy-processed real-hardware evidence reports the local RouterOS model string CRS328-24P-4S+; CRS328-24P-4S+RM is retained here as the exact marketed registry SKU.",
+        "The contributed IF-MIB maps ether1 through ether24 to the 24 copper front-panel ports and sfp-sfpplus1 through sfp-sfpplus4 to four physical 10G SFP+ cages.",
+        "bridge and lo are non-physical interfaces and are excluded from front-panel rendering.",
+        "All four SFP+ cages were empty in the contributed capture, so live optical link, activity and negotiated-speed validation remain pending.",
+        "PoE capability is hardware-confirmed for the exact model; Switch Vision PoE and environmental SNMP presentation remain pending current-build field confirmation.",
+        "The neutral 24 RJ45 plus 4 SFP faceplate is a temporary geometry fallback; rendered MikroTik-specific alignment remains pending field confirmation.",
+        "The real-hardware capture was field-tested with Discovery 2.3.21. Core 2.6.11 promotes the verified support metadata into the stable Core registry and is not itself a new hardware-validation claim."
+      ],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed_local_routeros_identity",
+        "rj45_mapping": "contribution_confirmed_ether1_through_ether24_pending_rendered_validation",
+        "poe": "exact_hardware_capability_confirmed_snmp_values_pending",
+        "system_sensors": "pending_supplemental_snmp_validation",
+        "uplinks": "contribution_confirmed_four_sfp_plus_positions_live_link_pending",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_4sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Small Business SG500X",
+      "model": "SG500X-24",
+      "status": "community_validated",
+      "confirmed_since": "2.0.18",
+      "last_validated_version": "2.6.7",
+      "evidence": "real_hardware_community_validation",
+      "ports": {
+        "rj45": 24,
+        "poe": false,
+        "uplinks": 4,
+        "uplink_type": "10G",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 4
+      },
+      "stack_support": true,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-sg500x-24-24p-4x10g",
+      "calibration_profile": "cisco_2960x_24p",
+      "default_faceplate": "faceplates/24rj45-4sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Initial Experimental profile created from Support My Switch contribution community validation.",
+        "Contribution sysObjectID is 1.3.6.1.4.1.9.6.1.85.24.1.",
+        "The supplied walk exposes gi1/1 through gi1/24 and te1/1 through te1/4.",
+        "The contribution model text identifies 24 Gigabit ports and four 10-Gigabit ports.",
+        "Current real-hardware validation confirms RJ45 mapping, four uplink positions, port selection, link/activity and speed indicators, interface labels/descriptions, system/status telemetry, and rendered alignment; PoE is not applicable.",
+        "Stack-specific operation, VLAN presentation, and sustained-traffic testing remain separately unvalidated and are not part of this Community Validated scope.",
+        "v2.0.22 audit regression checks passed against the supplied contribution/API sample data; live dashboard validation status is unchanged.",
+        "Community Validated from real-hardware field confirmation on Core 2.6.7; existing mapping and physical layout remain authoritative."
+      ],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed",
+        "rj45_mapping": "community_confirmed_ports_1_24",
+        "poe": "not_applicable",
+        "system_sensors": "community_confirmed",
+        "uplinks": "community_confirmed_four_uplink_positions",
+        "stack": "pending"
+      },
+      "visuals": {
+        "status": "community_validated",
+        "recommended_faceplate": "faceplates/24rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "cisco_2960x_24p",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Huawei",
+      "family": "S5720",
+      "model": "S5720-12TP-LI-AC",
+      "status": "community_validated",
+      "confirmed_since": "2.0.18",
+      "last_validated_version": "2.6.7",
+      "evidence": "real_hardware_community_validation",
+      "ports": {
+        "rj45": 8,
+        "poe": false,
+        "uplinks": 4,
+        "uplink_type": "1G SFP",
+        "gigabit_sfp": 4,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "huawei-s5720-12tp-li-ac",
+      "calibration_profile": "stock_24rj45_4sfp",
+      "default_faceplate": "faceplates/24rj45-4sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Initial Experimental registry entry created from Support My Switch contribution community validation.",
+        "Contribution community validation confirms sysObjectID 1.3.6.1.4.1.2011.2.23.394.",
+        "The live full walk omits ifName but exposes GigabitEthernet0/0/1-12 through ifDescr.",
+        "v2.0.31 adds a vendor-neutral ifDescr fallback so the switch can be discovered and generated without a model override.",
+        "The exact model profile maps ports 1-8 as RJ45 and ports 9-12 as 1G SFP positions.",
+        "The generic 24 RJ45 + 4 SFP faceplate is used as a temporary fallback until a smaller exact-model visual is supplied.",
+        "The contribution exposes standard ifOperStatus, ifSpeed and 32-bit ifInOctets/ifOutOctets; v2.0.31 uses those when ifXTable/HC values are absent.",
+        "Current real-hardware validation confirms all eight RJ45 positions, all four 1G SFP positions, port selection, link/activity and negotiated speed, system/status telemetry, the corrected non-10G presentation, and rendered alignment.",
+        "PoE is not applicable to this exact model entry; Community Validated field confirmation was completed on Core 2.6.7.",
+        "Ports 9-12 are physical 1G SFP cages; Discovery caps generated speed telemetry for these positions at 1000 Mbps when IF-MIB reports an implausible higher value."
+      ],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed_sysobjectid_and_model",
+        "rj45_mapping": "community_confirmed_ports_1_8",
+        "poe": "not_applicable_not_exposed",
+        "system_sensors": "community_confirmed",
+        "uplinks": "community_confirmed_ports_9_12_1g_sfp_link_and_speed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "community_validated",
+        "recommended_faceplate": "faceplates/24rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_4sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Zyxel",
+      "family": "XS1930",
+      "model": "XS1930-10",
+      "status": "experimental",
+      "confirmed_since": "2.1.7",
+      "last_validated_version": "2.1.7",
+      "evidence": "support_my_switch_contribution_community validation_plus_vendor_MIB_pack",
+      "ports": {
+        "rj45": 8,
+        "poe": false,
+        "uplinks": 2,
+        "uplink_type": "10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "zyxel-xs1930-10",
+      "calibration_profile": "cisco_3560cg_8pc",
+      "default_faceplate": "faceplates/c3560cg-8pc-s.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "V4.80(ABQE.5)"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Initial Experimental Zyxel support derived from Support My Switch contribution community validation.",
+        "Contribution confirms sysObjectID 1.3.6.1.4.1.890.1.15 and exact model XS1930-10.",
+        "IF-MIB maps ifIndex 1-10 to swp00-swp09; swp00-swp07 are the eight copper ports and swp08-swp09 are the two 10G SFP+ uplinks.",
+        "Standard ifOperStatus, ifHighSpeed, 64-bit HC RX/TX counters, aliases, and Q-BRIDGE PVID rows are present for all ten physical interfaces.",
+        "Vendor MIBs plus the live walk prove CPU current/5s/1m/5m, memory utilization, FAN1 RPM/status, and MAC/BOARD/PHY temperature/status telemetry.",
+        "PoE is not enabled for this exact model entry because the contribution does not prove PoE capability.",
+        "Trunk/access mode and transceiver DDMI are intentionally not inferred in v2.1.7.",
+        "Uses the existing compact 8-RJ45 + 2-SFP visual as a temporary fallback until a Zyxel-specific faceplate is supplied."
+      ],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed_sysobjectid_model_and_firmware",
+        "rj45_mapping": "contribution_confirmed_ifindex_1_8_swp00_swp07",
+        "poe": "not_applicable_not_proven_by_contribution",
+        "system_sensors": "contribution_confirmed_vendor_oids_pending_contributor_runtime_validation",
+        "uplinks": "contribution_confirmed_ifindex_9_10_swp08_swp09",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/c3560cg-8pc-s.png",
+        "optional_faceplates": [],
+        "calibration_profile": "cisco_3560cg_8pc",
+        "canvas": {
+          "width": 2048,
+          "height": 329
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Enterprise",
+      "model": "USW-Enterprise-8-PoE",
+      "status": "experimental",
+      "confirmed_since": "2.0.19",
+      "last_validated_version": "2.0.32",
+      "evidence": "support_my_switch_contribution_community validation_multiple_devices; unifi2mqtt_live_snapshot_2026-08-11",
+      "ports": {
+        "rj45": 8,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "10G SFP+ candidate",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-enterprise-8-poe",
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "7.4.1.16850"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Initial Experimental profile created from Support My Switch contribution community validation.",
+        "Four separate devices in the contribution report the same exact model and interface layout.",
+        "Interface evidence exposes tw1 through tw8 and te1 through te2.",
+        "Candidate mapping uses tw1-tw8 as the eight access ports and te1-te2 as the two uplinks.",
+        "Live dashboard, PoE telemetry, VLAN presentation, sensors, and uplink media validation remain pending.",
+        "v2.0.22 audit regression checks passed against the supplied contribution/API sample data; live dashboard validation status is unchanged.",
+        "v2.0.28 live UniFi2MQTT validation confirmed the normalized API layout on 3 physical device(s).",
+        "v2.0.32 uses the generic 48 RJ45 + 4 SFP faceplate as the universal temporary fallback until a smaller matching generic visual is supplied.",
+        "v2.0.32 dashboard generation is enabled through the UniFi API/UniFi2MQTT data path; support status remains Experimental pending wider live validation.",
+        "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used."
+      ],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed_multiple_devices",
+        "rj45_mapping": "candidate_repeated_evidence",
+        "poe": "pending_live_validation",
+        "system_sensors": "pending",
+        "uplinks": "candidate_repeated_evidence",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Pro",
+      "model": "USW-Pro-24-PoE",
+      "status": "experimental",
+      "confirmed_since": "2.0.19",
+      "last_validated_version": "2.0.32",
+      "evidence": "support_my_switch_contribution_community validation; unifi2mqtt_live_snapshot_2026-08-11",
+      "ports": {
+        "rj45": 24,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "uplink media pending validation",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-pro-24-poe",
+      "calibration_profile": "unifi_24p_rj45_2sfp",
+      "default_faceplate": "faceplates/unifi-24p-rj45-2sfp.png",
+      "optional_faceplates": [
+        "faceplates/24rj45-4sfp.png"
+      ],
+      "tested_firmware": [
+        "7.4.1.16850"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Initial Experimental profile created from Support My Switch contribution community validation.",
+        "Interface evidence exposes 0/1 through 0/26.",
+        "Candidate mapping treats 0/1 through 0/24 as access ports and 0/25 through 0/26 as uplinks.",
+        "Uplink media classification, PoE telemetry, system sensors, VLAN presentation, and sustained dashboard validation remain pending.",
+        "v2.0.22 audit regression checks passed against the supplied contribution/API sample data; live dashboard validation status is unchanged.",
+        "v2.0.28 live UniFi2MQTT validation confirmed the normalized API layout on 1 physical device(s).",
+        "v2.0.32 dashboard generation is enabled through the UniFi API/UniFi2MQTT data path; support status remains Experimental pending wider live validation.",
+        "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used."
+      ],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed",
+        "rj45_mapping": "candidate",
+        "poe": "pending_live_validation",
+        "system_sensors": "pending",
+        "uplinks": "candidate_media_pending_validation",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-24p-rj45-2sfp.png",
+        "optional_faceplates": [
+          "faceplates/24rj45-4sfp.png"
+        ],
+        "calibration_profile": "unifi_24p_rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Lite",
+      "model": "USW Lite 16 PoE",
+      "status": "experimental",
+      "confirmed_since": "2.0.20",
+      "last_validated_version": "2.0.32",
+      "evidence": "unifi_integration_api_samples_2026-08-10; unifi2mqtt_live_snapshot_2026-08-11",
+      "ports": {
+        "rj45": 16,
+        "poe": true,
+        "uplinks": 0,
+        "uplink_type": "none",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "",
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "7.4.1"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Experimental registry entry created from sanitized official UniFi Integration API samples.",
+        "API detail identifies 16 RJ45 ports with per-port state, speed and PoE metadata where exposed.",
+        "Dedicated 16-port visual geometry remains pending.",
+        "v2.0.22 audit regression checks passed against the supplied contribution/API sample data; live dashboard validation status is unchanged.",
+        "v2.0.28 live UniFi2MQTT validation confirmed the normalized API layout on 2 physical device(s).",
+        "v2.0.32 uses the generic 48 RJ45 + 4 SFP faceplate as the universal temporary fallback until a smaller matching generic visual is supplied.",
+        "v2.0.32 dashboard generation is enabled through the UniFi API/UniFi2MQTT data path; support status remains Experimental pending wider live validation.",
+        "Live Switch Vision card validation remains pending; the universal generic visual is used until a smaller matching faceplate is supplied.",
+        "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used."
+      ],
+      "validation": {
+        "exact_model_detection": "api_confirmed",
+        "rj45_mapping": "api_confirmed_port_indices",
+        "poe": "api_confirmed_metadata",
+        "system_sensors": "api_confirmed_cpu_memory",
+        "uplinks": "not_applicable",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Pro XG",
+      "model": "USW Pro XG 8 PoE",
+      "status": "experimental",
+      "confirmed_since": "2.0.20",
+      "last_validated_version": "2.0.32",
+      "evidence": "unifi_integration_api_samples_2026-08-10; unifi2mqtt_live_snapshot_2026-08-11",
+      "ports": {
+        "rj45": 8,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-pro-xg-8-poe-api",
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "7.4.1"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Experimental profile created from sanitized official UniFi Integration API samples.",
+        "API detail identifies ports 1-8 as RJ45 up to 10G and ports 9-10 as 10G SFP+.",
+        "Per-port PoE metadata is exposed for the RJ45 ports.",
+        "Live Switch Vision dashboard validation remains pending.",
+        "v2.0.22 audit regression checks passed against the supplied contribution/API sample data; live dashboard validation status is unchanged.",
+        "v2.0.28 live UniFi2MQTT validation confirmed the normalized API layout on 1 physical device(s).",
+        "v2.0.32 uses the generic 48 RJ45 + 4 SFP faceplate as the universal temporary fallback until a smaller matching generic visual is supplied.",
+        "v2.0.32 dashboard generation is enabled through the UniFi API/UniFi2MQTT data path; support status remains Experimental pending wider live validation.",
+        "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used."
+      ],
+      "validation": {
+        "exact_model_detection": "api_confirmed",
+        "rj45_mapping": "api_confirmed_port_indices",
+        "poe": "api_confirmed_metadata",
+        "system_sensors": "api_confirmed_cpu_memory",
+        "uplinks": "api_confirmed_connector_and_speed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Huawei",
+      "family": "S5735-L",
+      "model": "S5735-L8P4X-A1",
+      "status": "community_validated",
+      "confirmed_since": "2.0.21",
+      "last_validated_version": "2.6.7",
+      "evidence": "real_hardware_community_validation_multiple_devices",
+      "ports": {
+        "rj45": 8,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 4
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "huawei-s5735-l8p4x-a1",
+      "calibration_profile": "stock_24rj45_4sfp",
+      "default_faceplate": "faceplates/24rj45-4sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Initial Experimental profile created from Support My Switch contribution community validation.",
+        "Two separate devices report sysObjectID 1.3.6.1.4.1.2011.2.23.849 and the same physical interface layout.",
+        "GigabitEthernet0/0/1 through GigabitEthernet0/0/8 are repeatedly observed as the eight copper ports.",
+        "XGigabitEthernet0/0/1 through XGigabitEthernet0/0/4 are repeatedly observed and mapped as the four high-speed uplink positions.",
+        "Real-hardware field validation confirms PoE/status telemetry and applicable system/status sensor presentation.",
+        "v2.0.22 audit regression checks passed against the supplied contribution/API sample data; live dashboard validation status is unchanged.",
+        "The generic 24 RJ45 + 4 SFP faceplate remains temporary artwork pending an exact-model faceplate; its current rendered alignment is field-validated.",
+        "Current real-hardware validation confirms ports 1-8, all four 10G SFP+ positions, port selection, link/activity/speed indicators, PoE/status information, applicable sensor presentation, and rendered alignment on Core 2.6.7."
+      ],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed_two_devices",
+        "rj45_mapping": "community_confirmed_two_devices_ports_1_8",
+        "poe": "community_confirmed",
+        "system_sensors": "community_confirmed",
+        "uplinks": "community_confirmed_two_devices_four_10g_sfp_plus_positions_and_link_speed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "community_validated",
+        "recommended_faceplate": "faceplates/24rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_4sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Dream Machine Pro",
+      "model": "UDM Pro",
+      "status": "experimental",
+      "confirmed_since": "2.0.28",
+      "last_validated_version": "2.0.32",
+      "evidence": "unifi2mqtt_live_snapshot_2026-08-11",
+      "ports": {
+        "rj45": 9,
+        "poe": false,
+        "uplinks": 2,
+        "uplink_type": "10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-udm-pro-api",
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "5.1.26"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Experimental gateway/switch-hybrid entry created from a live Switch Vision UniFi2MQTT snapshot.",
+        "The UniFi Integration API exposes nine RJ45 ports and two 10G SFP+ ports for this UDM Pro.",
+        "CPU, memory, uptime and aggregate uplink traffic are present in the live API snapshot.",
+        "Per-port traffic is not exposed by the current Integration API path.",
+        "One or more ports may have routed WAN/LAN roles; role semantics are not yet classified by Switch Vision.",
+        "v2.0.32 uses the generic 48 RJ45 + 4 SFP faceplate as the universal temporary fallback until a smaller matching generic visual is supplied.",
+        "v2.0.32 dashboard generation is enabled through the UniFi API/UniFi2MQTT data path; support status remains Experimental pending wider live validation.",
+        "A dedicated 9-RJ45 + 2-SFP visual is not bundled yet; v2.0.32 uses the universal generic fallback while preserving the real port counts.",
+        "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used."
+      ],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_port_indices",
+        "poe": "live_api_confirmed_not_available",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_connector_and_speed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Dell",
+      "family": "Dell EMC Networking N2000",
+      "model": "N2128PX-ON",
+      "status": "experimental",
+      "confirmed_since": "2.1.20",
+      "last_validated_version": "2.1.20",
+      "evidence": "community_hardware_validation",
+      "ports": {
+        "rj45": 28,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "2x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": true,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "dell-n2128px-on",
+      "calibration_profile": "dell_28rj45_2sfp",
+      "default_faceplate": "faceplates/dell-28-rj45-2sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "6.7.1.27",
+        "6.6.0.7"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Experimental Dell EMC Networking N2128PX-ON support is based on private community hardware evidence; no contributor-identifying evidence is published.",
+        "The contributed standalone unit and two-member stack both report sysObjectID 1.3.6.1.4.1.674.10895.3077.",
+        "Gi<member>/0/1-28 are confirmed as the 28 copper front-panel ports per member.",
+        "Te<member>/0/1-2 are confirmed as the two 10G SFP+ uplinks per member.",
+        "The contribution spans firmware 6.7.1.27 and 6.6.0.7 and preserves the same physical interface topology.",
+        "POWER-ETHERNET-MIB discovery exposes PoE candidates; detailed per-port PoE presentation remains pending contributor validation.",
+        "The dedicated Dell 28 RJ45 + 2 SFP+ faceplate and owner-calibrated factory geometry are selected by default for this exact model.",
+        "Rendered dashboard, VLAN/trunk semantics and final Dell faceplate calibration remain pending before promotion beyond Experimental."
+      ],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed_sysobjectid_model_and_two_firmware_versions",
+        "rj45_mapping": "contribution_confirmed_standalone_and_two_member_stack",
+        "poe": "standard_power_ethernet_mib_candidates_confirmed_pending_card_validation",
+        "system_sensors": "pending",
+        "uplinks": "contribution_confirmed_te_member_0_1_2_as_10g_sfp_plus",
+        "stack": "contribution_confirmed_two_member_interface_numbering"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/dell-28-rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "dell_28rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch",
+      "model": "US 48 PoE 500W",
+      "status": "experimental",
+      "confirmed_since": "2.1.16",
+      "last_validated_version": "2.1.15",
+      "evidence": "support_my_switch_live_unifi_api_contribution",
+      "ports": {
+        "rj45": 48,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "2x 1G SFP + 2x 10G SFP+",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-us-48-poe-500w-api",
+      "calibration_profile": "stock_48rj45_4sfp",
+      "default_faceplate": "faceplates/48rj45-4sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "7.4.1"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "contributions": [
+        {
+          "id": "community validation",
+          "source_component": "UniFi2MQTT 2.0.47",
+          "devices_observed": 2,
+          "validation_scope": "physical_api_contract",
+          "api_capabilities": {
+            "port_detail": true,
+            "per_port_traffic": false
+          },
+          "dashboard_validation": "pending",
+          "contributor": {
+            "display_name": "community contributor",
+            "public_credit": false
+          }
+        }
+      ],
+      "notes": [
+        "Experimental profile created from Support My Switch live UniFi API evidence.",
+        "The contributed device exposes 48 RJ45 ports, two 1G SFP ports and two 10G SFP+ ports.",
+        "PoE information is exposed for all 48 copper ports.",
+        "Live API evidence includes link state, connector type, negotiated speed, CPU, memory and uptime.",
+        "Per-port RX/TX traffic is not exposed by the current UniFi API path.",
+        "SNMP is therefore required for Switch Vision per-port Activity LED animation.",
+        "The existing 48 RJ45 + 4 SFP Switch Vision visual matches the reported physical port count.",
+        "Rendered dashboard validation remains pending before promotion beyond Experimental.",
+        "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.",
+        "community validation from community contributor independently reconfirms two units with 48 PoE-capable 1G RJ45 ports, API ports 49-50 as 10G SFP+, and API ports 51-52 as 1G SFP.",
+        "community validation was captured with UniFi2MQTT 2.0.47 and did not include explicit Switch Vision dashboard/card validation, so Experimental status is unchanged."
+      ],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_port_indices",
+        "poe": "live_api_confirmed_metadata",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_connector_and_speed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/48rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_48rj45_4sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch",
+      "model": "US 48",
+      "status": "experimental",
+      "confirmed_since": "2.4.9",
+      "last_validated_version": "2.4.9",
+      "evidence": "support_my_switch_community validation_unifi_api",
+      "ports": {
+        "rj45": 48,
+        "poe": false,
+        "uplinks": 4,
+        "uplink_type": "2x 1G SFP + 2x 10G SFP+",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-us-48-api",
+      "calibration_profile": "stock_48rj45_4sfp",
+      "default_faceplate": "faceplates/48rj45-4sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "contributions": [
+        {
+          "id": "community validation",
+          "source_component": "UniFi2MQTT 2.0.47",
+          "devices_observed": 1,
+          "validation_scope": "physical_api_contract",
+          "api_capabilities": {
+            "port_detail": true,
+            "per_port_traffic": false
+          },
+          "dashboard_validation": "pending",
+          "contributor": {
+            "display_name": "community contributor",
+            "public_credit": false
+          }
+        }
+      ],
+      "notes": [
+        "Support My Switch contribution community validation captured one real US 48 with 48x 1G RJ45, no PoE, API ports 49-50 as 10G SFP+, and API ports 51-52 as 1G SFP.",
+        "The verified physical geometry matches the existing US 48 PoE 500W 48-RJ45 + 4-optical layout, so the existing stock_48rj45_4sfp calibration is reused rather than fabricating a new faceplate.",
+        {
+          "The model deliberately remains on the legacy sequential UniFi mapping path": "RJ45 API ports 1-48 followed by optical API ports 49-52."
+        },
+        "Port detail is available while per-port traffic is unavailable through the contributed UniFi API path; that capability distinction is not treated as a device failure.",
+        "Rendered dashboard/card validation remains pending before promotion beyond Experimental."
+      ],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_port_indices_1_48",
+        "poe": "live_api_confirmed_no_poe_output_capability",
+        "system_sensors": "pending",
+        "uplinks": "live_api_confirmed_ports_49_50_10g_sfp_plus_51_52_1g_sfp",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/48rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_48rj45_4sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch XG",
+      "model": "US XG 16",
+      "status": "detected",
+      "confirmed_since": "2.4.9",
+      "last_validated_version": "2.4.9",
+      "evidence": "support_my_switch_community validation_unifi_api",
+      "ports": {
+        "rj45": 4,
+        "poe": false,
+        "uplinks": 12,
+        "uplink_type": "12x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 12
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": false,
+      "mapping_profile": "ubiquiti-us-xg-16-api",
+      "unifi_api_port_map": {
+        "rj45": [
+          13,
+          14,
+          15,
+          16
+        ],
+        "sfp": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ]
+      },
+      "calibration_profile": "",
+      "default_faceplate": "",
+      "optional_faceplates": [],
+      "tested_firmware": [],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "contributions": [
+        {
+          "id": "community validation",
+          "source_component": "UniFi2MQTT 2.0.47",
+          "devices_observed": 2,
+          "validation_scope": "physical_api_contract",
+          "api_capabilities": {
+            "port_detail": true,
+            "per_port_traffic": false
+          },
+          "dashboard_validation": "pending",
+          "contributor": {
+            "display_name": "community contributor",
+            "public_credit": false
+          }
+        }
+      ],
+      "notes": [
+        {
+          "Two independent community hardware captures expose matching optical-first geometry": "API/physical ports 1-12 are 10G SFP+ and ports 13-16 are 10G-capable RJ45."
+        },
+        "The explicit UniFi API-port map is authoritative and must not be replaced with a copper-first offset approximation.",
+        "One contributed 10G-capable RJ45 port was negotiating at 1G, confirming that live negotiated speed must remain independent from maximum connector capability.",
+        "Port detail is available while per-port traffic is unavailable through the contributed UniFi API path.",
+        "No verified 12-SFP+ + 4-RJ45 faceplate coordinates are available yet, so dashboard support and calibration remain pending rather than assigning an inaccurate generic visual."
+      ],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed_two_units",
+        "rj45_mapping": "live_api_confirmed_api_ports_13_16",
+        "poe": "live_api_confirmed_no_poe_output_capability",
+        "system_sensors": "pending",
+        "uplinks": "live_api_confirmed_api_ports_1_12_10g_sfp_plus",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "detected",
+        "recommended_faceplate": "",
+        "optional_faceplates": [],
+        "calibration_profile": "",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Pro Aggregation",
+      "model": "USW Pro Aggregation",
+      "status": "detected",
+      "confirmed_since": "2.4.9",
+      "last_validated_version": "2.4.9",
+      "evidence": "support_my_switch_community validation_unifi_api",
+      "ports": {
+        "rj45": 0,
+        "poe": false,
+        "uplinks": 32,
+        "uplink_type": "28x 10G SFP+ + 4x 25G SFP28",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 28,
+        "twenty_five_gigabit_sfp28": 4
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": false,
+      "mapping_profile": "ubiquiti-usw-pro-aggregation-api",
+      "unifi_api_port_map": {
+        "rj45": [],
+        "sfp": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32
+        ]
+      },
+      "calibration_profile": "",
+      "default_faceplate": "",
+      "optional_faceplates": [],
+      "tested_firmware": [],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "contributions": [
+        {
+          "id": "community validation",
+          "source_component": "UniFi2MQTT 2.0.47",
+          "devices_observed": 1,
+          "validation_scope": "physical_api_contract",
+          "api_capabilities": {
+            "port_detail": true,
+            "per_port_traffic": false
+          },
+          "dashboard_validation": "pending",
+          "contributor": {
+            "display_name": "community contributor",
+            "public_credit": false
+          }
+        }
+      ],
+      "notes": [
+        {
+          "Community hardware evidence confirms a 32-port optical-only switch": "physical/API ports 1-28 are SFP+ with 10G maximum capability and ports 29-32 are SFP28 with 25G maximum capability."
+        },
+        "Ports 29 and 30 were observed negotiating at 10G despite 25G SFP28 capability; Switch Vision must display the current 10G link speed while retaining 25G as maximum capability metadata.",
+        "Port detail is available while per-port traffic is unavailable through the contributed UniFi API path.",
+        "Core calibration storage supports the required connector count after the optical-only validation fix, but no verified 32-port faceplate coordinates are available yet.",
+        "Dashboard support remains disabled until a proper high-density optical faceplate/calibration profile is verified; a four-uplink fallback is intentionally not used."
+      ],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "not_applicable",
+        "poe": "not_applicable",
+        "system_sensors": "pending",
+        "uplinks": "live_api_confirmed_28x10g_sfp_plus_4x25g_sfp28",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "detected",
+        "recommended_faceplate": "",
+        "optional_faceplates": [],
+        "calibration_profile": "",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch 8 60W",
+      "model": "US 8 60W",
+      "status": "experimental",
+      "confirmed_since": "2.1.19",
+      "last_validated_version": "2.1.19",
+      "evidence": "support_my_switch_community validation_unifi_api",
+      "ports": {
+        "rj45": 8,
+        "poe": true,
+        "uplinks": 0,
+        "uplink_type": "none",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-us-8-60w-api",
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "contributions": [
+        {
+          "id": "community validation",
+          "source_component": "UniFi2MQTT 2.0.47",
+          "devices_observed": 1,
+          "validation_scope": "physical_api_contract",
+          "api_capabilities": {
+            "port_detail": true,
+            "per_port_traffic": false
+          },
+          "dashboard_validation": "pending",
+          "contributor": {
+            "display_name": "community contributor",
+            "public_credit": false
+          }
+        }
+      ],
+      "notes": [
+        "Experimental profile created from Support My Switch contribution community validation.",
+        "Live UniFi API evidence exposes eight 1G RJ45 ports.",
+        "PoE output capability is exposed only on ports 5 through 8, using 802.3af metadata.",
+        "The contribution proves link state and PoE-active state are independent.",
+        "Per-port RX/TX traffic is not exposed by the current UniFi API path.",
+        "The universal temporary faceplate is used while preserving the real eight-port count.",
+        "Rendered dashboard validation remains pending before promotion beyond Experimental.",
+        "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.",
+        "community validation from community contributor independently reconfirms one 8x 1G RJ45 unit with PoE capability limited to physical/API ports 5-8 using 802.3af.",
+        "community validation was captured with UniFi2MQTT 2.0.47 and did not include explicit Switch Vision dashboard/card validation, so Experimental status is unchanged."
+      ],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_port_indices",
+        "poe": "live_api_confirmed_ports_5_8_802_3af",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "not_applicable",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Flex",
+      "model": "USW Flex",
+      "status": "experimental",
+      "confirmed_since": "2.1.18",
+      "last_validated_version": "2.1.16",
+      "evidence": "support_my_switch_community validation_unifi_api",
+      "ports": {
+        "rj45": 5,
+        "poe": true,
+        "uplinks": 0,
+        "uplink_type": "none",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-flex-api",
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "7.4.1"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Experimental profile created from Support My Switch contribution community validation.",
+        "Live UniFi API evidence exposes five 1G RJ45 ports.",
+        "Port 1 is non-PoE in the contributed API metadata; ports 2 through 5 expose 802.3af PoE output metadata.",
+        "Live evidence includes link state, negotiated speed, CPU, memory and uptime.",
+        "Per-port RX/TX traffic is not exposed by the current UniFi API path.",
+        "SNMP is therefore required for Switch Vision per-port Activity LED animation.",
+        "No exact five-port Switch Vision visual is assigned yet; the universal temporary fallback preserves the real API port count.",
+        "Rendered dashboard validation remains pending before promotion beyond Experimental.",
+        "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used."
+      ],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_port_indices",
+        "poe": "live_api_confirmed_metadata",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_connector_and_speed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Flex 2.5G 8 PoE",
+      "model": "USW Flex 2.5G 8 PoE",
+      "status": "experimental",
+      "confirmed_since": "2.1.18",
+      "last_validated_version": "2.1.16",
+      "evidence": "support_my_switch_community validation_unifi_api",
+      "ports": {
+        "rj45": 9,
+        "poe": true,
+        "uplinks": 1,
+        "uplink_type": "1x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 1
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-flex-2p5g-8-poe-api",
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "2.1.8"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Experimental profile created from Support My Switch contribution community validation.",
+        "Live UniFi API evidence exposes ports 1 through 8 as 2.5G-capable PoE RJ45, port 9 as 10G-capable RJ45, and port 10 as 10G SFP+.",
+        "Ports 1 through 8 expose 802.3bt PoE metadata.",
+        "Live evidence includes link state, connector type, negotiated speed, CPU, memory and uptime.",
+        "Per-port RX/TX traffic is not exposed by the current UniFi API path.",
+        "SNMP is therefore required for Switch Vision per-port Activity LED animation.",
+        "No exact Switch Vision visual exists for the mixed 2.5G/10G RJ45 plus SFP+ layout yet; the universal temporary fallback preserves the real API port counts.",
+        "Rendered dashboard validation remains pending before promotion beyond Experimental.",
+        "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used."
+      ],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_port_indices",
+        "poe": "live_api_confirmed_metadata",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_connector_and_speed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Flex Mini",
+      "model": "USW Flex Mini",
+      "status": "experimental",
+      "confirmed_since": "2.1.19",
+      "last_validated_version": "2.1.19",
+      "evidence": "support_my_switch_community validation_unifi_api",
+      "ports": {
+        "rj45": 5,
+        "poe": false,
+        "uplinks": 0,
+        "uplink_type": "none",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-flex-mini-api",
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "contributions": [
+        {
+          "id": "community validation",
+          "source_component": "UniFi2MQTT 2.0.47",
+          "devices_observed": 2,
+          "validation_scope": "physical_api_contract",
+          "api_capabilities": {
+            "port_detail": true,
+            "per_port_traffic": false
+          },
+          "dashboard_validation": "pending",
+          "contributor": {
+            "display_name": "community contributor",
+            "public_credit": false
+          }
+        }
+      ],
+      "notes": [
+        "Experimental profile created from Support My Switch contribution community validation.",
+        "Three independent live UniFi API devices expose the same five 1G RJ45-port topology.",
+        "No per-port PoE output capability is exposed by the contributed normalized API data.",
+        "Per-port RX/TX traffic is not exposed by the current UniFi API path.",
+        "The universal temporary faceplate is used while preserving the real five-port count.",
+        "Rendered dashboard validation remains pending before promotion beyond Experimental.",
+        "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.",
+        "community validation from community contributor independently reconfirms two additional units with the same five-port 1G RJ45 topology.",
+        "community validation was captured with UniFi2MQTT 2.0.47 and did not include explicit Switch Vision dashboard/card validation, so Experimental status is unchanged."
+      ],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed_three_devices",
+        "rj45_mapping": "live_api_confirmed_repeated_port_indices",
+        "poe": "live_api_confirmed_no_poe_output_metadata",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "not_applicable",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Pro 24",
+      "model": "USW Pro 24",
+      "status": "experimental",
+      "confirmed_since": "2.1.19",
+      "last_validated_version": "2.1.19",
+      "evidence": "support_my_switch_community validation_unifi_api",
+      "ports": {
+        "rj45": 24,
+        "poe": false,
+        "uplinks": 2,
+        "uplink_type": "2x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-pro-24-api",
+      "calibration_profile": "unifi_24p_rj45_2sfp",
+      "default_faceplate": "faceplates/unifi-24p-rj45-2sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Experimental profile created from Support My Switch contribution community validation.",
+        "Live UniFi API evidence exposes 24 1G RJ45 ports and two 10G SFP+ uplinks.",
+        "Both SFP+ uplinks were observed at 10,000 Mb/s in the contribution.",
+        "No per-port PoE output capability is exposed for this exact non-PoE model.",
+        "Per-port RX/TX traffic is not exposed by the current UniFi API path.",
+        "This exact model remains distinct from USW-24-PoE, whose two uplinks are 1G SFP.",
+        "Rendered dashboard validation remains pending before promotion beyond Experimental.",
+        "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used."
+      ],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_port_indices",
+        "poe": "live_api_confirmed_not_available",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_two_10g_sfp_plus",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-24p-rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_24p_rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch 16 PoE",
+      "model": "USW-16-PoE",
+      "status": "experimental",
+      "confirmed_since": "2.1.18",
+      "last_validated_version": "2.1.16",
+      "evidence": "support_my_switch_community validation_unifi_api",
+      "ports": {
+        "rj45": 16,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "2x 1G SFP",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-16-poe-api",
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "7.4.1"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Experimental profile created from Support My Switch contribution community validation.",
+        "Live UniFi API evidence exposes 16 1G RJ45 ports and two 1G SFP uplinks.",
+        "PoE metadata is exposed on copper ports 1 through 8; ports 9 through 16 are non-PoE.",
+        "Live evidence includes link state, connector type, negotiated speed, CPU, memory and uptime.",
+        "Per-port RX/TX traffic is not exposed by the current UniFi API path.",
+        "SNMP is therefore required for Switch Vision per-port Activity LED animation.",
+        "A dedicated 16 RJ45 + 2 SFP Switch Vision visual is not bundled yet; the universal temporary fallback is used while preserving the real port counts.",
+        "Rendered dashboard validation remains pending before promotion beyond Experimental.",
+        "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used."
+      ],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_port_indices",
+        "poe": "live_api_confirmed_metadata",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_connector_and_speed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch 24 PoE",
+      "model": "USW-24-PoE",
+      "status": "experimental",
+      "confirmed_since": "2.1.18",
+      "last_validated_version": "2.1.19",
+      "evidence": "support_my_switch_community validation_and_community validation_unifi_api",
+      "ports": {
+        "rj45": 24,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "2x 1G SFP",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-24-poe-api",
+      "calibration_profile": "unifi_24p_rj45_2sfp",
+      "default_faceplate": "faceplates/unifi-24p-rj45-2sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "7.4.1"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Experimental profile created from Support My Switch contribution community validation.",
+        "Live UniFi API evidence exposes 24 1G RJ45 ports and two 1G SFP uplinks.",
+        "PoE metadata is exposed on copper ports 1 through 16; ports 17 through 24 are non-PoE.",
+        "Live evidence includes link state, connector type, negotiated speed, CPU, memory and uptime.",
+        "Per-port RX/TX traffic is not exposed by the current UniFi API path.",
+        "SNMP is therefore required for Switch Vision per-port Activity LED animation.",
+        "The existing 24 RJ45 + 2 SFP generic visual matches the reported physical port count.",
+        "Rendered dashboard validation remains pending before promotion beyond Experimental.",
+        "community validation independently reconfirms the exact 24x 1G RJ45 + 2x 1G SFP topology.",
+        "community validation independently reconfirms PoE output capability on ports 1 through 16 only.",
+        "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used."
+      ],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_port_indices",
+        "poe": "live_api_confirmed_metadata",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_connector_and_speed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-24p-rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_24p_rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Lite 8 PoE",
+      "model": "USW-Lite-8-PoE",
+      "status": "experimental",
+      "confirmed_since": "2.1.18",
+      "last_validated_version": "2.1.16",
+      "evidence": "support_my_switch_community validation_unifi_api",
+      "ports": {
+        "rj45": 8,
+        "poe": true,
+        "uplinks": 0,
+        "uplink_type": "none",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-lite-8-poe-api",
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "7.4.1"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Experimental profile created from Support My Switch contribution community validation.",
+        "Live UniFi API evidence exposes eight 1G RJ45 ports.",
+        "PoE metadata is exposed on ports 1 through 4; ports 5 through 8 are non-PoE.",
+        "Live evidence includes link state, negotiated speed, CPU, memory and uptime.",
+        "Per-port RX/TX traffic is not exposed by the current UniFi API path.",
+        "SNMP is therefore required for Switch Vision per-port Activity LED animation.",
+        "A dedicated 8-port Switch Vision visual is not currently assigned to this registry profile; the universal temporary fallback preserves the real port count.",
+        "Rendered dashboard validation remains pending before promotion beyond Experimental.",
+        "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used."
+      ],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_port_indices",
+        "poe": "live_api_confirmed_metadata",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_connector_and_speed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Dream Machine Pro SE",
+      "model": "UniFi Dream Machine PRO SE",
+      "status": "experimental",
+      "confirmed_since": "2.1.19",
+      "last_validated_version": "2.1.19",
+      "evidence": "support_my_switch_community validation_unifi_api",
+      "ports": {
+        "rj45": 9,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "2x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-udm-pro-se-api",
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Experimental gateway/switch-hybrid profile created from Support My Switch contribution community validation.",
+        "Live UniFi API evidence exposes ports 1-8 as 1G PoE RJ45, port 9 as 2.5G RJ45, and ports 10-11 as 10G SFP+.",
+        "PoE capability is exposed on ports 1 through 8 only.",
+        "Ports 9 through 11 remain role-neutral because the sanitized contribution does not retain enough WAN/LAN role semantics.",
+        "Per-port RX/TX traffic is not exposed by the current UniFi API path.",
+        "The universal temporary faceplate is used while preserving the real eleven-port topology.",
+        "Rendered dashboard and WAN/LAN role validation remain pending before promotion beyond Experimental.",
+        "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used."
+      ],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_ports_1_9",
+        "poe": "live_api_confirmed_ports_1_8",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_ports_10_11_10g_sfp_plus",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "status": "experimental",
+      "confirmed_since": "2.4.10",
+      "last_validated_version": "2.4.10",
+      "evidence": "multiple_real_hardware_unifi_api_contributions",
+      "stack_support": false,
+      "discovery_support": true,
+      "optional_faceplates": [],
+      "tested_firmware": [],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "vendor": "Ubiquiti",
+      "family": "UniFi Cloud Gateway Ultra",
+      "model": "UCG Ultra",
+      "ports": {
+        "rj45": 5,
+        "poe": false,
+        "uplinks": 0,
+        "uplink_type": "none",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-ucg-ultra-api",
+      "calibration_profile": "default_unifi_5_rj45",
+      "default_faceplate": "faceplates/unifi-5rj45.png",
+      "contributions": [
+        {
+          "id": "community validation",
+          "source_component": "UniFi2MQTT 2.0.47",
+          "source_discovery_version": "2.1.37",
+          "devices_observed": 1,
+          "validation_scope": "physical_api_contract_repeat_capture",
+          "api_capabilities": {
+            "port_detail": true,
+            "per_port_traffic": false
+          },
+          "dashboard_validation": "generic_card_generated",
+          "contributor": {
+            "display_name": "community contributor",
+            "public_credit": false
+          }
+        },
+        {
+          "id": "community validation",
+          "source_component": "UniFi2MQTT 2.0.47",
+          "source_discovery_version": "2.1.37",
+          "devices_observed": 1,
+          "validation_scope": "physical_api_contract_repeat_capture",
+          "api_capabilities": {
+            "port_detail": true,
+            "per_port_traffic": false
+          },
+          "dashboard_validation": "generic_card_generated",
+          "contributor": {
+            "display_name": "community contributor",
+            "public_credit": false
+          }
+        }
+      ],
+      "notes": [
+        "community validation and community validation are two corroborating captures of the same physical UCG Ultra and preserve the same five-port topology while normal live counters change.",
+        "Live UniFi API evidence exposes four 1G RJ45 ports plus one 2.5G-capable RJ45 port and no PoE output capability.",
+        "The device is a Cloud Gateway with integrated switching; Switch Vision accepts it because the UniFi controller advertises switching capability rather than because the model name resembles a switch.",
+        "WAN/LAN role is deliberately not inferred from physical port position; controller state remains authoritative for role semantics.",
+        "Port detail is available while per-port RX/TX traffic is unavailable through the contributed UniFi API path.",
+        "A dedicated five-RJ45 UniFi faceplate and factory calibration are bundled for this exact model; rendered alignment remains pending community confirmation."
+      ],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed_two_corroborating_captures",
+        "rj45_mapping": "live_api_confirmed_five_physical_ports",
+        "poe": "live_api_confirmed_no_poe_output_capability",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "not_applicable",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-5rj45.png",
+        "optional_faceplates": [],
+        "calibration_profile": "default_unifi_5_rj45",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "status": "experimental",
+      "confirmed_since": "2.4.10",
+      "last_validated_version": "2.4.10",
+      "evidence": "multiple_real_hardware_unifi_api_contributions",
+      "stack_support": false,
+      "discovery_support": true,
+      "optional_faceplates": [],
+      "tested_firmware": [],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch 16 PoE 150W",
+      "model": "US 16 PoE 150W",
+      "ports": {
+        "rj45": 16,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "2x 1G SFP",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "dashboard_support": false,
+      "mapping_profile": "ubiquiti-us-16-poe-150w-api",
+      "calibration_profile": "",
+      "default_faceplate": "",
+      "contributions": [
+        {
+          "id": "community validation",
+          "source_component": "UniFi2MQTT 2.0.47",
+          "source_discovery_version": "2.1.37",
+          "devices_observed": 1,
+          "validation_scope": "physical_api_contract_repeat_capture",
+          "api_capabilities": {
+            "port_detail": true,
+            "per_port_traffic": false
+          },
+          "dashboard_validation": "generic_card_generated",
+          "contributor": {
+            "display_name": "community contributor",
+            "public_credit": false
+          }
+        },
+        {
+          "id": "community validation",
+          "source_component": "UniFi2MQTT 2.0.47",
+          "source_discovery_version": "2.1.37",
+          "devices_observed": 1,
+          "validation_scope": "physical_api_contract_repeat_capture",
+          "api_capabilities": {
+            "port_detail": true,
+            "per_port_traffic": false
+          },
+          "dashboard_validation": "generic_card_generated",
+          "contributor": {
+            "display_name": "community contributor",
+            "public_credit": false
+          }
+        }
+      ],
+      "notes": [
+        "community validation and community validation independently repeat the same 16x 1G RJ45 plus 2x 1G SFP topology on the contributed US 16 PoE 150W.",
+        "All sixteen copper ports expose PoE output capability in the normalized UniFi API evidence; the two SFP ports do not.",
+        "The contract records the standardized PoE metadata actually exposed by the API and does not invent legacy passive-24V state that was not present in the contribution.",
+        "Port detail is available while per-port RX/TX traffic is unavailable through the contributed UniFi API path.",
+        "A dedicated 16 RJ45 + 2 SFP faceplate is not yet verified, so exact dashboard visuals remain pending; Discovery may use its safe generic 24+2 visual with the true 16+2 counts."
+      ],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed_two_corroborating_captures",
+        "rj45_mapping": "live_api_confirmed_ports_1_16",
+        "poe": "live_api_confirmed_output_capability_ports_1_16",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_ports_17_18_1g_sfp",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "detected",
+        "recommended_faceplate": "",
+        "optional_faceplates": [],
+        "calibration_profile": "",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "status": "experimental",
+      "confirmed_since": "2.4.10",
+      "last_validated_version": "2.4.10",
+      "evidence": "multiple_real_hardware_unifi_api_contributions",
+      "stack_support": false,
+      "discovery_support": true,
+      "optional_faceplates": [],
+      "tested_firmware": [],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Pro Max 24",
+      "model": "USW Pro Max 24",
+      "ports": {
+        "rj45": 24,
+        "poe": false,
+        "uplinks": 2,
+        "uplink_type": "2x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-pro-max-24-api",
+      "calibration_profile": "unifi_24p_rj45_2sfp",
+      "default_faceplate": "faceplates/unifi-24p-rj45-2sfp.png",
+      "contributions": [
+        {
+          "id": "community validation",
+          "source_component": "UniFi2MQTT 2.0.47",
+          "source_discovery_version": "2.1.37",
+          "devices_observed": 1,
+          "validation_scope": "physical_api_contract_repeat_capture",
+          "api_capabilities": {
+            "port_detail": true,
+            "per_port_traffic": false
+          },
+          "dashboard_validation": "generic_card_generated",
+          "contributor": {
+            "display_name": "community contributor",
+            "public_credit": false
+          }
+        },
+        {
+          "id": "community validation",
+          "source_component": "UniFi2MQTT 2.0.47",
+          "source_discovery_version": "2.1.37",
+          "devices_observed": 1,
+          "validation_scope": "physical_api_contract_repeat_capture",
+          "api_capabilities": {
+            "port_detail": true,
+            "per_port_traffic": false
+          },
+          "dashboard_validation": "generic_card_generated",
+          "contributor": {
+            "display_name": "community contributor",
+            "public_credit": false
+          }
+        }
+      ],
+      "notes": [
+        "community validation and community validation repeat the same physical/API topology for the non-PoE USW Pro Max 24.",
+        "Ports 1-16 are 1G RJ45, ports 17-24 are 2.5G-capable RJ45, and ports 25-26 are 10G SFP+.",
+        "Maximum connector capability remains separate from current negotiated speed so a 2.5G-capable copper port may truthfully display a lower live link speed.",
+        "No PoE output capability is reported for this non-PoE model.",
+        "Port detail is available while per-port RX/TX traffic is unavailable through the contributed UniFi API path.",
+        "The existing UniFi 24 RJ45 + 2 SFP generic faceplate has exact physical socket geometry for this model and is therefore safe as its current exact layout visual; model-specific artwork may replace it later without changing the API mapping contract."
+      ],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed_two_corroborating_captures",
+        "rj45_mapping": "live_api_confirmed_ports_1_24_with_ports_17_24_2p5g_capable",
+        "poe": "live_api_confirmed_no_poe_output_capability",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_ports_25_26_10g_sfp_plus",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-24p-rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_24p_rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "status": "experimental",
+      "confirmed_since": "2.4.10",
+      "last_validated_version": "2.4.10",
+      "evidence": "multiple_real_hardware_unifi_api_contributions",
+      "stack_support": false,
+      "discovery_support": true,
+      "optional_faceplates": [],
+      "tested_firmware": [],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Ultra",
+      "model": "USW Ultra",
+      "ports": {
+        "rj45": 8,
+        "poe": true,
+        "uplinks": 0,
+        "uplink_type": "none",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-ultra-api",
+      "calibration_profile": "default_unifi_8_rj45",
+      "default_faceplate": "faceplates/unifi-8rj45.png",
+      "contributions": [
+        {
+          "id": "community validation",
+          "source_component": "UniFi2MQTT 2.0.47",
+          "source_discovery_version": "2.1.37",
+          "devices_observed": 1,
+          "validation_scope": "physical_api_contract_repeat_capture",
+          "api_capabilities": {
+            "port_detail": true,
+            "per_port_traffic": false
+          },
+          "dashboard_validation": "generic_card_generated",
+          "contributor": {
+            "display_name": "community contributor",
+            "public_credit": false
+          }
+        },
+        {
+          "id": "community validation",
+          "source_component": "UniFi2MQTT 2.0.47",
+          "source_discovery_version": "2.1.37",
+          "devices_observed": 1,
+          "validation_scope": "physical_api_contract_repeat_capture",
+          "api_capabilities": {
+            "port_detail": true,
+            "per_port_traffic": false
+          },
+          "dashboard_validation": "generic_card_generated",
+          "contributor": {
+            "display_name": "community contributor",
+            "public_credit": false
+          }
+        }
+      ],
+      "notes": [
+        "community validation and community validation repeat the same eight-port 1G RJ45 topology for USW Ultra.",
+        "PoE output capability is exposed on ports 1-7 only; port 8 is not advertised as a PoE output port, preserving the hardware distinction between PoE output and the PoE input/uplink port.",
+        "Port detail is available while per-port RX/TX traffic is unavailable through the contributed UniFi API path.",
+        "A dedicated eight-RJ45 UniFi faceplate and factory calibration are bundled for this exact model; rendered alignment remains pending community confirmation."
+      ],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed_two_corroborating_captures",
+        "rj45_mapping": "live_api_confirmed_ports_1_8",
+        "poe": "live_api_confirmed_output_capability_ports_1_7_only",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "not_applicable",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-8rj45.png",
+        "optional_faceplates": [],
+        "calibration_profile": "default_unifi_8_rj45",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Catalyst 3750",
+      "model": "WS-C3750-48P",
+      "status": "experimental",
+      "confirmed_since": "2.4.12",
+      "last_validated_version": "2.4.12",
+      "evidence": "sanitized_community_real_hardware_capture",
+      "ports": {
+        "rj45": 48,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "4x 1G SFP",
+        "gigabit_sfp": 4,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": true,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-3750-48p-48fe-4sfp",
+      "calibration_profile": "default_cisco_48_port",
+      "default_faceplate": "faceplates/48rj45-4sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "A sanitized real-hardware contribution reports the exact SNMP model string WS-C3750-48P.",
+        "The non-G Catalyst 3750 48-port PoE platform uses 48 10/100 FastEthernet access ports and four 1G SFP uplinks; access ports must not be advertised as Gigabit-capable.",
+        "The reported SNMP platform string does not include the retail software-feature suffix, so Switch Vision does not infer an IP Base/IP Services SKU suffix.",
+        "The 48 RJ45 plus four SFP socket geometry matches the existing neutral 48+4 faceplate; live overlay alignment remains Experimental pending contributor confirmation.",
+        "Catalyst 3750 StackWise numbering is supported by the mapping profile, but multi-member stack behaviour remains pending live validation."
+      ],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed",
+        "rj45_mapping": "candidate_48_fastethernet_ports_pending_live_dashboard_validation",
+        "poe": "candidate_platform_contract_pending_live_dashboard_validation",
+        "system_sensors": "pending",
+        "uplinks": "candidate_four_1g_sfp_pending_live_validation",
+        "stack": "capable_pending_live_validation"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/48rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "default_cisco_48_port",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Dream Machine Pro Max",
+      "model": "UDM Pro Max",
+      "status": "experimental",
+      "confirmed_since": "2.4.14",
+      "last_validated_version": "2.4.14",
+      "evidence": "community_real_hardware_unifi_api_validation",
+      "ports": {
+        "rj45": 9,
+        "poe": false,
+        "uplinks": 2,
+        "uplink_type": "2x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-udm-pro-max-api",
+      "unifi_api_port_map": {
+        "rj45": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "sfp": [
+          10,
+          11
+        ]
+      },
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "5.1.31"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "A privacy-processed community real-hardware UniFi API snapshot confirms eleven physical ports for this exact gateway/switch hybrid.",
+        "API ports 1-8 are 1G-capable RJ45, API port 9 is 2.5G-capable RJ45, and API ports 10-11 are 10G SFP+.",
+        "The contributed live snapshot observed API port 9 negotiating at 2.5G and API port 11 negotiating at 10G; negotiated speed remains independent from maximum capability.",
+        "No RJ45 port reports PoE output capability on the contributed hardware.",
+        "Port detail is available while per-port traffic is unavailable through the contributed UniFi API path; Switch Vision must not synthesize per-port traffic.",
+        "A temporary generic 24-RJ45 + 2-SFP stock visual is used while the card remains constrained to the real nine-copper + two-optical port contract; this artwork is not treated as exact UDM Pro Max physical geometry and dedicated artwork remains pending.",
+        "Support remains Experimental until rendered physical alignment and live dashboard behaviour are validated on the contributor hardware."
+      ],
+      "validation": {
+        "exact_model_detection": "community_real_hardware_api_confirmed",
+        "rj45_mapping": "community_api_ports_1_9_confirmed_pending_rendered_validation",
+        "poe": "community_confirmed_no_poe_output",
+        "system_sensors": "api_available_pending_dashboard_validation",
+        "uplinks": "community_api_ports_10_11_10g_sfp_plus_confirmed_pending_rendered_validation",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Pro XG",
+      "model": "USW Pro XG 24 PoE",
+      "status": "experimental",
+      "confirmed_since": "2.4.14",
+      "last_validated_version": "2.4.14",
+      "evidence": "community_real_hardware_unifi_api_validation",
+      "ports": {
+        "rj45": 24,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "2x 25G SFP28",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 0,
+        "twenty_five_gigabit_sfp28": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-pro-xg-24-poe-api",
+      "unifi_api_port_map": {
+        "rj45": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24
+        ],
+        "sfp": [
+          25,
+          26
+        ]
+      },
+      "calibration_profile": "unifi_24p_rj45_2sfp",
+      "default_faceplate": "faceplates/unifi-24p-rj45-2sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "7.5.10"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "A privacy-processed community real-hardware UniFi API snapshot confirms 26 physical ports for this exact switch.",
+        "API ports 1-8 are 2.5G-capable RJ45, API ports 9-24 are 10G-capable RJ45, and API ports 25-26 are 25G SFP28.",
+        "All 24 RJ45 ports report PoE capability with 802.3bt Type 4 metadata on the contributed hardware.",
+        "The contributed live snapshot includes copper links negotiating at 100M, 1G and 10G, plus SFP28 links negotiating at both 10G and 25G; negotiated speed must remain separate from maximum connector capability.",
+        "Port detail is available while per-port traffic is unavailable through the contributed UniFi API path; Switch Vision must not synthesize per-port traffic.",
+        "The existing UniFi 24-RJ45 + 2-optical visual has matching physical socket geometry and is used provisionally; the two optical positions retain SFP28 capability semantics.",
+        "Support remains Experimental until rendered physical alignment, PoE presentation and live dashboard behaviour are validated on the contributor hardware."
+      ],
+      "validation": {
+        "exact_model_detection": "community_real_hardware_api_confirmed",
+        "rj45_mapping": "community_api_ports_1_24_confirmed_pending_rendered_validation",
+        "poe": "community_all_24_rj45_802_3bt_type4_confirmed_pending_dashboard_validation",
+        "system_sensors": "api_available_pending_dashboard_validation",
+        "uplinks": "community_api_ports_25_26_25g_sfp28_confirmed_pending_rendered_validation",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-24p-rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_24p_rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    }
+  ]
+}

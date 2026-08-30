@@ -1,4 +1,14 @@
-# Switch Vision Core v2.6.18
+# Switch Vision Core v2.6.19
+
+Core 2.6.19 fixes the remaining Calibration Port Manager restriction that prevented removal of the final visual RJ45 port. That restriction also existed in profile validation, which meant an optical-only switch could not be represented without retaining a fake copper port.
+
+Calibration now allows the RJ45 geometry set to become empty when SFP/uplink geometry remains. Deleting the last RJ45 automatically moves selection to the first remaining SFP/uplink, while a temporarily empty editor falls back to the safe `all` target rather than producing `port:undefined`. The matching SFP deletion fallback is hardened as well.
+
+Saving/importing still rejects a profile containing no RJ45 and no SFP/uplink positions at all. Adding RJ45 after the copper set is empty remains supported and restarts at port 1 using the existing starter geometry. Permanent regression coverage locks these zero-RJ45 and selection-safety contracts.
+
+---
+
+# Previous release: Switch Vision Core v2.6.18
 
 Core 2.6.18 fixes a Calibration Port Manager rendering defect exposed when duplicating an SFP/uplink (and equivalently an RJ45 port) beyond the live card's configured physical port count. The duplicate calibration object already contained the copied center, hitbox, label and LED geometry, but the SVG renderer applied the normal live-hardware count gate and skipped drawing the new port. That left the editable label/hitbox path visible while the actual port box, link LED and activity LED were missing.
 
