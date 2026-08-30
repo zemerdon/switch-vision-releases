@@ -51,7 +51,7 @@ def main() -> int:
         'const controllerKey = switchKey.slice(0, 32);',
         'return `${controllerKey}__device__${stableCalibrationOpaqueDeviceToken(unifiDeviceId)}`;',
         'active_profiles[base_profile] = profile',
-        'active_profiles.get(requested_profile)',
+        'active_profiles.get(requested_profile, "")',
     ]
     for marker in required[:5]:
         assert marker in source, f"missing UniFi device-scoped calibration marker: {marker}"
