@@ -56,6 +56,14 @@ def main() -> int:
         'const firstSfpKey = sortedCalibrationSfpKeys(cal)[0];',
         'firstSfpKey ? `sfp:${sfpPortNumber(firstSfpKey)}` : "all"',
         'firstPortKey ? `port:${firstPortKey}` : "all"',
+        'option("entire", type === "sfps" ? "Entire SFP ports" : "Entire port")',
+        'if (editable.type === "sfp" && editable.part === "entire")',
+        'const moveEntireSfp = (sfp) => {',
+        'movePoint(sfpLedPoint(sfp, "led_left", true), dx, dy);',
+        'movePoint(sfpLedPoint(sfp, "led_right", true), dx, dy);',
+        'movePoint(sfp.label, dx, dy);',
+        'data-target="sfps" data-part="entire">All SFP</button>',
+        'geometryTransferKeysMatch(current.status_leds, geometry.status_leds, { ignoreMode: true })',
     ]
     for marker in required:
         assert marker in source, f"missing SFP port-manager contract marker: {marker}"
@@ -68,6 +76,9 @@ def main() -> int:
     assert 'The profile contains no RJ45 port positions.' not in source, "SFP-only calibration profiles are still rejected"
     assert 'calibration_target: `port:${nextKey}`' not in source, "final RJ45 deletion can still select port:undefined"
     assert 'calibration_target: nextKey ? `sfp:${sfpPortNumber(nextKey)}` : `port:${sortedCalibrationPortKeys(cal)[0]}`' not in source, "final SFP deletion can still select port:undefined"
+    assert "RJ45 port geometry does not match the current calibration topology." not in source, "Geometry Import still requires exact RJ45 topology"
+    assert "SFP/uplink geometry does not match the current calibration topology." not in source, "Geometry Import still requires exact SFP/uplink topology"
+    assert 'geometryTransferKeysMatch(current.status_leds, geometry.status_leds, { ignoreMode: true })' in source, "Geometry Import no longer protects status LED topology"
 
     for path in sorted(CALIBRATION_DIR.glob("*.json")):
         assert_no_logical_sfp_collisions(path)

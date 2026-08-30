@@ -1,4 +1,14 @@
-# Switch Vision Core v2.6.19
+# Switch Vision Core v2.6.20
+
+Core 2.6.20 improves Calibration portability in two places. SFP/uplink targets now expose `Entire port`, so moving a selected uplink moves its port box, link/speed LED, activity LED and label together while preserving their relative layout. Nudge and Direct X/Y use the same grouped delta; individual SFP parts remain separately editable, and Direct W/H continues to resize only the SFP hitbox.
+
+Geometry Import no longer requires the imported RJ45 and SFP/uplink key sets to exactly equal the current calibration topology. Matching imported keys replace their geometry, additional imported ports are added, and current ports omitted from the transfer remain in place. This allows a layout such as 24 RJ45 + 4 SFP to be imported into a 24 RJ45 + 2 SFP working profile and then trimmed explicitly with Port Manager.
+
+The relaxed port-count rule does not relax other safety boundaries. Status LED topology still has to match, the merged result still passes normal calibration validation and SFP logical-key collision checks, completely portless profiles remain invalid, and Geometry Import still cannot replace artwork, asset identity, profile destination, styling or switch configuration.
+
+---
+
+# Previous release: Switch Vision Core v2.6.19
 
 Core 2.6.19 fixes the remaining Calibration Port Manager restriction that prevented removal of the final visual RJ45 port. That restriction also existed in profile validation, which meant an optical-only switch could not be represented without retaining a fake copper port.
 

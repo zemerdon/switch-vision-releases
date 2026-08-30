@@ -1,3 +1,14 @@
+## v2.6.20 — Calibration SFP grouping and portable geometry import
+
+- Add `Entire port` to individual and grouped SFP/uplink Calibration targets.
+- Move an SFP/uplink port box, link/speed LED, activity LED and label by one shared delta when `Entire port` is selected, including nudge and Direct X/Y controls.
+- Keep SFP/uplink subparts independently editable and keep Direct W/H / resize behavior scoped to the selected SFP hitbox, matching the existing RJ45 whole-port size contract.
+- Make the All SFP quick-selection target use the same whole-port movement semantics.
+- Allow Geometry Import to merge RJ45 and SFP/uplink geometry across profiles with different visual port counts: matching keys update, imported extras are added, and current entries omitted by the import are retained for explicit Port Manager cleanup.
+- Keep status LED topology matching strict and preserve final profile validation, including SFP logical-key collision checks and rejection of completely portless profiles.
+- Preserve Geometry Import's geometry-only boundary: artwork, asset identity, profile destination, styling and switch configuration remain owned by the current target profile.
+- Add permanent regression coverage for SFP whole-port movement and cross-count geometry import.
+
 ## v2.6.19 — Calibration zero-RJ45 / optical-only profiles
 
 - Allow Calibration Port Manager to remove the final visual RJ45 port instead of forcing one fake copper position to remain.

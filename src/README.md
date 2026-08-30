@@ -10,11 +10,11 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current public Core release
 
-### Switch Vision v2.6.19
+### Switch Vision v2.6.20
 
-**v2.6.19** is the current tested public Switch Vision Core/dashboard release.
+**v2.6.20** is the current tested public Switch Vision Core/dashboard release.
 
-This corrective release fixes Calibration Port Manager duplicate rendering so newly duplicated RJ45/SFP geometry remains fully visible and editable in Calibration even when its logical number exceeds the live card's configured physical port count. Normal dashboard rendering remains strictly capped to real configured/registry hardware.
+This Calibration release adds grouped `Entire port` movement for SFP/uplink objects and makes Geometry Import reusable across compatible profiles with different RJ45/SFP visual counts. Imported extra ports can be trimmed explicitly with Port Manager while geometry-only and validation safety boundaries remain enforced.
 
 Component versions validated when Core v2.2.2 was released:
 
