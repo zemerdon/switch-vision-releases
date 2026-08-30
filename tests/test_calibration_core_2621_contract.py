@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -13,9 +12,10 @@ def main() -> int:
     component = COMPONENT.read_text(encoding="utf-8")
     assert source == component, "canonical and Home Assistant card JavaScript must remain byte-identical"
 
-    version_match = re.search(r'^const SV_VERSION = \"(\\d+)\\.(\\d+)\\.(\\d+)\";', source, re.MULTILINE)
-    assert version_match, "Core version marker is missing"
-    version = tuple(int(part) for part in version_match.groups())
+    version_line = next((line for line in source.splitlines() if line.startswith('const SV_VERSION = \"')), "")
+    assert version_line, "Core version marker is missing"
+    version_text = version_line.split('\"', 2)[1]
+    version = tuple(int(part) for part in version_text.split("."))
     assert version >= (2, 6, 21), f"v2.6.21 Calibration Core contract requires Core >= 2.6.21, got {version}"
 
     required = [
