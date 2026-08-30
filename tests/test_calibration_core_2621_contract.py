@@ -12,8 +12,13 @@ def main() -> int:
     component = COMPONENT.read_text(encoding="utf-8")
     assert source == component, "canonical and Home Assistant card JavaScript must remain byte-identical"
 
+    version_line = next((line for line in source.splitlines() if line.startswith('const SV_VERSION = \"')), "")
+    assert version_line, "Core version marker is missing"
+    version_text = version_line.split('\"', 2)[1]
+    version = tuple(int(part) for part in version_text.split("."))
+    assert version >= (2, 6, 21), f"v2.6.21 Calibration Core contract requires Core >= 2.6.21, got {version}"
+
     required = [
-        'const SV_VERSION = "2.6.21";',
         '"assets": false,',
         'this.calibrationSectionOpen("assets", false)',
         'const part = requestedPart === "number" ? "label" : requestedPart;',
@@ -52,7 +57,7 @@ def main() -> int:
     for marker in forbidden:
         assert marker not in source, f"legacy v2.6.20 Calibration Core behavior remains: {marker}"
 
-    print("Switch Vision v2.6.21 Calibration Core regression: PASS")
+    print("Switch Vision v2.6.21+ Calibration Core regression: PASS")
     return 0
 
 if __name__ == "__main__":

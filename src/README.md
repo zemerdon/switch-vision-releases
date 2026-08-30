@@ -10,11 +10,11 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current public Core release
 
-### Switch Vision v2.6.21
+### Switch Vision v2.6.22
 
-**v2.6.21** is the current tested public Switch Vision Core/dashboard release.
+**v2.6.22** is the current tested public Switch Vision Core/dashboard release.
 
-This Calibration release makes RJ45/SFP selection behavior consistent: whole-port selections stay whole-port, newly added or duplicated ports default to Entire Port with centered labels, Assets starts collapsed per session, SFP odd/even quick selection uses logical uplink numbering, and Target selections immediately populate the matching Custom Ports value.
+This Calibration release makes Geometry Transfer portable in the dashboard's fixed render-space, transfers the complete calibrated visual presentation while retaining only the destination faceplate artwork and switch/runtime identity, retains legacy Geometry v1 import compatibility, and makes RJ45 number-label Direct Y represent the actual visible coordinate instead of the hidden odd/even storage offset.
 
 Component versions validated when Core v2.2.2 was released:
 
