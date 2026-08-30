@@ -6,6 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 FRONTEND = ROOT / "src" / "js" / "switch-vision.js"
 COMPONENT = ROOT / "src" / "custom_components" / "switch_vision" / "switch-vision-card.js"
+VERSION = ROOT / "VERSION"
 
 
 def main() -> None:
@@ -13,8 +14,12 @@ def main() -> None:
     component = COMPONENT.read_text(encoding="utf-8")
     assert frontend == component, "canonical JS and HA component card JS differ"
 
+    version_text = VERSION.read_text(encoding="utf-8").strip()
+    version = tuple(int(part) for part in version_text.split("."))
+    assert version >= (2, 6, 22), f"geometry presentation transfer requires Core 2.6.22+, got {version_text}"
+    assert f'const SV_VERSION = "{version_text}";' in frontend, "JavaScript version must match VERSION"
+
     required = (
-        'const SV_VERSION = "2.6.22";',
         'const SV_GEOMETRY_TRANSFER_TYPE = "switch-vision-geometry-profile-v1";',
         'const SV_GEOMETRY_RENDER_COORDINATE_SPACE = "switch-vision-render-2048x448-v1";',
         'schema_version: 2,',
@@ -75,7 +80,7 @@ def main() -> None:
     assert "next.ui.logo.file = current" not in presentation
     assert "next.ui.logo.source = current" not in presentation
 
-    print("Core 2.6.22 geometry presentation transfer contract: PASS")
+    print("Core 2.6.22+ geometry presentation transfer contract: PASS")
 
 
 if __name__ == "__main__":
