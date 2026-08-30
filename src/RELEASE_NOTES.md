@@ -1,4 +1,14 @@
-# Switch Vision Core v2.6.17
+# Switch Vision Core v2.6.18
+
+Core 2.6.18 fixes a Calibration Port Manager rendering defect exposed when duplicating an SFP/uplink (and equivalently an RJ45 port) beyond the live card's configured physical port count. The duplicate calibration object already contained the copied center, hitbox, label and LED geometry, but the SVG renderer applied the normal live-hardware count gate and skipped drawing the new port. That left the editable label/hitbox path visible while the actual port box, link LED and activity LED were missing.
+
+Calibration now renders the complete editable calibration geometry regardless of the live card's physical-count cap. The bypass exists only while Calibration is active; normal dashboard rendering continues to obey `port_count` / `sfp_port_count` and therefore still reflects registry/configured physical hardware exactly. Existing Port labels controls, per-port and per-SFP Display name editing, SFP key management, telemetry and hardware mapping remain unchanged.
+
+Permanent regression coverage locks this boundary for both RJ45 and SFP duplicates.
+
+---
+
+# Previous release: Switch Vision Core v2.6.17
 
 Core 2.6.17 adds nine bundled vendor logo assets for Dell and Zyxel switches. The new transparent PNGs are shipped under `logos/` and become available automatically in Calibration's existing Logo selector alongside custom logo files.
 

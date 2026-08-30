@@ -1,3 +1,11 @@
+## v2.6.18 — Calibration duplicated-port rendering
+
+- Fix Calibration Port Manager duplicates whose logical RJ45/SFP number exceeds the live card's configured physical port count.
+- While Calibration is active, render the complete editable calibration geometry so duplicated RJ45/SFP ports include the port box, link LED, activity LED and label.
+- Keep normal/live dashboard rendering strictly capped by the configured/registry physical port counts; calibration-only visual capacity does not create fake live hardware.
+- Preserve the current Port labels controls, per-port/SFP display-name editing, SFP key management, polling, telemetry and hardware topology contracts.
+- Add permanent regression coverage locking the calibration-only count bypass for both RJ45 and SFP rendering.
+
 ## v2.6.17 — Dell and Zyxel bundled logos
 
 - Add four bundled Dell logo PNGs: Black, Blue, Modern and White.
