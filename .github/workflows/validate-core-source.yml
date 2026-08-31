@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  actions: write
 
 jobs:
   validate:
@@ -165,3 +166,33 @@ jobs:
           fi
 
           echo "Core deterministic rebuild: PASS"
+
+  cleanup_verified_staging_artifact:
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'ops/cleanup-core-2.6.25-artifact'
+    name: Delete verified Core 2.6.25 staging artifact
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete redundant Actions artifact only
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          ARTIFACT_ID: '9777228034'
+        shell: bash
+        run: |
+          set -euo pipefail
+          artifact="$(gh api "repos/$GH_REPO/actions/artifacts/$ARTIFACT_ID")"
+          name="$(jq -r '.name' <<<"$artifact")"
+          size="$(jq -r '.size_in_bytes' <<<"$artifact")"
+          expired="$(jq -r '.expired' <<<"$artifact")"
+          test "$name" = 'core-release-2.6.25'
+          test "$expired" = 'false'
+          echo "Deleting redundant Actions artifact: $name ($size bytes)"
+          gh api --method DELETE "repos/$GH_REPO/actions/artifacts/$ARTIFACT_ID"
+          if gh api "repos/$GH_REPO/actions/artifacts/$ARTIFACT_ID" >/dev/null 2>&1; then
+            echo 'ERROR: artifact still exists after delete'
+            exit 1
+          fi
+          echo 'Actions artifact cleanup: PASS'
