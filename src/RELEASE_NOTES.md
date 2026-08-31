@@ -1,4 +1,14 @@
-# Switch Vision Core v2.6.24
+# Switch Vision Core v2.6.25
+
+Core 2.6.25 adds three owner-calibrated UniFi faceplates and moves only exact matching device layouts away from their previous artwork. The five registered 24-RJ45 + 2-optical UniFi switches now use the new inline 24+2 faceplate and calibration profile. Devices with different physical port counts keep their existing fallback or dedicated visuals.
+
+US XG 16 now has an exact 4-RJ45 + 12-SFP+ faceplate and dashboard calibration. Its authoritative optical-first UniFi API mapping remains unchanged: API ports 1-12 are the SFP+ positions and API ports 13-16 are the four RJ45 positions. Its support status remains Detected while live rendered alignment is still awaiting community confirmation.
+
+The new 24-RJ45 + 4-optical UniFi faceplate is bundled and selectable but is deliberately not assigned as a device default until an exact matching UniFi topology is registered and validated. The historical UniFi 24+2 calibration profile remains resolvable for existing stored selections. Permanent regression coverage verifies the new geometry, labels and topology-safe assignments.
+
+---
+
+# Previous release: Switch Vision Core v2.6.24
 
 Core 2.6.24 fixes native UniFi faceplate/calibration isolation when multiple devices are managed by the same controller. Previous releases derived the persistent calibration base only from the controller-scoped `selected_switch` value, so different devices could share one active faceplate pointer even though their faceplate-specific profiles were distinct.
 

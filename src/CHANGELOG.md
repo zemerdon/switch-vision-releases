@@ -1,3 +1,12 @@
+## v2.6.25 — Calibrated UniFi faceplates
+
+- Bundle three owner-calibrated UniFi faceplates for 24 RJ45 + 2 optical, 24 RJ45 + 4 optical, and 4 RJ45 + 12 SFP+ layouts.
+- Move the five exact registered UniFi 24+2 models from the older 24+2 artwork to the new inline calibrated default.
+- Enable the exact US XG 16 4-RJ45 + 12-SFP+ dashboard visual while preserving its optical-first UniFi API port map and Detected support status.
+- Keep the new UniFi 24+4 faceplate bundled and resolvable but unassigned until an exact matching UniFi topology is registered and validated.
+- Preserve the historical UniFi 24+2 profile so existing stored selections continue to resolve.
+- Add a permanent topology guard so the new faceplates cannot be assigned to mismatched device layouts.
+
 ## v2.6.24 — UniFi faceplate profile isolation
 
 - Scope native UniFi calibration/faceplate profiles to the individual device as well as the controller namespace.
