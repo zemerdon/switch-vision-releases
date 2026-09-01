@@ -16,7 +16,7 @@ def main() -> int:
     assert version_line, "Core version marker is missing"
     version_text = version_line.split('\"', 2)[1]
     version = tuple(int(part) for part in version_text.split("."))
-    assert version >= (2, 6, 27), f"v2.6.27 Calibration Core contract requires Core >= 2.6.27, got {version}"
+    assert version >= (2, 6, 28), f"v2.6.28 Calibration Core contract requires Core >= 2.6.28, got {version}"
 
     required = [
         'data-cv-section="selection"',
@@ -66,6 +66,20 @@ def main() -> int:
     assert source.count("movePoint(port.number, dx, dy);") >= 2, "RJ45 entire-port moves must carry the number label in group and direct-coordinate paths"
     assert 'data-cv-section="assets"' not in source, "Assets must be merged into Selection rather than rendered as a separate Calibration section"
 
+    speed_handler_start = source.index(
+        'const portSupportedSpeedSelect = this.shadowRoot.querySelector'
+    )
+    speed_handler_end = source.index(
+        'const stepSelect = this.shadowRoot.querySelector',
+        speed_handler_start,
+    )
+    speed_handler = source[speed_handler_start:speed_handler_end]
+    editable_lookup = 'const editable = getEditableCalibrationTarget(cal, this.config);'
+    speed_write = 'editable.item.supported_speed = normalisePortSupportedSpeed(event.target.value);'
+    assert editable_lookup in speed_handler, "Supported speed handler must resolve the current editable target"
+    assert speed_write in speed_handler, "Supported speed handler must write metadata to the resolved RJ45/SFP target"
+    assert speed_handler.index(editable_lookup) < speed_handler.index(speed_write), "Supported speed handler must resolve editable before writing metadata"
+
     forbidden = [
         'const SV_VERSION = "2.6.20";',
         '"assets": true,',
@@ -79,7 +93,7 @@ def main() -> int:
     for marker in forbidden:
         assert marker not in source, f"legacy v2.6.20 Calibration Core behavior remains: {marker}"
 
-    print("Switch Vision v2.6.27+ Calibration Core regression: PASS")
+    print("Switch Vision v2.6.28+ Calibration Core regression: PASS")
     return 0
 
 if __name__ == "__main__":

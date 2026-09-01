@@ -1,3 +1,11 @@
+## v2.6.28 — Supported speed selector persistence
+
+- Fix the Calibration Supported speed change handler referencing an undefined `editable` variable.
+- Resolve the current RJ45/SFP editable target at change time before writing `supported_speed`.
+- Preserve the existing profile save/reload format, duplicate-port metadata inheritance and Unknown / Not specified backward-compatible default.
+- Keep static supported-speed capability separate from live negotiated-speed telemetry and entity mapping.
+- Add permanent regression coverage that requires the editable lookup before the speed metadata write.
+
 ## v2.6.27 — Calibration Port Manager workflow and port metadata
 
 - Merge Assets into Selection and remove the standalone Assets Calibration section.

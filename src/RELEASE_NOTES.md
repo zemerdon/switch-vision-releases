@@ -1,4 +1,14 @@
-# Switch Vision Core v2.6.27
+# Switch Vision Core v2.6.28
+
+Core 2.6.28 fixes the Calibration Supported speed selector introduced in 2.6.27. The change handler referenced `editable` without resolving it inside `attachCalibrationControlHandlers`, so selecting a speed could raise a browser `ReferenceError` before the RJ45/SFP calibration object was updated. The selector could therefore appear to accept a value but nothing durable reached the existing save/reload path.
+
+The handler now resolves the current editable RJ45 or SFP/uplink target at change time, updates that target's `supported_speed` metadata, marks Calibration dirty and renders normally. Existing profile serialization, Home Assistant storage, duplicate-port inheritance, Unknown / Not specified fallback and the separation between static capability metadata and live negotiated speed remain unchanged.
+
+Permanent regression coverage now scopes the Supported speed handler itself and proves the editable lookup occurs before the metadata write, preventing the undefined-variable regression from returning.
+
+---
+
+# Previous release: Switch Vision Core v2.6.27
 
 Core 2.6.27 expands the Calibration Port Manager and reorganises the editor for faster faceplate work. Assets now live inside Selection, Quick select appears before the Status Box shortcuts, Labels & LEDs is renamed Port Labels and LEDs, Switch & Stack is renamed Switch and Stack Manual Override, and Position & Size adds 100 px and 200 px movement steps.
 
