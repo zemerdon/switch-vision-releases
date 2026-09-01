@@ -10,11 +10,11 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current public Core release
 
-### Switch Vision v2.6.27
+### Switch Vision v2.6.28
 
-**v2.6.27** is the current tested public Switch Vision Core/dashboard release.
+**v2.6.28** is the current tested public Switch Vision Core/dashboard release.
 
-This Calibration release makes Geometry Transfer portable in the dashboard's fixed render-space, transfers the complete calibrated visual presentation while retaining only the destination faceplate artwork and switch/runtime identity, retains legacy Geometry v1 import compatibility, and makes RJ45 number-label Direct Y represent the actual visible coordinate instead of the hidden odd/even storage offset.
+This Calibration hotfix restores the Supported speed selector by resolving the current RJ45/SFP editable target inside the change handler before writing persistent per-port capability metadata. Static supported-speed metadata remains separate from live negotiated-speed telemetry.
 
 Component versions validated when Core v2.2.2 was released:
 
