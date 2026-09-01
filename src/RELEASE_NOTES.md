@@ -1,4 +1,14 @@
-# Switch Vision Core v2.6.26
+# Switch Vision Core v2.6.27
+
+Core 2.6.27 expands the Calibration Port Manager and reorganises the editor for faster faceplate work. Assets now live inside Selection, Quick select appears before the Status Box shortcuts, Labels & LEDs is renamed Port Labels and LEDs, Switch & Stack is renamed Switch and Stack Manual Override, and Position & Size adds 100 px and 200 px movement steps.
+
+Port Manager now includes Remove All RJ45 Ports and Remove All SFP Ports. These actions follow the existing optical-only/copper-only editing contract: the editor may temporarily contain no visual ports, but the central profile validator still rejects Save, Done or import when both RJ45 and SFP/uplink geometry are empty. Individual RJ45 and SFP/uplink entries also gain persistent Supported speed metadata; existing profiles normalise to Unknown / Not specified, newly added ports start unknown, and duplicated ports retain the source speed.
+
+Port Status Box output is now selectable per calibration profile. Existing profiles remain backward-compatible with Status Box 1 as the default; choosing Status Box 2 routes the selected RJ45/SFP detail rows there while the other box remains a switch-summary panel. Port-row visibility/order editing follows the chosen output box, and the setting is carried by faceplate/profile data.
+
+---
+
+# Previous release: Switch Vision Core v2.6.26
 
 Core 2.6.26 fixes an RJ45 Calibration Port Manager regression when an entire port is duplicated or moved. The duplicated number label is already centred on the new port geometry, but the RJ45 Entire port selection and movement paths omitted that label, so subsequent nudges or Direct X/Y moves could leave the number behind while the port box and LEDs moved.
 

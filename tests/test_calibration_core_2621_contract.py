@@ -16,11 +16,11 @@ def main() -> int:
     assert version_line, "Core version marker is missing"
     version_text = version_line.split('\"', 2)[1]
     version = tuple(int(part) for part in version_text.split("."))
-    assert version >= (2, 6, 21), f"v2.6.21 Calibration Core contract requires Core >= 2.6.21, got {version}"
+    assert version >= (2, 6, 27), f"v2.6.27 Calibration Core contract requires Core >= 2.6.27, got {version}"
 
     required = [
-        '"assets": false,',
-        'this.calibrationSectionOpen("assets", false)',
+        'data-cv-section="selection"',
+        '<span class="cv-cal-quick-label">Assets</span>',
         'const part = requestedPart === "number" ? "label" : requestedPart;',
         'calibration_target: `sfp:${sfpNumber}`',
         'calibration_part: "entire"',
@@ -46,10 +46,25 @@ def main() -> int:
         'const isInterfaceTarget =',
         'value.startsWith("sfp:")',
         'value === "sfps"',
+        'port_status_output: "status_box_1"',
+        'function portStatusOutputPanel(cal = calibration)',
+        'data-cv-field="port-status-output"',
+        'Port Status Output',
+        'data-cv-action="remove-all-rj45"',
+        'data-cv-action="remove-all-sfp"',
+        'data-cv-field="port-supported-speed"',
+        'SV_PORT_SUPPORTED_SPEEDS',
+        '"supported_speed"',
+        '>100px</option>',
+        '>200px</option>',
+        '<summary><span>Port Labels and LEDs</span>',
+        '<summary><span>Switch and Stack Manual Override</span>',
+        'The profile contains no RJ45 or SFP/uplink positions.',
     ]
     for marker in required:
-        assert marker in source, f"missing v2.6.21 Calibration Core contract marker: {marker}"
+        assert marker in source, f"missing v2.6.27 Calibration Core contract marker: {marker}"
     assert source.count("movePoint(port.number, dx, dy);") >= 2, "RJ45 entire-port moves must carry the number label in group and direct-coordinate paths"
+    assert 'data-cv-section="assets"' not in source, "Assets must be merged into Selection rather than rendered as a separate Calibration section"
 
     forbidden = [
         'const SV_VERSION = "2.6.20";',
@@ -57,11 +72,14 @@ def main() -> int:
         'this.calibrationSectionOpen("assets", true)',
         'const part = requestedPart === "entire"\n              ? "center"',
         'calibration_target: `sfp:${sfpNumber}`, calibration_part: "center"',
+        '<span class="cv-cal-quick-label">Interface Status Box</span>',
+        '<summary><span>Labels & LEDs</span>',
+        '<summary><span>Switch & Stack</span>',
     ]
     for marker in forbidden:
         assert marker not in source, f"legacy v2.6.20 Calibration Core behavior remains: {marker}"
 
-    print("Switch Vision v2.6.21+ Calibration Core regression: PASS")
+    print("Switch Vision v2.6.27+ Calibration Core regression: PASS")
     return 0
 
 if __name__ == "__main__":

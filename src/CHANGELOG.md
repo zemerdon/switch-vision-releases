@@ -1,3 +1,15 @@
+## v2.6.27 — Calibration Port Manager workflow and port metadata
+
+- Merge Assets into Selection and remove the standalone Assets Calibration section.
+- Put Quick select before the Status Box quick-selection controls.
+- Rename Labels & LEDs to Port Labels and LEDs, Interface Status Box to Port Status Box, and Switch & Stack to Switch and Stack Manual Override.
+- Add 100 px and 200 px movement steps.
+- Add Remove All RJ45 Ports and Remove All SFP Ports while preserving the central no-total-ports save/import validation contract.
+- Add persistent per-RJ45/SFP Supported speed metadata with Unknown / Not specified as the backward-compatible default; new ports start unknown and duplicates retain source metadata.
+- Add a per-profile Port Status Output selector for Status Box 1 or Status Box 2, defaulting existing profiles to Status Box 1.
+- Make port-status row ordering/visibility edit the currently selected output box and route selected-port details only to that box.
+- Preserve canonical/Home Assistant JavaScript parity and extend permanent Calibration regression coverage.
+
 ## v2.6.26 — RJ45 entire-port label movement
 
 - Treat the RJ45 number label as part of `Entire port` in the Calibration selection overlay.
