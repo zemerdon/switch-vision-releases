@@ -1,0 +1,23 @@
+{
+  "name": "Switch Vision",
+  "version": "2.6.26",
+  "status": "public-release",
+  "release_name": "switch-vision-2.6.26",
+  "resource": "/local/switch-vision/js/switch-vision.js?v=2.6.26",
+  "card_type": "custom:switch-vision-3650",
+  "custom_component_domain": "switch_vision",
+  "installer_repository": "https://github.com/zemerdon/switch-vision-installer",
+  "repository_managed_apps": [
+    "switch-vision-discovery",
+    "switch-vision-snmp2mqtt-addon",
+    "switch-vision-unifi2mqtt"
+  ],
+  "contains_discovery_app": false,
+  "contains_snmp2mqtt_app": false,
+  "contains_snmp2mqtt_addon": false,
+  "contains_unifi2mqtt_app": false,
+  "gold_master": false,
+  "validated_snmp2mqtt_core": null,
+  "validated_snmp2mqtt_app": null,
+  "validated_snmp2mqtt_addon": null
+}
