@@ -1,3 +1,11 @@
+## v2.6.26 — RJ45 entire-port label movement
+
+- Treat the RJ45 number label as part of `Entire port` in the Calibration selection overlay.
+- Move the RJ45 number label with the port centre and LEDs for individual, grouped, nudge and Direct X/Y whole-port operations.
+- Preserve the existing duplicate-port geometry contract: newly duplicated RJ45 labels start centred on the new port box.
+- Leave SFP/uplink whole-port behaviour unchanged because its label movement path was already complete.
+- Add permanent regression coverage for RJ45 label membership and whole-port movement.
+
 ## v2.6.25 — Calibrated UniFi faceplates
 
 - Bundle three owner-calibrated UniFi faceplates for 24 RJ45 + 2 optical, 24 RJ45 + 4 optical, and 4 RJ45 + 12 SFP+ layouts.

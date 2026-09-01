@@ -24,6 +24,9 @@ def main() -> int:
         'const part = requestedPart === "number" ? "label" : requestedPart;',
         'calibration_target: `sfp:${sfpNumber}`',
         'calibration_part: "entire"',
+        'return ["center", "number", "led_left", "led_right"].includes(part);',
+        'movePoint(editable.item.number, dx, dy);',
+        'movePoint(port.number, dx, dy);',
         'copy.number = [...copy.center];',
         'copy.label = [...copy.center];',
         'function calibrationSfpKeysByParity(cal, parity = "all")',
@@ -46,6 +49,7 @@ def main() -> int:
     ]
     for marker in required:
         assert marker in source, f"missing v2.6.21 Calibration Core contract marker: {marker}"
+    assert source.count("movePoint(port.number, dx, dy);") >= 2, "RJ45 entire-port moves must carry the number label in group and direct-coordinate paths"
 
     forbidden = [
         'const SV_VERSION = "2.6.20";',

@@ -1,4 +1,12 @@
-# Switch Vision Core v2.6.25
+# Switch Vision Core v2.6.26
+
+Core 2.6.26 fixes an RJ45 Calibration Port Manager regression when an entire port is duplicated or moved. The duplicated number label is already centred on the new port geometry, but the RJ45 Entire port selection and movement paths omitted that label, so subsequent nudges or Direct X/Y moves could leave the number behind while the port box and LEDs moved.
+
+RJ45 number labels are now members of the Entire port overlay and move with the port centre and both LEDs in individual, grouped and direct-coordinate operations. SFP/uplink behaviour is unchanged because its whole-port path already carried the label correctly. Permanent regression coverage now locks the RJ45 label membership and movement contract.
+
+---
+
+# Previous release: Switch Vision Core v2.6.25
 
 Core 2.6.25 adds three owner-calibrated UniFi faceplates and moves only exact matching device layouts away from their previous artwork. The five registered 24-RJ45 + 2-optical UniFi switches now use the new inline 24+2 faceplate and calibration profile. Devices with different physical port counts keep their existing fallback or dedicated visuals.
 
