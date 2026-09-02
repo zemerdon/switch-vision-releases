@@ -24,7 +24,7 @@ def main() -> None:
     preserve = block[preserve_start:]
     for marker in (
         "const savedUi = uiFromCalibration(saved);",
-        'for (const key of ["logo", "status_panel", "status_panel_2", "calibration_button"])',
+        'for (const key of ["logo", "status_panel", "status_panel_2", "calibration_button", "test_mode_button"])',
         "resolved.stack = cloneCalibrationData(saved?.stack || resolved.stack || {});",
         "resolved.management = cloneCalibrationData(saved?.management || resolved.management || {});",
         "if (savedUi?.faceplate) {",
