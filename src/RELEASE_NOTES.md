@@ -1,4 +1,12 @@
-# Switch Vision Core v2.6.28
+# Switch Vision Core v2.6.29
+
+Core 2.6.29 adds two owner-calibrated UniFi-only faceplates and their exact faceplate-specific factory defaults. `unifi-8-rj45-2sfp.png` carries eight RJ45 positions plus two SFP positions, while `unifi-28sfp.png` carries the 28 optical positions plus four additional optical positions whose visible names remain `TWE1` through `TWE4`.
+
+These defaults are keyed only by the exact selected faceplate filename. Existing UniFi faceplates, exact-model recommendations and supported-device mappings are unchanged. The supplied calibration geometry is preserved through the existing render-space to native-image normalization path; the hidden logo's inert negative one-pixel Y value is normalized to zero solely to satisfy the native-canvas bounds contract. Permanent regression coverage locks the port counts, factory identity and TWE labels.
+
+---
+
+# Previous release: Switch Vision Core v2.6.28
 
 Core 2.6.28 fixes the Calibration Supported speed selector introduced in 2.6.27. The change handler referenced `editable` without resolving it inside `attachCalibrationControlHandlers`, so selecting a speed could raise a browser `ReferenceError` before the RJ45/SFP calibration object was updated. The selector could therefore appear to accept a value but nothing durable reached the existing save/reload path.
 

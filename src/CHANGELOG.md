@@ -1,3 +1,10 @@
+## v2.6.29 — UniFi faceplate factory defaults
+
+- Bundle owner-calibrated `unifi-8-rj45-2sfp.png` and `unifi-28sfp.png` faceplates.
+- Add exact faceplate-specific factory defaults for the 8-RJ45 + 2-SFP and 28-SFP + 4-TWE optical layouts.
+- Preserve `TWE1`–`TWE4` display names for optical positions 29–32 on the 28SFP faceplate.
+- Keep these defaults scoped to the exact faceplate filename; do not reassign existing exact-model recommendations.
+
 ## v2.6.28 — Supported speed selector persistence
 
 - Fix the Calibration Supported speed change handler referencing an undefined `editable` variable.
