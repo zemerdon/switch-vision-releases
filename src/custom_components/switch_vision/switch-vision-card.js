@@ -2438,9 +2438,6 @@ if (
     if (Array.isArray(sfp.led_left_size)) sfp.led_left_size = normalisePortLedRectangleSize(sfp.led_left_size, layout.sfp?.r);
     if (Array.isArray(sfp.led_right_size)) sfp.led_right_size = normalisePortLedRectangleSize(sfp.led_right_size, layout.sfp?.r);
   }
-  const calibrationButtonUi = cal.ui.calibration_button && typeof cal.ui.calibration_button === "object"
-    ? cal.ui.calibration_button
-    : { show: true, x: 1888, y: 14, width: 138, height: 34, anchor: "top_right" };
   const testModeDefault = {
     show: true,
     x: Number.isFinite(Number(calibrationButtonUi.x)) ? Number(calibrationButtonUi.x) : 1888,
