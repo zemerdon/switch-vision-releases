@@ -1359,6 +1359,38 @@ def validate_status_panel_field_registry(base: Path, source_layout: bool = False
 
 
 
+
+def validate_calibration_test_mode_ui(base: Path, source_layout: bool = False) -> None:
+    """Guard independent Test Mode geometry and compact calibration editor controls."""
+    prefix = base / "src" if source_layout else base
+    js_path = prefix / "js" / "switch-vision.js"
+    text = js_path.read_text(encoding="utf-8", errors="ignore")
+    css_text = (prefix / "css" / "switch-vision.css").read_text(encoding="utf-8", errors="ignore")
+    required_js = [
+        'test_mode_button: { show: true, x: 1888, y: 58, width: 138, height: 34, anchor: "top_right" }',
+        'cal.ui.test_mode_button', 'rawTarget === "test_mode_button"', 'type === "test_mode_button"',
+        'option("test_mode_button", "Test Mode button")', 'data-target="test_mode_button"',
+        'calibration.ui?.test_mode_button',
+    ]
+    missing_js = [marker for marker in required_js if marker not in text]
+    if missing_js: raise SystemExit("Calibration Test Mode UI validation failed: missing JS " + ", ".join(missing_js))
+    required_css = [
+        '.cv-cal-tools button:not(.cv-cal-toggle)', 'height:22px;', 'min-height:22px;',
+        'font-size:10px;', 'padding:0 5px;', '.cv-cal-status-row button{min-width:50px}',
+        'input[type="number"]', 'input[type="color"]', 'min-height:24px;height:24px',
+    ]
+    missing_css = [marker for marker in required_css if marker not in css_text]
+    if missing_css: raise SystemExit("Calibration Test Mode UI validation failed: missing CSS " + ", ".join(missing_css))
+    forbidden_js = ['+ 30px', 'positionTestMode']
+    present_js = [marker for marker in forbidden_js if marker in text]
+    if present_js: raise SystemExit("Calibration Test Mode UI validation failed: legacy runtime contract remains: " + ", ".join(present_js))
+    if '.cv-cal-status-row button{min-width:72px}' in css_text:
+        raise SystemExit("Calibration Test Mode UI validation failed: oversized status button contract remains")
+    component_js = prefix / "custom_components" / "switch_vision" / "switch-vision-card.js"
+    if component_js.exists() and component_js.read_bytes() != js_path.read_bytes():
+        raise SystemExit("Calibration Test Mode UI validation failed: canonical and HA component JS differ")
+
+
 def validate_faceplate_profile_isolation(base: Path, source_layout: bool = False) -> None:
     """Prevent whole-calibration mirroring and faceplate Status Box cross-taint."""
     prefix = base / "src" if source_layout else base
@@ -1522,6 +1554,7 @@ def validate_embedded_versions(base: Path, version: str, source_layout: bool = F
     validate_unifi_main_runtime(base, source_layout=source_layout)
     validate_status_panel_field_registry(base, source_layout=source_layout)
     validate_faceplate_profile_isolation(base, source_layout=source_layout)
+    validate_calibration_test_mode_ui(base, source_layout=source_layout)
     validate_activity_led_2_0(base, source_layout=source_layout)
     validate_source_manifest(base, version, source_layout=source_layout)
     if errors:

@@ -1,3 +1,9 @@
+# Switch Vision Core v2.6.30
+
+Calibration now treats the TEST MODE indicator as an independent movable/resizable persisted UI target. The Calibration editor utility controls are denser on mobile without changing the physical faceplate Calibrate/Test Mode geometry.
+
+Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core because the custom component changed in this release.
+
 # Switch Vision Core v2.6.29
 
 Core 2.6.29 adds two owner-calibrated UniFi-only faceplates and their exact faceplate-specific factory defaults. `unifi-8-rj45-2sfp.png` carries eight RJ45 positions plus two SFP positions, while `unifi-28sfp.png` carries the 28 optical positions plus four additional optical positions whose visible names remain `TWE1` through `TWE4`.

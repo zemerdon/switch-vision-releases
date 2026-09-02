@@ -1,3 +1,8 @@
+## v2.6.30
+
+- Added an independent persisted Calibration target for the TEST MODE status indicator.
+- Compacted Calibration editor utility controls while preserving 24px form controls and faceplate geometry.
+
 ## v2.6.29 — UniFi faceplate factory defaults
 
 - Bundle owner-calibrated `unifi-8-rj45-2sfp.png` and `unifi-28sfp.png` faceplates.
