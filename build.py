@@ -975,6 +975,35 @@ check(configuredPortCountAllows({{__raw_config: {{port_count: 8}}, port_count: 8
             )
 
 
+
+def sync_faceplate_catalog() -> None:
+    catalog_path = SRC / "faceplates" / "catalog.json"
+    data = json.loads(catalog_path.read_text(encoding="utf-8"))
+    if data.get("schema") != "switch-vision-faceplate-catalog-v1" or not isinstance(data.get("faceplates"), list):
+        raise SystemExit("Invalid faceplate catalog schema")
+    labels = {}
+    for row in data["faceplates"]:
+        if not isinstance(row, dict) or set(row) != {"filename", "display_name"}:
+            raise SystemExit("Invalid faceplate catalog entry")
+        filename, display = row["filename"], row["display_name"]
+        if not isinstance(filename, str) or Path(filename).name != filename or not filename.endswith(".png") or filename in labels:
+            raise SystemExit(f"Invalid/duplicate faceplate catalog filename: {filename!r}")
+        if not isinstance(display, str) or not display.strip() or display != display.strip():
+            raise SystemExit(f"Invalid faceplate catalog display name: {filename!r}")
+        labels[filename] = display
+    shipped = sorted(path.name for path in (SRC / "faceplates").glob("*.png"))
+    if sorted(labels) != shipped:
+        raise SystemExit(f"Faceplate catalog coverage mismatch: catalog={sorted(labels)!r} shipped={shipped!r}")
+    marker = "const SV_SHIPPED_FACEPLATE_LABELS = Object.freeze("
+    replacement = marker + json.dumps(labels, ensure_ascii=False, indent=2, sort_keys=True) + ");"
+    card = SRC / "js" / "switch-vision.js"
+    text = card.read_text(encoding="utf-8")
+    start = text.find(marker)
+    end = text.find(");", start + len(marker))
+    if start < 0 or end < 0:
+        raise SystemExit("Faceplate catalog mapping missing from Calibration JS")
+    write_text_lf(card, text[:start] + replacement + text[end + 2:])
+
 def patch_source_versions(version: str) -> None:
     """Synchronise every authoritative source version before packaging."""
     patch_current_release_metadata(version)
@@ -983,6 +1012,7 @@ def patch_source_versions(version: str) -> None:
     normalize_faceplate_factory_calibrations(SRC / "calibration", SRC / "faceplates")
     validate_factory_status_panel_bounds(PROJECT_ROOT, source_layout=True)
     sync_primary_factory_calibration()
+    sync_faceplate_catalog()
     sync_faceplate_factory_calibrations()
     sync_device_visual_recommendations()
     patch_js_version(SRC / "js" / "switch-vision.js", version)
