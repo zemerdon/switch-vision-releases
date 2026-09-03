@@ -1,0 +1,69 @@
+{
+  "schema": "switch-vision-faceplate-catalog-v1",
+  "faceplates": [
+    {
+      "filename": "24rj45-2sfp.png",
+      "display_name": "24-Port · 2 × SFP"
+    },
+    {
+      "filename": "24rj45-4sfp.png",
+      "display_name": "24-Port · 4 × SFP"
+    },
+    {
+      "filename": "48rj45-2sfp.png",
+      "display_name": "48-Port · 2 × SFP"
+    },
+    {
+      "filename": "48rj45-4sfp.png",
+      "display_name": "48-Port · 4 × SFP"
+    },
+    {
+      "filename": "c3560cg-8pc-s.png",
+      "display_name": "Cisco Catalyst 3560-C · 8-Port · 2 × SFP"
+    },
+    {
+      "filename": "dell-28-rj45-2sfp.png",
+      "display_name": "Dell N2128PX-ON · 28-Port · 2 × SFP"
+    },
+    {
+      "filename": "submarine-48rj45-4sfp.png",
+      "display_name": "Submarine 48-Port · 4 × SFP"
+    },
+    {
+      "filename": "unifi-24-rj45-2sfp-dark.png",
+      "display_name": "UniFi 24-Port · 2 × SFP · Dark"
+    },
+    {
+      "filename": "unifi-24-rj45-2sfp-inline.png",
+      "display_name": "UniFi 24-Port · 2 × SFP · Inline"
+    },
+    {
+      "filename": "unifi-24-rj45-4sfp-inline.png",
+      "display_name": "UniFi 24-Port · 4 × SFP · Inline"
+    },
+    {
+      "filename": "unifi-24p-rj45-2sfp.png",
+      "display_name": "UniFi 24-Port · 2 × SFP"
+    },
+    {
+      "filename": "unifi-28sfp.png",
+      "display_name": "UniFi 28 × SFP"
+    },
+    {
+      "filename": "unifi-4-rj45-12sfp.png",
+      "display_name": "UniFi 4-Port · 12 × SFP"
+    },
+    {
+      "filename": "unifi-5rj45.png",
+      "display_name": "UniFi 5-Port"
+    },
+    {
+      "filename": "unifi-8-rj45-2sfp.png",
+      "display_name": "UniFi 8-Port · 2 × SFP"
+    },
+    {
+      "filename": "unifi-8rj45.png",
+      "display_name": "UniFi 8-Port"
+    }
+  ]
+}
