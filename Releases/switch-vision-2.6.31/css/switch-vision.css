@@ -1,0 +1,670 @@
+@font-face {
+  font-family: "SwitchVisionCustom";
+  src: url("/local/switch-vision/fonts/intelone-display-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:host{display:block;--cv-text:#eef7ff;--cv-muted:rgba(238,247,255,.68);--cv-green:#76ff33;--cv-amber:#ffb321;--cv-blue:#29a8ff;--cv-red:#ff3030;--cv-off:rgba(8,10,12,.78)}
+.cv-card{font-family:Arial,Helvetica,sans-serif;color:var(--cv-text);width:100%}
+.cv-header{display:flex;justify-content:space-between;align-items:center;margin:0 0 4px;padding:0 2px;line-height:1}.cv-title{font-size:12px;font-weight:900}.cv-status{color:var(--cv-muted);font-size:10px}
+.cv-stage{position:relative;width:100%;line-height:0;border-radius:4px;overflow:hidden}.cv-background{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;user-select:none;z-index:0}.cv-image{position:relative;z-index:1;display:block;width:100%;height:auto;max-width:none;user-select:none;pointer-events:none}.cv-svg{position:absolute;z-index:2;inset:0;width:100%;height:100%;overflow:visible}
+.cv-logo-img{pointer-events:none}.cv-logo-word{font-size:22px;font-weight:900;letter-spacing:2px;fill:#eef7ff;dominant-baseline:middle;paint-order:stroke;stroke:rgba(0,0,0,.85);stroke-width:2.5px}
+.cv-model-label,.cv-status-label{font-size:16.5px;font-weight:900;fill:#eef7ff;dominant-baseline:middle;paint-order:stroke;stroke:rgba(0,0,0,.88);stroke-width:2.3px}
+.cv-port-num{font-size:13px;font-weight:800;fill:#eef7ff;text-anchor:middle;dominant-baseline:middle;paint-order:stroke;stroke:rgba(0,0,0,.88);stroke-width:2px}
+.cv-sfp-label{font-size:13.5px;font-weight:850;fill:#eef7ff;text-anchor:middle;dominant-baseline:middle;paint-order:stroke;stroke:rgba(0,0,0,.88);stroke-width:2px}
+.cv-led-off{fill:var(--cv-off);stroke:rgba(0,0,0,.8);stroke-width:1}.cv-led-green{fill:var(--cv-green);filter:drop-shadow(0 0 2.5px var(--cv-green));stroke:rgba(0,0,0,.85);stroke-width:1}.cv-led-amber{fill:var(--cv-amber);filter:drop-shadow(0 0 2.5px var(--cv-amber));stroke:rgba(0,0,0,.85);stroke-width:1}.cv-led-blue{fill:var(--cv-blue);filter:drop-shadow(0 0 2.5px var(--cv-blue));stroke:rgba(0,0,0,.85);stroke-width:1}
+.cv-legend{margin-top:8px;padding:8px;border:1px solid rgba(0,229,255,.20);border-radius:6px;background:rgba(0,0,0,.30);font-size:11px}.cv-legend-row{display:flex;flex-wrap:wrap;align-items:center;gap:16px}.cv-legend-item{display:inline-flex;align-items:center;gap:6px;color:rgba(238,247,255,.82)}.cv-legend-dot{width:12px;height:12px;border-radius:50%;box-shadow:0 0 3px currentColor;border:1px solid rgba(0,0,0,.85)}
+
+.cv-led-red{fill:var(--cv-red);filter:drop-shadow(0 0 2.5px var(--cv-red));stroke:rgba(0,0,0,.85);stroke-width:1}
+
+.cv-status-panel-bg{fill:rgba(0,0,0,.06);stroke:rgba(0,0,0,.62);stroke-width:1.2;filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.58))}
+.cv-status-panel-border{fill:none;stroke:rgba(245,248,250,.75);stroke-width:1.05;filter:none}
+.cv-panel-title{font-family:"Courier New",monospace;font-size:17px;font-weight:700;fill:#f4f6f7;text-anchor:middle;dominant-baseline:middle;paint-order:stroke;stroke:rgba(0,0,0,.82);stroke-width:1.45px}
+.cv-panel-key{font-family:"Courier New",monospace;font-size:17px;font-weight:700;fill:#eef2f4;dominant-baseline:middle;paint-order:stroke;stroke:rgba(0,0,0,.82);stroke-width:1.25px}
+.cv-panel-value{font-family:"Courier New",monospace;font-size:17px;font-weight:700;fill:#ffffff;dominant-baseline:middle;paint-order:stroke;stroke:rgba(0,0,0,.82);stroke-width:1.25px}
+.cv-panel-page{font-family:"Courier New",monospace;font-size:15px;font-weight:700;fill:rgba(250,252,253,.90);text-anchor:middle;dominant-baseline:middle;paint-order:stroke;stroke:rgba(0,0,0,.78);stroke-width:1px}
+.cv-panel-rule{stroke:none;stroke-width:0;stroke-dasharray:none}
+
+
+.cv-port-num-selected,.cv-sfp-label-selected{
+  fill:#29a8ff;
+  stroke:rgba(0,0,0,.95);
+  stroke-width:2.7px;
+  filter:drop-shadow(0 0 4px rgba(41,168,255,.95)) drop-shadow(0 0 8px rgba(41,168,255,.70));
+}
+.cv-click-hitbox{
+  fill:rgba(255,255,255,.001);
+  stroke:none;
+  cursor:pointer;
+  pointer-events:all;
+}
+
+/* v0.4.45 status panel polish and reliable SVG hit testing */
+.cv-status-panel-bg,.cv-status-panel-border,.cv-panel-title,.cv-panel-key,.cv-panel-value,.cv-panel-page,.cv-panel-rule,
+.cv-port-num,.cv-sfp-label,.cv-led-off,.cv-led-green,.cv-led-amber,.cv-led-blue,.cv-led-red,.cv-led-poe{
+  pointer-events:none;
+}
+.cv-panel-title{
+  font-family:"Arial Narrow","Roboto Condensed","Helvetica Neue Condensed",Arial,Helvetica,sans-serif;
+  font-size:17px;
+  font-weight:900;
+  letter-spacing:.9px;
+}
+.cv-panel-key{
+  font-family:"Arial Narrow","Roboto Condensed","Helvetica Neue Condensed",Arial,Helvetica,sans-serif;
+  font-size:17px;
+  font-weight:900;
+  letter-spacing:.75px;
+  fill:rgba(235,239,241,.86);
+}
+.cv-panel-value{
+  font-family:"Arial Narrow","Roboto Condensed","Helvetica Neue Condensed",Arial,Helvetica,sans-serif;
+  font-size:17px;
+  font-weight:800;
+  letter-spacing:.25px;
+}
+
+
+/* v0.4.55 PoE status LED amber glow */
+.cv-led-poe{
+  fill:var(--cv-amber);
+  filter:drop-shadow(0 0 3px var(--cv-amber)) drop-shadow(0 0 8px rgba(255,179,33,.78));
+  stroke:rgba(0,0,0,.85);
+  stroke-width:1;
+}
+
+/* v0.5.1 calibration mode overlay */
+.cv-calibration-title{
+  font-size:16px;
+  font-weight:900;
+  letter-spacing:1.1px;
+  fill:#29a8ff;
+  dominant-baseline:middle;
+  paint-order:stroke;
+  stroke:rgba(0,0,0,.92);
+  stroke-width:3px;
+  pointer-events:none;
+}
+.cv-calibration-hitbox{
+  fill:rgba(41,168,255,.10);
+  stroke:rgba(41,168,255,.82);
+  stroke-width:2.2;
+  stroke-dasharray:7 5;
+  pointer-events:none;
+}
+.cv-calibration-hitbox.cv-calibration-active{
+  fill:rgba(255,179,33,.20);
+  stroke:rgba(255,179,33,.98);
+  stroke-width:3.2;
+  filter:drop-shadow(0 0 5px rgba(255,179,33,.95));
+}
+.cv-calibration-label{
+  font-size:12px;
+  font-weight:900;
+  fill:#eef7ff;
+  text-anchor:middle;
+  dominant-baseline:middle;
+  paint-order:stroke;
+  stroke:rgba(0,0,0,.95);
+  stroke-width:3px;
+  pointer-events:none;
+}
+.cv-calibration-active-text{
+  fill:#ffb321;
+  filter:drop-shadow(0 0 5px rgba(255,179,33,.95));
+}
+.cv-calibration-ring{
+  fill:none;
+  stroke:rgba(41,168,255,.85);
+  stroke-width:2.2;
+  pointer-events:none;
+}
+.cv-calibration-ring.cv-calibration-active{
+  stroke:rgba(255,179,33,.98);
+  stroke-width:3.2;
+  filter:drop-shadow(0 0 5px rgba(255,179,33,.95));
+}
+
+/* v0.5.2 interactive calibration controls */
+.cv-cal-tools{
+  margin:4px 0 6px;
+  padding:8px;
+  border:1px solid rgba(41,168,255,.35);
+  border-radius:6px;
+  background:rgba(0,0,0,.42);
+  color:var(--cv-text);
+  font-size:9px;
+  line-height:1.2;
+}
+.cv-cal-tools-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+  margin:0 0 6px;
+}
+.cv-cal-tools-head{
+  justify-content:space-between;
+  gap:12px;
+}
+.cv-cal-tools-head span,.cv-cal-current{
+  color:var(--cv-muted);
+}
+.cv-cal-tools label{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  font-weight:700;
+  color:rgba(238,247,255,.88);
+}
+.cv-cal-tools select,.cv-cal-tools button{
+  min-height:26px;
+  border:1px solid rgba(41,168,255,.45);
+  border-radius:4px;
+  background:rgba(12,16,20,.92);
+  color:var(--cv-text);
+  font-size:9px;
+  font-weight:800;
+}
+.cv-cal-tools select{
+  padding:3px 6px;
+}
+.cv-cal-tools button{
+  min-width:42px;
+  padding:3px 9px;
+  cursor:pointer;
+}
+.cv-cal-tools button:hover{
+  border-color:rgba(255,179,33,.95);
+  color:#ffb321;
+}
+.cv-cal-tools button:disabled{
+  opacity:.42;
+  cursor:not-allowed;
+}
+.cv-cal-quick-row{
+  gap:5px;
+}
+.cv-cal-quick-label{
+  color:var(--cv-muted);
+  font-weight:800;
+  margin-right:2px;
+}
+.cv-cal-parity-row {
+  flex-wrap: nowrap;
+  align-items: center;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+.cv-cal-parity-row > * {
+  flex: 0 0 auto;
+}
+.cv-cal-parity-divider {
+  width: 1px;
+  height: 22px;
+  margin: 0 3px;
+  background: rgba(130, 170, 200, .28);
+}
+
+.cv-cal-nudge-grid{
+  gap:5px;
+}
+.cv-cal-export{
+  width:100%;
+  min-width:240px;
+  min-height:56px;
+  box-sizing:border-box;
+  resize:both;
+  border:1px solid rgba(41,168,255,.26);
+  border-radius:4px;
+  background:rgba(0,0,0,.55);
+  color:rgba(238,247,255,.78);
+  font-family:"Courier New",monospace;
+  font-size:7px;
+  line-height:1.25;
+}
+.cv-cal-tools button.cv-cal-bold-toggle{
+  min-width:30px;
+  padding:3px 8px;
+}
+.cv-cal-tools button.cv-cal-bold-toggle.is-active{
+  border-color:rgba(255,179,33,.95);
+  color:#ffb321;
+  background:rgba(255,179,33,.14);
+}
+
+/* v0.5.49 on-card calibration toggle */
+.cv-cal-toggle{
+  position:absolute;
+  top:8px;
+  right:8px;
+  z-index:5;
+  box-sizing:border-box;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:24px;
+  padding:0 9px;
+  border:1px solid rgba(41,168,255,.45);
+  border-radius:5px;
+  background:rgba(8,12,16,.72);
+  color:rgba(238,247,255,.88);
+  font-size:8px;
+  font-weight:900;
+  line-height:1;
+  text-align:center;
+  white-space:nowrap;
+  cursor:pointer;
+  pointer-events:auto;
+  backdrop-filter:blur(2px);
+}
+.cv-cal-toggle:hover,
+.cv-cal-toggle.is-active{
+  border-color:rgba(255,179,33,.95);
+  color:#ffb321;
+  background:rgba(0,0,0,.82);
+}
+
+.cv-cal-profile {
+  margin-left: 8px;
+  opacity: .72;
+  font-weight: 500;
+}
+
+.cv-cal-save-status {
+  font-size: 9px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.08);
+}
+
+.cv-cal-save-status.is-ok {
+  color: #76ff33;
+}
+
+.cv-cal-save-status.is-error {
+  color: #ffb321;
+}
+
+/* v0.5.59 stack/member calibration controls */
+.cv-cal-stack-row input[type="checkbox"]{vertical-align:middle;margin-left:4px}
+.cv-cal-input{background:rgba(255,255,255,.08);border:1px solid rgba(238,247,255,.28);border-radius:4px;color:var(--cv-text);font:inherit;padding:3px 6px;min-height:22px}
+.cv-cal-entity-input{width:170px}
+
+/* v1.1.8 calibration asset browser */
+.cv-cal-assets-row{align-items:flex-end}.cv-cal-assets-row .cv-cal-current{max-width:420px;white-space:normal;line-height:1.25}.cv-cal-assets-row select{min-width:190px}
+
+/* v1.3.4 calibration workspace sections */
+.cv-cal-section {
+  margin: 8px 0;
+  border: 1px solid rgba(130, 170, 200, .28);
+  border-radius: 8px;
+  background: rgba(9, 19, 28, .28);
+  overflow: hidden;
+}
+.cv-cal-section > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 12px;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 700;
+  background: rgba(36, 75, 102, .25);
+}
+.cv-cal-section > summary small {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: .72;
+  font-weight: 500;
+}
+.cv-cal-section[open] {
+  overflow: visible;
+}
+.cv-cal-section[open] > summary {
+  border-bottom: 1px solid rgba(130, 170, 200, .22);
+}
+.cv-cal-section-body {
+  padding: 6px 8px 8px;
+}
+/* v1.3.8 always-visible profile controls */
+.cv-cal-profile-controls {
+  margin: 8px 0 0;
+  padding: 6px 8px 2px;
+  border-top: 1px solid rgba(130, 170, 200, .22);
+}
+.cv-cal-profile-controls .cv-cal-tools-row {
+  margin-bottom: 0;
+}
+
+.cv-cal-custom-port-row {
+  align-items: center;
+}
+.cv-cal-port-list-input {
+  min-width: 260px;
+  flex: 1 1 320px;
+}
+
+
+/* v1.9.40 compact calibration context header */
+.cv-cal-workspace-head{
+  margin:0 0 6px;
+  padding:6px 8px;
+  border:1px solid rgba(41,168,255,.34);
+  border-radius:7px;
+  background:linear-gradient(135deg,rgba(20,48,68,.72),rgba(7,14,20,.72));
+}
+.cv-cal-context-grid{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:6px}
+.cv-cal-context-grid span{min-width:0;padding:4px 7px;border-radius:5px;background:rgba(0,0,0,.25)}
+.cv-cal-context-grid small{display:block;color:var(--cv-muted);font-size:7px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.cv-cal-context-grid b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px}
+.cv-cal-sticky-actions{position:sticky;bottom:0;z-index:12;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px -8px -8px;padding:9px 10px;border-top:1px solid rgba(41,168,255,.35);background:rgba(7,12,17,.96);box-shadow:0 -8px 18px rgba(0,0,0,.35);backdrop-filter:blur(6px)}
+.cv-cal-sticky-state,.cv-cal-sticky-buttons{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.cv-cal-sticky-geometry{padding-left:9px;margin-left:2px;border-left:1px solid rgba(255,255,255,.18);color:#b9d7ea;font-variant-numeric:tabular-nums;white-space:nowrap}
+.cv-cal-state-dot{width:8px;height:8px;border-radius:50%;background:#76ff33;box-shadow:0 0 8px rgba(118,255,51,.55)}
+.cv-cal-state-dot.is-dirty{background:#ffb321;box-shadow:0 0 8px rgba(255,179,33,.65)}
+.cv-cal-tools button.cv-cal-primary{border-color:rgba(41,168,255,.85);background:rgba(41,168,255,.2);color:#eef7ff}
+.cv-cal-tools button.cv-cal-warning{border-color:rgba(255,166,0,.72);background:rgba(255,166,0,.12);color:#ffc266}
+.cv-cal-tools button.cv-cal-purple,.cv-cal-sticky-buttons button.cv-cal-purple{border-color:rgba(176,92,255,.78);background:rgba(138,43,226,.18);color:#d6a8ff}
+.cv-confirm-backdrop{position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,.72);backdrop-filter:blur(3px)}
+.cv-confirm-dialog{box-sizing:border-box;width:min(760px,calc(100vw - 48px));max-height:min(78vh,760px);display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(76,173,255,.55);border-radius:14px;background:#111a24;color:#eef7ff;box-shadow:0 24px 80px rgba(0,0,0,.72)}
+.cv-confirm-header{padding:18px 22px;border-bottom:1px solid rgba(76,173,255,.25);font-size:20px;font-weight:700;color:#f4f9ff}
+.cv-confirm-message{margin:0;padding:22px;overflow:auto;white-space:pre-wrap;font:15px/1.55 Arial,Helvetica,sans-serif;color:#dbe9f5}
+.cv-confirm-actions{display:flex;justify-content:flex-end;gap:12px;padding:16px 22px;border-top:1px solid rgba(76,173,255,.22);background:rgba(0,0,0,.16)}
+.cv-confirm-actions button{min-width:110px;padding:10px 18px;border-radius:9px;border:1px solid rgba(87,185,255,.58);background:rgba(30,135,200,.18);color:#eaf7ff;font-weight:700;cursor:pointer}
+.cv-confirm-actions button[data-cv-confirm-ok]{background:#1478b8;border-color:#4ebaff;color:#fff}
+.cv-confirm-actions button.is-danger{background:rgba(180,35,47,.28);border-color:rgba(255,91,104,.78);color:#ffb8be}
+.cv-confirm-actions button:focus-visible{outline:3px solid rgba(123,196,255,.65);outline-offset:2px}
+@media (max-width:700px){.cv-confirm-backdrop{padding:12px}.cv-confirm-dialog{width:calc(100vw - 24px);max-height:88vh}.cv-confirm-header{font-size:18px;padding:16px}.cv-confirm-message{padding:18px;font-size:14px}.cv-confirm-actions{padding:14px 16px}}
+.cv-cal-tools button.cv-cal-danger{border-color:rgba(255,82,82,.72);background:rgba(255,82,82,.12);color:#ff9d9d}
+.cv-cal-tools button.cv-cal-secondary{border-color:rgba(238,247,255,.25);color:rgba(238,247,255,.8)}
+.cv-cal-advanced{margin-bottom:0}
+@media (max-width:760px){
+  .cv-cal-context-grid{grid-template-columns:repeat(2,minmax(110px,1fr))}
+  .cv-cal-sticky-actions{align-items:stretch;flex-direction:column}
+  .cv-cal-sticky-buttons{justify-content:flex-end}
+}
+
+
+/* v1.9.12 experimental calibration alignment polish */
+.cv-cal-section-body > .cv-cal-tools-row:last-child{margin-bottom:0}
+.cv-cal-style-row,.cv-cal-status-row,.cv-cal-switch-stack-row{column-gap:10px;row-gap:7px}
+.cv-cal-style-row > .cv-cal-quick-label,
+.cv-cal-status-row > .cv-cal-quick-label,
+.cv-cal-switch-stack-row > .cv-cal-quick-label{
+  flex:0 0 112px;
+  min-width:112px;
+  margin-right:0;
+}
+.cv-cal-style-row label,.cv-cal-status-row label,.cv-cal-switch-stack-row label{min-height:28px}
+.cv-cal-style-row select,.cv-cal-status-row select,.cv-cal-switch-stack-row select,
+.cv-cal-switch-stack-row input.cv-cal-input{min-height:28px;box-sizing:border-box}
+.cv-cal-status-row button{min-width:50px}
+.cv-cal-switch-stack-row{align-items:center}
+.cv-cal-switch-stack-row .cv-cal-ip-input{width:150px}
+.cv-cal-switch-stack-row .cv-cal-entity-input{width:210px}
+.cv-cal-ip-help{white-space:nowrap}
+.cv-cal-row-divider{flex:0 0 1px;height:24px;background:rgba(130,170,200,.28);margin:0 2px}
+@media (max-width:900px){
+  .cv-cal-style-row > .cv-cal-quick-label,
+  .cv-cal-status-row > .cv-cal-quick-label,
+  .cv-cal-switch-stack-row > .cv-cal-quick-label{flex-basis:100%;min-width:0}
+  .cv-cal-row-divider{display:none}
+  .cv-cal-switch-stack-row .cv-cal-entity-input{width:min(100%,230px)}
+}
+
+/* v1.9.86 persistent inline calibration colour picker */
+.cv-cal-colour-field{display:inline-flex;align-items:center;gap:5px;min-height:28px;font-weight:700;color:rgba(238,247,255,.88)}
+.cv-cal-colour-field > .cv-cal-colour-controls{margin-left:0}
+.cv-cal-colour-controls{position:relative;display:inline-flex;align-items:center;gap:5px;margin-left:5px;vertical-align:middle}
+.cv-cal-colour-controls .cv-cal-colour-swatch{width:32px;min-width:32px;height:28px;min-height:28px;padding:0;border:1px solid rgba(41,168,255,.58);border-radius:5px;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.cv-cal-hex-input{width:78px!important;min-width:78px!important;text-transform:uppercase;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.cv-cal-colour-controls button{min-height:28px;padding:4px 8px}
+.cv-cal-colour-popover{position:absolute;z-index:40;left:0;top:calc(100% + 6px);box-sizing:border-box;width:224px;padding:9px;border:1px solid rgba(41,168,255,.55);border-radius:7px;background:rgba(5,10,16,.98);box-shadow:0 8px 24px rgba(0,0,0,.58);line-height:1.2}
+.cv-cal-colour-popover[hidden]{display:none!important}
+.cv-cal-colour-sv{position:relative;display:block;width:100%;height:112px;border:1px solid rgba(255,255,255,.18);border-radius:5px;cursor:crosshair;touch-action:none;background:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,hsl(var(--cv-picker-hue),100%,50%))}
+.cv-cal-colour-marker{position:absolute;width:10px;height:10px;border:2px solid #fff;border-radius:50%;box-sizing:border-box;transform:translate(-50%,-50%);box-shadow:0 0 0 1px rgba(0,0,0,.9),0 0 4px rgba(0,0,0,.75);pointer-events:none}
+.cv-cal-colour-slider-label{display:grid!important;grid-template-columns:58px 1fr;align-items:center;gap:7px!important;margin-top:7px}
+.cv-cal-colour-slider-label input[type="range"]{width:100%;margin:0;cursor:pointer}
+.cv-cal-colour-hue{appearance:none;height:10px;border-radius:999px;border:1px solid rgba(255,255,255,.15);background:linear-gradient(to right,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00)}
+.cv-cal-colour-hue::-webkit-slider-thumb,.cv-cal-colour-brightness::-webkit-slider-thumb{appearance:none;width:13px;height:13px;border:2px solid #fff;border-radius:50%;background:#111;box-shadow:0 0 0 1px rgba(0,0,0,.8)}
+.cv-cal-colour-brightness{appearance:none;height:10px;border-radius:999px;border:1px solid rgba(255,255,255,.15);background:linear-gradient(to right,#000,#fff)}
+.cv-cal-colour-footer{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:8px}
+.cv-cal-colour-preview{width:28px;height:28px;margin-right:auto;border:1px solid rgba(255,255,255,.28);border-radius:5px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.28)}
+.cv-cal-sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+
+/* v1.9.79 direct position and size controls */
+.cv-cal-coordinate-divider{
+  width:1px;
+  height:22px;
+  margin:0 3px;
+  background:rgba(130,170,200,.28);
+}
+.cv-cal-coordinate-input{
+  width:72px;
+  min-width:64px;
+  box-sizing:border-box;
+}
+
+
+/* v2.6.30 compact Calibration editor utility controls */
+.cv-cal-tools button:not(.cv-cal-toggle),
+.cv-cal-sticky-actions button{
+  height:22px;
+  min-height:22px;
+  box-sizing:border-box;
+  font-size:10px;
+  padding:0 5px;
+  line-height:20px;
+  min-width:30px;
+  white-space:nowrap;
+}
+.cv-cal-tools-row,
+.cv-cal-status-row{gap:4px}
+.cv-cal-tools select,
+.cv-cal-tools input[type="number"],
+.cv-cal-tools input[type="color"]{min-height:24px;height:24px}
+
+/* v1.9.92 compact, workflow-first Calibration layout */
+.cv-cal-tools{
+  padding:6px;
+}
+.cv-cal-tools-row{
+  gap:6px;
+  margin-bottom:4px;
+}
+.cv-cal-tools select,.cv-cal-tools button{
+  min-height:24px;
+}
+.cv-cal-tools select{
+  padding:2px 5px;
+}
+.cv-cal-tools button{
+  min-width:38px;
+  padding:2px 7px;
+}
+.cv-cal-section{
+  margin:5px 0;
+  border-radius:6px;
+}
+.cv-cal-section > summary{
+  gap:9px;
+  padding:6px 9px;
+}
+.cv-cal-section-body{
+  padding:5px 7px 6px;
+}
+.cv-cal-workspace-head{
+  margin-bottom:5px;
+  padding:5px 6px;
+}
+.cv-cal-context-grid{
+  gap:4px;
+}
+.cv-cal-context-grid span{
+  padding:3px 6px;
+}
+.cv-cal-style-row,.cv-cal-status-row,.cv-cal-switch-stack-row{
+  column-gap:7px;
+  row-gap:5px;
+}
+.cv-cal-style-row > .cv-cal-quick-label,
+.cv-cal-status-row > .cv-cal-quick-label,
+.cv-cal-switch-stack-row > .cv-cal-quick-label{
+  flex-basis:96px;
+  min-width:96px;
+}
+.cv-cal-style-row label,.cv-cal-status-row label,.cv-cal-switch-stack-row label,
+.cv-cal-style-row select,.cv-cal-status-row select,.cv-cal-switch-stack-row select,
+.cv-cal-switch-stack-row input.cv-cal-input,
+.cv-cal-colour-field{
+  min-height:24px;
+}
+.cv-cal-colour-controls .cv-cal-colour-swatch{
+  width:28px;
+  min-width:28px;
+  height:24px;
+  min-height:24px;
+}
+.cv-cal-colour-controls button{
+  min-height:24px;
+}
+.cv-cal-subsection-divider{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:5px 0 4px;
+  color:rgba(185,215,234,.78);
+  font-size:8px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+.cv-cal-subsection-divider::after{
+  content:"";
+  flex:1 1 auto;
+  height:1px;
+  background:rgba(130,170,200,.22);
+}
+.cv-cal-port-manager-main,
+.cv-cal-geometry-row,
+.cv-cal-direct-geometry-row{
+  flex-wrap:nowrap;
+  overflow-x:auto;
+  scrollbar-width:thin;
+  padding-bottom:2px;
+}
+.cv-cal-port-manager-main > *,
+.cv-cal-geometry-row > *,
+.cv-cal-direct-geometry-row > *{
+  flex:0 0 auto;
+}
+.cv-cal-geometry-row > .cv-cal-quick-label,
+.cv-cal-direct-geometry-row > .cv-cal-quick-label{
+  width:42px;
+  min-width:42px;
+  margin-right:0;
+}
+.cv-cal-geometry-row .cv-cal-row-divider,
+.cv-cal-direct-geometry-row .cv-cal-row-divider{
+  height:20px;
+}
+.cv-cal-direct-geometry-row .cv-cal-coordinate-input{
+  width:66px;
+  min-width:58px;
+}
+
+.cv-cal-geometry-row > .cv-cal-direct-label{
+  width:auto;
+  min-width:0;
+  margin-left:1px;
+}
+.cv-cal-geometry-row .cv-cal-coordinate-input{
+  width:58px;
+  min-width:52px;
+}
+.cv-cal-custom-port-row{
+  margin-top:2px;
+}
+.cv-cal-sticky-actions{
+  gap:9px;
+  margin-top:6px;
+  padding:7px 8px;
+}
+.cv-cal-sticky-state,.cv-cal-sticky-buttons{
+  gap:5px;
+}
+@media (max-width:900px){
+  .cv-cal-port-manager-main,
+  .cv-cal-geometry-row,
+  .cv-cal-direct-geometry-row{
+    flex-wrap:wrap;
+    overflow-x:visible;
+  }
+  .cv-cal-style-row > .cv-cal-quick-label,
+  .cv-cal-status-row > .cv-cal-quick-label,
+  .cv-cal-switch-stack-row > .cv-cal-quick-label{
+    flex-basis:100%;
+    min-width:0;
+  }
+}
+@media (max-width:760px){
+  .cv-cal-sticky-geometry{display:none}
+  .cv-cal-sticky-buttons{justify-content:flex-start}
+}
+
+/* v1.9.93 movable Calibration workspace sections */
+.cv-cal-section-layout-help{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:5px;
+  color:rgba(185,215,234,.72);
+  font-size:7.5px;
+}
+.cv-cal-section-layout-help span{margin-right:auto}
+.cv-cal-section-layout-help b{color:#eef7ff;font-size:10px}
+.cv-cal-section-layout-help button{
+  min-height:21px;
+  padding:1px 6px;
+  font-size:7.5px;
+}
+.cv-cal-section > summary > .cv-cal-drag-handle{
+  flex:0 0 22px;
+  width:22px;
+  min-width:22px;
+  height:22px;
+  min-height:22px;
+  margin:-3px 0 -3px -4px;
+  padding:0;
+  border:0;
+  border-radius:4px;
+  background:transparent;
+  color:rgba(185,215,234,.62);
+  font:900 13px/22px Arial,Helvetica,sans-serif;
+  cursor:grab;
+  user-select:none;
+}
+.cv-cal-section > summary > .cv-cal-drag-handle:hover,
+.cv-cal-section > summary > .cv-cal-drag-handle:focus-visible{
+  color:#eef7ff;
+  background:rgba(41,168,255,.16);
+  outline:1px solid rgba(41,168,255,.45);
+}
+.cv-cal-section > summary > .cv-cal-drag-handle:active{cursor:grabbing}
+.cv-cal-section > summary > span{flex:0 0 auto}
+.cv-cal-section > summary > small{margin-left:auto}
+.cv-cal-section.cv-cal-dragging{opacity:.48}
+.cv-cal-section.cv-cal-drop-before{box-shadow:0 -3px 0 #29a8ff}
+.cv-cal-section.cv-cal-drop-after{box-shadow:0 3px 0 #29a8ff}
+@media (max-width:680px){
+  .cv-cal-section-layout-help{align-items:flex-start;flex-wrap:wrap}
+  .cv-cal-section-layout-help button{margin-left:auto}
+}

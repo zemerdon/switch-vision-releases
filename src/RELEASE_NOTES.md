@@ -1,3 +1,11 @@
+# Switch Vision Core v2.6.31
+
+Core 2.6.31 introduces the canonical shipped faceplate catalog used by Calibration to map each bundled faceplate filename to one approved human-readable display name. Calibration now uses the catalog-backed mapping for all shipped faceplate labels, including the newer UniFi layouts, while preserving the exact filename as the underlying calibration identity.
+
+The Core build now validates complete one-to-one catalog coverage and keeps the catalog, Calibration label mapping and packaged release synchronized. Product-owned deterministic release-check tooling is also included so guarded releases can validate the exact Core source/build contract on the release lab.
+
+Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core because the custom component changed in this release.
+
 # Switch Vision Core v2.6.30
 
 Calibration now treats the TEST MODE indicator as an independent movable/resizable persisted UI target. The Calibration editor utility controls are denser on mobile without changing the physical faceplate Calibrate/Test Mode geometry.
