@@ -10,9 +10,9 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current public Core release
 
-### Switch Vision v2.6.31
+### Switch Vision v2.6.32
 
-**v2.6.31** is the current tested public Switch Vision Core/dashboard release.
+**v2.6.32** is the current tested public Switch Vision Core/dashboard release.
 
 This Calibration hotfix restores the Supported speed selector by resolving the current RJ45/SFP editable target inside the change handler before writing persistent per-port capability metadata. Static supported-speed metadata remains separate from live negotiated-speed telemetry.
 
