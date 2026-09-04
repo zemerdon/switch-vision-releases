@@ -1,3 +1,10 @@
+## v2.6.31 — Canonical faceplate catalog
+
+- Add canonical machine-readable `src/faceplates/catalog.json` covering every shipped faceplate and its approved human-readable Calibration label.
+- Render shipped Calibration faceplate labels from the catalog-backed mapping while preserving exact faceplate filenames as the runtime/profile identity.
+- Make the Core build validate catalog schema/coverage and synchronize the catalog mapping into packaged runtime assets.
+- Add product-owned deterministic release-check tooling with exactly pinned release-check dependencies.
+
 ## v2.6.30
 
 - Added an independent persisted Calibration target for the TEST MODE status indicator.
