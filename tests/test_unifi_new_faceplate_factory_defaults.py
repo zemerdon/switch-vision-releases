@@ -33,11 +33,11 @@ class UniFiNewFaceplateFactoryDefaultsTests(unittest.TestCase):
         self.assertTrue((FACEPLATES / filename).is_file())
         self.assert_clean_factory(profile, filename)
 
-    def test_unifi_28sfp_defaults_preserve_28_plus_4_optical_layout(self) -> None:
-        filename = "unifi-28sfp.png"
-        profile = self.load("faceplate-unifi-28sfp.json")
-        self.assertEqual(profile.get("model"), "unifi-28sfp")
-        self.assertEqual(profile.get("profile"), "unifi_28sfp")
+    def test_unifi_32sfp_defaults_preserve_28_plus_4_optical_layout(self) -> None:
+        filename = "unifi-32sfp.png"
+        profile = self.load("faceplate-unifi-32sfp.json")
+        self.assertEqual(profile.get("model"), "unifi-32sfp")
+        self.assertEqual(profile.get("profile"), "unifi_32sfp")
         self.assertEqual(profile.get("ports"), {})
         sfp = profile.get("sfp") or {}
         self.assertEqual(set(sfp.keys()), {f"SFP{i}" for i in range(1, 33)})
@@ -48,6 +48,26 @@ class UniFiNewFaceplateFactoryDefaultsTests(unittest.TestCase):
         self.assertEqual(sfp["SFP32"].get("display_name"), "TWE4")
         self.assertTrue((FACEPLATES / filename).is_file())
         self.assert_clean_factory(profile, filename)
+
+
+    def test_unifi_32sfp_legacy_identity_contract_is_present(self) -> None:
+        js = (ROOT / "src" / "js" / "switch-vision.js").read_text(encoding="utf-8")
+        backend = (ROOT / "src" / "custom_components" / "switch_vision" / "__init__.py").read_text(encoding="utf-8")
+        catalog = json.loads((FACEPLATES / "catalog.json").read_text(encoding="utf-8"))
+        labels = {row["filename"]: row["display_name"] for row in catalog["faceplates"]}
+        self.assertEqual(
+            labels.get("unifi-32sfp.png"),
+            "UniFi 32-Port Optical · 28 × SFP+ + 4 × SFP28",
+        )
+        self.assertNotIn("unifi-28sfp.png", labels)
+        self.assertFalse((FACEPLATES / "unifi-28sfp.png").exists())
+        self.assertFalse((CAL / "faceplate-unifi-28sfp.json").exists())
+        self.assertIn('"unifi-28sfp.png": "unifi-32sfp.png"', js)
+        self.assertIn('explicitProfile === "unifi_28sfp" ? "unifi_32sfp"', js)
+        self.assertIn("canonicalFaceplateFilename(rawFile)", js)
+        self.assertIn('LEGACY_UNIFI_32SFP_TOKEN = "unifi-28sfp-png-de858a65"', backend)
+        self.assertIn('CANONICAL_UNIFI_32SFP_TOKEN = "unifi-32sfp-png-857125f4"', backend)
+        self.assertIn("_migrate_unifi_32sfp_identity(data)", backend)
 
 
 if __name__ == "__main__":

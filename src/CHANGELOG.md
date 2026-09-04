@@ -1,3 +1,11 @@
+## v2.6.32 — UniFi 32-port optical identity
+
+- Correct the owner-calibrated UniFi optical faceplate identity from `unifi-28sfp` to canonical `unifi-32sfp`; its existing geometry already contains 28 × SFP+ plus four SFP28/TWE positions.
+- Preserve the exact 32-position calibration geometry and `TWE1`–`TWE4` display mapping at optical positions 29–32.
+- Keep one canonical physical faceplate/profile copy while resolving legacy `unifi-28sfp.png` and `unifi_28sfp` references to the new identity.
+- Migrate legacy saved faceplate-specific calibration storage tokens to the canonical 32-port identity without discarding the legacy stored record.
+- Extend permanent faceplate/catalog/legacy-compatibility regressions.
+
 ## v2.6.31 — Canonical faceplate catalog
 
 - Add canonical machine-readable `src/faceplates/catalog.json` covering every shipped faceplate and its approved human-readable Calibration label.

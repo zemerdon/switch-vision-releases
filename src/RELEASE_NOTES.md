@@ -1,3 +1,9 @@
+# Switch Vision Core v2.6.32
+
+Core 2.6.32 corrects the canonical identity of the owner-calibrated UniFi optical faceplate. The artwork and calibration already contain 32 optical positions: SFP1–SFP28 plus SFP29–SFP32 displayed as TWE1–TWE4. The canonical asset/profile are now `unifi-32sfp.png` and `unifi_32sfp`, with the approved Calibration label `UniFi 32-Port Optical · 28 × SFP+ + 4 × SFP28`.
+
+Legacy `unifi-28sfp.png` and `unifi_28sfp` references remain supported through canonical aliases and storage migration, while only one canonical physical faceplate and factory profile ship.
+
 # Switch Vision Core v2.6.31
 
 Core 2.6.31 introduces the canonical shipped faceplate catalog used by Calibration to map each bundled faceplate filename to one approved human-readable display name. Calibration now uses the catalog-backed mapping for all shipped faceplate labels, including the newer UniFi layouts, while preserving the exact filename as the underlying calibration identity.

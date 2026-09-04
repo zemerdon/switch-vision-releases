@@ -1,14 +1,14 @@
 {
   "schema_version": 2,
   "schema": "switch-vision-interactive-calibration-v1",
-  "model": "unifi-28sfp",
-  "profile": "unifi_28sfp",
+  "model": "unifi-32sfp",
+  "profile": "unifi_32sfp",
   "generated_by": "Switch Vision v2.6.29",
   "image": {
-    "file": "faceplates/unifi-28sfp.png",
+    "file": "faceplates/unifi-32sfp.png",
     "width": 2171,
     "height": 245,
-    "master": "unifi-28sfp-owner-calibrated",
+    "master": "unifi-32sfp-owner-calibrated",
     "coordinate_space": "image-native-v1"
   },
   "ports": {},
@@ -1202,7 +1202,7 @@
       "fit": "fill",
       "opacity": 1,
       "show": true,
-      "file": "unifi-28sfp.png",
+      "file": "unifi-32sfp.png",
       "source": "custom"
     },
     "calibration_button": {
