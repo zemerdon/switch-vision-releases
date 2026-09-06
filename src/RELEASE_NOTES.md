@@ -1,3 +1,9 @@
+# Switch Vision Core v2.6.34
+
+Core 2.6.34 restores the original responsive card sizing as the new Auto default. Auto fills available Home Assistant dashboard width and scales height/calibrated geometry proportionally while never upscaling beyond the native 2048 px faceplate canvas. Explicit 800 px, 1024 px and Custom maximum-width modes remain available and existing explicitly saved choices are preserved.
+
+Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core because the custom component changed in this release.
+
 # Switch Vision Core v2.6.33
 
 Core 2.6.33 improves Calibration and Switch Vision Settings with persistent Status Box transparency controls, independent Link and Activity LED visibility, Test Mode nudge parity, zero-port profile saving with a visible warning, standardized faceplate display names, and global 800 px / 1024 px / custom faceplate width controls.

@@ -10,9 +10,9 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current Core source version
 
-### Switch Vision v2.6.33
+### Switch Vision v2.6.34
 
-**v2.6.33** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.
+**v2.6.34** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.
 
 Core v2.6.33 improves Calibration and Switch Vision Settings with persistent Status Box transparency controls, independent Link and Activity LED visibility, 800 px / 1024 px / custom faceplate width settings, normalized faceplate display names, Test Mode nudge parity, and non-blocking zero-port profile saving with a visible warning.
 
