@@ -2289,6 +2289,12 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
             msg["id"],
             {
                 "show_card_headers": bool(domain_state.get(DATA_SHOW_CARD_HEADERS, True)),
+                "faceplate_width": dict(
+                    domain_state.get(
+                        DATA_FACEPLATE_WIDTH_SETTINGS,
+                        {"mode": "800", "custom": 800, "effective": 800},
+                    )
+                ),
                 "activity_leds": dict(
                     domain_state.get(
                         DATA_ACTIVITY_LED_SETTINGS,
@@ -2503,6 +2509,7 @@ async def _apply_entry_options(hass: HomeAssistant, entry: ConfigEntry) -> None:
     )
     show_card_headers = bool(entry.options.get(CONF_SHOW_CARD_HEADERS, DEFAULT_OPTIONS[CONF_SHOW_CARD_HEADERS]))
     activity_led_settings = _activity_led_settings(entry)
+    faceplate_width_settings = _faceplate_width_settings(entry)
     native_header_settings = _native_header_settings(entry)
 
     domain_state = hass.data.setdefault(DOMAIN, {})
@@ -2510,12 +2517,14 @@ async def _apply_entry_options(hass: HomeAssistant, entry: ConfigEntry) -> None:
     domain_state[DATA_SHOW_DASHBOARD_HEADER] = show_dashboard_header
     domain_state[DATA_SHOW_CARD_HEADERS] = show_card_headers
     domain_state[DATA_ACTIVITY_LED_SETTINGS] = activity_led_settings
+    domain_state[DATA_FACEPLATE_WIDTH_SETTINGS] = faceplate_width_settings
     domain_state[DATA_NATIVE_HEADER_SETTINGS] = native_header_settings
     hass.bus.async_fire(
         EVENT_UI_SETTINGS_UPDATED,
         {
             "show_card_headers": show_card_headers,
             "activity_leds": activity_led_settings,
+            "faceplate_width": faceplate_width_settings,
             "native_header": native_header_settings,
         },
     )
@@ -2538,6 +2547,7 @@ async def _apply_entry_options(hass: HomeAssistant, entry: ConfigEntry) -> None:
         "show_calibration_buttons": show_calibration_buttons,
         "show_dashboard_header": show_dashboard_header,
         "show_card_headers": show_card_headers,
+        "faceplate_width": faceplate_width_settings,
         "native_header": native_header_settings,
     }
 
