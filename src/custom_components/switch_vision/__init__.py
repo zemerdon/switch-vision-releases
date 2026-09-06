@@ -298,6 +298,7 @@ DATA_SHOW_CALIBRATION_BUTTONS = "show_calibration_buttons"
 DATA_SHOW_DASHBOARD_HEADER = "show_dashboard_header"
 DATA_SHOW_CARD_HEADERS = "show_card_headers"
 DATA_ACTIVITY_LED_SETTINGS = "activity_led_settings"
+DATA_FACEPLATE_WIDTH_SETTINGS = "faceplate_width_settings"
 DATA_NATIVE_HEADER_SETTINGS = "native_header_settings"
 DATA_CALIBRATION_STORAGE_LOCK = "calibration_storage_lock"
 DATA_LOVELACE_SIDEBAR_LOCK = "lovelace_sidebar_lock"
@@ -943,12 +944,31 @@ def _normalise_core_settings_update(
     return updated
 
 
+def _faceplate_width_settings(entry: ConfigEntry) -> dict[str, Any]:
+    """Return the normalized global faceplate/card width contract."""
+    mode = str(entry.options.get(CONF_FACEPLATE_WIDTH_MODE, "800"))
+    if mode not in FACEPLATE_WIDTH_MODES:
+        mode = "800"
+    raw_custom = entry.options.get(
+        CONF_FACEPLATE_CUSTOM_WIDTH, FACEPLATE_WIDTH_DEFAULT_PX
+    )
+    custom = (
+        raw_custom
+        if isinstance(raw_custom, int) and not isinstance(raw_custom, bool)
+        else FACEPLATE_WIDTH_DEFAULT_PX
+    )
+    custom = max(FACEPLATE_WIDTH_MIN_PX, min(FACEPLATE_WIDTH_MAX_PX, custom))
+    effective = custom if mode == "custom" else int(mode)
+    return {"mode": mode, "custom": custom, "effective": effective}
+
+
 def _ui_preferences(entry: ConfigEntry) -> dict[str, Any]:
     """Build the shared Discovery and Installer UI preference document."""
     return {
         "schema_version": 1,
         "core": {
             "activity_leds": _activity_led_settings(entry),
+            "faceplate_width": _faceplate_width_settings(entry),
         },
         "discovery": {
             "density": entry.options.get(CONF_DISCOVERY_UI_DENSITY, "comfortable"),
