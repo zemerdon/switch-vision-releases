@@ -35,3 +35,12 @@ def test_faceplate_labels_are_explicit_media_counts():
     labels = {row["filename"]: row["display_name"] for row in data["faceplates"]}
     assert labels["unifi-32sfp.png"] == "UniFi · 28 × SFP+ · 4 × SFP28"
     assert labels["24rj45-4sfp.png"] == "24 × RJ45 · 4 × SFP"
+
+
+def test_candidate_readme_does_not_claim_unpublished_public_state():
+    root_readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    source_readme = (ROOT / "src/README.md").read_text(encoding="utf-8")
+    release_readme = (ROOT / "Releases/switch-vision-2.6.33/README.md").read_text(encoding="utf-8")
+    assert root_readme == source_readme == release_readme
+    assert "## Current Core source version" in root_readme
+    assert "**v2.6.33** is the current tested public" not in root_readme
