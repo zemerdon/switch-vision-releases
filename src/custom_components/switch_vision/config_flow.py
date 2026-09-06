@@ -22,6 +22,11 @@ from . import (
     CONF_DISCOVERY_CONTENT_WIDTH,
     CONF_DISCOVERY_TEXT_SIZE,
     CONF_DISCOVERY_UI_DENSITY,
+    CONF_FACEPLATE_WIDTH_MODE,
+    CONF_FACEPLATE_CUSTOM_WIDTH,
+    FACEPLATE_WIDTH_MODES,
+    FACEPLATE_WIDTH_MIN_PX,
+    FACEPLATE_WIDTH_MAX_PX,
     CONF_INSTALLER_CONTENT_WIDTH,
     CONF_INSTALLER_TEXT_SIZE,
     CONF_INSTALLER_UI_DENSITY,
@@ -257,6 +262,20 @@ class SwitchVisionOptionsFlow(OptionsFlow):
                                 CONF_SHOW_CARD_HEADERS,
                                 default=self._value(CONF_SHOW_CARD_HEADERS),
                             ): bool,
+                            vol.Required(
+                                CONF_FACEPLATE_WIDTH_MODE,
+                                default=self._value(CONF_FACEPLATE_WIDTH_MODE),
+                            ): vol.In(list(FACEPLATE_WIDTH_MODES)),
+                            vol.Required(
+                                CONF_FACEPLATE_CUSTOM_WIDTH,
+                                default=self._value(CONF_FACEPLATE_CUSTOM_WIDTH),
+                            ): vol.All(
+                                vol.Coerce(int),
+                                vol.Range(
+                                    min=FACEPLATE_WIDTH_MIN_PX,
+                                    max=FACEPLATE_WIDTH_MAX_PX,
+                                ),
+                            ),
                         }
                     ),
                     {"collapsed": True},
