@@ -8,13 +8,13 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ---
 
-## Current public Core release
+## Current Core source version
 
-### Switch Vision v2.6.32
+### Switch Vision v2.6.33
 
-**v2.6.32** is the current tested public Switch Vision Core/dashboard release.
+**v2.6.33** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.
 
-This Calibration hotfix restores the Supported speed selector by resolving the current RJ45/SFP editable target inside the change handler before writing persistent per-port capability metadata. Static supported-speed metadata remains separate from live negotiated-speed telemetry.
+Core v2.6.33 improves Calibration and Switch Vision Settings with persistent Status Box transparency controls, independent Link and Activity LED visibility, 800 px / 1024 px / custom faceplate width settings, normalized faceplate display names, Test Mode nudge parity, and non-blocking zero-port profile saving with a visible warning.
 
 Component versions validated when Core v2.2.2 was released:
 

@@ -1,3 +1,11 @@
+# Switch Vision Core v2.6.33
+
+Core 2.6.33 improves Calibration and Switch Vision Settings with persistent Status Box transparency controls, independent Link and Activity LED visibility, Test Mode nudge parity, zero-port profile saving with a visible warning, standardized faceplate display names, and global 800 px / 1024 px / custom faceplate width controls.
+
+Selected Status Box colours are preserved while transparent rendering is enabled, LED visibility remains presentation-only, and faceplate width changes scale the rendered card proportionally without changing topology, mapping or telemetry.
+
+Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core because the custom component changed in this release.
+
 # Switch Vision Core v2.6.32
 
 Core 2.6.32 corrects the canonical identity of the owner-calibrated UniFi optical faceplate. The artwork and calibration already contain 32 optical positions: SFP1–SFP28 plus SFP29–SFP32 displayed as TWE1–TWE4. The canonical asset/profile are now `unifi-32sfp.png` and `unifi_32sfp`, with the approved Calibration label `UniFi 32-Port Optical · 28 × SFP+ + 4 × SFP28`.

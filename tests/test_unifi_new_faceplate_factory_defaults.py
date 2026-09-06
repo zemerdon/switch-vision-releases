@@ -57,7 +57,7 @@ class UniFiNewFaceplateFactoryDefaultsTests(unittest.TestCase):
         labels = {row["filename"]: row["display_name"] for row in catalog["faceplates"]}
         self.assertEqual(
             labels.get("unifi-32sfp.png"),
-            "UniFi 32-Port Optical · 28 × SFP+ + 4 × SFP28",
+            "UniFi · 28 × SFP+ · 4 × SFP28",
         )
         self.assertNotIn("unifi-28sfp.png", labels)
         self.assertFalse((FACEPLATES / "unifi-28sfp.png").exists())
