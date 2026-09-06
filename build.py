@@ -822,14 +822,32 @@ def patch_current_release_metadata(version: str) -> None:
         if count == 0:
             raise SystemExit("README current-release heading not found")
 
-        text, count = re.subn(
-            r"(?m)^\*\*v\d+\.\d+\.\d+\*\* is the current tested public Switch Vision Core/dashboard release\.$",
-            f"**v{version}** is the current tested public Switch Vision Core/dashboard release.",
-            text,
-            count=1,
+        public_description = (
+            r"(?m)^\*\*v\d+\.\d+\.\d+\*\* is the current tested public Switch Vision Core/dashboard release\.$"
         )
-        if count == 0:
+        source_description = (
+            r"(?m)^\*\*v\d+\.\d+\.\d+\*\* is the current tested Switch Vision Core/dashboard source version\. Public release status is authoritative on GitHub Releases\.$"
+        )
+        public_count = len(re.findall(public_description, text))
+        source_count = len(re.findall(source_description, text))
+        if public_count + source_count == 0:
             raise SystemExit("README current-release description not found")
+        if public_count + source_count != 1:
+            raise SystemExit("README current-release description is ambiguous")
+        if public_count == 1:
+            text = re.sub(
+                public_description,
+                f"**v{version}** is the current tested public Switch Vision Core/dashboard release.",
+                text,
+                count=1,
+            )
+        else:
+            text = re.sub(
+                source_description,
+                f"**v{version}** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.",
+                text,
+                count=1,
+            )
         text = re.sub(
             r"No dashboard YAML copying is required for the normal v\d+\.\d+\.\d+ workflow\.",
             f"No dashboard YAML copying is required for the normal v{version} workflow.",
@@ -1859,18 +1877,35 @@ def validate_public_documentation(version: str) -> None:
     checks = {
         ROOT / "README.md": [
             f"### Switch Vision v{version}",
-            f"**v{version}** is the current tested public Switch Vision Core/dashboard release.",
             "https://github.com/zemerdon/switch-vision-installer",
             "https://github.com/zemerdon/switch-vision-releases",
         ],
         ROOT / "RELEASE_NOTES.md": [f"# Switch Vision Core v{version}"],
         SRC / "README.md": [
             f"### Switch Vision v{version}",
-            f"**v{version}** is the current tested public Switch Vision Core/dashboard release.",
         ],
         SRC / "examples" / "README.md": [f"switch-vision.js?v={version}"],
     }
     errors: list[str] = []
+    release_states = {
+        "public": f"**v{version}** is the current tested public Switch Vision Core/dashboard release.",
+        "source": (
+            f"**v{version}** is the current tested Switch Vision Core/dashboard source version. "
+            "Public release status is authoritative on GitHub Releases."
+        ),
+    }
+    resolved_states: dict[Path, str] = {}
+    for state_path in (ROOT / "README.md", SRC / "README.md"):
+        state_text = state_path.read_text(encoding="utf-8")
+        present = [name for name, marker in release_states.items() if marker in state_text]
+        if len(present) != 1:
+            errors.append(
+                f"{state_path}: expected exactly one known Core release-state description"
+            )
+        else:
+            resolved_states[state_path] = present[0]
+    if len(set(resolved_states.values())) > 1:
+        errors.append("README release-state descriptions are inconsistent")
     for path, markers in checks.items():
         text = path.read_text(encoding="utf-8", errors="ignore")
         for marker in markers:
