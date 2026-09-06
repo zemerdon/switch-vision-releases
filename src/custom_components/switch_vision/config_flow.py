@@ -265,14 +265,7 @@ class SwitchVisionOptionsFlow(OptionsFlow):
                             vol.Required(
                                 CONF_FACEPLATE_WIDTH_MODE,
                                 default=self._value(CONF_FACEPLATE_WIDTH_MODE),
-                            ): vol.In(list(FACEPLATE_WIDTH_MODES)),
-                            vol.Required(
-                                CONF_FACEPLATE_CUSTOM_WIDTH,
-                                default=self._value(CONF_FACEPLATE_CUSTOM_WIDTH),
-                            ): vol.All(
-                                vol.Coerce(int),
-                                vol.Range(min=FACEPLATE_WIDTH_MIN_PX, max=FACEPLATE_WIDTH_MAX_PX),
-                            ),
+                            ): vol.In({"800":"800 px","1024":"1024 px","custom":"Custom"}),
                         }
                     ),
                     {"collapsed": True},
@@ -404,6 +397,11 @@ class SwitchVisionOptionsFlow(OptionsFlow):
                 ):
                     saved.pop(synthetic_key, None)
                 saved.pop(CONF_RESET_TO_DEFAULTS, None)
+                if str(saved.get(CONF_FACEPLATE_WIDTH_MODE,"800"))=="custom":
+                    saved[CONF_FACEPLATE_CUSTOM_WIDTH]=self._value(CONF_FACEPLATE_CUSTOM_WIDTH)
+                    self._pending_faceplate_options=saved
+                    return await self.async_step_faceplate_custom_width()
+                saved[CONF_FACEPLATE_CUSTOM_WIDTH]=self._value(CONF_FACEPLATE_CUSTOM_WIDTH)
                 return self.async_create_entry(data=saved)
 
         return self.async_show_form(
@@ -411,3 +409,14 @@ class SwitchVisionOptionsFlow(OptionsFlow):
             data_schema=await self._schema(),
             errors=errors,
         )
+
+    async def async_step_faceplate_custom_width(self,user_input=None):
+        saved=getattr(self,"_pending_faceplate_options",None)
+        if saved is None:return await self.async_step_init()
+        if user_input is not None:
+            saved=dict(saved);saved[CONF_FACEPLATE_CUSTOM_WIDTH]=int(user_input[CONF_FACEPLATE_CUSTOM_WIDTH])
+            self._pending_faceplate_options=None
+            return self.async_create_entry(data=saved)
+        return self.async_show_form(step_id="faceplate_custom_width",data_schema=vol.Schema({
+            vol.Required(CONF_FACEPLATE_CUSTOM_WIDTH,default=self._value(CONF_FACEPLATE_CUSTOM_WIDTH)):
+            vol.All(vol.Coerce(int),vol.Range(min=FACEPLATE_WIDTH_MIN_PX,max=FACEPLATE_WIDTH_MAX_PX))}))

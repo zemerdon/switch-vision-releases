@@ -27,6 +27,8 @@ def test_faceplate_width_is_global_core_setting():
     assert '"faceplate_width": _faceplate_width_settings(entry)' in INIT
     assert '"faceplate_width": faceplate_width_settings' in INIT
     assert '_globalFaceplateWidth' in JS
+    assert 'async_step_faceplate_custom_width' in FLOW
+    assert 'CONF_FACEPLATE_CUSTOM_WIDTH] = self._value(CONF_FACEPLATE_CUSTOM_WIDTH)' in FLOW
 
 def test_faceplate_labels_are_explicit_media_counts():
     data = json.loads((ROOT / "src/faceplates/catalog.json").read_text(encoding="utf-8"))

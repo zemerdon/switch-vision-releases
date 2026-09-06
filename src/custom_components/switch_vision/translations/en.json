@@ -90,11 +90,13 @@
             "description": "Shared switch-card presentation controls.",
             "data": {
               "show_calibration_buttons": "Show calibration buttons on switch cards",
-              "show_card_headers": "Show card headers"
+              "show_card_headers": "Show card headers",
+              "faceplate_width_mode": "Faceplate width"
             },
             "data_description": {
               "show_calibration_buttons": "Show or hide the on-card Calibration button on the automatic generated Switch Vision dashboard.",
-              "show_card_headers": "Show or hide the complete header row on every Switch Vision card, including custom YAML cards."
+              "show_card_headers": "Show or hide the complete header row on every Switch Vision card, including custom YAML cards.",
+              "faceplate_width_mode": "Choose 800 px, 1024 px, or Custom. Your last custom value is preserved when using a preset."
             }
           },
           "activity_leds": {
@@ -151,6 +153,16 @@
               "installer_content_width": "Controls content width in supported Switch Vision Installer versions."
             }
           }
+        }
+      },
+      "faceplate_custom_width": {
+        "title": "Custom faceplate width",
+        "description": "Set the maximum card and faceplate width. Height scales proportionally; topology and telemetry are unchanged.",
+        "data": {
+          "faceplate_custom_width": "Custom width (px)"
+        },
+        "data_description": {
+          "faceplate_custom_width": "Enter 320-4096 px. This value is remembered when you switch back to a preset."
         }
       }
     },
