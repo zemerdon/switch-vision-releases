@@ -52,7 +52,7 @@ def main() -> int:
         "calibrationSfpCollisionMessage(sfpCollision)",
         'if (!calibrationEnabled(config) && !configuredPortCountAllows(config, "port_count", n)) continue;',
         'if (!calibrationEnabled(config) && !configuredPortCountAllows(config, "sfp_port_count", sfpPort)) continue;',
-        'if (!portCount && !sfpCount) errors.push("The profile contains no RJ45 or SFP/uplink positions.");',
+        'if (!portCount && !sfpCount) warnings.push("No port positions configured. This calibration profile contains no RJ45 or SFP/uplink positions.',
         'const firstSfpKey = sortedCalibrationSfpKeys(cal)[0];',
         'firstSfpKey ? `sfp:${sfpPortNumber(firstSfpKey)}` : "all"',
         'firstPortKey ? `port:${firstPortKey}` : "all"',

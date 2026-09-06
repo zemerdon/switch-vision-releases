@@ -93,7 +93,7 @@ class OpticalOnlyCalibrationTests(unittest.TestCase):
         self.assertEqual(len(result["ports"]), 0)
         self.assertEqual(len(result["sfp"]), 32)
 
-    def test_calibration_still_rejects_no_connectors(self) -> None:
+    def test_calibration_allows_no_connectors(self) -> None:
         validate = load_calibration_validator()
         calibration = {
             "schema_version": 1,
@@ -102,8 +102,8 @@ class OpticalOnlyCalibrationTests(unittest.TestCase):
             "sfp": {},
             "status_leds": {},
         }
-        with self.assertRaisesRegex(Invalid, "at least one RJ45 or optical port"):
-            validate("empty_connector_test", calibration)
+        result = validate("empty_connector_test", calibration)
+        self.assertIs(result, calibration)
 
 
 if __name__ == "__main__":

@@ -1,3 +1,12 @@
+## v2.6.33 — Core UI/UX consistency batch
+
+- Added persistent transparent Status Box background toggles without discarding selected colours.
+- Added independent per-profile Link LED and Activity LED visibility controls.
+- Added global 800 px / 1024 px / custom faceplate width settings with responsive proportional rendering.
+- Normalized Calibration faceplate display names to explicit RJ45/SFP media counts.
+- Fixed Test Mode button Target Entity arrow/nudge movement parity with the Calibration button.
+- Allowed zero-port calibration profiles to save with a visible non-blocking warning.
+
 ## v2.6.32 — UniFi 32-port optical identity
 
 - Correct the owner-calibrated UniFi optical faceplate identity from `unifi-28sfp` to canonical `unifi-32sfp`; its existing geometry already contains 28 × SFP+ plus four SFP28/TWE positions.

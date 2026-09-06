@@ -59,7 +59,7 @@ def main() -> int:
         '>200px</option>',
         '<summary><span>Port Labels and LEDs</span>',
         '<summary><span>Switch and Stack Manual Override</span>',
-        'The profile contains no RJ45 or SFP/uplink positions.',
+        'No port positions configured. This calibration profile contains no RJ45 or SFP/uplink positions.',
     ]
     for marker in required:
         assert marker in source, f"missing v2.6.27 Calibration Core contract marker: {marker}"
