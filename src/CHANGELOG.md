@@ -1,3 +1,10 @@
+## v2.6.34 — Auto faceplate scaling
+
+- Restored the original responsive card-sizing behaviour as the new Auto faceplate-width default.
+- Preserved explicit 800 px, 1024 px and Custom maximum-width choices.
+- Auto fills available Home Assistant width while never upscaling beyond the native 2048 px faceplate canvas.
+- Clarified card header rendered sizing versus native artwork dimensions.
+
 ## v2.6.33 — Core UI/UX consistency batch
 
 - Added persistent transparent Status Box background toggles without discarding selected colours.
