@@ -2910,7 +2910,7 @@ function sfpPortNumber(name) {
 }
 
 
-function calibrationEnabled(config) {
+function calibrationEnabled(config = {}) {
   return config.calibration_mode === true || config.calibration === true;
 }
 

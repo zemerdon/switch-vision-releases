@@ -113,6 +113,7 @@ if (base !== reverted) throw new Error("full revert did not compare clean");
 
     def test_target_selection_survives_repeated_set_config(self):
         required = (
+            "function calibrationEnabled(config = {})",
             "const SV_CALIBRATION_TRANSIENT_CONFIG_KEYS = Object.freeze([",
             "function calibrationTransientEditorState(config)",
             "const calibrationEditorState = calibrationControlsEnabled(this.config)",
