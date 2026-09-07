@@ -1,0 +1,96 @@
+{
+  "schema": "switch-vision-layout",
+  "version": "source-0.1",
+  "logo": {
+    "file": "sv-logo.png",
+    "x": 143,
+    "y": -1,
+    "width": 187,
+    "height": 188,
+    "fallback_text": "SV",
+    "fallback_x": 72,
+    "fallback_y": 99
+  },
+  "model_text": {
+    "text": "Catalyst 3650 48 PoE+ 2X10G",
+    "x": 1742,
+    "y": 48,
+    "anchor": "middle"
+  },
+  "status": {
+    "radius": 6.3,
+    "mode_radius": 7.2,
+    "labels": {
+      "MODE": {
+        "dx": -34,
+        "dy": 0,
+        "anchor": "end"
+      },
+      "STAT": {
+        "dx": 24,
+        "dy": 0,
+        "anchor": "start"
+      },
+      "SYST": {
+        "dx": 24,
+        "dy": 0,
+        "anchor": "start"
+      },
+      "DUPLX": {
+        "dx": 24,
+        "dy": 0,
+        "anchor": "start"
+      },
+      "ACTV": {
+        "dx": 24,
+        "dy": 0,
+        "anchor": "start"
+      },
+      "SPEED": {
+        "dx": 24,
+        "dy": 0,
+        "anchor": "start"
+      },
+      "STACK": {
+        "dx": 24,
+        "dy": 0,
+        "anchor": "start"
+      },
+      "PoE": {
+        "dx": 24,
+        "dy": 0,
+        "anchor": "start"
+      }
+    }
+  },
+  "ports": {
+    "odd": 7,
+    "even": -7,
+    "r": 3.1
+  },
+  "sfp": {
+    "r": 3.3,
+    "labels": {
+      "G1": {
+        "x": 1709,
+        "y": 188,
+        "text": "G1"
+      },
+      "G2": {
+        "x": 1838,
+        "y": 188,
+        "text": "G2"
+      },
+      "G3/TE3": {
+        "x": 1710,
+        "y": 402,
+        "text": "G3 / TE3"
+      },
+      "G4/TE4": {
+        "x": 1839,
+        "y": 402,
+        "text": "G4 / TE4"
+      }
+    }
+  }
+}

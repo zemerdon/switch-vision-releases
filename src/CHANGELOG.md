@@ -1,3 +1,12 @@
+## v2.6.35 — Calibration state, target stability and 3850 12XS faceplate
+
+- Make Save Profile reflect the actual persisted profile difference from the last loaded/saved baseline, including returning to clean when every change is reverted.
+- Keep rapid Target/Part/Step and related editor selection stable across Home Assistant setConfig refreshes so the latest Calibration target remains selected.
+- Make the Test Mode button visibly selectable as an arrow/nudge-only Calibration target, with no drag or direct coordinate/size editing.
+- Add the calibrated Cisco Catalyst 3850 12XS faceplate and supplied 12-SFP / 7-status-LED factory geometry without inferring device support or live topology.
+- Extend native-canvas normalization to Test Mode button geometry and the canonical faceplate catalog to the new 3850 12XS identity.
+- Add permanent regressions for dirty-state change/revert semantics, target stability, Test Mode selection/nudge-only behavior, catalog identity, geometry and the no-phantom-topology boundary.
+
 ## v2.6.34 — Auto faceplate scaling
 
 - Restored the original responsive card-sizing behaviour as the new Auto faceplate-width default.

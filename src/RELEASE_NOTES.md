@@ -1,3 +1,13 @@
+# Switch Vision Core v2.6.35
+
+Core 2.6.35 fixes Calibration Save-state and selection stability. Save Profile now reflects whether the persisted working profile actually differs from the last loaded or saved baseline, so changing an option enables Save and reverting every persisted change disables it again. Rapid Target/Part/Step selection is kept as editor-session state across Home Assistant config refreshes, preventing quick target changes from jumping back to an older selection.
+
+The Test Mode button is now visibly selectable as a Calibration target and supports the intended arrow/nudge positioning only. It is not draggable and direct coordinate/size editing remains disabled for that target.
+
+This release also adds the calibrated Cisco Catalyst 3850 12XS faceplate with the supplied 12-SFP and seven-status-LED geometry. The new asset is catalogued and selectable, but it does not by itself create Discovery support, live telemetry mappings, physical-port inference or any other device capability.
+
+Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core because the custom component changed in this release.
+
 # Switch Vision Core v2.6.34
 
 Core 2.6.34 restores the original responsive card sizing as the new Auto default. Auto fills available Home Assistant dashboard width and scales height/calibrated geometry proportionally while never upscaling beyond the native 2048 px faceplate canvas. Explicit 800 px, 1024 px and Custom maximum-width modes remain available and existing explicitly saved choices are preserved.
