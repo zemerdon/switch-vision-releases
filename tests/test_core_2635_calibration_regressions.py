@@ -151,16 +151,18 @@ if (base !== reverted) throw new Error("full revert did not compare clean");
         ):
             self.assertNotIn(transient, export_block)
 
-    def test_test_mode_button_target_is_visible_nudge_only(self):
+    def test_test_mode_button_target_is_position_only(self):
         self.assertIn('"test_mode_button", "Test Mode button"', self.card)
-        self.assertIn('if (type === "test_mode_button") return option("box", "Position (arrows only)");', self.card)
+        self.assertIn('if (type === "test_mode_button") return option("box", "Position (X/Y or arrows)");', self.card)
         self.assertIn('editable.type === "calibration_button" || editable.type === "test_mode_button"', self.card)
         self.assertIn('"TEST MODE BUTTON"', self.card)
         self.assertIn('testButtonActive', self.card)
+        self.assertIn('const testModeUi = ui.test_mode_button || {};', self.card)
+        self.assertNotIn('calibration.ui?.test_mode_button', self.card)
 
         coordinate_start = self.card.index("function calibrationCoordinatePoints(")
         coordinate_end = self.card.index("\nfunction commonCalibrationCoordinate", coordinate_start)
-        self.assertNotIn('"test_mode_button"', self.card[coordinate_start:coordinate_end])
+        self.assertIn('"test_mode_button"', self.card[coordinate_start:coordinate_end])
 
         size_start = self.card.index("function calibrationSizePairs(")
         size_end = self.card.index("\nfunction nextCalibrationPortNumber", size_start)
@@ -168,7 +170,7 @@ if (base !== reverted) throw new Error("full revert did not compare clean");
 
         direct_start = self.card.index("  setCalibrationTargetCoordinates(")
         direct_end = self.card.index("\n  setCalibrationTargetSize(", direct_start)
-        self.assertNotIn('"test_mode_button"', self.card[direct_start:direct_end])
+        self.assertIn('"test_mode_button"', self.card[direct_start:direct_end])
 
         editable_start = self.card.index('  if (type === "test_mode_button") {')
         editable_end = self.card.index("\n  if (type === \"status_box\")", editable_start)

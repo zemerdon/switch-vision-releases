@@ -4806,8 +4806,8 @@ function getEditableCalibrationTarget(cal, config) {
 
   if (type === "test_mode_button") {
     const item = cal.ui.test_mode_button;
-    // Arrow/nudge-only target: selected and movable, but intentionally not
-    // resizable/direct-coordinate editable or pointer-draggable.
+    // Position-only target: selected and movable via nudge or direct X/Y, but
+    // intentionally not resizable or pointer-draggable.
     return { type, id: "test_mode_button", key: "test_mode_button", item, part: "box", point: [item.x, item.y], hitbox: null, ui: true };
   }
 
@@ -5010,7 +5010,7 @@ function calibrationCoordinatePoints(cal, editable, createMissing = false) {
       .map(([, point]) => point);
   } else if (editable.group && ["status_fields", "status_fields_2"].includes(editable.type)) {
     points = statusFieldPointsForPart(editable.item, editable.part);
-  } else if (["logo", "calibration_button", "status_box", "status_box_2"].includes(editable.type)) {
+  } else if (["logo", "calibration_button", "test_mode_button", "status_box", "status_box_2"].includes(editable.type)) {
     points = [[editable.item?.x, editable.item?.y]];
   } else if (editable.type === "port") {
     points = [portPoint(editable.item, editable.key)];
@@ -5205,7 +5205,7 @@ function calibrationPartOptionsHtml(target, selectedPart) {
   const part = String(selectedPart || "entire").toLowerCase();
   const option = (value, label) => `<option value="${htmlEscape(value)}" ${value === part ? "selected" : ""}>${htmlEscape(label)}</option>`;
   if (["logo", "status_box", "status_box_2", "calibration_button"].includes(type)) return option("box", "Box / size");
-  if (type === "test_mode_button") return option("box", "Position (arrows only)");
+  if (type === "test_mode_button") return option("box", "Position (X/Y or arrows)");
   if (["status_fields", "status_fields_2"].includes(type)) return [
     option("field", "All fields"),
     option("label", "All labels"),
@@ -5880,7 +5880,7 @@ class SwitchVision3650 extends HTMLElement {
       "right:auto"
     ].join(";");
     const testModeActive = calibrationTestModeEnabled(this.config);
-const testModeUi = calibration.ui?.test_mode_button || {};
+const testModeUi = ui.test_mode_button || {};
 const testModeStyle = [
   `left:${(Number(testModeUi.x || 0) / designWidth) * 100}%`,
   `top:${(Number(testModeUi.y || 0) / designHeight) * 100}%`,
@@ -7867,7 +7867,7 @@ const testModeBadge = testModeActive && testModeUi.show !== false
       return true;
     };
 
-    if (["logo", "calibration_button", "status_box", "status_box_2"].includes(editable.type)) {
+    if (["logo", "calibration_button", "test_mode_button", "status_box", "status_box_2"].includes(editable.type)) {
       if (hasX) editable.item.x = rounded(xValue);
       if (hasY) editable.item.y = rounded(yValue);
       return true;
@@ -9423,6 +9423,7 @@ const testModeBadge = testModeActive && testModeUi.show !== false
           if (editable.type === "status" && original.status_leds?.[editable.key]) cal.status_leds[editable.key] = original.status_leds[editable.key];
           if (editable.type === "logo") cal.ui.logo = original.ui.logo;
           if (editable.type === "calibration_button") cal.ui.calibration_button = original.ui.calibration_button;
+          if (editable.type === "test_mode_button") cal.ui.test_mode_button = original.ui.test_mode_button;
           if (editable.type === "status_box") cal.ui.status_panel = original.ui.status_panel;
           if (editable.type === "status_box_2") cal.ui.status_panel_2 = original.ui.status_panel_2;
           if (editable.type === "status_fields") {
