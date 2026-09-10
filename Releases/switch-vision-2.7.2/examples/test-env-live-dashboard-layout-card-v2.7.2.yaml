@@ -1,0 +1,45 @@
+# Switch Vision test environment live dashboard
+# Optional layout-card version: requires lovelace-layout-card / layout-card
+#
+# Use this example for the fresh HAOS / Discovery-generated test stack.
+# It expects Switch Vision Discovery to generate SNMP2MQTT entities with
+# prefixes SW5 and SW6 from /share/switch_vision/generated-snmp2mqtt.yaml.
+
+views:
+  - title: Switch Vision Test Env
+    path: switch-vision-test-env
+    type: custom:vertical-layout
+    layout:
+      width: 800
+      max_cols: 1
+    cards:
+      - type: markdown
+        content: |
+          ## Switch Vision — Test Environment
+
+          Live SW5/SW6 test stack view. Calibration buttons are enabled in this example.
+
+      - type: custom:switch-vision-3650
+        title: Cisco 3650 Test Stack — SW5
+        member: SW5
+        demo: false
+        calibration_profile: SW5
+        calibration_button: true
+        activity_hold_seconds: 12
+        switch_ip: 192.168.1.102
+        status_entity_prefix: sensor.sw5_port_
+        status_entity_suffix: _status
+
+      - type: custom:switch-vision-3650
+        title: Cisco 3650 Test Stack — SW6
+        member: SW6
+        demo: false
+        calibration_profile: SW6
+        calibration_button: true
+        activity_hold_seconds: 12
+        switch_ip: 192.168.1.102
+        stack_enabled: true
+        stack_uptime_mode: inherit_stack
+        stack_uptime_source: sensor.sw5_uptime
+        status_entity_prefix: sensor.sw6_port_
+        status_entity_suffix: _status

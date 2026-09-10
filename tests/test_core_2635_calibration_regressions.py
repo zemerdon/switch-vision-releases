@@ -56,7 +56,7 @@ class Core2635CalibrationRegressionTests(unittest.TestCase):
         # exact faceplate factory; only faceplate artwork identity is supplied by Core.
         self.assertFalse(render["ui"]["logo"]["show"])
         self.assertEqual(render["ui"]["logo"]["y"], 0)
-        self.assertEqual(render["ui"]["status_panel"]["x"], 0)
+        self.assertEqual(render["ui"]["status_panel"]["x"], -337)
         self.assertEqual(render["ui"]["status_panel"]["y"], 237)
         self.assertFalse(render["ui"]["status_panel_2"]["show"])
         self.assertEqual(render["ui"]["status_panel_2"]["x"], 0)

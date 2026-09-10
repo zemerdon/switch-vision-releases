@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.2
+
+Core 2.7.2 corrects the remaining Cisco Catalyst 3850 12XS factory-calibration issue: only Status Box 1 moves, restoring the owner-supplied render-space X coordinate of `-337`. Its Y position, size, all twelve SFP positions, status LEDs, Calibration/Test Mode buttons and faceplate artwork are unchanged.
+
+The Core device registry is also synchronized with the exact real-hardware models already proven by current real-hardware walks/API captures in Discovery. Walk evidence is sufficient for exact-model registry inclusion; visual validation remains a separate Experimental dimension. GS1915-24EP is included as 24 copper ports with zero optical uplinks and PoE capability, while its temporary oversized canvas remains topology-inert.
+
+Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core because the custom component/device metadata changes in this release.
+
 # Switch Vision Core v2.7.1
 
 Core 2.7.1 is a corrective follow-up to 2.7.0. The live TEST MODE badge now reads its position from the same current working calibration used by the Calibration overlay, so Direct X/Y and arrow/nudge movement affect the real badge immediately and remain correct after save/reload.

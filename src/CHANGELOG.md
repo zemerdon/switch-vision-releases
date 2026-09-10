@@ -1,3 +1,10 @@
+## v2.7.2 — Walk-backed model registry sync and 3850 Status Box 1 correction
+
+- Restore the owner-supplied Cisco Catalyst 3850 12XS Status Box 1 horizontal geometry: render-space X returns from the accidental clamped `0` to `-337` while Y/width/height, all 12 SFP positions, LEDs, buttons and faceplate artwork remain unchanged.
+- Add every exact real-hardware walk/API-backed model already present in the current Discovery registry but missing from Core, keeping those entries Experimental and preserving their existing topology/evidence/visual metadata.
+- Add the walk-backed Zyxel GS1915-24EP exact model contract with 24 copper ports, zero optical uplinks and PoE capability; visual alignment remains Experimental and the oversized stock canvas cannot create phantom uplinks.
+- Add permanent regressions for the 3850 Status Box 1 owner coordinate and Core retention of the walk-backed registry set.
+
 ## v2.7.1 — Field follow-up: live Test Mode and exact 3850 default
 
 - Fix the live TEST MODE badge to render from the current working calibration instead of a nested calibration-button object, so its real position follows Calibration immediately.
