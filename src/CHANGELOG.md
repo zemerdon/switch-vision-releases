@@ -1,3 +1,10 @@
+## v2.7.0 — Test Mode position persistence and 3850 12XS coordination
+
+- Make the Calibration Test Mode button a position-only target with both Direct X/Y and arrow/nudge movement while keeping resize and pointer-drag disabled.
+- Render the live TEST MODE badge from the current working calibration so position changes apply immediately before save.
+- Preserve Test Mode button position through calibration export, save/reload, reset and persisted fingerprints with permanent regressions.
+- Carry the reviewed Cisco Catalyst 3850 12XS factory-geometry binding while preserving physical topology as the authority and coordinating exact device support with Discovery 2.4.0.
+
 ## v2.6.35 — Calibration state, target stability and 3850 12XS faceplate
 
 - Make Save Profile reflect the actual persisted profile difference from the last loaded/saved baseline, including returning to clean when every change is reverted.
