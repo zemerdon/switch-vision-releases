@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.0
+
+Core 2.7.0 is the coordinated Core side of the current Switch Vision compatibility release. Calibration now treats the TEST MODE indicator as a position-only persisted target: arrow/nudge and Direct X/Y both update the working calibration immediately, the live TEST MODE badge renders from that working profile, and saved/reloaded calibration retains the position. Resize and pointer-drag remain intentionally unavailable for this target.
+
+This release also carries the reviewed Cisco Catalyst 3850 12XS factory-geometry binding so the exact 12-SFP faceplate/profile is selected consistently when that model is used. Physical topology remains authoritative; visual geometry does not create ports or capabilities, and the matching Discovery 2.4.0 release owns the exact WS-C3850-12XS-E physical contract.
+
+Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core because the custom component changed in this release.
+
 # Switch Vision Core v2.6.35
 
 Core 2.6.35 fixes Calibration Save-state and selection stability. Save Profile now reflects whether the persisted working profile actually differs from the last loaded or saved baseline, so changing an option enables Save and reverting every persisted change disables it again. Rapid Target/Part/Step selection is kept as editor-session state across Home Assistant config refreshes, preventing quick target changes from jumping back to an older selection.
