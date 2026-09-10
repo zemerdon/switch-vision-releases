@@ -1,3 +1,10 @@
+## v2.7.1 — Field follow-up: live Test Mode and exact 3850 default
+
+- Fix the live TEST MODE badge to render from the current working calibration instead of a nested calibration-button object, so its real position follows Calibration immediately.
+- Add the exact Experimental `WS-C3850-12XS-E` Core visual recommendation: 0 RJ45 + 12 SFP, existing `cisco-3850-12xs.png` faceplate, and `cisco_3850_12xs` profile.
+- Replace the incorrect 3850 factory geometry with the owner-supplied 2048 x 448 render geometry while preserving native-PNG storage, factory bounds and physical-topology authority.
+- Strengthen permanent regressions so the 3850 cannot fall back to a generic 48-port visual and the live Test Mode path cannot regress to nested UI state.
+
 ## v2.7.0 — Test Mode position persistence and 3850 12XS coordination
 
 - Make the Calibration Test Mode button a position-only target with both Direct X/Y and arrow/nudge movement while keeping resize and pointer-drag disabled.
