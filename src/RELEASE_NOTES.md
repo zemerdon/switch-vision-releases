@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.1
+
+Core 2.7.1 is a corrective follow-up to 2.7.0. The live TEST MODE badge now reads its position from the same current working calibration used by the Calibration overlay, so Direct X/Y and arrow/nudge movement affect the real badge immediately and remain correct after save/reload.
+
+The exact Experimental `WS-C3850-12XS-E` visual association is now present in Core and resolves **Default / recommended** to the existing `cisco-3850-12xs.png` faceplate with the `cisco_3850_12xs` factory profile. The owner-supplied 2048 x 448 geometry is preserved for the twelve SFP positions and Calibration/Test Mode buttons; factory-only UI box origins are normalized inside the canvas without changing the faceplate artwork or physical port topology.
+
+Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core because the custom component changed in this release.
+
 # Switch Vision Core v2.7.0
 
 Core 2.7.0 is the coordinated Core side of the current Switch Vision compatibility release. Calibration now treats the TEST MODE indicator as a position-only persisted target: arrow/nudge and Direct X/Y both update the working calibration immediately, the live TEST MODE badge renders from that working profile, and saved/reloaded calibration retains the position. Resize and pointer-drag remain intentionally unavailable for this target.

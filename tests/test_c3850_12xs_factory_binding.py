@@ -72,6 +72,20 @@ class C385012XSFactoryBindingTests(unittest.TestCase):
                 )
                 self.assertEqual(len(factory["sfp"]), 12)
 
+    def test_exact_model_default_recommendation_uses_existing_3850_faceplate(self) -> None:
+        for path in (CARD, MIRROR):
+            text = path.read_text(encoding="utf-8")
+            match = re.search(r"const SV_DEVICE_VISUAL_RECOMMENDATIONS = (\[.*?\]);", text, re.DOTALL)
+            self.assertIsNotNone(match, path)
+            rows = json.loads(match.group(1))
+            exact = next(row for row in rows if row.get("model") == "WS-C3850-12XS-E")
+            self.assertEqual(exact["status"], "experimental")
+            self.assertEqual(exact["rj45"], 0)
+            self.assertEqual(exact["uplinks"], 12)
+            self.assertEqual(exact["faceplate"], "faceplates/cisco-3850-12xs.png")
+            self.assertEqual(exact["profile"], PROFILE)
+            self.assertEqual(exact["canvas"], {"width": 2048, "height": 448})
+
     def test_mirrored_card_sources_remain_byte_identical(self) -> None:
         self.assertEqual(CARD.read_bytes(), MIRROR.read_bytes())
 

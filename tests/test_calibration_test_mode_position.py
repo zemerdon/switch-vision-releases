@@ -15,7 +15,10 @@ def main() -> int:
     position_marker = '["logo", "calibration_button", "test_mode_button", "status_box", "status_box_2"].includes(editable.type)'
     assert source.count(position_marker) >= 2
     assert 'if (editable.type === "calibration_button" || editable.type === "test_mode_button") {' in source
-    assert 'const testModeUi = ui.test_mode_button || {};' in source
+    assert 'const workingUi = uiFromCalibration(calibrationRenderSpaceData(this.calibrationData()));' in source
+    assert 'const ui = workingUi.calibration_button || {};' in source
+    assert 'const testModeUi = workingUi.test_mode_button || {};' in source
+    assert 'const testModeUi = ui.test_mode_button || {};' not in source
     assert 'cal.ui.test_mode_button = original.ui.test_mode_button;' in source
 
     # Test Mode position is part of exported/persisted calibration UI state.
@@ -27,7 +30,7 @@ def main() -> int:
 
     # The working calibration must drive the live TEST MODE badge immediately.
     assert 'calibration.ui?.test_mode_button' not in source
-    assert 'uiFromCalibration(calibrationRenderSpaceData(this.calibrationData())).calibration_button || {}' in source
+    assert 'const workingUi = uiFromCalibration(calibrationRenderSpaceData(this.calibrationData()));' in source
 
     # Position-only means no W/H sizing and no pointer hitbox/drag target.
     size_block = source[source.index("function calibrationSizePairs"):source.index("function nextCalibrationPortNumber")]
@@ -37,7 +40,9 @@ def main() -> int:
 
     # Build parity will copy canonical JS into the HA component.
     if SOURCE.read_bytes() == COMPONENT.read_bytes():
-        assert 'const testModeUi = ui.test_mode_button || {};' in COMPONENT.read_text(encoding="utf-8")
+        component = COMPONENT.read_text(encoding="utf-8")
+        assert 'const testModeUi = workingUi.test_mode_button || {};' in component
+        assert 'const testModeUi = ui.test_mode_button || {};' not in component
 
     print("Core Test Mode calibration position contract: PASS")
     return 0

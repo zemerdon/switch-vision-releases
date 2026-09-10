@@ -3,9 +3,12 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import subprocess
+import sys
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from src.faceplate_native_canvas import render_space_calibration
 CARD = ROOT / "src" / "js" / "switch-vision.js"
 MIRROR = ROOT / "src" / "custom_components" / "switch_vision" / "switch-vision-card.js"
 CATALOG = ROOT / "src" / "faceplates" / "catalog.json"
@@ -38,26 +41,32 @@ class Core2635CalibrationRegressionTests(unittest.TestCase):
         self.assertEqual(profile["image"]["file"], "faceplates/cisco-3850-12xs.png")
         self.assertEqual(profile["image"]["coordinate_space"], "image-native-v1")
         self.assertEqual((profile["image"]["width"], profile["image"]["height"]), (2680, 356))
-        self.assertEqual(profile["ports"], {})
-        self.assertEqual(list(profile["sfp"]), [f"SFP{n}" for n in range(1, 13)])
-        self.assertEqual(len(profile["status_leds"]), 7)
-        self.assertTrue(all(item.get("supported_speed", "") == "" for item in profile["sfp"].values()))
-        self.assertEqual(profile["sfp"]["SFP1"]["center"], [760.705357143, 243.160714286])
-        self.assertEqual(profile["sfp"]["SFP7"]["center"], [1383.705357143, 243.160714286])
-        self.assertEqual(profile["sfp"]["SFP12"]["center"], [1894.660714286, 243.160714286])
-        # The supplied geometry is authoritative, but contributor-local editor
-        # presentation is not a factory default. Status LEDs start visible and
-        # the negative local status/logo placement is not promoted.
-        self.assertEqual(profile["ui"]["status_leds"]["hidden"], [])
-        self.assertTrue(profile["ui"]["show_link_leds"])
-        self.assertTrue(profile["ui"]["show_activity_leds"])
-        self.assertNotIn("status_panel", profile["ui"])
-        self.assertNotIn("logo", profile["ui"])
-        # Test Mode button geometry must be normalized with the rest of the UI.
-        self.assertEqual(
-            [profile["ui"]["test_mode_button"]["x"], profile["ui"]["test_mode_button"]["y"]],
-            [2026.571428571, 46.089285714],
-        )
+        render = render_space_calibration(profile)
+        self.assertEqual((render["image"]["width"], render["image"]["height"]), (2048, 448))
+        self.assertEqual(render["ports"], {})
+        self.assertEqual(list(render["sfp"]), [f"SFP{n}" for n in range(1, 13)])
+        self.assertEqual(len(render["status_leds"]), 7)
+        self.assertTrue(all(item.get("supported_speed", "") == "" for item in render["sfp"].values()))
+        self.assertEqual(render["sfp"]["SFP1"]["center"], [295, 306])
+        self.assertEqual(render["sfp"]["SFP7"]["center"], [1079, 306])
+        self.assertEqual(render["sfp"]["SFP12"]["center"], [1722, 306])
+        self.assertEqual(render["sfp"]["SFP1"]["hitbox"], [99, 58])
+        self.assertEqual(render["sfp"]["SFP12"]["led_right_size"], [30, 15])
+        # The owner-supplied Geometry v2 presentation is authoritative for this
+        # exact faceplate factory; only faceplate artwork identity is supplied by Core.
+        self.assertFalse(render["ui"]["logo"]["show"])
+        self.assertEqual(render["ui"]["logo"]["y"], 0)
+        self.assertEqual(render["ui"]["status_panel"]["x"], 0)
+        self.assertEqual(render["ui"]["status_panel"]["y"], 237)
+        self.assertFalse(render["ui"]["status_panel_2"]["show"])
+        self.assertEqual(render["ui"]["status_panel_2"]["x"], 0)
+        self.assertEqual(render["ui"]["status_leds"]["hidden"], ["STAT", "SYST", "DUPLX", "ACTV", "SPEED", "STACK", "PoE"])
+        self.assertFalse(render["ui"]["show_link_leds"])
+        self.assertTrue(render["ui"]["show_activity_leds"])
+        self.assertEqual(render["ui"]["calibration_button"]["x"], 1888)
+        self.assertEqual(render["ui"]["calibration_button"]["y"], 14)
+        self.assertEqual(render["ui"]["test_mode_button"]["x"], 1888)
+        self.assertEqual(render["ui"]["test_mode_button"]["y"], 58)
 
     def test_3850_png_dimensions(self):
         raw = FACEPLATE.read_bytes()[:24]
@@ -68,12 +77,20 @@ class Core2635CalibrationRegressionTests(unittest.TestCase):
             (2680, 356),
         )
 
-    def test_3850_visual_does_not_create_device_support(self):
+    def test_3850_exact_model_uses_existing_faceplate_and_profile(self):
         registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
-        models = {str(row.get("model") or "") for row in registry.get("devices", [])}
+        models = {str(row.get("model") or ""): row for row in registry.get("devices", [])}
         self.assertNotIn("WS-C3850-12XS", models)
-        self.assertNotIn("WS-C3850-12XS-E", models)
         self.assertNotIn("WS-C3850-12XS-S", models)
+        exact = models["WS-C3850-12XS-E"]
+        self.assertEqual(exact["status"], "experimental")
+        self.assertEqual(exact["ports"]["rj45"], 0)
+        self.assertEqual(exact["ports"]["uplinks"], 12)
+        self.assertEqual(exact["default_faceplate"], "faceplates/cisco-3850-12xs.png")
+        self.assertEqual(exact["calibration_profile"], "cisco_3850_12xs")
+        self.assertEqual(exact["visuals"]["recommended_faceplate"], "faceplates/cisco-3850-12xs.png")
+        self.assertEqual(exact["visuals"]["calibration_profile"], "cisco_3850_12xs")
+        self.assertEqual(exact["visuals"]["canvas"], {"width": 2048, "height": 448})
 
     def test_dirty_state_is_baseline_difference_not_touch_flag(self):
         for marker in (
@@ -157,7 +174,10 @@ if (base !== reverted) throw new Error("full revert did not compare clean");
         self.assertIn('editable.type === "calibration_button" || editable.type === "test_mode_button"', self.card)
         self.assertIn('"TEST MODE BUTTON"', self.card)
         self.assertIn('testButtonActive', self.card)
-        self.assertIn('const testModeUi = ui.test_mode_button || {};', self.card)
+        self.assertIn('const workingUi = uiFromCalibration(calibrationRenderSpaceData(this.calibrationData()));', self.card)
+        self.assertIn('const ui = workingUi.calibration_button || {};', self.card)
+        self.assertIn('const testModeUi = workingUi.test_mode_button || {};', self.card)
+        self.assertNotIn('const testModeUi = ui.test_mode_button || {};', self.card)
         self.assertNotIn('calibration.ui?.test_mode_button', self.card)
 
         coordinate_start = self.card.index("function calibrationCoordinatePoints(")
