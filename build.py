@@ -1418,7 +1418,8 @@ def validate_calibration_test_mode_ui(base: Path, source_layout: bool = False) -
         'test_mode_button: { show: true, x: 1888, y: 58, width: 138, height: 34, anchor: "top_right" }',
         'cal.ui.test_mode_button', 'rawTarget === "test_mode_button"', 'type === "test_mode_button"',
         'option("test_mode_button", "Test Mode button")', 'data-target="test_mode_button"',
-        'calibration.ui?.test_mode_button',
+        'const testModeUi = ui.test_mode_button || {};',
+        'Position-only target: selected and movable via nudge or direct X/Y',
     ]
     missing_js = [marker for marker in required_js if marker not in text]
     if missing_js: raise SystemExit("Calibration Test Mode UI validation failed: missing JS " + ", ".join(missing_js))
@@ -1429,7 +1430,7 @@ def validate_calibration_test_mode_ui(base: Path, source_layout: bool = False) -
     ]
     missing_css = [marker for marker in required_css if marker not in css_text]
     if missing_css: raise SystemExit("Calibration Test Mode UI validation failed: missing CSS " + ", ".join(missing_css))
-    forbidden_js = ['+ 30px', 'positionTestMode']
+    forbidden_js = ['+ 30px', 'positionTestMode', 'calibration.ui?.test_mode_button']
     present_js = [marker for marker in forbidden_js if marker in text]
     if present_js: raise SystemExit("Calibration Test Mode UI validation failed: legacy runtime contract remains: " + ", ".join(present_js))
     if '.cv-cal-status-row button{min-width:72px}' in css_text:
