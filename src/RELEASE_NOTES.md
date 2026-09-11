@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.3
+
+Core 2.7.3 promotes **US XG 16** from Detected to Experimental after corroborating independent real-hardware UniFi API evidence confirms the exact optical-first hardware contract: twelve 10G SFP+ positions at API/physical ports 1-12 followed by four 10G-capable RJ45 ports at 13-16. The existing explicit port map, no-PoE contract, negotiated-speed behavior and owner-calibrated 4-RJ45 + 12-SFP+ faceplate remain unchanged.
+
+This is an evidence-confidence promotion only. The XG16 visual remains **Detected** until the model itself receives current live rendered alignment/behavior confirmation, so this release does not claim Community Validated status.
+
+Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core because the packaged device registry and frontend recommendation metadata change in this release.
+
 # Switch Vision Core v2.7.2
 
 Core 2.7.2 corrects the remaining Cisco Catalyst 3850 12XS factory-calibration issue: only Status Box 1 moves, restoring the owner-supplied render-space X coordinate of `-337`. Its Y position, size, all twelve SFP positions, status LEDs, Calibration/Test Mode buttons and faceplate artwork are unchanged.

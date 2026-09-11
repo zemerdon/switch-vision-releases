@@ -132,7 +132,7 @@ def main() -> None:
 
     xg16 = by_model["US XG 16"]
     assert xg16["vendor"] == "Ubiquiti"
-    assert xg16["status"] == "detected"
+    assert xg16["status"] == "experimental"
     assert xg16["dashboard_support"] is True
     assert xg16["mapping_profile"] == "ubiquiti-us-xg-16-api"
     assert xg16["ports"]["rj45"] == 4

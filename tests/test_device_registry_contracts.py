@@ -209,13 +209,14 @@ class DeviceRegistryContractTests(unittest.TestCase):
     def test_us_xg_16_uses_authoritative_optical_first_api_map(self) -> None:
         device = self.models["US XG 16"]
         ports = device.get("ports") or {}
-        self.assertEqual(device.get("status"), "detected")
+        self.assertEqual(device.get("status"), "experimental")
         self.assertIs(device.get("dashboard_support"), True)
         self.assertEqual(ports.get("rj45"), 4)
         self.assertEqual(ports.get("uplinks"), 12)
         self.assertEqual(ports.get("ten_gigabit_sfp_plus"), 12)
         self.assertEqual(device.get("calibration_profile"), "unifi_4_rj45_12sfp")
         self.assertEqual(device.get("default_faceplate"), "faceplates/unifi-4-rj45-12sfp.png")
+        self.assertEqual((device.get("visuals") or {}).get("status"), "detected")
         self.assertEqual(
             device.get("unifi_api_port_map"),
             {"rj45": [13, 14, 15, 16], "sfp": list(range(1, 13))},
