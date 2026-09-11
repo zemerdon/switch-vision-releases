@@ -111,4 +111,20 @@ for factory_default in (
 ):
     assert factory_default in INIT, factory_default
 
+
+# Shared Discovery/Installer presentation scales. Existing values remain valid
+# while the Hub exposes 5 density positions and 10 content-width positions.
+for marker in (
+    'UI_DENSITY_VALUES = ("spacious", "comfortable", "compact", "dense", "ultra_dense")',
+    '"standard", "standard_plus", "wide", "wide_plus", "extra_wide",',
+    '"extra_wide_plus", "ultra_wide", "ultra_wide_plus", "max_wide", "full",',
+    'CONF_DISCOVERY_UI_DENSITY: frozenset(UI_DENSITY_VALUES)',
+    'CONF_DISCOVERY_CONTENT_WIDTH: frozenset(UI_CONTENT_WIDTH_VALUES)',
+    'CONF_INSTALLER_UI_DENSITY: frozenset(UI_DENSITY_VALUES)',
+    'CONF_INSTALLER_CONTENT_WIDTH: frozenset(UI_CONTENT_WIDTH_VALUES)',
+    'vol.In(list(UI_DENSITY_VALUES))',
+    'vol.In(list(UI_CONTENT_WIDTH_VALUES))',
+):
+    assert marker in INIT or marker in FLOW, marker
+
 print('Core Hub settings contract: PASS')

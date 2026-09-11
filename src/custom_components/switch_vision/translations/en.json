@@ -133,9 +133,9 @@
               "show_unifi_integration": "Show UniFi2MQTT integration in Switch Vision Hub"
             },
             "data_description": {
-              "discovery_ui_density": "Comfortable uses generous spacing; Compact fits more onscreen; Dense maximizes visible information.",
+              "discovery_ui_density": "Five density steps are available from Spacious through Ultra Dense. The Switch Vision Hub presents this as a 5-position slider.",
               "discovery_text_size": "Normal uses the standard Discovery text size; Small uses reduced typography.",
-              "discovery_content_width": "Standard uses the original width; Wide expands the workspace; Full uses the available browser width.",
+              "discovery_content_width": "Ten content-width steps are available from Standard through Full. The Switch Vision Hub presents this as a 10-position slider.",
               "show_unifi_integration": "Show or hide the UniFi2MQTT section in Switch Vision Hub."
             }
           },
@@ -148,9 +148,9 @@
               "installer_content_width": "Installer content width"
             },
             "data_description": {
-              "installer_ui_density": "Controls spacing in supported Switch Vision Installer versions.",
+              "installer_ui_density": "Five density steps control Installer spacing from Spacious through Ultra Dense.",
               "installer_text_size": "Controls text size in supported Switch Vision Installer versions.",
-              "installer_content_width": "Controls content width in supported Switch Vision Installer versions."
+              "installer_content_width": "Ten content-width steps control Installer width from Standard through Full."
             }
           }
         }

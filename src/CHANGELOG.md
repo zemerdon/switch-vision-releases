@@ -1,3 +1,10 @@
+## v2.7.5 — Shared management width and density scales
+
+- Expand the shared Discovery/Installer **UI density** contract from three values to five: Spacious, Comfortable, Compact, Dense, and Ultra Dense.
+- Expand the shared Discovery/Installer **content width** contract from Standard/Wide/Full to ten ordered positions from Standard through Full, preserving the existing `standard`, `wide`, and `full` values for upgrade compatibility.
+- Keep the same values valid through Home Assistant options, Hub settings read/write, the shared preference file, and the `set_ui_density` service so Discovery and Installer consume one authoritative presentation contract.
+- Add permanent Core regression coverage for both expanded scales without changing dashboard-card geometry, model metadata, calibration data, or device support state.
+
 ## v2.7.4 — Catalyst 3850 12XS Community Validated
 
 - Promote `WS-C3850-12XS-E` from Experimental to **Community Validated** after three materially independent real-hardware capture sessions agree on the exact 12 × 10G SFP+ factory/no-module topology and current live rendered field confirmation passes.

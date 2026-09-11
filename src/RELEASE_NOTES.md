@@ -1,3 +1,9 @@
+# Switch Vision Core v2.7.5
+
+Core 2.7.5 expands the shared management appearance contract used by Switch Vision Discovery / Hub and Switch Vision Installer. UI density now supports five ordered positions from Spacious through Ultra Dense, while content width supports ten ordered positions from Standard through Full. Existing Standard, Wide, Full, Comfortable, Compact, and Dense values remain valid so upgrades preserve current choices.
+
+This release changes only shared management-UI preference validation/persistence. Dashboard-card geometry, calibration profiles, model registry metadata, and hardware support state are unchanged. Manual installs should replace `/config/custom_components/switch_vision/` and restart Home Assistant Core so the expanded options contract is active before Discovery/Installer save the new positions.
+
 # Switch Vision Core v2.7.4
 
 Core 2.7.4 promotes **WS-C3850-12XS-E** from Experimental to Community Validated. Three materially independent real-hardware capture sessions agree on the exact factory/no-module twelve-port 10G SFP+ topology, and current live rendered field confirmation verifies the twelve-cage alignment plus link, negotiated 10G speed and traffic-activity presentation.
