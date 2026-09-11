@@ -83,7 +83,8 @@ class Core2635CalibrationRegressionTests(unittest.TestCase):
         self.assertNotIn("WS-C3850-12XS", models)
         self.assertNotIn("WS-C3850-12XS-S", models)
         exact = models["WS-C3850-12XS-E"]
-        self.assertEqual(exact["status"], "experimental")
+        self.assertEqual(exact["status"], "community_validated")
+        self.assertEqual(exact["visuals"]["status"], "community_validated")
         self.assertEqual(exact["ports"]["rj45"], 0)
         self.assertEqual(exact["ports"]["uplinks"], 12)
         self.assertEqual(exact["default_faceplate"], "faceplates/cisco-3850-12xs.png")

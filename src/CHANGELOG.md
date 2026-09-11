@@ -1,3 +1,10 @@
+## v2.7.4 — Catalyst 3850 12XS Community Validated
+
+- Promote `WS-C3850-12XS-E` from Experimental to **Community Validated** after three materially independent real-hardware capture sessions agree on the exact 12 × 10G SFP+ factory/no-module topology and current live rendered field confirmation passes.
+- Record repeatable Cisco ENVMON temperature, fan and power-supply state evidence, while keeping RJ45, PoE and stack capabilities explicitly not applicable for this exact model.
+- Mark the existing `cisco-3850-12xs.png` / `cisco_3850_12xs` visual recommendation as Community Validated without changing its owner-supplied 2048 × 448 geometry or physical-port contract.
+- Extend the exact-model regression so the 3850 support and visual confidence cannot regress independently.
+
 ## v2.7.3 — US XG 16 Experimental evidence promotion
 
 - Promote `US XG 16` from Detected to **Experimental** after corroborating independent real-hardware UniFi API evidence confirms its exact optical-first 12 × 10G SFP+ + 4 × 10G-capable RJ45 contract.
