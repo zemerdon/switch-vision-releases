@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.4
+
+Core 2.7.4 promotes **WS-C3850-12XS-E** from Experimental to Community Validated. Three materially independent real-hardware capture sessions agree on the exact factory/no-module twelve-port 10G SFP+ topology, and current live rendered field confirmation verifies the twelve-cage alignment plus link, negotiated 10G speed and traffic-activity presentation.
+
+Repeatable Cisco ENVMON temperature, fan and power-supply state evidence is now recorded for this exact model. RJ45, PoE and stack capabilities remain explicitly not applicable. The existing `cisco-3850-12xs.png` faceplate and `cisco_3850_12xs` calibration profile are unchanged; this release promotes confidence in the already-reviewed visual and hardware contract rather than changing its geometry.
+
+Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core because the packaged device registry and frontend recommendation metadata change in this release.
+
 # Switch Vision Core v2.7.3
 
 Core 2.7.3 promotes **US XG 16** from Detected to Experimental after corroborating independent real-hardware UniFi API evidence confirms the exact optical-first hardware contract: twelve 10G SFP+ positions at API/physical ports 1-12 followed by four 10G-capable RJ45 ports at 13-16. The existing explicit port map, no-PoE contract, negotiated-speed behavior and owner-calibrated 4-RJ45 + 12-SFP+ faceplate remain unchanged.
