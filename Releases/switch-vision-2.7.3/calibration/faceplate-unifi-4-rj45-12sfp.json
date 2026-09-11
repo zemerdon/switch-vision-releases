@@ -1,0 +1,836 @@
+{
+  "schema_version": 2,
+  "schema": "switch-vision-interactive-calibration-v1",
+  "model": "unifi-4-rj45-12sfp",
+  "profile": "unifi_4_rj45_12sfp",
+  "generated_by": "Switch Vision v2.6.25",
+  "image": {
+    "file": "faceplates/unifi-4-rj45-12sfp.png",
+    "width": 2171,
+    "height": 245,
+    "master": "unifi-4-rj45-12sfp-owner-calibrated",
+    "coordinate_space": "image-native-v1"
+  },
+  "ports": {
+    "1": {
+      "center": [
+        1736.28125,
+        165.703125
+      ],
+      "number": [
+        1739.015625,
+        113.75
+      ],
+      "led_left": [
+        1706.75,
+        141.09375
+      ],
+      "led_right": [
+        1767.453125,
+        141.09375
+      ],
+      "hitbox": [
+        67.8125,
+        68.90625
+      ],
+      "number_show": true,
+      "led_left_size": [
+        12.578125,
+        5.46875
+      ],
+      "led_right_size": [
+        12.578125,
+        5.46875
+      ],
+      "display_name": "G1"
+    },
+    "2": {
+      "center": [
+        1823.78125,
+        165.703125
+      ],
+      "number": [
+        1823.78125,
+        121.40625
+      ],
+      "led_left": [
+        1794.25,
+        141.09375
+      ],
+      "led_right": [
+        1854.953125,
+        141.09375
+      ],
+      "hitbox": [
+        67.8125,
+        68.90625
+      ],
+      "number_show": true,
+      "led_left_size": [
+        12.578125,
+        5.46875
+      ],
+      "led_right_size": [
+        12.578125,
+        5.46875
+      ],
+      "display_name": "G2"
+    },
+    "3": {
+      "center": [
+        1911.28125,
+        165.703125
+      ],
+      "number": [
+        1911.28125,
+        113.75
+      ],
+      "led_left": [
+        1881.75,
+        141.09375
+      ],
+      "led_right": [
+        1942.453125,
+        141.09375
+      ],
+      "hitbox": [
+        67.8125,
+        68.90625
+      ],
+      "number_show": true,
+      "led_left_size": [
+        12.578125,
+        5.46875
+      ],
+      "led_right_size": [
+        12.578125,
+        5.46875
+      ],
+      "display_name": "G3"
+    },
+    "4": {
+      "center": [
+        1998.78125,
+        165.703125
+      ],
+      "number": [
+        1998.78125,
+        121.40625
+      ],
+      "led_left": [
+        1969.25,
+        141.09375
+      ],
+      "led_right": [
+        2029.953125,
+        141.09375
+      ],
+      "hitbox": [
+        67.8125,
+        68.90625
+      ],
+      "number_show": true,
+      "led_left_size": [
+        12.578125,
+        5.46875
+      ],
+      "led_right_size": [
+        12.578125,
+        5.46875
+      ],
+      "display_name": "G4"
+    }
+  },
+  "sfp": {
+    "SFP1": {
+      "center": [
+        980.5,
+        96.25
+      ],
+      "hitbox": [
+        84.21875,
+        53.59375
+      ],
+      "label": [
+        980.5,
+        45.390625
+      ],
+      "label_show": true,
+      "led_left": [
+        963.546875,
+        64.53125
+      ],
+      "led_left_size": [
+        16.40625,
+        7.109375
+      ],
+      "led_right": [
+        998.546875,
+        64.53125
+      ],
+      "led_right_size": [
+        16.40625,
+        7.109375
+      ]
+    },
+    "SFP2": {
+      "center": [
+        980.5,
+        172.8125
+      ],
+      "hitbox": [
+        84.21875,
+        53.59375
+      ],
+      "label": [
+        980.5,
+        222.03125
+      ],
+      "label_show": true,
+      "led_left": [
+        963.546875,
+        141.09375
+      ],
+      "led_left_size": [
+        16.40625,
+        7.109375
+      ],
+      "led_right": [
+        998.546875,
+        141.09375
+      ],
+      "led_right_size": [
+        16.40625,
+        7.109375
+      ]
+    },
+    "SFP3": {
+      "center": [
+        1107.375,
+        96.25
+      ],
+      "hitbox": [
+        84.21875,
+        53.59375
+      ],
+      "label": [
+        1107.375,
+        45.390625
+      ],
+      "label_show": true,
+      "led_left": [
+        1090.421875,
+        64.53125
+      ],
+      "led_left_size": [
+        16.40625,
+        7.109375
+      ],
+      "led_right": [
+        1125.421875,
+        64.53125
+      ],
+      "led_right_size": [
+        16.40625,
+        7.109375
+      ]
+    },
+    "SFP4": {
+      "center": [
+        1107.375,
+        172.8125
+      ],
+      "hitbox": [
+        84.21875,
+        53.59375
+      ],
+      "label": [
+        1107.375,
+        222.03125
+      ],
+      "label_show": true,
+      "led_left": [
+        1090.421875,
+        141.09375
+      ],
+      "led_left_size": [
+        16.40625,
+        7.109375
+      ],
+      "led_right": [
+        1125.421875,
+        141.09375
+      ],
+      "led_right_size": [
+        16.40625,
+        7.109375
+      ]
+    },
+    "SFP5": {
+      "center": [
+        1234.25,
+        96.25
+      ],
+      "hitbox": [
+        84.21875,
+        53.59375
+      ],
+      "label": [
+        1234.25,
+        45.390625
+      ],
+      "label_show": true,
+      "led_left": [
+        1217.296875,
+        64.53125
+      ],
+      "led_left_size": [
+        16.40625,
+        7.109375
+      ],
+      "led_right": [
+        1252.296875,
+        64.53125
+      ],
+      "led_right_size": [
+        16.40625,
+        7.109375
+      ]
+    },
+    "SFP6": {
+      "center": [
+        1234.25,
+        172.8125
+      ],
+      "hitbox": [
+        84.21875,
+        53.59375
+      ],
+      "label": [
+        1234.25,
+        222.03125
+      ],
+      "label_show": true,
+      "led_left": [
+        1217.296875,
+        141.09375
+      ],
+      "led_left_size": [
+        16.40625,
+        7.109375
+      ],
+      "led_right": [
+        1252.296875,
+        141.09375
+      ],
+      "led_right_size": [
+        16.40625,
+        7.109375
+      ]
+    },
+    "SFP7": {
+      "center": [
+        1361.125,
+        96.25
+      ],
+      "hitbox": [
+        84.21875,
+        53.59375
+      ],
+      "label": [
+        1361.125,
+        45.390625
+      ],
+      "label_show": true,
+      "led_left": [
+        1344.171875,
+        64.53125
+      ],
+      "led_left_size": [
+        16.40625,
+        7.109375
+      ],
+      "led_right": [
+        1379.171875,
+        64.53125
+      ],
+      "led_right_size": [
+        16.40625,
+        7.109375
+      ]
+    },
+    "SFP8": {
+      "center": [
+        1361.125,
+        172.8125
+      ],
+      "hitbox": [
+        84.21875,
+        53.59375
+      ],
+      "label": [
+        1361.125,
+        222.03125
+      ],
+      "label_show": true,
+      "led_left": [
+        1344.171875,
+        141.09375
+      ],
+      "led_left_size": [
+        16.40625,
+        7.109375
+      ],
+      "led_right": [
+        1379.171875,
+        141.09375
+      ],
+      "led_right_size": [
+        16.40625,
+        7.109375
+      ]
+    },
+    "SFP9": {
+      "center": [
+        1488,
+        96.25
+      ],
+      "hitbox": [
+        84.21875,
+        53.59375
+      ],
+      "label": [
+        1488,
+        45.390625
+      ],
+      "label_show": true,
+      "led_left": [
+        1471.046875,
+        64.53125
+      ],
+      "led_left_size": [
+        16.40625,
+        7.109375
+      ],
+      "led_right": [
+        1506.046875,
+        64.53125
+      ],
+      "led_right_size": [
+        16.40625,
+        7.109375
+      ]
+    },
+    "SFP10": {
+      "center": [
+        1488,
+        172.8125
+      ],
+      "hitbox": [
+        84.21875,
+        53.59375
+      ],
+      "label": [
+        1488,
+        222.03125
+      ],
+      "label_show": true,
+      "led_left": [
+        1471.046875,
+        141.09375
+      ],
+      "led_left_size": [
+        16.40625,
+        7.109375
+      ],
+      "led_right": [
+        1506.046875,
+        141.09375
+      ],
+      "led_right_size": [
+        16.40625,
+        7.109375
+      ]
+    },
+    "SFP11": {
+      "center": [
+        1615.421875,
+        96.25
+      ],
+      "hitbox": [
+        84.21875,
+        53.59375
+      ],
+      "label": [
+        1615.421875,
+        45.390625
+      ],
+      "label_show": true,
+      "led_left": [
+        1598.46875,
+        64.53125
+      ],
+      "led_left_size": [
+        16.40625,
+        7.109375
+      ],
+      "led_right": [
+        1633.46875,
+        64.53125
+      ],
+      "led_right_size": [
+        16.40625,
+        7.109375
+      ]
+    },
+    "SFP12": {
+      "center": [
+        1615.421875,
+        172.8125
+      ],
+      "hitbox": [
+        84.21875,
+        53.59375
+      ],
+      "label": [
+        1615.421875,
+        222.03125
+      ],
+      "label_show": true,
+      "led_left": [
+        1598.46875,
+        141.09375
+      ],
+      "led_left_size": [
+        16.40625,
+        7.109375
+      ],
+      "led_right": [
+        1633.46875,
+        141.09375
+      ],
+      "led_right_size": [
+        16.40625,
+        7.109375
+      ]
+    }
+  },
+  "status_leds": {
+    "STAT": [
+      894.09375,
+      45.9375
+    ],
+    "SYST": [
+      894.09375,
+      81.484375
+    ],
+    "DUPLX": [
+      991.4375,
+      45.9375
+    ],
+    "ACTV": [
+      991.4375,
+      81.484375
+    ],
+    "SPEED": [
+      1086.59375,
+      45.9375
+    ],
+    "STACK": [
+      1183.9375,
+      45.9375
+    ],
+    "PoE": [
+      1274.171875,
+      45.9375
+    ]
+  },
+  "ui": {
+    "logo": {
+      "show": false,
+      "file": "sv-logo.png",
+      "source": "none",
+      "x": 603.703125,
+      "y": 0,
+      "width": 102.265625,
+      "height": 102.8125
+    },
+    "status_panel": {
+      "show": true,
+      "x": 322.0625,
+      "y": 60.15625,
+      "width": 255.9375,
+      "height": 142.1875,
+      "font_family": "SwitchVisionCustom, Arial, Helvetica, sans-serif",
+      "font_size": 16.40625,
+      "title_font_size": 8.75,
+      "font_weight": "normal",
+      "text_color": "#000000",
+      "label_color": "#000000",
+      "title_color": "#000000",
+      "background_color": "rgba(0,0,0,.06)",
+      "border_color": "#000000",
+      "border_show": true,
+      "field_order": {
+        "switch": [
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "uptime",
+          "vendor",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ],
+        "sfp": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ]
+      },
+      "hidden_fields": {
+        "switch": [
+          "vendor",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [],
+        "sfp": []
+      },
+      "fields": {
+        "row1_key": [
+          10.390625,
+          21.328125
+        ],
+        "row1_value": [
+          91.328125,
+          21.328125
+        ],
+        "row2_key": [
+          10.390625,
+          31.71875
+        ],
+        "row2_value": [
+          91.328125,
+          31.71875
+        ],
+        "row3_key": [
+          10.390625,
+          42.65625
+        ],
+        "row3_value": [
+          91.328125,
+          42.65625
+        ],
+        "row4_key": [
+          10.390625,
+          53.046875
+        ],
+        "row4_value": [
+          91.328125,
+          53.046875
+        ],
+        "row5_key": [
+          10.390625,
+          63.4375
+        ],
+        "row5_value": [
+          91.328125,
+          63.4375
+        ],
+        "row6_key": [
+          10.390625,
+          73.828125
+        ],
+        "row6_value": [
+          91.328125,
+          73.828125
+        ]
+      }
+    },
+    "faceplate": {
+      "fit": "fill",
+      "opacity": 1,
+      "show": true,
+      "file": "unifi-4-rj45-12sfp.png",
+      "source": "custom"
+    },
+    "calibration_button": {
+      "show": true,
+      "x": 1558,
+      "y": 7.65625,
+      "width": 75.46875,
+      "height": 18.59375,
+      "anchor": "top_right"
+    },
+    "status_panel_2": {
+      "show": true,
+      "x": 626.671875,
+      "y": 60.15625,
+      "width": 255.9375,
+      "height": 142.1875,
+      "font_family": "SwitchVisionCustom, Arial, Helvetica, sans-serif",
+      "font_size": 16.40625,
+      "title_font_size": 8.75,
+      "font_weight": "normal",
+      "text_color": "#000000",
+      "label_color": "#000000",
+      "title_color": "#000000",
+      "background_color": "rgba(0,0,0,.06)",
+      "border_color": "#000000",
+      "border_show": true,
+      "title_mode": "custom",
+      "title_field": "model",
+      "custom_title": "",
+      "field_order": {
+        "switch": [
+          "vendor",
+          "uptime",
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ],
+        "sfp": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ]
+      },
+      "hidden_fields": {
+        "switch": [
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "stack",
+          "uptime",
+          "psu",
+          "fans",
+          "serial"
+        ],
+        "port": [],
+        "sfp": []
+      },
+      "fields": {
+        "row1_key": [
+          13.125,
+          30.078125
+        ],
+        "row1_value": [
+          102.265625,
+          30.078125
+        ],
+        "row2_key": [
+          13.125,
+          39.375
+        ],
+        "row2_value": [
+          102.265625,
+          39.375
+        ],
+        "row3_key": [
+          13.125,
+          48.671875
+        ],
+        "row3_value": [
+          102.265625,
+          48.671875
+        ],
+        "row4_key": [
+          13.125,
+          57.96875
+        ],
+        "row4_value": [
+          102.265625,
+          57.96875
+        ],
+        "row5_key": [
+          13.125,
+          67.265625
+        ],
+        "row5_value": [
+          102.265625,
+          67.265625
+        ],
+        "row6_key": [
+          13.125,
+          76.5625
+        ],
+        "row6_value": [
+          102.265625,
+          76.5625
+        ]
+      }
+    },
+    "port_led_shape": "rectangle",
+    "port_label_color": "#000000",
+    "port_number_color": "#000000",
+    "port_label_font_weight": "normal",
+    "port_number_font_size": 16.40625,
+    "sfp_label_font_size": 16.40625,
+    "status_leds": {
+      "hidden": [
+        "STAT",
+        "SYST",
+        "DUPLX",
+        "ACTV",
+        "SPEED",
+        "STACK",
+        "PoE"
+      ],
+      "text_color": "#eef7ff",
+      "font_family": "Arial, Helvetica, sans-serif",
+      "font_size": 9.0234375,
+      "font_weight": "900"
+    },
+    "sfp_label_suffix": ""
+  },
+  "stack": {
+    "enabled": false,
+    "stack_id": "",
+    "uptime_source": "",
+    "members": {}
+  },
+  "management": {
+    "switch_ip": ""
+  }
+}

@@ -1,3 +1,10 @@
+## v2.7.3 — US XG 16 Experimental evidence promotion
+
+- Promote `US XG 16` from Detected to **Experimental** after corroborating independent real-hardware UniFi API evidence confirms its exact optical-first 12 × 10G SFP+ + 4 × 10G-capable RJ45 contract.
+- Preserve the authoritative UniFi API map (ports 1-12 optical, 13-16 RJ45), no-PoE contract, owner-calibrated faceplate/profile, and all existing port/speed semantics.
+- Keep the model's visual confidence **Detected** until model-specific live rendered alignment/behavior is confirmed; this support-status promotion does not claim Community Validated.
+- Extend Core registry/faceplate regressions so support confidence and visual confidence cannot be accidentally collapsed into one status.
+
 ## v2.7.2 — Walk-backed model registry sync and 3850 Status Box 1 correction
 
 - Restore the owner-supplied Cisco Catalyst 3850 12XS Status Box 1 horizontal geometry: render-space X returns from the accidental clamped `0` to `-337` while Y/width/height, all 12 SFP positions, LEDs, buttons and faceplate artwork remain unchanged.
