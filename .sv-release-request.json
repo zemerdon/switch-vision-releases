@@ -1,6 +1,6 @@
 {
   "version": "2.7.5",
   "target_sha": "1761ac119fd219f78544d5932311a276ce95a7c5",
-  "publish": false,
+  "publish": true,
   "title": "Switch Vision Core v2.7.5"
 }
