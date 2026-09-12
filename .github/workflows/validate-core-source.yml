@@ -152,7 +152,6 @@ jobs:
 
           rm -f \
             "Releases/switch-vision-$VERSION.zip" \
-            "Releases/switch-vision-$VERSION.zip.sha256" \
             "Switch_Vision_v${VERSION}_source.zip" \
             "Switch_Vision_v${VERSION}_SHA256SUMS.txt"
 
