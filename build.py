@@ -1796,6 +1796,19 @@ def write_release_manifest(release_dir: Path, version: str, gold: bool = False) 
     write_text_lf(release_dir / "manifest.json", json.dumps(manifest, indent=2) + "\n")
 
 
+ZIP_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
+
+
+def write_zip_member(archive: zipfile.ZipFile, path: Path, arcname: Path) -> None:
+    """Write one deterministic ZIP member while preserving executable shell entrypoints."""
+    info = zipfile.ZipInfo(str(arcname).replace("\\", "/"), date_time=ZIP_TIMESTAMP)
+    info.create_system = 3
+    mode = 0o100755 if is_shell_script(path) else 0o100644
+    info.external_attr = (mode & 0xFFFF) << 16
+    info.compress_type = zipfile.ZIP_DEFLATED
+    archive.writestr(info, path.read_bytes(), compress_type=zipfile.ZIP_DEFLATED)
+
+
 def zip_directory(source_dir: Path, zip_path: Path, arc_base: Path) -> None:
     if zip_path.exists():
         zip_path.unlink()
@@ -1804,15 +1817,7 @@ def zip_directory(source_dir: Path, zip_path: Path, arc_base: Path) -> None:
             if "__pycache__" in path.parts or ".pytest_cache" in path.parts or path.suffix in {".pyc", ".pyo"}:
                 continue
             if path.is_file():
-                arcname = path.relative_to(arc_base)
-                if is_shell_script(path):
-                    info = zipfile.ZipInfo.from_file(path, arcname)
-                    info.create_system = 3
-                    info.external_attr = (0o100755 & 0xFFFF) << 16
-                    with path.open("rb") as handle:
-                        archive.writestr(info, handle.read(), compress_type=zipfile.ZIP_DEFLATED)
-                else:
-                    archive.write(path, arcname)
+                write_zip_member(archive, path, path.relative_to(arc_base))
 
 
 def write_source_zip(version: str, gold: bool = False) -> Path:
@@ -1846,7 +1851,7 @@ def write_source_zip(version: str, gold: bool = False) -> Path:
             path = PROJECT_ROOT / name
             if not path.is_file():
                 raise SystemExit(f"Missing source-archive root file: {name}")
-            archive.write(path, path.relative_to(PROJECT_ROOT))
+            write_zip_member(archive, path, path.relative_to(PROJECT_ROOT))
 
         for source_root in (SRC, release_folder):
             for path in sorted(source_root.rglob("*")):
@@ -1856,7 +1861,7 @@ def write_source_zip(version: str, gold: bool = False) -> Path:
                     continue
                 if path.suffix in {".pyc", ".pyo"}:
                     continue
-                archive.write(path, path.relative_to(PROJECT_ROOT))
+                write_zip_member(archive, path, path.relative_to(PROJECT_ROOT))
     return output
 
 
