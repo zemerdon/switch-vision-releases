@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.6
+
+Core 2.7.6 corrects the visual recommendations for two exact UniFi 8-port models exposed by current field evidence. `US-8-150W` now uses the shipped owner-calibrated 8-RJ45 + 2-SFP UniFi faceplate/profile, and `US 8 60W` now uses the shipped eight-RJ45 UniFi faceplate/profile instead of the oversized 24-port stock fallback.
+
+The physical topology and support-confidence state do not change. Both models remain Experimental, and model-specific live rendered alignment remains pending. This release only replaces temporary visual fallbacks with existing Core assets whose connector geometry matches the already-reviewed exact-model contracts.
+
+Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core because the packaged device registry and frontend visual recommendation metadata change in this release.
+
 # Switch Vision Core v2.7.5
 
 Core 2.7.5 expands the shared management appearance contract used by Switch Vision Discovery / Hub and Switch Vision Installer. UI density now supports five ordered positions from Spacious through Ultra Dense, while content width supports ten ordered positions from Standard through Full. Existing Standard, Wide, Full, Comfortable, Compact, and Dense values remain valid so upgrades preserve current choices.
