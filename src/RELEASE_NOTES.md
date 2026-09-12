@@ -1,3 +1,9 @@
+# Switch Vision Core v2.7.7
+
+Core 2.7.7 fixes Auto faceplate sizing in the native Switch Vision dashboard. The card was already responsive up to its 2048 px native faceplate ceiling, but the surrounding native panel page still imposed a 1280 px maximum width. That host-page ceiling is removed so Auto can use the available Home Assistant content width as intended.
+
+Explicit 800 px, 1024 px and Custom width modes are unchanged, centred rendering and proportional calibration geometry are preserved, and the Core regression suite now locks the native-panel wrapper against reintroducing a fixed width cap.
+
 # Switch Vision Core v2.7.6
 
 Core 2.7.6 corrects the visual recommendations for two exact UniFi 8-port models exposed by current field evidence. `US-8-150W` now uses the shipped owner-calibrated 8-RJ45 + 2-SFP UniFi faceplate/profile, and `US 8 60W` now uses the shipped eight-RJ45 UniFi faceplate/profile instead of the oversized 24-port stock fallback.

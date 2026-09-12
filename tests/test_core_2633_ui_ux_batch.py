@@ -28,7 +28,7 @@ def test_faceplate_width_is_global_core_setting():
     assert '"faceplate_width": faceplate_width_settings' in INIT
     assert '_globalFaceplateWidth' in JS
     assert 'async_step_faceplate_custom_width' in FLOW
-    assert 'CONF_FACEPLATE_CUSTOM_WIDTH] = self._value(CONF_FACEPLATE_CUSTOM_WIDTH)' in FLOW
+    assert 'saved[CONF_FACEPLATE_CUSTOM_WIDTH]=self._value(CONF_FACEPLATE_CUSTOM_WIDTH)' in FLOW
 
 def test_faceplate_labels_are_explicit_media_counts():
     data = json.loads((ROOT / "src/faceplates/catalog.json").read_text(encoding="utf-8"))
@@ -38,9 +38,11 @@ def test_faceplate_labels_are_explicit_media_counts():
 
 
 def test_candidate_readme_does_not_claim_unpublished_public_state():
+    version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
     root_readme = (ROOT / "README.md").read_text(encoding="utf-8")
     source_readme = (ROOT / "src/README.md").read_text(encoding="utf-8")
-    release_readme = (ROOT / "Releases/switch-vision-2.6.34/README.md").read_text(encoding="utf-8")
+    release_readme = (ROOT / f"Releases/switch-vision-{version}/README.md").read_text(encoding="utf-8")
     assert root_readme == source_readme == release_readme
     assert "## Current Core source version" in root_readme
-    assert "**v2.6.34** is the current tested public" not in root_readme
+    assert f"**v{version}** is the current tested Switch Vision Core/dashboard source version." in root_readme
+    assert f"**v{version}** is the current tested public Switch Vision Core/dashboard release." not in root_readme
