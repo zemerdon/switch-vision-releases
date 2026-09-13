@@ -1,3 +1,14 @@
+# Switch Vision Core v2.7.8
+
+Core 2.7.8 improves mixed SNMP + UniFi operation without changing the established Switch Vision presentation model.
+
+- SNMP-backed cards can consume fresh UniFi API metadata while SNMP remains authoritative for link state, activity and traffic counters.
+- UniFi2MQTT freshness metadata is honored end-to-end; stale retained API values are rejected and shown as stale/unavailable rather than silently presented as current.
+- Runtime entity/API mappings no longer rewrite stock faceplate labels. The selected faceplate/profile remains the default presentation, and Calibration remains the supported way to change labels or geometry.
+- Existing full-width rendering and closest-fit faceplate assignments are unchanged; no new faceplate artwork or calibration workflow changes are introduced.
+
+Existing dashboards remain compatible. Hybrid UniFi fields are additive and are used only when Discovery provides a reconciled UniFi binding.
+
 # Switch Vision Core v2.7.7
 
 Core 2.7.7 fixes Auto faceplate sizing in the native Switch Vision dashboard. The card was already responsive up to its 2048 px native faceplate ceiling, but the surrounding native panel page still imposed a 1280 px maximum width. That host-page ceiling is removed so Auto can use the available Home Assistant content width as intended.
