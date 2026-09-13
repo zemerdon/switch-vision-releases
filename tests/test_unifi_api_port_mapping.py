@@ -49,8 +49,12 @@ class UniFiApiPortMappingTests(unittest.TestCase):
             "function unifiApiPortMapForGroup(config, group)",
             "function unifiApiPortIndex(config, group, port)",
             "function unifiPortByIndex(config, index)",
+            "function hasUnifiBinding(config)",
+            "function unifiBoundAccessPort(config, port)",
             "function unifiAccessPort(config, port)",
+            "function unifiBoundSfpPort(config, port)",
             "function unifiSfpPort(config, port)",
+            "function sfpVisibleLabel(config, sfpPort, fallback, calibration = null)",
         )
         functions = "\n\n".join(extract_js_function(source, sig) for sig in signatures)
 
@@ -62,6 +66,7 @@ const MODEL_MAPS = {{
   }}
 }};
 function unifiRuntime(config) {{ return config?.__runtime || null; }}
+function isJuniperEx3300(config) {{ return false; }}
 function exactModelVisualRecommendation(model) {{
   const map = MODEL_MAPS[String(model || '')];
   return map ? {{ unifi_api_port_map: map }} : null;
@@ -81,6 +86,7 @@ function expectNull(actual, label) {{
 // Existing sequential UniFi devices must retain the Core 2.4.8 contract.
 const legacy48 = {{
   data_source: 'unifi_api',
+  unifi_device_id: 'legacy48',
   unifi_rj45_ports: 48,
   __runtime: runtime(52, 'US 48 PoE 500W')
 }};
@@ -92,6 +98,7 @@ expectIdx(unifiSfpPort(legacy48, 4), 52, 'legacy optical 4');
 // Preserve the historical explicit SFP-offset path unchanged.
 const legacyOffset = {{
   data_source: 'unifi_api',
+  unifi_device_id: 'legacy-offset',
   unifi_rj45_ports: 99,
   unifi_sfp_port_offset: 24,
   __runtime: runtime(30)
@@ -101,6 +108,7 @@ expectIdx(unifiSfpPort(legacyOffset, 1), 25, 'legacy explicit SFP offset');
 // Card/config explicit maps take priority and support optical-first hardware.
 const directXg = {{
   data_source: 'unifi_api',
+  unifi_device_id: 'direct-xg',
   unifi_api_port_map: MODEL_MAPS['US XG 16'],
   unifi_rj45_ports: 4,
   __runtime: runtime(16, 'US XG 16')
@@ -115,6 +123,7 @@ expectNull(unifiSfpPort(directXg, 13), 'direct XG16 out-of-range optical');
 // Exact-model registry metadata supplies the same map when YAML has no override.
 const registryXg = {{
   data_source: 'unifi_api',
+  unifi_device_id: 'registry-xg',
   unifi_rj45_ports: 4,
   __runtime: runtime(16, 'US XG 16')
 }};
@@ -124,11 +133,29 @@ expectIdx(unifiSfpPort(registryXg, 12), 12, 'registry XG16 optical 12');
 // A card-level override wins over exact-model registry metadata.
 const override = {{
   data_source: 'unifi_api',
+  unifi_device_id: 'override',
   unifi_api_port_map: {{ rj45: [9], sfp: [8] }},
   __runtime: runtime(16, 'US XG 16')
 }};
 expectIdx(unifiAccessPort(override, 1), 9, 'explicit override RJ45');
 expectIdx(unifiSfpPort(override, 1), 8, 'explicit override optical');
+
+// Hybrid SNMP + UniFi cards keep SNMP as the primary link/activity path while
+// still exposing bound UniFi metadata through the explicit bound helpers.
+const hybrid8 = {{
+  data_source: 'home_assistant',
+  unifi_device_id: 'controller-device-a',
+  unifi_rj45_ports: 8,
+  __runtime: runtime(10, 'US-8-150W')
+}};
+expectNull(unifiAccessPort(hybrid8, 1), 'hybrid RJ45 must not replace SNMP link path');
+expectNull(unifiSfpPort(hybrid8, 1), 'hybrid SFP must not replace SNMP link path');
+expectIdx(unifiBoundAccessPort(hybrid8, 1), 1, 'hybrid bound RJ45 metadata');
+expectIdx(unifiBoundSfpPort(hybrid8, 1), 9, 'hybrid bound SFP metadata');
+if (sfpVisibleLabel(hybrid8, 1, 'SFP1', null) !== 'SFP1') throw new Error('hybrid binding must not rewrite stock faceplate label SFP1');
+if (sfpVisibleLabel(hybrid8, 2, 'SFP2', null) !== 'SFP2') throw new Error('hybrid binding must not rewrite stock faceplate label SFP2');
+if (sfpVisibleLabel(legacy48, 1, 'G1', null) !== 'G1') throw new Error('UniFi API mapping must not rewrite stock faceplate label G1');
+if (sfpVisibleLabel(legacy48, 4, 'G4', null) !== 'G4') throw new Error('UniFi API mapping must not rewrite stock faceplate label G4');
 """
         result = subprocess.run(
             ["node", "-e", harness],

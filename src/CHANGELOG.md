@@ -1,3 +1,10 @@
+## v2.7.8 — Hybrid UniFi telemetry and presentation integrity
+
+- Add hybrid UniFi runtime binding so an SNMP-backed card can consume fresh UniFi API metadata without replacing SNMP link/activity/counter behavior.
+- Reject stale retained UniFi telemetry using producer freshness metadata and show a bounded stale/unavailable warning instead of presenting old API values as live.
+- Keep runtime entity/API mappings separate from presentation: stock faceplate/profile labels remain unchanged by telemetry mapping, with calibration remaining the supported presentation override.
+- Preserve the existing full-width rendering contract and existing closest-fit faceplate assignments; no new faceplates or calibration workflow changes are introduced.
+
 ## v2.7.7 — Native Auto full-width correction
 
 - Remove the native Switch Vision panel's fixed 1280 px page ceiling so **Auto** can use the full Home Assistant content width while the card itself retains its existing 2048 px native maximum.

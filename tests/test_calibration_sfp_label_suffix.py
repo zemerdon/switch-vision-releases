@@ -29,11 +29,14 @@ def main() -> int:
     for marker in required:
         assert marker in source, f"missing SFP label-suffix contract marker: {marker}"
 
-    # Absence of the profile-level setting must preserve existing/factory label behaviour.
+    # Absence of the profile-level setting must preserve the selected
+    # faceplate/profile label exactly. Runtime/vendor mappings are data-binding
+    # concerns and must not rewrite stock presentation.
     helper_start = source.index("function sfpVisibleLabel(")
     helper_end = source.index("\n}\n", helper_start) + 3
     helper = source[helper_start:helper_end]
-    assert helper.index('hasOwnProperty.call(ui, "sfp_label_suffix")') < helper.index("isJuniperEx3300(config)")
+    assert helper.index('hasOwnProperty.call(ui, "sfp_label_suffix")') < helper.index("return fallback;")
+    assert "isJuniperEx3300(config)" not in helper
     assert 'return fallback;' in helper
 
     # Per-port display names remain the highest-priority presentation override.
