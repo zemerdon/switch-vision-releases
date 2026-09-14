@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import importlib.util
 import re
+import tempfile
 from pathlib import Path
 
 
@@ -34,6 +35,8 @@ def main() -> int:
         "git_status(root)",
         "reject_generated_junk(root)",
         "cleanup_generated_junk(root)",
+        "snapshot_build_outputs(root, version)",
+        "restore_build_outputs(baseline_outputs)",
         "node",
     ):
         assert marker in source, marker
@@ -55,6 +58,35 @@ def main() -> int:
     # and exercised by the release entrypoint itself.
     assert callable(module.reject_generated_junk)
     assert callable(module.cleanup_generated_junk)
+
+    with tempfile.TemporaryDirectory(prefix="sv-core-release-output-") as tmp:
+        fixture_root = Path(tmp)
+        fixture_version = "9.9.9"
+        outputs = module.build_output_paths(fixture_root, fixture_version)
+        checksum = outputs[1]
+        checksum.parent.mkdir(parents=True, exist_ok=True)
+        checksum.write_bytes(b"tracked-checksum\n")
+        snapshot = module.snapshot_build_outputs(fixture_root, fixture_version)
+
+        outputs[0].write_bytes(b"temporary-zip")
+        outputs[2].write_bytes(b"temporary-source-zip")
+        outputs[3].write_bytes(b"temporary-private-sums")
+        checksum.write_bytes(b"tracked-checksum\n")
+        module.restore_build_outputs(snapshot)
+
+        assert checksum.read_bytes() == b"tracked-checksum\n"
+        assert not outputs[0].exists()
+        assert not outputs[2].exists()
+        assert not outputs[3].exists()
+
+        checksum.write_bytes(b"different-checksum\n")
+        try:
+            module.restore_build_outputs(snapshot)
+        except SystemExit as exc:
+            assert "changed baseline release artifact" in str(exc)
+        else:
+            raise AssertionError("release artifact drift was not rejected")
+        assert checksum.read_bytes() == b"tracked-checksum\n"
 
     print("Core product-owned release-check contract: PASS")
     return 0

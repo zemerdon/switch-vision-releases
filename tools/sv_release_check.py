@@ -157,15 +157,40 @@ def run_regressions(root: Path) -> None:
     print(f"Core permanent regression suite: PASS ({len(tests)} tests)")
 
 
-def remove_ephemeral_build_outputs(root: Path, version: str) -> None:
-    paths = (
+def build_output_paths(root: Path, version: str) -> tuple[Path, ...]:
+    return (
         root / "Releases" / f"switch-vision-{version}.zip",
         root / "Releases" / f"switch-vision-{version}.zip.sha256",
         root / f"Switch_Vision_v{version}_source.zip",
         root / f"Switch_Vision_v{version}_SHA256SUMS.txt",
     )
-    for path in paths:
-        path.unlink(missing_ok=True)
+
+
+def snapshot_build_outputs(root: Path, version: str) -> dict[Path, bytes | None]:
+    """Capture any baseline release artifacts before the validation build."""
+    return {
+        path: path.read_bytes() if path.is_file() else None
+        for path in build_output_paths(root, version)
+    }
+
+
+def restore_build_outputs(snapshot: dict[Path, bytes | None]) -> None:
+    """Restore the exact baseline while rejecting drift in tracked artifacts."""
+    drift: list[str] = []
+    for path, before in snapshot.items():
+        after = path.read_bytes() if path.is_file() else None
+        if before is not None and after != before:
+            drift.append(str(path))
+        if before is None:
+            path.unlink(missing_ok=True)
+        else:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(before)
+    if drift:
+        raise SystemExit(
+            "Core release build changed baseline release artifact(s): "
+            + ", ".join(drift)
+        )
 
 
 def main() -> int:
@@ -193,8 +218,9 @@ def main() -> int:
     validate_version_resource_contract(root, version)
     run_regressions(root)
 
+    baseline_outputs = snapshot_build_outputs(root, version)
     run([sys.executable, "build.py", "-v", version], root)
-    remove_ephemeral_build_outputs(root, version)
+    restore_build_outputs(baseline_outputs)
     cleanup_generated_junk(root)
 
     run([sys.executable, "tools/check_core_release_parity.py"], root)
