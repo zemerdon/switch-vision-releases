@@ -1,4 +1,4 @@
-name: Apply Core faceplate matrix
+name: Prepare Core 2.7.9 faceplate repair
 
 on:
   push:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  apply:
+  prepare:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
@@ -24,48 +24,90 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install validation dependencies
-        run: python -m pip install --disable-pip-version-check pyyaml pytest
+      - name: Install build dependencies
+        run: python -m pip install --disable-pip-version-check pyyaml
 
-      - name: Apply exact-model faceplate matrix
+      - name: Re-assert exact-model faceplate matrix
         run: python tools/apply_faceplate_matrix.py
 
-      - name: Run exact-model regression
-        run: python -m pytest -q tests/test_exact_model_faceplate_matrix.py
-
-      - name: Validate generated registries
+      - name: Prepare 2.7.9 release documentation
+        shell: bash
         run: |
           python - <<'PY'
-          import json
           from pathlib import Path
-          import yaml
 
+          version = "2.7.9"
           root = Path('.')
-          yaml_data = yaml.safe_load((root / 'src/devices/supported_devices.yaml').read_text(encoding='utf-8'))
-          json_data = json.loads((root / 'src/devices/supported_devices.json').read_text(encoding='utf-8'))
-          ymodels = [row.get('model') for row in yaml_data.get('devices', []) if isinstance(row, dict)]
-          jmodels = [row.get('model') for row in json_data.get('devices', []) if isinstance(row, dict)]
-          if ymodels != jmodels:
-              raise SystemExit('YAML/JSON model ordering differs after regeneration')
-          print(f'Registry parse/parity: PASS ({len(ymodels)} models)')
+
+          changelog = root / 'CHANGELOG.md'
+          text = changelog.read_text(encoding='utf-8')
+          heading = '## v2.7.9 — Exact-model faceplate mapping integrity\n'
+          if not text.startswith(heading):
+              section = '''## v2.7.9 — Exact-model faceplate mapping integrity
+
+- Replace stale oversized visual fallbacks with already-shipped exact UniFi faceplates for `USW Flex`, `USW Flex Mini`, `USW-Lite-8-PoE`, `USW-Enterprise-8-PoE`, `USW Pro XG 8 PoE`, and `USW Pro HD 24 PoE`.
+- Enable the existing owner-calibrated 32-position optical faceplate/profile for `USW Pro Aggregation`, preserving its authoritative 28 × SFP+ + 4 × SFP28 topology and API-port map.
+- Enable the approved stock 24+2 canvas for `US 16 PoE 150W` while preserving its authoritative 16 RJ45 + 2 SFP physical counts; no nonexistent 16-port artwork is invented.
+- Add permanent exact-model regressions that lock faceplate/profile pairs, preserve known-good compact UniFi mappings, and keep non-exact fallback models' physical counts authoritative.
+- Keep support-confidence states unchanged; this release corrects presentation assignments only and does not promote hardware validation status.
+
+'''
+              changelog.write_text(section + text, encoding='utf-8', newline='\n')
+
+          notes = root / 'RELEASE_NOTES.md'
+          text = notes.read_text(encoding='utf-8')
+          heading = '# Switch Vision Core v2.7.9\n'
+          if not text.startswith(heading):
+              section = '''# Switch Vision Core v2.7.9
+
+Core 2.7.9 corrects exact-model faceplate assignments after field testing exposed the USW Flex Mini using an obsolete oversized 24-port fallback. The audit was expanded across the supported-model registry instead of treating the Mini as a one-off fix.
+
+Existing bundled exact assets are now used for the USW Flex and Flex Mini (5 RJ45), USW-Lite-8-PoE (8 RJ45), USW-Enterprise-8-PoE and USW Pro XG 8 PoE (8 RJ45 + 2 optical), USW Pro HD 24 PoE (24 RJ45 + 4 optical), and USW Pro Aggregation (32 optical positions). US 16 PoE 150W is enabled with the approved oversized 24+2 stock canvas because no exact 16+2 artwork is bundled; its physical 16+2 count remains authoritative.
+
+The release does not infer faceplates from vendor name alone and does not force a visually similar asset onto hardware whose physical topology has no exact bundled match. Permanent regressions now protect the corrected exact-model matrix and the true physical counts of intentional fallback models.
+
+Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core because the packaged registry and frontend visual recommendation metadata change in this release.
+
+'''
+              notes.write_text(section + text, encoding='utf-8', newline='\n')
+
+          for path in (root / 'README.md', root / 'src' / 'README.md'):
+              text = path.read_text(encoding='utf-8')
+              text = text.replace('### Switch Vision v2.7.8', '### Switch Vision v2.7.9', 1)
+              text = text.replace(
+                  '**v2.7.8** is the current tested Switch Vision Core/dashboard source version.',
+                  '**v2.7.9** is the current tested Switch Vision Core/dashboard source version.',
+                  1,
+              )
+              path.write_text(text, encoding='utf-8', newline='\n')
           PY
+
+      - name: Build Core 2.7.9 deterministically
+        run: python build.py -v 2.7.9
+
+      - name: Run permanent exact-model regression
+        run: python tests/test_exact_model_faceplate_matrix.py
+
+      - name: Validate source/release parity
+        run: python tools/check_core_release_parity.py
+
+      - name: Validate JavaScript syntax
+        run: |
+          node --check src/js/switch-vision.js
+          node --check src/custom_components/switch_vision/switch-vision-card.js
 
       - name: Check patch integrity
         run: git diff --check
 
-      - name: Commit generated corrections
+      - name: Commit prepared 2.7.9 source and release tree
         shell: bash
         run: |
-          if git diff --quiet && git diff --cached --quiet; then
-            echo "No generated corrections to commit."
-            exit 0
-          fi
           git config user.name "Switch Vision SV-Dev"
           git config user.email "switch-vision@users.noreply.github.com"
-          git add src/devices/supported_devices.yaml \
-                  src/devices/supported_devices.json \
-                  src/docs \
-                  src/js/switch-vision.js \
-                  src/custom_components/switch_vision/switch-vision-card.js
-          git commit -m "Core 2.7.9: correct exact model faceplate mappings"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No 2.7.9 release changes to commit."
+            exit 0
+          fi
+          git commit -m "Core 2.7.9: build exact model faceplate repair"
           git push origin HEAD:${{ github.ref_name }}
