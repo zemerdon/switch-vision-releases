@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -14,7 +15,8 @@ def extract_function(source: str, name: str) -> str:
     if start < 0:
         raise AssertionError(f"missing JavaScript helper: {name}")
     brace = source.find("{", start)
-    assert brace >= 0, name
+    if brace < 0:
+        raise AssertionError(f"opening brace missing for JavaScript helper: {name}")
     depth = 0
     quote = None
     escaped = False
@@ -40,59 +42,59 @@ def extract_function(source: str, name: str) -> str:
     raise AssertionError(f"unterminated JavaScript helper: {name}")
 
 
-def main() -> None:
-    source = CARD.read_text(encoding="utf-8")
+class NativeUniFiActivityCounterTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.source = CARD.read_text(encoding="utf-8")
 
-    helper = extract_function(source, "unifiTrafficCounterSample")
-    assert "traffic.available !== true" in helper
-    assert 'direction === "rx" ? "rx_bytes"' in helper
-    assert 'direction === "tx" ? "tx_bytes"' in helper
-    assert "traffic.sampled_at" in helper
-    assert "sampledAt * 1000" in helper
+    def test_native_counter_helpers_are_wired_to_activity_and_rate_paths(self) -> None:
+        helper = extract_function(self.source, "unifiTrafficCounterSample")
+        self.assertIn("traffic.available !== true", helper)
+        self.assertIn('direction === "rx" ? "rx_bytes"', helper)
+        self.assertIn('direction === "tx" ? "tx_bytes"', helper)
+        self.assertIn("traffic.sampled_at", helper)
+        self.assertIn("sampledAt * 1000", helper)
 
-    port_reader = extract_function(source, "portTrafficCounterSample")
-    sfp_reader = extract_function(source, "sfpTrafficCounterSample")
-    assert "rawUnifiRuntime(config)" in port_reader
-    assert "unifiAccessPort(config, port)" in port_reader
-    assert "rawUnifiRuntime(config)" in sfp_reader
-    assert "unifiSfpPort(config, port)" in sfp_reader
+        port_reader = extract_function(self.source, "portTrafficCounterSample")
+        sfp_reader = extract_function(self.source, "sfpTrafficCounterSample")
+        self.assertIn("rawUnifiRuntime(config)", port_reader)
+        self.assertIn("unifiAccessPort(config, port)", port_reader)
+        self.assertIn("rawUnifiRuntime(config)", sfp_reader)
+        self.assertIn("unifiSfpPort(config, port)", sfp_reader)
 
-    port_activity = extract_function(source, "testPortActivity")
-    port_rates = extract_function(source, "portTrafficRates")
-    sfp_activity = extract_function(source, "testSfpActivity")
-    sfp_rates = extract_function(source, "sfpTrafficRates")
-    assert port_activity.count("portTrafficCounterSample") == 2
-    assert port_rates.count("portTrafficCounterSample") == 2
-    assert sfp_activity.count("sfpTrafficCounterSample") == 2
-    assert sfp_rates.count("sfpTrafficCounterSample") == 2
+        port_activity = extract_function(self.source, "testPortActivity")
+        port_rates = extract_function(self.source, "portTrafficRates")
+        sfp_activity = extract_function(self.source, "testSfpActivity")
+        sfp_rates = extract_function(self.source, "sfpTrafficRates")
+        self.assertEqual(port_activity.count("portTrafficCounterSample"), 2)
+        self.assertEqual(port_rates.count("portTrafficCounterSample"), 2)
+        self.assertEqual(sfp_activity.count("sfpTrafficCounterSample"), 2)
+        self.assertEqual(sfp_rates.count("sfpTrafficCounterSample"), 2)
 
-    # Execute the isolated helper so the sample-timestamp and fail-closed
-    # semantics are protected by behavior as well as source wiring.
-    script = helper + r'''
+    def test_native_counter_sample_uses_producer_timestamp_and_fails_closed(self) -> None:
+        helper = extract_function(self.source, "unifiTrafficCounterSample")
+        script = helper + r'''
 const good = unifiTrafficCounterSample({traffic: {available: true, sampled_at: 1234, rx_bytes: 100, tx_bytes: 250}}, "tx");
 const rx = unifiTrafficCounterSample({traffic: {available: true, sampled_at: 1234, rx_bytes: 100, tx_bytes: 250}}, "rx");
 const unavailable = unifiTrafficCounterSample({traffic: {available: false, sampled_at: 1234, rx_bytes: 100}}, "rx");
 const invalid = unifiTrafficCounterSample({traffic: {available: true, sampled_at: 1234, rx_bytes: -1}}, "rx");
 console.log(JSON.stringify({good, rx, unavailable, invalid}));
 '''
-    result = subprocess.run(
-        ["node", "-e", script],
-        cwd=ROOT,
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        check=False,
-    )
-    if result.returncode:
-        raise AssertionError(result.stdout)
-    payload = json.loads(result.stdout.strip())
-    assert payload["good"] == {"value": 250, "updated": 1234000}
-    assert payload["rx"] == {"value": 100, "updated": 1234000}
-    assert payload["unavailable"] is None
-    assert payload["invalid"] is None
-
-    print("Core native UniFi snapshot activity counters: PASS")
+        result = subprocess.run(
+            ["node", "-e", script],
+            cwd=ROOT,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout)
+        payload = json.loads(result.stdout.strip())
+        self.assertEqual(payload["good"], {"value": 250, "updated": 1234000})
+        self.assertEqual(payload["rx"], {"value": 100, "updated": 1234000})
+        self.assertIsNone(payload["unavailable"])
+        self.assertIsNone(payload["invalid"])
 
 
 if __name__ == "__main__":
-    main()
+    unittest.main()
