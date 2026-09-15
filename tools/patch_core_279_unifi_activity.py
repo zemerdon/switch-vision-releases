@@ -8,6 +8,7 @@ CARD_SOURCES = (
 )
 CHANGELOG = ROOT / "src" / "CHANGELOG.md"
 RELEASE_NOTES = ROOT / "src" / "RELEASE_NOTES.md"
+BUILD = ROOT / "build.py"
 
 marker = '''function readFirstCounter(hass, entityIds) {
   return readFirstCounterSample(hass, entityIds)?.value ?? null;
@@ -97,6 +98,29 @@ def patch_card(path: Path) -> None:
 
 for card_path in CARD_SOURCES:
     patch_card(card_path)
+
+build_text = BUILD.read_text(encoding="utf-8")
+old_release_guard = '''    if 'portByteEntity(config, port, "rx")' not in card_js or 'portByteEntity(config, port, "tx")' not in card_js:
+        raise SystemExit("Release validation failed: counter-derived port activity is missing")
+'''
+new_release_guard = '''    activity_counter_markers = [
+        'function portTrafficCounterSample(hass, config, port, direction)',
+        'readCounterSample(hass, portByteEntity(config, port, direction))',
+        'portTrafficCounterSample(hass, config, port, "rx")',
+        'portTrafficCounterSample(hass, config, port, "tx")',
+    ]
+    missing_activity_markers = [marker for marker in activity_counter_markers if marker not in card_js]
+    if missing_activity_markers:
+        raise SystemExit(
+            "Release validation failed: counter-derived port activity is missing: "
+            + ", ".join(missing_activity_markers)
+        )
+'''
+if old_release_guard in build_text:
+    build_text = build_text.replace(old_release_guard, new_release_guard, 1)
+elif new_release_guard not in build_text:
+    raise SystemExit("Core release activity validation marker not found")
+BUILD.write_text(build_text, encoding="utf-8", newline="\n")
 
 changelog = CHANGELOG.read_text(encoding="utf-8")
 anchor = "- Add permanent exact-model regressions that lock faceplate/profile pairs, preserve known-good compact UniFi mappings, and keep non-exact fallback models' physical counts authoritative.\n"
