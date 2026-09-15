@@ -771,8 +771,8 @@
       "discovery_support": true,
       "dashboard_support": true,
       "mapping_profile": "ubiquiti-usw-enterprise-8-poe",
-      "calibration_profile": "stock_24rj45_2sfp",
-      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "calibration_profile": "unifi_8_rj45_2sfp",
+      "default_faceplate": "faceplates/unifi-8-rj45-2sfp.png",
       "optional_faceplates": [],
       "tested_firmware": [
         "7.4.1.16850"
@@ -789,7 +789,7 @@
         "Live dashboard, PoE telemetry, VLAN presentation, sensors, and uplink media validation remain pending.",
         "v2.0.22 audit regression checks passed against the supplied contribution/API sample data; live dashboard validation status is unchanged.",
         "v2.0.28 live UniFi2MQTT validation confirmed the normalized API layout on 3 physical device(s).",
-        "v2.0.32 uses the generic 48 RJ45 + 4 SFP faceplate as the universal temporary fallback until a smaller matching generic visual is supplied.",
+        "The bundled UniFi eight-RJ45 plus two-SFP faceplate/profile matches the repeated physical/API topology and replaces the obsolete oversized fallback.",
         "v2.0.32 dashboard generation is enabled through the UniFi API/UniFi2MQTT data path; support status remains Experimental pending wider live validation.",
         "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used."
       ],
@@ -803,9 +803,9 @@
       },
       "visuals": {
         "status": "experimental",
-        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "recommended_faceplate": "faceplates/unifi-8-rj45-2sfp.png",
         "optional_faceplates": [],
-        "calibration_profile": "stock_24rj45_2sfp",
+        "calibration_profile": "unifi_8_rj45_2sfp",
         "canvas": {
           "width": 2048,
           "height": 448
@@ -955,8 +955,8 @@
       "discovery_support": true,
       "dashboard_support": true,
       "mapping_profile": "ubiquiti-usw-pro-xg-8-poe-api",
-      "calibration_profile": "stock_24rj45_2sfp",
-      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "calibration_profile": "unifi_8_rj45_2sfp",
+      "default_faceplate": "faceplates/unifi-8-rj45-2sfp.png",
       "optional_faceplates": [],
       "tested_firmware": [
         "7.4.1"
@@ -972,7 +972,7 @@
         "Live Switch Vision dashboard validation remains pending.",
         "v2.0.22 audit regression checks passed against the supplied contribution/API sample data; live dashboard validation status is unchanged.",
         "v2.0.28 live UniFi2MQTT validation confirmed the normalized API layout on 1 physical device(s).",
-        "v2.0.32 uses the generic 48 RJ45 + 4 SFP faceplate as the universal temporary fallback until a smaller matching generic visual is supplied.",
+        "The bundled UniFi eight-RJ45 plus two-SFP faceplate/profile matches the confirmed physical/API topology and replaces the obsolete oversized fallback.",
         "v2.0.32 dashboard generation is enabled through the UniFi API/UniFi2MQTT data path; support status remains Experimental pending wider live validation.",
         "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used."
       ],
@@ -986,9 +986,9 @@
       },
       "visuals": {
         "status": "experimental",
-        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "recommended_faceplate": "faceplates/unifi-8-rj45-2sfp.png",
         "optional_faceplates": [],
-        "calibration_profile": "stock_24rj45_2sfp",
+        "calibration_profile": "unifi_8_rj45_2sfp",
         "canvas": {
           "width": 2048,
           "height": 448
@@ -1439,7 +1439,7 @@
       },
       "stack_support": false,
       "discovery_support": true,
-      "dashboard_support": false,
+      "dashboard_support": true,
       "mapping_profile": "ubiquiti-usw-pro-aggregation-api",
       "unifi_api_port_map": {
         "rj45": [],
@@ -1478,8 +1478,8 @@
           32
         ]
       },
-      "calibration_profile": "",
-      "default_faceplate": "",
+      "calibration_profile": "unifi_32sfp",
+      "default_faceplate": "faceplates/unifi-32sfp.png",
       "optional_faceplates": [],
       "tested_firmware": [],
       "contributor": {
@@ -1509,8 +1509,8 @@
         },
         "Ports 29 and 30 were observed negotiating at 10G despite 25G SFP28 capability; Switch Vision must display the current 10G link speed while retaining 25G as maximum capability metadata.",
         "Port detail is available while per-port traffic is unavailable through the contributed UniFi API path.",
-        "Core calibration storage supports the required connector count after the optical-only validation fix, but no verified 32-port faceplate coordinates are available yet.",
-        "Dashboard support remains disabled until a proper high-density optical faceplate/calibration profile is verified; a four-uplink fallback is intentionally not used."
+        "The bundled owner-calibrated 32-position optical faceplate provides SFP1-SFP28 plus four SFP28 positions for this exact topology.",
+        "Dashboard support uses the bundled 32-position optical profile; no reduced optical fallback is used."
       ],
       "validation": {
         "exact_model_detection": "live_api_confirmed",
@@ -1522,9 +1522,9 @@
       },
       "visuals": {
         "status": "detected",
-        "recommended_faceplate": "",
+        "recommended_faceplate": "faceplates/unifi-32sfp.png",
         "optional_faceplates": [],
-        "calibration_profile": "",
+        "calibration_profile": "unifi_32sfp",
         "canvas": {
           "width": 2048,
           "height": 448
@@ -1627,8 +1627,8 @@
       "discovery_support": true,
       "dashboard_support": true,
       "mapping_profile": "ubiquiti-usw-flex-api",
-      "calibration_profile": "stock_24rj45_2sfp",
-      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "calibration_profile": "default_unifi_5_rj45",
+      "default_faceplate": "faceplates/unifi-5rj45.png",
       "optional_faceplates": [],
       "tested_firmware": [
         "7.4.1"
@@ -1644,7 +1644,7 @@
         "Live evidence includes link state, negotiated speed, CPU, memory and uptime.",
         "Per-port RX/TX traffic is not exposed by the current UniFi API path.",
         "SNMP is therefore required for Switch Vision per-port Activity LED animation.",
-        "No exact five-port Switch Vision visual is assigned yet; the universal temporary fallback preserves the real API port count.",
+        "The bundled five-RJ45 UniFi faceplate/profile matches the authoritative five-port API topology and replaces the obsolete oversized fallback.",
         "Rendered dashboard validation remains pending before promotion beyond Experimental.",
         "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used."
       ],
@@ -1658,9 +1658,9 @@
       },
       "visuals": {
         "status": "experimental",
-        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "recommended_faceplate": "faceplates/unifi-5rj45.png",
         "optional_faceplates": [],
-        "calibration_profile": "stock_24rj45_2sfp",
+        "calibration_profile": "default_unifi_5_rj45",
         "canvas": {
           "width": 2048,
           "height": 448
@@ -1747,8 +1747,8 @@
       "discovery_support": true,
       "dashboard_support": true,
       "mapping_profile": "ubiquiti-usw-flex-mini-api",
-      "calibration_profile": "stock_24rj45_2sfp",
-      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "calibration_profile": "default_unifi_5_rj45",
+      "default_faceplate": "faceplates/unifi-5rj45.png",
       "optional_faceplates": [],
       "tested_firmware": [],
       "contributor": {
@@ -1777,7 +1777,7 @@
         "Three independent live UniFi API devices expose the same five 1G RJ45-port topology.",
         "No per-port PoE output capability is exposed by the contributed normalized API data.",
         "Per-port RX/TX traffic is not exposed by the current UniFi API path.",
-        "The universal temporary faceplate is used while preserving the real five-port count.",
+        "The bundled five-RJ45 UniFi faceplate/profile matches the authoritative five-port API topology and replaces the obsolete oversized fallback.",
         "Rendered dashboard validation remains pending before promotion beyond Experimental.",
         "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.",
         "community validation from community contributor independently reconfirms two additional units with the same five-port 1G RJ45 topology.",
@@ -1793,9 +1793,9 @@
       },
       "visuals": {
         "status": "experimental",
-        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "recommended_faceplate": "faceplates/unifi-5rj45.png",
         "optional_faceplates": [],
-        "calibration_profile": "stock_24rj45_2sfp",
+        "calibration_profile": "default_unifi_5_rj45",
         "canvas": {
           "width": 2048,
           "height": 448
@@ -2001,8 +2001,8 @@
       "discovery_support": true,
       "dashboard_support": true,
       "mapping_profile": "ubiquiti-usw-lite-8-poe-api",
-      "calibration_profile": "stock_24rj45_2sfp",
-      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "calibration_profile": "default_unifi_8_rj45",
+      "default_faceplate": "faceplates/unifi-8rj45.png",
       "optional_faceplates": [],
       "tested_firmware": [
         "7.4.1"
@@ -2018,7 +2018,7 @@
         "Live evidence includes link state, negotiated speed, CPU, memory and uptime.",
         "Per-port RX/TX traffic is not exposed by the current UniFi API path.",
         "SNMP is therefore required for Switch Vision per-port Activity LED animation.",
-        "A dedicated 8-port Switch Vision visual is not currently assigned to this registry profile; the universal temporary fallback preserves the real port count.",
+        "The bundled eight-RJ45 UniFi faceplate/profile matches the authoritative eight-port API topology and replaces the obsolete oversized fallback.",
         "Rendered dashboard validation remains pending before promotion beyond Experimental.",
         "UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used."
       ],
@@ -2032,9 +2032,9 @@
       },
       "visuals": {
         "status": "experimental",
-        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "recommended_faceplate": "faceplates/unifi-8rj45.png",
         "optional_faceplates": [],
-        "calibration_profile": "stock_24rj45_2sfp",
+        "calibration_profile": "default_unifi_8_rj45",
         "canvas": {
           "width": 2048,
           "height": 448
@@ -2211,10 +2211,10 @@
         "gigabit_sfp": 2,
         "ten_gigabit_sfp_plus": 0
       },
-      "dashboard_support": false,
+      "dashboard_support": true,
       "mapping_profile": "ubiquiti-us-16-poe-150w-api",
-      "calibration_profile": "",
-      "default_faceplate": "",
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
       "contributions": [
         {
           "id": "community validation",
@@ -2254,7 +2254,7 @@
         "All sixteen copper ports expose PoE output capability in the normalized UniFi API evidence; the two SFP ports do not.",
         "The contract records the standardized PoE metadata actually exposed by the API and does not invent legacy passive-24V state that was not present in the contribution.",
         "Port detail is available while per-port RX/TX traffic is unavailable through the contributed UniFi API path.",
-        "A dedicated 16 RJ45 + 2 SFP faceplate is not yet verified, so exact dashboard visuals remain pending; Discovery may use its safe generic 24+2 visual with the true 16+2 counts."
+        "No dedicated 16+2 artwork is bundled; the approved stock 24+2 canvas is used while preserving the authoritative 16-RJ45 plus 2-SFP physical counts."
       ],
       "validation": {
         "exact_model_detection": "live_api_confirmed_two_corroborating_captures",
@@ -2265,10 +2265,10 @@
         "stack": "not_applicable"
       },
       "visuals": {
-        "status": "detected",
-        "recommended_faceplate": "",
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
         "optional_faceplates": [],
-        "calibration_profile": "",
+        "calibration_profile": "stock_24rj45_2sfp",
         "canvas": {
           "width": 2048,
           "height": 448
@@ -3291,8 +3291,8 @@
       "discovery_support": true,
       "dashboard_support": true,
       "mapping_profile": "ubiquiti-usw-pro-hd-24-poe-snmp",
-      "calibration_profile": "stock_24rj45_4sfp",
-      "default_faceplate": "faceplates/24rj45-4sfp.png",
+      "calibration_profile": "unifi_24_rj45_4sfp_inline",
+      "default_faceplate": "faceplates/unifi-24-rj45-4sfp-inline.png",
       "optional_faceplates": [],
       "tested_firmware": [],
       "contributor": {
@@ -3314,9 +3314,9 @@
       },
       "visuals": {
         "status": "experimental",
-        "recommended_faceplate": "faceplates/24rj45-4sfp.png",
+        "recommended_faceplate": "faceplates/unifi-24-rj45-4sfp-inline.png",
         "optional_faceplates": [],
-        "calibration_profile": "stock_24rj45_4sfp",
+        "calibration_profile": "unifi_24_rj45_4sfp_inline",
         "canvas": {
           "width": 2048,
           "height": 448
