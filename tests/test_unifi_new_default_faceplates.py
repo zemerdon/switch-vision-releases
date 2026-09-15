@@ -58,6 +58,10 @@ EXPECTED_24_PLUS_2_MODELS = {
     "USW Pro XG 24 PoE",
 }
 
+EXPECTED_24_PLUS_4_MODELS = {
+    "USW Pro HD 24 PoE",
+}
+
 NEW_FILES = set(FACEPLATES)
 
 
@@ -130,6 +134,16 @@ def main() -> None:
         assert row["visuals"]["calibration_profile"] == "unifi_24_rj45_2sfp_inline"
         assert Path(row["visuals"]["recommended_faceplate"]).name == "unifi-24-rj45-2sfp-inline.png"
 
+    for model in EXPECTED_24_PLUS_4_MODELS:
+        row = by_model[model]
+        assert row["vendor"] == "Ubiquiti"
+        assert row["ports"]["rj45"] == 24
+        assert row["ports"]["uplinks"] == 4
+        assert row["calibration_profile"] == "unifi_24_rj45_4sfp_inline"
+        assert Path(row["default_faceplate"]).name == "unifi-24-rj45-4sfp-inline.png"
+        assert row["visuals"]["calibration_profile"] == "unifi_24_rj45_4sfp_inline"
+        assert Path(row["visuals"]["recommended_faceplate"]).name == "unifi-24-rj45-4sfp-inline.png"
+
     xg16 = by_model["US XG 16"]
     assert xg16["vendor"] == "Ubiquiti"
     assert xg16["status"] == "experimental"
@@ -157,9 +171,11 @@ def main() -> None:
             assert layout == (24, 2), f"24+2 faceplate assigned to mismatched {row['model']}: {layout}"
         if "unifi-4-rj45-12sfp.png" in selected:
             assert layout == (4, 12), f"4+12 faceplate assigned to mismatched {row['model']}: {layout}"
-        assert "unifi-24-rj45-4sfp-inline.png" not in selected, (
-            f"24+4 faceplate must remain unassigned until an exact UniFi 24+4 topology is registered: {row['model']}"
-        )
+        if "unifi-24-rj45-4sfp-inline.png" in selected:
+            assert layout == (24, 4), f"24+4 faceplate assigned to mismatched {row['model']}: {layout}"
+            assert row["model"] in EXPECTED_24_PLUS_4_MODELS, (
+                f"24+4 faceplate assigned to unreviewed exact model: {row['model']}"
+            )
 
     card = (SRC / "js" / "switch-vision.js").read_text(encoding="utf-8")
     for profile, filename in (
