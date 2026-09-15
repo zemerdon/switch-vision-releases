@@ -23,7 +23,7 @@ source_models = {d["model"]: d for d in source_doc["devices"] if isinstance(d, d
 
 expected = {
     "UCG Ultra": (5, 0, False, True, "ubiquiti-ucg-ultra-api"),
-    "US 16 PoE 150W": (16, 2, True, False, "ubiquiti-us-16-poe-150w-api"),
+    "US 16 PoE 150W": (16, 2, True, True, "ubiquiti-us-16-poe-150w-api"),
     "USW Pro Max 24": (24, 2, False, True, "ubiquiti-usw-pro-max-24-api"),
     "USW Ultra": (8, 0, True, True, "ubiquiti-usw-ultra-api"),
 }
@@ -53,8 +53,11 @@ assert "ports_25_26_10g_sfp_plus" in promax["validation"]["uplinks"]
 
 us16 = source_models["US 16 PoE 150W"]
 assert "ports_17_18_1g_sfp" in us16["validation"]["uplinks"]
-assert us16["default_faceplate"] == ""
-assert us16["calibration_profile"] == ""
+assert us16["default_faceplate"] == "faceplates/24rj45-2sfp.png"
+assert us16["calibration_profile"] == "stock_24rj45_2sfp"
+assert us16["visuals"]["status"] == "experimental"
+assert us16["visuals"]["recommended_faceplate"] == us16["default_faceplate"]
+assert us16["visuals"]["calibration_profile"] == us16["calibration_profile"]
 
 ucg = source_models["UCG Ultra"]
 assert "no_poe_output" in ucg["validation"]["poe"]
