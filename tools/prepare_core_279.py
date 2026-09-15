@@ -30,6 +30,10 @@ Manual installs must replace `/config/custom_components/switch_vision/` and rest
 
 """
 
+OLD_PRO_AGG_TEST = '''    def test_pro_aggregation_preserves_25g_capability_contract_without_fake_visual(self) -> None:\n        device = self.models["USW Pro Aggregation"]\n        ports = device.get("ports") or {}\n        self.assertEqual(device.get("status"), "detected")\n        self.assertIs(device.get("dashboard_support"), False)\n        self.assertEqual(ports.get("rj45"), 0)\n        self.assertEqual(ports.get("uplinks"), 32)\n        self.assertEqual(ports.get("ten_gigabit_sfp_plus"), 28)\n        self.assertEqual(ports.get("twenty_five_gigabit_sfp28"), 4)\n        self.assertEqual(device.get("calibration_profile"), "")\n        self.assertEqual(device.get("default_faceplate"), "")\n        self.assertEqual(device.get("unifi_api_port_map"), {"rj45": [], "sfp": list(range(1, 33))})\n        notes = "\\n".join(str(note) for note in device.get("notes") or [])\n        self.assertIn("Ports 29 and 30", notes)\n        self.assertIn("negotiating at 10G", notes)\n        self.assertIn("25G", notes)\n'''
+
+NEW_PRO_AGG_TEST = '''    def test_pro_aggregation_preserves_25g_capability_contract_with_exact_optical_visual(self) -> None:\n        device = self.models["USW Pro Aggregation"]\n        ports = device.get("ports") or {}\n        self.assertEqual(device.get("status"), "detected")\n        self.assertIs(device.get("dashboard_support"), True)\n        self.assertEqual(ports.get("rj45"), 0)\n        self.assertEqual(ports.get("uplinks"), 32)\n        self.assertEqual(ports.get("ten_gigabit_sfp_plus"), 28)\n        self.assertEqual(ports.get("twenty_five_gigabit_sfp28"), 4)\n        self.assertEqual(device.get("calibration_profile"), "unifi_32sfp")\n        self.assertEqual(device.get("default_faceplate"), "faceplates/unifi-32sfp.png")\n        self.assertEqual(device.get("unifi_api_port_map"), {"rj45": [], "sfp": list(range(1, 33))})\n        visuals = device.get("visuals") or {}\n        self.assertEqual(visuals.get("recommended_faceplate"), "faceplates/unifi-32sfp.png")\n        self.assertEqual(visuals.get("calibration_profile"), "unifi_32sfp")\n        notes = "\\n".join(str(note) for note in device.get("notes") or [])\n        self.assertIn("Ports 29 and 30", notes)\n        self.assertIn("negotiating at 10G", notes)\n        self.assertIn("25G", notes)\n'''
+
 
 def write_lf(path: Path, text: str) -> None:
     path.write_text(text.replace("\r\n", "\n").replace("\r", "\n"), encoding="utf-8", newline="\n")
@@ -55,12 +59,23 @@ def patch_readme(path: Path) -> None:
     write_lf(path, text)
 
 
+def patch_stale_regressions() -> None:
+    path = ROOT / "tests" / "test_device_registry_contracts.py"
+    text = path.read_text(encoding="utf-8")
+    if NEW_PRO_AGG_TEST in text:
+        return
+    if OLD_PRO_AGG_TEST not in text:
+        raise RuntimeError("could not locate stale USW Pro Aggregation regression")
+    write_lf(path, text.replace(OLD_PRO_AGG_TEST, NEW_PRO_AGG_TEST, 1))
+
+
 def run(*args: str) -> None:
     subprocess.run(args, cwd=ROOT, check=True)
 
 
 def main() -> None:
     run(sys.executable, "tools/apply_faceplate_matrix.py")
+    patch_stale_regressions()
     prepend_once(ROOT / "CHANGELOG.md", "## v2.7.9 —", CHANGELOG_SECTION)
     prepend_once(ROOT / "RELEASE_NOTES.md", "# Switch Vision Core v2.7.9", RELEASE_NOTES_SECTION)
     patch_readme(ROOT / "README.md")
