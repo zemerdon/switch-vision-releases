@@ -68,6 +68,14 @@ def test_exact_model_faceplate_matrix() -> None:
             0,
             32,
         ),
+        # No exact 16+2 asset exists yet.  The approved oversized canvas must
+        # remain explicit while the physical count stays authoritative.
+        "US 16 PoE 150W": (
+            "faceplates/24rj45-2sfp.png",
+            "stock_24rj45_2sfp",
+            16,
+            2,
+        ),
     }
 
     for model, (faceplate, profile, rj45, uplinks) in expected.items():
@@ -83,6 +91,7 @@ def test_exact_model_faceplate_matrix() -> None:
         assert ports.get("uplinks") == uplinks, model
         assert visuals.get("recommended_faceplate") == faceplate, model
         assert visuals.get("calibration_profile") == profile, model
+        assert (ROOT / "src" / faceplate).is_file(), model
 
 
 def test_known_good_exact_unifi_visuals_stay_exact() -> None:
@@ -104,6 +113,14 @@ def test_known_good_exact_unifi_visuals_stay_exact() -> None:
             "faceplates/unifi-4-rj45-12sfp.png",
             "unifi_4_rj45_12sfp",
         ),
+        "USW Ultra": (
+            "faceplates/unifi-8rj45.png",
+            "default_unifi_8_rj45",
+        ),
+        "UCG Ultra": (
+            "faceplates/unifi-5rj45.png",
+            "default_unifi_5_rj45",
+        ),
     }
 
     for model, (faceplate, profile) in expected.items():
@@ -114,3 +131,31 @@ def test_known_good_exact_unifi_visuals_stay_exact() -> None:
         assert row.get("calibration_profile") == profile, model
         assert visuals.get("recommended_faceplate") == faceplate, model
         assert visuals.get("calibration_profile") == profile, model
+        assert (ROOT / "src" / faceplate).is_file(), model
+
+
+def test_models_without_an_exact_asset_keep_truthful_physical_counts() -> None:
+    rows = _rows()
+    # These layouts do not have an exact bundled faceplate today.  Do not
+    # "improve" them by selecting a visually similar but physically false asset.
+    expected_counts = {
+        "USW Flex 2.5G 8 PoE": (9, 1),
+        "UDM Pro": (9, 2),
+        "UDM Pro Max": (9, 2),
+        "UniFi Dream Machine PRO SE": (9, 2),
+        "USW Lite 16 PoE": (16, 0),
+        "USW-16-PoE": (16, 2),
+        "USW WAN": (1, 3),
+    }
+    for model, (rj45, uplinks) in expected_counts.items():
+        assert model in rows, model
+        ports = rows[model].get("ports") or {}
+        assert ports.get("rj45") == rj45, model
+        assert ports.get("uplinks") == uplinks, model
+
+
+if __name__ == "__main__":
+    test_exact_model_faceplate_matrix()
+    test_known_good_exact_unifi_visuals_stay_exact()
+    test_models_without_an_exact_asset_keep_truthful_physical_counts()
+    print("Core exact-model faceplate matrix: PASS")
