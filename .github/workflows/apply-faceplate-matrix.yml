@@ -1,0 +1,66 @@
+name: Apply Core faceplate matrix
+
+on:
+  push:
+    branches:
+      - fix/core-2.7.9-faceplate-matrix
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install validation dependencies
+        run: python -m pip install --disable-pip-version-check pyyaml pytest
+
+      - name: Apply exact-model faceplate matrix
+        run: python tools/apply_faceplate_matrix.py
+
+      - name: Run exact-model regression
+        run: python -m pytest -q tests/test_exact_model_faceplate_matrix.py
+
+      - name: Validate generated source
+        run: |
+          python build.py -v 2.7.9 --validate-only 2>/tmp/validate.err || {
+            cat /tmp/validate.err
+            if grep -q "unrecognized arguments: --validate-only" /tmp/validate.err; then
+              echo "validate-only flag is unavailable; running repository release checks instead"
+              python tools/check_core_release_parity.py
+            else
+              exit 1
+            fi
+          }
+
+      - name: Check patch integrity
+        run: git diff --check
+
+      - name: Commit generated corrections
+        shell: bash
+        run: |
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "No generated corrections to commit."
+            exit 0
+          fi
+          git config user.name "Switch Vision SV-Dev"
+          git config user.email "switch-vision@users.noreply.github.com"
+          git add src/devices/supported_devices.yaml \
+                  src/devices/supported_devices.json \
+                  src/docs \
+                  src/js/switch-vision.js \
+                  src/custom_components/switch_vision/switch-vision-card.js
+          git commit -m "Core 2.7.9: correct exact model faceplate mappings"
+          git push origin HEAD:${{ github.ref_name }}
