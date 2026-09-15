@@ -1,0 +1,104 @@
+#!/usr/bin/env python3
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+CARD = ROOT / "src" / "custom_components" / "switch_vision" / "switch-vision-card.js"
+CHANGELOG = ROOT / "src" / "CHANGELOG.md"
+RELEASE_NOTES = ROOT / "src" / "RELEASE_NOTES.md"
+
+text = CARD.read_text(encoding="utf-8")
+
+marker = '''function readFirstCounter(hass, entityIds) {
+  return readFirstCounterSample(hass, entityIds)?.value ?? null;
+}
+
+function portByteEntity(config, port, direction) {'''
+replacement = '''function readFirstCounter(hass, entityIds) {
+  return readFirstCounterSample(hass, entityIds)?.value ?? null;
+}
+
+function unifiTrafficCounterSample(port, direction) {
+  const key = direction === "rx" ? "rx_bytes" : direction === "tx" ? "tx_bytes" : "";
+  if (!key) return null;
+  const traffic = port?.traffic && typeof port.traffic === "object" ? port.traffic : null;
+  if (!traffic || traffic.available !== true) return null;
+
+  const value = Number(traffic[key]);
+  if (!Number.isFinite(value) || value < 0) return null;
+
+  const sampledAt = Number(traffic.sampled_at || 0);
+  const updated = Number.isFinite(sampledAt) && sampledAt > 0 ? sampledAt * 1000 : 0;
+  return { value, updated };
+}
+
+function portTrafficCounterSample(hass, config, port, direction) {
+  const isUnifi = String(config?.data_source || "").toLowerCase() === "unifi_api";
+  if (isUnifi && rawUnifiRuntime(config)) {
+    const runtimePort = unifiAccessPort(config, port);
+    return runtimePort ? unifiTrafficCounterSample(runtimePort, direction) : null;
+  }
+  return readCounterSample(hass, portByteEntity(config, port, direction));
+}
+
+function sfpTrafficCounterSample(hass, config, port, direction) {
+  const isUnifi = String(config?.data_source || "").toLowerCase() === "unifi_api";
+  if (isUnifi && rawUnifiRuntime(config)) {
+    const runtimePort = unifiSfpPort(config, port);
+    return runtimePort ? unifiTrafficCounterSample(runtimePort, direction) : null;
+  }
+  return readFirstCounterSample(hass, sfpByteEntities(config, port, direction));
+}
+
+function portByteEntity(config, port, direction) {'''
+if marker not in text:
+    raise SystemExit("Core activity helper insertion marker not found")
+text = text.replace(marker, replacement, 1)
+
+old_port = '''  const rx = readCounterSample(hass, portByteEntity(config, port, "rx"));
+  const tx = readCounterSample(hass, portByteEntity(config, port, "tx"));'''
+new_port = '''  const rx = portTrafficCounterSample(hass, config, port, "rx");
+  const tx = portTrafficCounterSample(hass, config, port, "tx");'''
+count = text.count(old_port)
+if count != 2:
+    raise SystemExit(f"Expected two RJ45 activity/rate counter readers, found {count}")
+text = text.replace(old_port, new_port)
+
+old_sfp = '''  const rx = readFirstCounterSample(hass, sfpByteEntities(config, port, "rx"));
+  const tx = readFirstCounterSample(hass, sfpByteEntities(config, port, "tx"));'''
+new_sfp = '''  const rx = sfpTrafficCounterSample(hass, config, port, "rx");
+  const tx = sfpTrafficCounterSample(hass, config, port, "tx");'''
+count = text.count(old_sfp)
+if count != 2:
+    raise SystemExit(f"Expected two SFP activity/rate counter readers, found {count}")
+text = text.replace(old_sfp, new_sfp)
+
+CARD.write_text(text, encoding="utf-8", newline="\n")
+
+changelog = CHANGELOG.read_text(encoding="utf-8")
+anchor = "- Add permanent exact-model regressions that lock faceplate/profile pairs, preserve known-good compact UniFi mappings, and keep non-exact fallback models' physical counts authoritative.\n"
+insert = (
+    anchor
+    + "- Consume UniFi2MQTT 4.0 per-port RX/TX counters directly from the fresh native UniFi snapshot for activity LEDs and throughput calculations, using each classic telemetry sample timestamp instead of requiring Home Assistant RX/TX sensor entities.\n"
+    + "- Fail native UniFi traffic closed when the runtime snapshot is stale or a port has no validated traffic enrichment, while retaining the legacy Home Assistant counter path when no native UniFi runtime has loaded.\n"
+)
+if anchor not in changelog:
+    raise SystemExit("Core 2.7.9 changelog insertion marker not found")
+changelog = changelog.replace(anchor, insert, 1)
+changelog = changelog.replace(
+    "- Keep support-confidence states unchanged; this release corrects presentation assignments only and does not promote hardware validation status.\n",
+    "- Keep support-confidence states unchanged; this release corrects presentation assignments and completes the native UniFi2MQTT 4.0 activity-counter bridge without promoting hardware validation status.\n",
+    1,
+)
+CHANGELOG.write_text(changelog, encoding="utf-8", newline="\n")
+
+notes = RELEASE_NOTES.read_text(encoding="utf-8")
+notes_anchor = "The release does not infer faceplates from vendor name alone and does not force a visually similar asset onto hardware whose physical topology has no exact bundled match. Permanent regressions now protect the corrected exact-model matrix and the true physical counts of intentional fallback models.\n"
+notes_insert = notes_anchor + (
+    "\nCore 2.7.9 also completes the frontend side of UniFi2MQTT 4.0 activity telemetry. When a fresh native UniFi runtime snapshot contains validated per-port traffic enrichment, the card now reads cumulative RX/TX counters and their sample timestamp directly from that snapshot for activity LEDs and throughput calculations. Raw counter entities do not need to be created in Home Assistant. Stale or unavailable native traffic fails closed, while older non-native entity-counter dashboards retain their existing compatibility path.\n"
+)
+if notes_anchor not in notes:
+    raise SystemExit("Core 2.7.9 release-note insertion marker not found")
+notes = notes.replace(notes_anchor, notes_insert, 1)
+RELEASE_NOTES.write_text(notes, encoding="utf-8", newline="\n")
+
+print("Core 2.7.9 native UniFi activity integration patch applied")
