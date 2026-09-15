@@ -94,16 +94,30 @@ if (unifiDisabled.length !== 0) {{
         activity = extract_js_function(
             source, "function testSfpActivity(hass, config, port)"
         )
+        resolver = extract_js_function(
+            source, "function sfpTrafficCounterSample(hass, config, port, direction)"
+        )
+
+        # Activity and throughput must share one resolver so a physical uplink
+        # cannot blink from one source while its rate is calculated from another.
         for function in (rates, activity):
             self.assertIn(
-                'sfpByteEntities(config, port, "rx")',
+                'sfpTrafficCounterSample(hass, config, port, "rx")',
                 function,
             )
             self.assertIn(
-                'sfpByteEntities(config, port, "tx")',
+                'sfpTrafficCounterSample(hass, config, port, "tx")',
                 function,
             )
             self.assertIn("sfpSpeedMbps(hass, config, port)", function)
+
+        # The wrapper may prefer native UniFi runtime traffic, but its legacy
+        # fallback must keep using the established generic uplink candidate set.
+        self.assertIn("rawUnifiRuntime(config)", resolver)
+        self.assertIn("unifiSfpPort(config, port)", resolver)
+        self.assertIn("unifiTrafficCounterSample(runtimePort, direction)", resolver)
+        self.assertIn("sfpByteEntities(config, port, direction)", resolver)
+        self.assertIn("readFirstCounterSample", resolver)
 
     def test_speed_resolver_already_supports_generic_uplink_numbers(self) -> None:
         source = CARD.read_text(encoding="utf-8")
