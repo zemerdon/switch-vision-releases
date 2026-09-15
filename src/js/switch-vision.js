@@ -1778,6 +1778,38 @@ function readFirstCounter(hass, entityIds) {
   return readFirstCounterSample(hass, entityIds)?.value ?? null;
 }
 
+function unifiTrafficCounterSample(port, direction) {
+  const key = direction === "rx" ? "rx_bytes" : direction === "tx" ? "tx_bytes" : "";
+  if (!key) return null;
+  const traffic = port?.traffic && typeof port.traffic === "object" ? port.traffic : null;
+  if (!traffic || traffic.available !== true) return null;
+
+  const value = Number(traffic[key]);
+  if (!Number.isFinite(value) || value < 0) return null;
+
+  const sampledAt = Number(traffic.sampled_at || 0);
+  const updated = Number.isFinite(sampledAt) && sampledAt > 0 ? sampledAt * 1000 : 0;
+  return { value, updated };
+}
+
+function portTrafficCounterSample(hass, config, port, direction) {
+  const isUnifi = String(config?.data_source || "").toLowerCase() === "unifi_api";
+  if (isUnifi && rawUnifiRuntime(config)) {
+    const runtimePort = unifiAccessPort(config, port);
+    return runtimePort ? unifiTrafficCounterSample(runtimePort, direction) : null;
+  }
+  return readCounterSample(hass, portByteEntity(config, port, direction));
+}
+
+function sfpTrafficCounterSample(hass, config, port, direction) {
+  const isUnifi = String(config?.data_source || "").toLowerCase() === "unifi_api";
+  if (isUnifi && rawUnifiRuntime(config)) {
+    const runtimePort = unifiSfpPort(config, port);
+    return runtimePort ? unifiTrafficCounterSample(runtimePort, direction) : null;
+  }
+  return readFirstCounterSample(hass, sfpByteEntities(config, port, direction));
+}
+
 function portByteEntity(config, port, direction) {
   if (String(config?.data_source || "").toLowerCase() === "unifi_api" && config?.unifi_per_port_traffic !== true) return null;
   const member = normalizeMember(config);
@@ -2066,8 +2098,8 @@ function testPortActivity(hass, config, port) {
   const member = normalizeMember(config);
   const mappedPort = mappedPortNumber(config, port);
   const key = `${member}:port:${mappedPort}`;
-  const rx = readCounterSample(hass, portByteEntity(config, port, "rx"));
-  const tx = readCounterSample(hass, portByteEntity(config, port, "tx"));
+  const rx = portTrafficCounterSample(hass, config, port, "rx");
+  const tx = portTrafficCounterSample(hass, config, port, "tx");
   const speedMbps = parseSpeedMbps(portSpeed(hass, config, port));
   const maxBitsPerSecond = Number.isFinite(speedMbps) && speedMbps > 0
     ? speedMbps * 1000000
@@ -2162,8 +2194,8 @@ function portTrafficRates(hass, config, port) {
   const member = normalizeMember(config);
   const mappedPort = mappedPortNumber(config, port);
   const key = `${member}:port:${mappedPort}`;
-  const rx = readCounterSample(hass, portByteEntity(config, port, "rx"));
-  const tx = readCounterSample(hass, portByteEntity(config, port, "tx"));
+  const rx = portTrafficCounterSample(hass, config, port, "rx");
+  const tx = portTrafficCounterSample(hass, config, port, "tx");
 
   const rawSpeed = portSpeed(hass, config, port);
   const speedMbps = parseSpeedMbps(rawSpeed);
@@ -2179,8 +2211,8 @@ function sfpTrafficRates(hass, config, port) {
 
   const member = normalizeMember(config);
   const key = `${member}:sfp:${port}`;
-  const rx = readFirstCounterSample(hass, sfpByteEntities(config, port, "rx"));
-  const tx = readFirstCounterSample(hass, sfpByteEntities(config, port, "tx"));
+  const rx = sfpTrafficCounterSample(hass, config, port, "rx");
+  const tx = sfpTrafficCounterSample(hass, config, port, "tx");
 
   const speedMbps = sfpSpeedMbps(hass, config, port);
   const maxBitsPerSecond = Number.isFinite(speedMbps) && speedMbps > 0
@@ -2194,8 +2226,8 @@ function testSfpActivity(hass, config, port) {
 
   const member = normalizeMember(config);
   const key = `${member}:sfp:${port}`;
-  const rx = readFirstCounterSample(hass, sfpByteEntities(config, port, "rx"));
-  const tx = readFirstCounterSample(hass, sfpByteEntities(config, port, "tx"));
+  const rx = sfpTrafficCounterSample(hass, config, port, "rx");
+  const tx = sfpTrafficCounterSample(hass, config, port, "tx");
 
   const speedMbps = sfpSpeedMbps(hass, config, port);
   const maxBitsPerSecond = Number.isFinite(speedMbps) && speedMbps > 0

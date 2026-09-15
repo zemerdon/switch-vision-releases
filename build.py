@@ -1629,8 +1629,18 @@ def validate_release_sources(release_dir: Path, version: str, gold: bool = False
     for forbidden in forbidden_last_change:
         if forbidden in card_js or forbidden in generated_examples:
             raise SystemExit(f"Release validation failed: obsolete last-change dependency remains: {forbidden}")
-    if 'portByteEntity(config, port, "rx")' not in card_js or 'portByteEntity(config, port, "tx")' not in card_js:
-        raise SystemExit("Release validation failed: counter-derived port activity is missing")
+    activity_counter_markers = [
+        'function portTrafficCounterSample(hass, config, port, direction)',
+        'readCounterSample(hass, portByteEntity(config, port, direction))',
+        'portTrafficCounterSample(hass, config, port, "rx")',
+        'portTrafficCounterSample(hass, config, port, "tx")',
+    ]
+    missing_activity_markers = [marker for marker in activity_counter_markers if marker not in card_js]
+    if missing_activity_markers:
+        raise SystemExit(
+            "Release validation failed: counter-derived port activity is missing: "
+            + ", ".join(missing_activity_markers)
+        )
 
     compact_header_forbidden = [
         'cv-cal-workspace-title',
