@@ -222,18 +222,21 @@ class DeviceRegistryContractTests(unittest.TestCase):
             {"rj45": [13, 14, 15, 16], "sfp": list(range(1, 13))},
         )
 
-    def test_pro_aggregation_preserves_25g_capability_contract_without_fake_visual(self) -> None:
+    def test_pro_aggregation_preserves_25g_capability_contract_with_exact_optical_visual(self) -> None:
         device = self.models["USW Pro Aggregation"]
         ports = device.get("ports") or {}
         self.assertEqual(device.get("status"), "detected")
-        self.assertIs(device.get("dashboard_support"), False)
+        self.assertIs(device.get("dashboard_support"), True)
         self.assertEqual(ports.get("rj45"), 0)
         self.assertEqual(ports.get("uplinks"), 32)
         self.assertEqual(ports.get("ten_gigabit_sfp_plus"), 28)
         self.assertEqual(ports.get("twenty_five_gigabit_sfp28"), 4)
-        self.assertEqual(device.get("calibration_profile"), "")
-        self.assertEqual(device.get("default_faceplate"), "")
+        self.assertEqual(device.get("calibration_profile"), "unifi_32sfp")
+        self.assertEqual(device.get("default_faceplate"), "faceplates/unifi-32sfp.png")
         self.assertEqual(device.get("unifi_api_port_map"), {"rj45": [], "sfp": list(range(1, 33))})
+        visuals = device.get("visuals") or {}
+        self.assertEqual(visuals.get("recommended_faceplate"), "faceplates/unifi-32sfp.png")
+        self.assertEqual(visuals.get("calibration_profile"), "unifi_32sfp")
         notes = "\n".join(str(note) for note in device.get("notes") or [])
         self.assertIn("Ports 29 and 30", notes)
         self.assertIn("negotiating at 10G", notes)
