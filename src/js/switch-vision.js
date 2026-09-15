@@ -197,20 +197,28 @@ function portLedSizeKey(part) {
   return null;
 }
 
-function portLedColourOverride(activeCalibration, part) {
-  const ui = uiFromCalibration(activeCalibration);
+function portLedColourOverride(activeCalibration, part, uiOverride = null) {
+  const ui = uiOverride || uiFromCalibration(activeCalibration);
   const field = part === "led_left" ? "link_led_color" : (part === "led_right" ? "activity_led_color" : "");
   const value = field ? String(ui?.[field] || "").trim() : "";
   return /^#[0-9a-f]{3}(?:[0-9a-f]{3})?$/i.test(value) ? normaliseHexColour(value) : "";
 }
 
-function applyPortLedColourOverride(element, activeCalibration, part, cls) {
+function applyPortLedColourOverride(element, activeCalibration, part, cls, uiOverride = null) {
   if (!element || String(cls || "") === "cv-led-off") return element;
-  const colour = portLedColourOverride(activeCalibration, part);
+  const colour = portLedColourOverride(activeCalibration, part, uiOverride);
   if (!colour) return element;
   element.style.fill = colour;
   element.style.filter = `drop-shadow(0 0 2.5px ${colour})`;
   return element;
+}
+
+function updatePortLedVisualState(element, activeCalibration, part, cls, uiOverride = null) {
+  if (!element) return element;
+  element.setAttribute("class", cls);
+  element.style.removeProperty("fill");
+  element.style.removeProperty("filter");
+  return applyPortLedColourOverride(element, activeCalibration, part, cls, uiOverride);
 }
 
 function portLed(svg, x, y, r, cls, activeCalibration, rectangleSize = null, part = "") {
@@ -1747,6 +1755,12 @@ function statusLedClass(name, demo = true, options = {}) {
 const portActivityState = new Map();
 const sfpActivityState = new Map();
 
+function switchVisionStateMap(config, name, fallback) {
+  const maps = config?.__activity_state_maps;
+  const candidate = maps && typeof maps === "object" ? maps[name] : null;
+  return candidate instanceof Map ? candidate : fallback;
+}
+
 function normalizeMember(config) {
   return String(config.member || "sw1").toLowerCase();
 }
@@ -2105,7 +2119,10 @@ function testPortActivity(hass, config, port) {
     ? speedMbps * 1000000
     : Number(config.activity_default_port_speed_mbps ?? 1000) * 1000000;
 
-  return updateActivityState(portActivityState, key, rx, tx, config, maxBitsPerSecond);
+  return updateActivityState(
+    switchVisionStateMap(config, "portActivity", portActivityState),
+    key, rx, tx, config, maxBitsPerSecond
+  );
 }
 
 function updateRateState(stateMap, key, rxSample, txSample, config, maxBitsPerSecond = null) {
@@ -2203,7 +2220,10 @@ function portTrafficRates(hass, config, port) {
     ? speedMbps * 1000000
     : null;
 
-  return updateRateState(portRateState, key, rx, tx, config, maxBitsPerSecond);
+  return updateRateState(
+    switchVisionStateMap(config, "portRate", portRateState),
+    key, rx, tx, config, maxBitsPerSecond
+  );
 }
 
 function sfpTrafficRates(hass, config, port) {
@@ -2218,7 +2238,10 @@ function sfpTrafficRates(hass, config, port) {
   const maxBitsPerSecond = Number.isFinite(speedMbps) && speedMbps > 0
     ? speedMbps * 1000000
     : 10000000000;
-  return updateRateState(sfpRateState, key, rx, tx, config, maxBitsPerSecond);
+  return updateRateState(
+    switchVisionStateMap(config, "sfpRate", sfpRateState),
+    key, rx, tx, config, maxBitsPerSecond
+  );
 }
 
 function testSfpActivity(hass, config, port) {
@@ -2233,7 +2256,10 @@ function testSfpActivity(hass, config, port) {
   const maxBitsPerSecond = Number.isFinite(speedMbps) && speedMbps > 0
     ? speedMbps * 1000000
     : 10000000000;
-  return updateActivityState(sfpActivityState, key, rx, tx, config, maxBitsPerSecond);
+  return updateActivityState(
+    switchVisionStateMap(config, "sfpActivity", sfpActivityState),
+    key, rx, tx, config, maxBitsPerSecond
+  );
 }
 
 
@@ -2570,8 +2596,30 @@ if (
   return cal;
 }
 
+let activeCalibrationUiRenderPass = null;
+const calibrationUiRenderPassCache = new WeakMap();
+
+function beginCalibrationUiRenderPass() {
+  const previous = activeCalibrationUiRenderPass;
+  activeCalibrationUiRenderPass = {};
+  return previous;
+}
+
+function endCalibrationUiRenderPass(previous = null) {
+  activeCalibrationUiRenderPass = previous;
+}
+
 function uiFromCalibration(cal) {
-  return ensureCalibrationUi(cal)?.ui || defaultUiLayout();
+  if (!cal || typeof cal !== "object" || !activeCalibrationUiRenderPass) {
+    return ensureCalibrationUi(cal)?.ui || defaultUiLayout();
+  }
+
+  const cached = calibrationUiRenderPassCache.get(cal);
+  if (cached?.pass === activeCalibrationUiRenderPass) return cached.ui;
+
+  const ui = ensureCalibrationUi(cal)?.ui || defaultUiLayout();
+  calibrationUiRenderPassCache.set(cal, { pass: activeCalibrationUiRenderPass, ui });
+  return ui;
 }
 
 function stableCalibrationOpaqueDeviceToken(value) {
@@ -3978,7 +4026,7 @@ function drawPanel(svg, { hass, config, calibration, layout }) {
         "led_left"
       );
 
-      portLed(
+      const activityLed = portLed(
         svg,
         port.led_right[0],
         port.led_right[1],
@@ -3993,6 +4041,7 @@ function drawPanel(svg, { hass, config, calibration, layout }) {
         port.led_right_size,
         "led_right"
       );
+      if (activityLed) activityLed.dataset.cvActivityPort = String(n);
     }
 
     if (config.show_numbers && port.number_show !== false) {
@@ -4051,7 +4100,7 @@ function drawPanel(svg, { hass, config, calibration, layout }) {
       calibration
     );
 
-    sfpLed(
+    const sfpActivityLed = sfpLed(
       svg,
       sfp,
       "led_right",
@@ -4063,6 +4112,7 @@ function drawPanel(svg, { hass, config, calibration, layout }) {
       ),
       calibration
     );
+    if (sfpActivityLed) sfpActivityLed.dataset.cvActivitySfp = String(sfpPort);
   }
 
   // Draw both status boxes last so their expanded backgrounds, borders and text
@@ -5636,8 +5686,22 @@ class SwitchVision3650 extends HTMLElement {
       this._boundCalibrationSavedHandler = (event) => this.handleLocalCalibrationSaved(event);
     }
     window.addEventListener("switch-vision-calibration-saved", this._boundCalibrationSavedHandler);
+    if (!this._hass || !this.config) return;
+
     this.subscribeCalibrationUpdates();
     this.subscribeUiSettingsUpdates();
+    this.maybeLoadGlobalUiSettings();
+    this.maybeLoadCalibrationProfile();
+    if (calibrationControlsEnabled(this.config)) void this.maybeLoadAssetLibrary();
+    this.ensureUnifiRefreshTimer();
+    void this.maybeLoadUnifiDevice();
+
+    if (calibrationControlsEnabled(this.config)) {
+      this.stopActivityAnimation();
+      if (!this.shadowRoot?.getElementById("s")) this.render();
+    } else {
+      this.scheduleLiveVisualRefresh(true);
+    }
   }
 
   disconnectedCallback() {
@@ -5646,9 +5710,15 @@ class SwitchVision3650 extends HTMLElement {
     }
     this.unsubscribeCalibrationUpdates();
     this.unsubscribeUiSettingsUpdates();
-    clearInterval(this._activityRenderTimer);
+    this.cancelScheduledLiveRefresh();
+    this.cancelScheduledCalibrationSvgRefresh();
+    this.stopActivityAnimation();
     clearInterval(this._unifiRefreshTimer);
-    clearTimeout(this._activityStopTimer);
+    this._unifiRefreshTimer = null;
+    clearTimeout(this._calibrationSaveStatusTimer);
+    this._calibrationSaveStatusTimer = null;
+    clearTimeout(this._copyStatusTimer);
+    this._copyStatusTimer = null;
   }
 
   handleLocalCalibrationSaved(event) {
@@ -5658,6 +5728,14 @@ class SwitchVision3650 extends HTMLElement {
     if (profile && profile !== mine) return;
     const saved = detail.calibration;
     if (!saved || typeof saved !== "object") return;
+    const ownSave = this._lastLocalCalibrationSave;
+    if (ownSave && ownSave.profile === profile && (Date.now() - ownSave.ts) < 1500) {
+      const fingerprint = calibrationPersistedFingerprint(saved);
+      if (fingerprint === ownSave.fingerprint) {
+        this._lastLocalCalibrationSave = null;
+        return;
+      }
+    }
     this._profileCalibration = cloneCalibrationData(saved);
     this._profileLoadedProfile = mine;
     this._profileLoadRequested = mine;
@@ -5689,6 +5767,21 @@ class SwitchVision3650 extends HTMLElement {
     const calibrationEditorState = calibrationControlsEnabled(this.config)
       ? calibrationTransientEditorState(this.config)
       : null;
+    this._activityStateMaps = this._activityStateMaps || {
+      portActivity: new Map(),
+      sfpActivity: new Map(),
+      portRate: new Map(),
+      sfpRate: new Map(),
+    };
+    if (this._globalShowCardHeaders === undefined) {
+      const defaults = normalizeSwitchVisionGlobalUiSettings({});
+      this._globalShowCardHeaders = defaults.show_card_headers !== false;
+      this._globalActivitySettings = activityConfigFromGlobalSettings(defaults);
+      this._globalFaceplateWidthMode = defaults?.faceplate_width?.mode === "auto" ? "auto" : String(defaults?.faceplate_width?.mode || "800");
+      this._globalFaceplateWidth = this._globalFaceplateWidthMode === "auto"
+        ? 2048
+        : Math.max(320, Math.min(4096, Number(defaults?.faceplate_width?.effective) || 800));
+    }
     this._rawConfig = { ...(config || {}) };
     this.config = {
       title: "Cisco 3650 Server Stack",
@@ -5757,7 +5850,19 @@ class SwitchVision3650 extends HTMLElement {
       ...config,
       ...(this._globalActivitySettings || {})
     };
+    this.config.__activity_state_maps = this._activityStateMaps;
     if (calibrationEditorState) Object.assign(this.config, calibrationEditorState);
+
+    const nextActivityIdentity = [
+      normalizeMember(this.config),
+      String(this.config?.data_source || "home_assistant").toLowerCase(),
+      String(this.config?.unifi_device_id || "").trim(),
+    ].join("|");
+    if (this._activityStateIdentity && this._activityStateIdentity !== nextActivityIdentity) {
+      for (const map of Object.values(this._activityStateMaps || {})) map?.clear?.();
+      this.stopActivityAnimation();
+    }
+    this._activityStateIdentity = nextActivityIdentity;
 
     const nextProfile = this.calibrationProfileName();
     if (this._lastConfiguredProfile && this._lastConfiguredProfile !== nextProfile) {
@@ -5769,75 +5874,258 @@ class SwitchVision3650 extends HTMLElement {
       this._calibrationWorking = null;
       this._calibrationBaselineFingerprint = null;
       this._calibrationDirty = false;
+      this.invalidateProfileLoad();
     }
     this._lastConfiguredProfile = nextProfile;
+    this._trackedEntityIds = null;
+    this._forceNextHassRender = true;
+  }
+
+  trackedHassForRender(dependencies) {
+    const hass = this._hass;
+    if (!hass?.states || !(dependencies instanceof Set)) return hass;
+    const trackedStates = new Proxy(hass.states, {
+      get(target, property, receiver) {
+        if (typeof property === "string") dependencies.add(property);
+        return Reflect.get(target, property, receiver);
+      }
+    });
+    return new Proxy(hass, {
+      get(target, property, receiver) {
+        if (property === "states") return trackedStates;
+        return Reflect.get(target, property, receiver);
+      }
+    });
+  }
+
+  hasRelevantHassStateChange(previousHass, nextHass) {
+    if (!previousHass || !nextHass) return true;
+    if (previousHass.connection !== nextHass.connection) return true;
+    if (!(this._trackedEntityIds instanceof Set)) return true;
+    for (const entityId of this._trackedEntityIds) {
+      if (previousHass.states?.[entityId] !== nextHass.states?.[entityId]) return true;
+    }
+    return false;
+  }
+
+  cancelScheduledLiveRefresh() {
+    if (this._liveRefreshFrame == null) return;
+    if (this._liveRefreshFrameKind === "raf" && typeof window.cancelAnimationFrame === "function") {
+      window.cancelAnimationFrame(this._liveRefreshFrame);
+    } else {
+      clearTimeout(this._liveRefreshFrame);
+    }
+    this._liveRefreshFrame = null;
+    this._liveRefreshFrameKind = null;
+    this._pendingLiveRefreshForce = false;
+  }
+
+  scheduleLiveVisualRefresh(force = false) {
+    if (!this.isConnected || calibrationControlsEnabled(this.config)) return;
+    this._pendingLiveRefreshForce = this._pendingLiveRefreshForce === true || force === true;
+    if (this._liveRefreshFrame != null) return;
+
+    const callback = () => {
+      this._liveRefreshFrame = null;
+      this._liveRefreshFrameKind = null;
+      this._pendingLiveRefreshForce = false;
+      if (!this.isConnected || calibrationControlsEnabled(this.config)) return;
+
+      // A queued frame may absorb later HA objects from the same burst. Resolve
+      // the exact model again from the newest state before drawing so a model
+      // change that arrived after scheduling cannot leave stale factory geometry
+      // or force an unnecessary second frame on the next HA event.
+      const resolvedExactModel = this.detectedExactModel();
+      if (resolvedExactModel !== this._lastResolvedExactModel) {
+        this._lastResolvedExactModel = resolvedExactModel;
+        if (this._calibrationDirty !== true) this._calibrationWorking = null;
+        this._trackedEntityIds = null;
+      }
+
+      if (!this.shadowRoot?.getElementById("s")) this.render();
+      else this.redrawSwitchSvg();
+      this._forceNextHassRender = false;
+      this.scheduleActivityAnimationIfNeeded();
+    };
+
+    if (typeof window.requestAnimationFrame === "function") {
+      this._liveRefreshFrameKind = "raf";
+      this._liveRefreshFrame = window.requestAnimationFrame(callback);
+    } else {
+      this._liveRefreshFrameKind = "timeout";
+      this._liveRefreshFrame = setTimeout(callback, 0);
+    }
+  }
+
+  cancelScheduledCalibrationSvgRefresh() {
+    if (this._calibrationRefreshFrame == null) return;
+    if (this._calibrationRefreshFrameKind === "raf" && typeof window.cancelAnimationFrame === "function") {
+      window.cancelAnimationFrame(this._calibrationRefreshFrame);
+    } else {
+      clearTimeout(this._calibrationRefreshFrame);
+    }
+    this._calibrationRefreshFrame = null;
+    this._calibrationRefreshFrameKind = null;
+    this._pendingCalibrationRefresh = null;
+  }
+
+  scheduleCalibrationSvgRefresh(cal = null) {
+    if (!this.isConnected || !calibrationControlsEnabled(this.config)) return;
+    this._pendingCalibrationRefresh = cal || this._calibrationWorking || null;
+    if (this._calibrationRefreshFrame != null) return;
+
+    const callback = () => {
+      this._calibrationRefreshFrame = null;
+      this._calibrationRefreshFrameKind = null;
+      const pending = this._pendingCalibrationRefresh;
+      this._pendingCalibrationRefresh = null;
+      if (!this.isConnected || !calibrationControlsEnabled(this.config)) return;
+      this.redrawSwitchSvg(pending || this._calibrationWorking || null);
+    };
+
+    if (typeof window.requestAnimationFrame === "function") {
+      this._calibrationRefreshFrameKind = "raf";
+      this._calibrationRefreshFrame = window.requestAnimationFrame(callback);
+    } else {
+      this._calibrationRefreshFrameKind = "timeout";
+      this._calibrationRefreshFrame = setTimeout(callback, 0);
+    }
+  }
+
+  hasActiveActivity() {
+    if (!this._activityStateMaps) return false;
+    const now = Date.now();
+    for (const map of [this._activityStateMaps.portActivity, this._activityStateMaps.sfpActivity]) {
+      if (!(map instanceof Map)) continue;
+      for (const state of map.values()) {
+        if (state?.activeUntil > now && smoothedActivityLevel(this.config || {}, state, now) > 0) return true;
+      }
+    }
+    return false;
+  }
+
+  refreshActivityLeds() {
+    if (!this.isConnected || calibrationControlsEnabled(this.config) || !this.shadowRoot) return;
+    const activeCalibration = this._activityRenderCalibration;
+    if (!activeCalibration) return;
+
+    for (const element of this.shadowRoot.querySelectorAll("[data-cv-activity-port]")) {
+      const port = Number(element.dataset.cvActivityPort || 0);
+      if (!port) continue;
+      const up = portIsUp(this._hass, this.config, port);
+      const cls = activityClass(this.config, up && testPortActivity(this._hass, this.config, port));
+      updatePortLedVisualState(element, activeCalibration, "led_right", cls, activeCalibration.ui);
+    }
+    for (const element of this.shadowRoot.querySelectorAll("[data-cv-activity-sfp]")) {
+      const port = Number(element.dataset.cvActivitySfp || 0);
+      if (!port) continue;
+      const up = sfpIsUp(this._hass, this.config, port);
+      const cls = activityClass(this.config, up && testSfpActivity(this._hass, this.config, port));
+      updatePortLedVisualState(element, activeCalibration, "led_right", cls, activeCalibration.ui);
+    }
+  }
+
+  stopActivityAnimation() {
+    clearInterval(this._activityRenderTimer);
+    this._activityRenderTimer = null;
+    clearTimeout(this._activityStopTimer);
+    this._activityStopTimer = null;
+  }
+
+  scheduleActivityAnimationIfNeeded() {
+    if (!this.isConnected || calibrationControlsEnabled(this.config)) {
+      this.stopActivityAnimation();
+      return;
+    }
+    if (!this.hasActiveActivity()) {
+      this.stopActivityAnimation();
+      return;
+    }
+    if (this._activityRenderTimer) return;
+
+    const refreshMs = Math.max(80, Number(this.config?.activity_animation_refresh_ms ?? 150));
+    this._activityRenderTimer = setInterval(() => {
+      if (!this.isConnected || calibrationControlsEnabled(this.config)) {
+        this.stopActivityAnimation();
+        return;
+      }
+      this.refreshActivityLeds();
+      if (!this.hasActiveActivity()) this.stopActivityAnimation();
+    }, refreshMs);
   }
 
   set hass(hass) {
-    const previousConnection = this._hass?.connection || null;
+    const previousHass = this._hass || null;
+    const previousConnection = previousHass?.connection || null;
     const nextConnection = hass?.connection || null;
+    const controlsActiveBeforeUpdate = calibrationControlsEnabled(this.config);
+    const pendingLiveFrameCanAbsorbUpdate =
+      this.isConnected &&
+      !controlsActiveBeforeUpdate &&
+      this._liveRefreshFrame != null &&
+      previousConnection === nextConnection;
+
     this._hass = hass;
+
+    // Once a live frame is queued it will render from this._hass, so every later
+    // state event in the same burst is already represented by the newest object.
+    // Avoid rescanning ~200 card dependencies and repeating subscription/profile
+    // housekeeping until that frame commits. Connection changes and Calibration
+    // deliberately bypass this path.
+    if (pendingLiveFrameCanAbsorbUpdate) {
+      if (this._pendingModelAwareReset === true && !this._modelAwareResetAllPromise) {
+        void this.applyModelAwareResetAll();
+      }
+      return;
+    }
+
+    const relevantStateChange = this._forceNextHassRender === true
+      || this.hasRelevantHassStateChange(previousHass, hass);
+
     if (previousConnection && previousConnection !== nextConnection) {
       this.unsubscribeCalibrationUpdates();
       this.unsubscribeUiSettingsUpdates();
+      this._globalUiSettingsConnection = null;
     }
+
     const resolvedExactModel = this.detectedExactModel();
-    if (resolvedExactModel !== this._lastResolvedExactModel) {
+    const exactModelChanged = resolvedExactModel !== this._lastResolvedExactModel;
+    if (exactModelChanged) {
       this._lastResolvedExactModel = resolvedExactModel;
       if (this._calibrationDirty !== true) this._calibrationWorking = null;
+      this._trackedEntityIds = null;
     }
     if (this._pendingModelAwareReset === true && !this._modelAwareResetAllPromise) {
-      // A Reset All received before model/profile context was available is
-      // completed asynchronously as soon as a later Home Assistant update can
-      // resolve a safe factory profile.
       void this.applyModelAwareResetAll();
     }
+
+    // Native panel construction assigns hass while cards are still detached.
+    // Store the newest state, but do not start subscriptions, timers, WS work or
+    // rendering until connectedCallback establishes a live visual surface.
+    if (!this.isConnected) return;
+
     this.subscribeCalibrationUpdates();
     this.subscribeUiSettingsUpdates();
     this.maybeLoadGlobalUiSettings();
     this.maybeLoadCalibrationProfile();
-    this.maybeLoadAssetLibrary();
+    const controlsActive = calibrationControlsEnabled(this.config);
+    if (controlsActive) void this.maybeLoadAssetLibrary();
     this.ensureUnifiRefreshTimer();
     void this.maybeLoadUnifiDevice();
 
-    clearInterval(this._activityRenderTimer);
-    clearTimeout(this._activityStopTimer);
-    this._activityRenderTimer = null;
-    this._activityStopTimer = null;
-
-    // v0.5.3: Home Assistant can call set hass repeatedly, and the normal
-    // activity refresh timer re-rendered the whole shadow DOM every ~120ms.
-    // That destroyed open <select> menus, making dropdowns appear to instantly close.
-    // In interactive calibration mode, render only when controls change or when
-    // no calibration control currently has focus.
-    const controlsActive = calibrationControlsEnabled(this.config);
-    const controlFocused = this.isCalibrationControlFocused();
-
-    if (!this.shadowRoot || !this.shadowRoot.getElementById("s")) {
-      this.render();
-    } else if (!controlFocused) {
-      this.redrawSwitchSvg();
+    if (controlsActive) {
+      // Calibration is an editor snapshot. Keep the newest hass object in memory
+      // but never let telemetry/timers replace controls or redraw the SVG. Test
+      // Mode and calibration-driven edits still render through their own handlers.
+      this.cancelScheduledLiveRefresh();
+      this.stopActivityAnimation();
+      if (!this.shadowRoot?.getElementById("s")) this.render();
+      return;
     }
 
-    if (controlsActive) return;
-
-    const refreshMs = Number(this.config?.activity_animation_refresh_ms ?? 150);
-    const windowMs = Number(this.config?.activity_window_ms ?? 6500);
-    const holdMs = activityHoldMs(this.config || {});
-
-    // v0.5.50: refresh only the SVG overlay in live mode. Rebuilding the full
-    // shadow DOM repeatedly also recreated the switch <img>, which could cause
-    // visible image flicker once the on-card calibration button was added.
-    // v0.6.8: when activity_hold_seconds is configured, keep the redraw timer
-    // alive for the full poll-aware hold window. The previous stop timer still
-    // used activity_window_ms (~6.5s), so blinking could stop before the next
-    // 30s traffic poll even though the activity state was still held active.
-    this._activityRenderTimer = setInterval(() => this.redrawSwitchSvg(), Math.max(80, refreshMs));
-    this._activityStopTimer = setTimeout(() => {
-      clearInterval(this._activityRenderTimer);
-      this._activityRenderTimer = null;
-      this.redrawSwitchSvg();
-    }, Math.max(500, windowMs + 300, holdMs + 1000));
+    if (!this.shadowRoot?.getElementById("s") || relevantStateChange || exactModelChanged || previousConnection !== nextConnection) {
+      this.scheduleLiveVisualRefresh();
+    }
   }
 
   applyGlobalUiSettings(settings, render = true) {
@@ -5869,6 +6157,8 @@ class SwitchVision3650 extends HTMLElement {
   }
 
   unsubscribeUiSettingsUpdates() {
+    this._uiSettingsEventSubscriptionToken = Number(this._uiSettingsEventSubscriptionToken || 0) + 1;
+    this._uiSettingsEventSubscriptionRequested = false;
     this._uiSettingsEventConnection = null;
     const unsubscribe = this._uiSettingsEventUnsub;
     this._uiSettingsEventUnsub = null;
@@ -5886,26 +6176,49 @@ class SwitchVision3650 extends HTMLElement {
     if (this._uiSettingsEventConnection && this._uiSettingsEventConnection !== connection) {
       this.unsubscribeUiSettingsUpdates();
     }
-    if (this._uiSettingsEventUnsub && this._uiSettingsEventConnection === connection) return;
+    if ((this._uiSettingsEventUnsub || this._uiSettingsEventSubscriptionRequested) && this._uiSettingsEventConnection === connection) return;
+
     this._uiSettingsEventConnection = connection;
+    this._uiSettingsEventSubscriptionRequested = true;
+    const token = Number(this._uiSettingsEventSubscriptionToken || 0) + 1;
+    this._uiSettingsEventSubscriptionToken = token;
+
+    let subscriptionRequest;
     try {
-      Promise.resolve(connection.subscribeEvents(
+      subscriptionRequest = connection.subscribeEvents(
         (event) => this.handleUiSettingsUpdateEvent(event),
         "switch_vision_ui_settings_updated"
-      )).then((unsubscribe) => {
-        if (this._hass?.connection !== connection) {
-          if (typeof unsubscribe === "function") unsubscribe();
-          return;
-        }
-        this._uiSettingsEventUnsub = unsubscribe;
-      }).catch((err) => {
-        this._uiSettingsEventConnection = null;
-        console.debug?.("Switch Vision UI-settings event subscription unavailable", err);
-      });
+      );
     } catch (err) {
+      if (token === this._uiSettingsEventSubscriptionToken) {
+        this._uiSettingsEventSubscriptionRequested = false;
+        this._uiSettingsEventConnection = null;
+      }
+      console.debug?.("Switch Vision UI-settings event subscription unavailable", err);
+      return;
+    }
+
+    Promise.resolve(subscriptionRequest).then((unsubscribe) => {
+      const stale =
+        token !== this._uiSettingsEventSubscriptionToken ||
+        !this.isConnected ||
+        connection !== this._hass?.connection;
+      if (stale) {
+        if (typeof unsubscribe === "function") {
+          try { unsubscribe(); } catch (err) {
+            console.debug?.("Switch Vision stale UI-settings unsubscription failed", err);
+          }
+        }
+        return;
+      }
+      this._uiSettingsEventSubscriptionRequested = false;
+      this._uiSettingsEventUnsub = unsubscribe;
+    }).catch((err) => {
+      if (token !== this._uiSettingsEventSubscriptionToken) return;
+      this._uiSettingsEventSubscriptionRequested = false;
       this._uiSettingsEventConnection = null;
       console.debug?.("Switch Vision UI-settings event subscription unavailable", err);
-    }
+    });
   }
 
   maybeLoadGlobalUiSettings() {
@@ -6040,6 +6353,7 @@ const testModeBadge = testModeActive && testModeUi.show !== false
         if (this._calibrationOpening === true) return;
         this._calibrationOpening = true;
         this.render();
+        void this.maybeLoadAssetLibrary();
         try {
           const profile = this.calibrationProfileName();
           const info = await this.loadCalibrationProfile(true, { applyToWorking: false });
@@ -6161,6 +6475,13 @@ const testModeBadge = testModeActive && testModeUi.show !== false
     return ensureCalibrationUi(this._calibrationWorking);
   }
 
+  invalidateProfileLoad() {
+    this._profileLoadGeneration = Number(this._profileLoadGeneration || 0) + 1;
+    this._profileLoadPromise = null;
+    this._profileLoadPromiseKey = null;
+    this._profileLoading = false;
+  }
+
   canLoadCalibrationProfile() {
     return this.config?.calibration_profile_load !== false && Boolean(this._hass?.callWS);
   }
@@ -6169,25 +6490,90 @@ const testModeBadge = testModeActive && testModeUi.show !== false
     if (!this.canLoadCalibrationProfile()) return null;
     const profile = this.calibrationProfileName();
     if (!profile) return null;
+
     const applyToWorking = options.applyToWorking === true;
     const exactProfile = options.exactProfile === true;
-    if (!force && !applyToWorking && this._profileLoadRequested === profile) return this._profileLoadInfo || null;
+    const editRevision = Number(this._calibrationEditRevision || 0);
+    const requestKey = `${profile}|${exactProfile ? "exact" : "active"}`;
 
-    this._profileLoadRequested = profile;
-    this._profileLoadError = null;
-    this._profileLoading = true;
-    if (applyToWorking) {
-      this.setCalibrationSaveStatus(`Loading profile: ${profile}`, false);
-      this.render();
+    if (!force && !applyToWorking && this._profileLoadRequested === profile && !this._profileLoadPromise) {
+      return this._profileLoadInfo || null;
     }
 
+    let task = this._profileLoadPromiseKey === requestKey ? this._profileLoadPromise : null;
+    if (!task) {
+      const generation = Number(this._profileLoadGeneration || 0) + 1;
+      this._profileLoadGeneration = generation;
+      this._profileLoadRequested = profile;
+      this._profileLoadError = null;
+      this._profileLoading = true;
+      task = this._requestCalibrationProfile(profile, exactProfile, generation);
+      this._profileLoadPromise = task;
+      this._profileLoadPromiseKey = requestKey;
+    }
+
+    const ownedTask = task;
+    let info;
+    try {
+      info = await task;
+    } finally {
+      if (this._profileLoadPromise === ownedTask) {
+        this._profileLoadPromise = null;
+        this._profileLoadPromiseKey = null;
+        this._profileLoading = false;
+      }
+    }
+
+    if (applyToWorking) {
+      if (info?.exists === true && !info?.invalid) {
+        const applied = this.applyLoadedCalibrationToWorking(profile, editRevision);
+        if (applied) this.setCalibrationSaveStatus(`Loaded profile: ${String(info.profile || profile)}`, false);
+      } else if (
+        info &&
+        info.exists !== true &&
+        info.invalid !== true &&
+        !this._profileLoadError &&
+        calibrationControlsEnabled(this.config) &&
+        this.config?.calibration_profile_auto_create !== false &&
+        editRevision === Number(this._calibrationEditRevision || 0) &&
+        this._calibrationDirty !== true
+      ) {
+        return await this.createStarterCalibrationProfile(profile, options.starterCalibration || null);
+      } else if (editRevision === Number(this._calibrationEditRevision || 0) && this._calibrationDirty !== true) {
+        if (info?.invalid) this.setCalibrationSaveStatus(`Stored profile rejected: ${String(info.validation_error || "validation failed")}`, true);
+        else if (this._profileLoadError) this.setCalibrationSaveStatus("Load failed — check browser console / HA logs", true);
+        else this.setCalibrationSaveStatus(`No saved profile found: ${profile}`, true);
+      }
+    }
+
+    return info;
+  }
+
+  applyLoadedCalibrationToWorking(requestedProfile, editRevision) {
+    if (!calibrationControlsEnabled(this.config)) return false;
+    if (!this._profileCalibration || typeof this._profileCalibration !== "object") return false;
+    if (this.calibrationProfileName() !== requestedProfile && this._profileLoadInfo?.requested_profile !== requestedProfile) return false;
+    if (Number(this._calibrationEditRevision || 0) !== Number(editRevision || 0)) return false;
+    if (this._calibrationDirty === true) return false;
+
+    this._calibrationWorking = cloneCalibrationData(
+      applyConfigToCalibrationForEdit(this._profileCalibration, this.config)
+    );
+    this.captureCalibrationBaseline(this._calibrationWorking);
+    if (this.isConnected) this.render();
+    return true;
+  }
+
+  async _requestCalibrationProfile(profile, exactProfile, generation) {
     try {
       const result = await this._hass.callWS({
         type: "switch_vision/get_calibration",
         profile,
         exact: exactProfile
       });
+      if (generation !== Number(this._profileLoadGeneration || 0)) return this._profileLoadInfo || null;
       if (this.calibrationProfileName() !== profile) return null;
+
       const resolvedProfile = String(result?.profile || profile).trim() || profile;
       if (exactProfile && resolvedProfile !== profile) {
         throw new Error(`Exact calibration profile resolved unexpectedly: ${resolvedProfile}`);
@@ -6197,7 +6583,7 @@ const testModeBadge = testModeActive && testModeUi.show !== false
         throw new Error(`Stored active faceplate profile escaped switch scope: ${resolvedProfile}`);
       }
 
-      this._profileLoadInfo = {
+      const info = {
         profile: resolvedProfile,
         requested_profile: profile,
         active_profile: String(result?.active_profile || ""),
@@ -6209,75 +6595,60 @@ const testModeBadge = testModeActive && testModeUi.show !== false
       };
 
       if (result?.invalid) {
+        info.exists = false;
+        info.invalid = true;
+        info.validation_error = String(result.validation_error || "Stored profile failed validation");
         this._profileCalibration = null;
         this._profileLoadedProfile = null;
-        this._profileLoadInfo.exists = false;
-        this._profileLoadInfo.invalid = true;
-        this._profileLoadInfo.validation_error = String(result.validation_error || "Stored profile failed validation");
-        if (applyToWorking) this.setCalibrationSaveStatus(`Stored profile rejected: ${this._profileLoadInfo.validation_error}`, true);
-        console.error("Switch Vision rejected invalid stored profile", profile, this._profileLoadInfo.validation_error);
-        this.render();
-        return this._profileLoadInfo;
+        this._profileLoadInfo = info;
+        console.error("Switch Vision rejected invalid stored profile", profile, info.validation_error);
+        if (this.isConnected && !calibrationControlsEnabled(this.config)) this.render();
+        return info;
       }
 
       const loaded = result?.calibration;
       if (loaded && typeof loaded === "object") {
         const loadedValidation = validateImportedCalibration(loaded, this.baseCalibrationData());
         if (!loadedValidation.valid) {
+          info.exists = false;
+          info.invalid = true;
+          info.validation_error = loadedValidation.errors[0] || "Stored profile failed validation";
           this._profileCalibration = null;
           this._profileLoadedProfile = null;
-          this._profileLoadInfo.exists = false;
-          this._profileLoadInfo.invalid = true;
-          this._profileLoadInfo.validation_error = loadedValidation.errors[0] || "Stored profile failed validation";
-          if (applyToWorking) this.setCalibrationSaveStatus(`Stored profile rejected: ${this._profileLoadInfo.validation_error}`, true);
+          this._profileLoadInfo = info;
           console.error("Switch Vision rejected invalid stored profile", profile, loadedValidation.errors);
-          this.render();
-          return this._profileLoadInfo;
+          if (this.isConnected && !calibrationControlsEnabled(this.config)) this.render();
+          return info;
         }
+
         this._profileCalibration = cloneCalibrationData(loadedValidation.calibration);
         this._profileLoadedProfile = resolvedProfile;
         this._profileLoadRequested = resolvedProfile;
-        const loadedForEdit = applyConfigToCalibrationForEdit(this._profileCalibration, this.config);
-        if (applyToWorking || !this._calibrationWorking) {
-          this._calibrationWorking = cloneCalibrationData(loadedForEdit);
-          this._calibrationDirty = false;
-          this.captureCalibrationBaseline(this._calibrationWorking);
+        this._profileLoadInfo = info;
+        if (!calibrationControlsEnabled(this.config)) {
+          this._calibrationWorking = null;
+          if (this.isConnected) this.render();
         }
-        if (!calibrationControlsEnabled(this.config)) this._calibrationWorking = null;
-        if (applyToWorking) this.setCalibrationSaveStatus(`Loaded profile: ${resolvedProfile}`, false);
-        this.render();
-        return this._profileLoadInfo;
+        return info;
       }
 
-      const shouldCreateStarter =
-        applyToWorking &&
-        calibrationControlsEnabled(this.config) &&
-        this.config?.calibration_profile_auto_create !== false;
-
-      if (shouldCreateStarter) {
-        return await this.createStarterCalibrationProfile(profile, options.starterCalibration || null);
-      }
-
-      if (applyToWorking) this.setCalibrationSaveStatus(`No saved profile found: ${profile}`, true);
-      if (calibrationControlsEnabled(this.config)) this.render();
-      return this._profileLoadInfo;
+      this._profileLoadInfo = info;
+      return info;
     } catch (err) {
-      // Fallback to current card YAML/baked defaults if the integration or websocket command is unavailable.
+      if (generation !== Number(this._profileLoadGeneration || 0)) return this._profileLoadInfo || null;
       this._profileLoadError = err;
-      this._profileLoadInfo = {
+      const info = {
         profile,
+        requested_profile: profile,
         exists: false,
         source: "profile load unavailable; using current card config / baked defaults",
         storage_key: "switch_vision_calibrations",
         storage_path: ".storage/switch_vision_calibrations",
         profile_path: `.storage/switch_vision_calibrations → profiles.${profile}`,
       };
-      if (applyToWorking) this.setCalibrationSaveStatus("Load failed — check browser console / HA logs", true);
+      this._profileLoadInfo = info;
       console.debug?.("Switch Vision profile load unavailable", err);
-      if (calibrationControlsEnabled(this.config)) this.render();
-      return this._profileLoadInfo;
-    } finally {
-      this._profileLoading = false;
+      return info;
     }
   }
 
@@ -6367,6 +6738,7 @@ const testModeBadge = testModeActive && testModeUi.show !== false
       ? data.calibrations
       : {};
 
+    this.invalidateProfileLoad();
     this._profileLoadRequested = null;
     this._profileLoadedProfile = null;
     if (data.action === "reset_all" || data.action === "reset_scope") {
@@ -6525,6 +6897,7 @@ const testModeBadge = testModeActive && testModeUi.show !== false
   }
 
   ensureUnifiRefreshTimer() {
+    if (!this.isConnected) return;
     if (!this.hasUnifiBinding()) {
       clearInterval(this._unifiRefreshTimer);
       this._unifiRefreshTimer = null;
@@ -6562,8 +6935,9 @@ const testModeBadge = testModeActive && testModeUi.show !== false
           ? `UniFi telemetry is stale (${String(freshness.reason || "refresh failed")})`
           : null;
         this.config = { ...this.config, __unifi_runtime: runtime };
-        if (this.shadowRoot?.getElementById("s")) this.redrawSwitchSvg();
-        else this.render();
+        if (this.isConnected && !calibrationControlsEnabled(this.config)) {
+          this.scheduleLiveVisualRefresh(true);
+        }
       })
       .catch((err) => {
         this._unifiLastFetchAt = Date.now();
@@ -6590,13 +6964,13 @@ const testModeBadge = testModeActive && testModeUi.show !== false
         logos_path: result?.logos_path || "/config/www/switch-vision/logos",
         faceplates_path: result?.faceplates_path || "/config/www/switch-vision/faceplates"
       };
-      if (calibrationControlsEnabled(this.config)) this.render();
+      if (this.isConnected && calibrationControlsEnabled(this.config)) this.render();
       return this._assetLibrary;
     } catch (err) {
       this._assetLibraryError = err;
       this._assetLibrary = { logos: [], faceplates: [], logos_path: "/config/www/switch-vision/logos", faceplates_path: "/config/www/switch-vision/faceplates" };
       console.debug?.("Switch Vision asset listing unavailable", err);
-      if (calibrationControlsEnabled(this.config)) this.render();
+      if (this.isConnected && calibrationControlsEnabled(this.config)) this.render();
       return null;
     } finally {
       this._assetLibraryLoading = false;
@@ -6706,6 +7080,18 @@ const testModeBadge = testModeActive && testModeUi.show !== false
 
   setCalibrationSaveStatus(message, isError = false) {
     this._calibrationSaveStatus = { message, isError, ts: Date.now() };
+    this.syncCalibrationSaveStatus();
+  }
+
+  syncCalibrationSaveStatus() {
+    const node = this.shadowRoot?.querySelector("[data-cv-save-status]");
+    if (!node) return;
+    const status = this._calibrationSaveStatus;
+    const visible = Boolean(status?.message);
+    node.hidden = !visible;
+    node.textContent = visible ? String(status.message) : "";
+    node.classList.toggle("is-error", visible && status.isError === true);
+    node.classList.toggle("is-ok", visible && status.isError !== true);
   }
 
   syncCalibrationSaveButtonState() {
@@ -6737,6 +7123,7 @@ const testModeBadge = testModeActive && testModeUi.show !== false
     const current = cal && typeof cal === "object"
       ? cal
       : (this._calibrationWorking || null);
+    if (current) this._calibrationEditRevision = Number(this._calibrationEditRevision || 0) + 1;
     if (!current) {
       this._calibrationDirty = false;
       this.syncCalibrationSaveButtonState();
@@ -6760,8 +7147,9 @@ const testModeBadge = testModeActive && testModeUi.show !== false
   clearCalibrationSaveStatusSoon() {
     clearTimeout(this._calibrationSaveStatusTimer);
     this._calibrationSaveStatusTimer = setTimeout(() => {
+      this._calibrationSaveStatusTimer = null;
       this._calibrationSaveStatus = null;
-      if (calibrationControlsEnabled(this.config)) this.render();
+      this.syncCalibrationSaveStatus();
     }, 2200);
   }
 
@@ -6808,6 +7196,11 @@ const testModeBadge = testModeActive && testModeUi.show !== false
       profile_path: `.storage/switch_vision_calibrations → profiles.${profile}`,
     };
     this.captureCalibrationBaseline(payload);
+    this._lastLocalCalibrationSave = {
+      profile,
+      fingerprint: calibrationPersistedFingerprint(payload),
+      ts: Date.now(),
+    };
 
     window.dispatchEvent(new CustomEvent("switch-vision-calibration-saved", {
       detail: { profile, calibration: cloneCalibrationData(payload) }
@@ -6944,6 +7337,7 @@ const testModeBadge = testModeActive && testModeUi.show !== false
   }
 
   clearLoadedCalibrationState(next = null) {
+    this.invalidateProfileLoad();
     this._profileCalibration = null;
     this._profileLoadedProfile = null;
     this._profileLoadRequested = null;
@@ -7254,7 +7648,7 @@ const testModeBadge = testModeActive && testModeUi.show !== false
     const profileDetails = this.calibrationProfileSourceDetails(profileName);
     const profileLoadedText = this._profileLoading ? "loading" : (profileDetails.loaded ? "loaded" : "not saved / fallback");
     const saveStatus = this._calibrationSaveStatus;
-    const saveStatusHtml = saveStatus?.message ? `<span class="cv-cal-save-status ${saveStatus.isError ? "is-error" : "is-ok"}">${htmlEscape(saveStatus.message)}</span>` : "";
+    const saveStatusHtml = `<span data-cv-save-status class="cv-cal-save-status ${saveStatus?.isError ? "is-error" : "is-ok"}" ${saveStatus?.message ? "" : "hidden"}>${saveStatus?.message ? htmlEscape(saveStatus.message) : ""}</span>`;
     const partNames = { center: "port box", entire: "entire port", led_left: "link/speed LED", led_right: "activity LED", number: "number label", label: "label" };
     const partText = partNames[editable?.part] || editable?.part;
     let targetText = "no target";
@@ -7726,25 +8120,37 @@ const testModeBadge = testModeActive && testModeUi.show !== false
 
     const cal = activeCalibration || this.calibrationData();
     const renderCal = calibrationRenderSpaceData(cal);
-    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const dependencies = new Set();
+    const trackedHass = this.trackedHassForRender(dependencies);
+    const previousUiPass = beginCalibrationUiRenderPass();
 
-    drawPanel(svg, {
-      hass: this._hass,
-      config: this.config,
-      calibration: renderCal,
-      layout
-    });
+    try {
+      while (svg.firstChild) svg.removeChild(svg.firstChild);
 
-    drawCalibrationOverlay(svg, {
-      config: this.config,
-      calibration: renderCal,
-      layout
-    });
+      drawPanel(svg, {
+        hass: trackedHass,
+        config: this.config,
+        calibration: renderCal,
+        layout
+      });
 
-    this.attachSelectionHandlers(svg, renderCal);
+      drawCalibrationOverlay(svg, {
+        config: this.config,
+        calibration: renderCal,
+        layout
+      });
+
+      this.attachSelectionHandlers(svg, renderCal);
+    } finally {
+      endCalibrationUiRenderPass(previousUiPass);
+    }
+
+    this._trackedEntityIds = dependencies;
+    this._activityRenderCalibration = renderCal;
   }
 
   render() {
+    this.cancelScheduledCalibrationSvgRefresh();
     if (!this.shadowRoot) this.attachShadow({ mode: "open" });
     this.saveCalibrationExportSize();
 
@@ -8535,7 +8941,7 @@ const testModeBadge = testModeActive && testModeUi.show !== false
       if (brightness) brightness.value = String(Math.round(hsv.v));
     };
 
-    const applyCustomColour = (field, value, { syncPicker = true } = {}) => {
+    const applyCustomColour = (field, value, { syncPicker = true, visualOnly = false } = {}) => {
       ensureCalibrationUi(cal);
       const factoryDefaults = { "link-led-color": "#76ff33", "activity-led-color": "#ffb321" };
       if (String(value || "") === "__factory__" && factoryDefaults[field]) {
@@ -8543,7 +8949,8 @@ const testModeBadge = testModeActive && testModeUi.show !== false
         if (field === "activity-led-color") delete cal.ui.activity_led_color;
         this.markCalibrationDirty();
         if (syncPicker) refreshCustomColourPicker(this.shadowRoot.querySelector(`[data-cv-colour-control="${field}"]`), factoryDefaults[field]);
-        this.render();
+        if (visualOnly) this.scheduleCalibrationSvgRefresh(cal);
+        else this.render();
         return;
       }
       const colour = normaliseHexColour(value, factoryDefaults[field] || "#ffffff");
@@ -8566,7 +8973,8 @@ const testModeBadge = testModeActive && testModeUi.show !== false
       const preset = this.shadowRoot.querySelector(`[data-cv-field="${field}"]`);
       if (preset) preset.value = colour;
       if (syncPicker) refreshCustomColourPicker(this.shadowRoot.querySelector(`[data-cv-colour-control="${field}"]`), colour);
-      this.render();
+      if (visualOnly) this.scheduleCalibrationSvgRefresh(cal);
+      else this.render();
     };
 
     const closeCustomColourPickers = (except = null) => {
@@ -8614,7 +9022,7 @@ const testModeBadge = testModeActive && testModeUi.show !== false
         if (swatch) swatch.style.background = colour;
         if (preview) preview.style.background = colour;
         if (hexInput) hexInput.value = colour.toUpperCase();
-        applyCustomColour(field, colour, { syncPicker: false });
+        applyCustomColour(field, colour, { syncPicker: false, visualOnly: true });
       };
       area.addEventListener("pointerdown", (event) => {
         event.preventDefault();
@@ -8638,7 +9046,7 @@ const testModeBadge = testModeActive && testModeUi.show !== false
         const s = Number(area.dataset.cvSaturation || 0);
         const v = Number(area.dataset.cvValue || 100);
         area.style.setProperty("--cv-picker-hue", String(h));
-        applyCustomColour(event.currentTarget.dataset.cvColourHue, hsvToHexColour(h, s, v));
+        applyCustomColour(event.currentTarget.dataset.cvColourHue, hsvToHexColour(h, s, v), { visualOnly: true });
       });
     });
 
@@ -8650,19 +9058,19 @@ const testModeBadge = testModeActive && testModeUi.show !== false
         const h = Number(control?.querySelector('[data-cv-colour-hue]')?.value || 0);
         const s = Number(area.dataset.cvSaturation || 0);
         const v = Number(event.currentTarget.value || 100);
-        applyCustomColour(event.currentTarget.dataset.cvColourBrightness, hsvToHexColour(h, s, v));
+        applyCustomColour(event.currentTarget.dataset.cvColourBrightness, hsvToHexColour(h, s, v), { visualOnly: true });
       });
     });
 
     this.shadowRoot.querySelectorAll('[data-cv-colour-hex]').forEach((input) => {
-      const commit = (event) => {
+      const commit = (event, visualOnly = false) => {
         const value = String(event.currentTarget.value || "").trim();
         if (!/^#[0-9a-f]{6}$/i.test(value) && !/^#[0-9a-f]{3}$/i.test(value)) return;
-        applyCustomColour(event.currentTarget.dataset.cvColourHex, value);
+        applyCustomColour(event.currentTarget.dataset.cvColourHex, value, { visualOnly });
       };
-      input.addEventListener("input", commit);
-      input.addEventListener("change", commit);
-      input.addEventListener("keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); commit(event); } });
+      input.addEventListener("input", (event) => commit(event, true));
+      input.addEventListener("change", (event) => commit(event, false));
+      input.addEventListener("keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); commit(event, false); } });
     });
     this.shadowRoot.querySelectorAll('[data-cv-colour-reset]').forEach((button) => {
       button.addEventListener("click", (event) => {
@@ -9748,7 +10156,11 @@ const testModeBadge = testModeActive && testModeUi.show !== false
             this.setCalibrationSaveStatus("Clipboard blocked — use Show JSON and copy manually", true);
           }
 
-          setTimeout(() => this.render(), 900);
+          clearTimeout(this._copyStatusTimer);
+          this._copyStatusTimer = setTimeout(() => {
+            this._copyStatusTimer = null;
+            if (button?.isConnected) button.textContent = "Copy JSON";
+          }, 900);
           this.clearCalibrationSaveStatusSoon();
           return;
         }
