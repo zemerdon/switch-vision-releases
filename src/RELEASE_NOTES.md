@@ -1,3 +1,15 @@
+# Switch Vision Core v2.7.10
+
+Core 2.7.10 is a renderer, Calibration and lifecycle stability release. It keeps the existing faceplates, geometry, labels, LED colours, activity timing and Calibration presentation unchanged while substantially reducing unnecessary browser work on multi-switch dashboards.
+
+Live Home Assistant updates are now relevance-gated and frame-coalesced, so unrelated state changes cause no card redraws and bursts of relevant changes commit at most one visual update per affected card per frame. Activity animation updates retained LED elements instead of rebuilding the complete switch SVG, idle cards no longer keep a redraw loop alive, and detached/off-dashboard cards avoid scheduler work.
+
+Calibration now pauses telemetry-driven redraws while the editor is open, protects dirty working state from stale profile responses, single-flights profile/UI-settings requests, removes delayed full-editor rebuilds that could replace active controls, and coalesces continuous colour previews without rebuilding the editor. Disconnect/reconnect handling also cleans up timers and subscriptions deterministically.
+
+The release adds permanent browser/runtime regressions for irrelevant and burst HA updates, activity start/expiry, Calibration DOM stability, stale profile protection, subscription lifecycle and detached-card behavior. Maintained HAOS candidate acceptance passed against the exact 2.7.10 source lineage with ten-card burst/coalescing, Calibration stability and retained activity behavior, while visible Live and Calibration SVG output remained byte-for-byte equivalent to 2.7.9 apart from non-visual internal activity locator attributes.
+
+Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core so the updated frontend and integration lifecycle code are loaded.
+
 # Switch Vision Core v2.7.9
 
 Core 2.7.9 corrects exact-model faceplate assignments after field testing exposed the USW Flex Mini using an obsolete oversized 24-port fallback. The audit was expanded across the supported-model registry instead of treating the Mini as a one-off fix.

@@ -10,11 +10,11 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current Core source version
 
-### Switch Vision v2.7.9
+### Switch Vision v2.7.10
 
-**v2.7.9** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.
+**v2.7.10** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.
 
-Core v2.6.33 improves Calibration and Switch Vision Settings with persistent Status Box transparency controls, independent Link and Activity LED visibility, 800 px / 1024 px / custom faceplate width settings, normalized faceplate display names, Test Mode nudge parity, and non-blocking zero-port profile saving with a visible warning.
+Core v2.7.10 focuses on renderer and Calibration stability: Home Assistant updates are relevance-gated and frame-coalesced, activity updates retained LEDs instead of rebuilding the switch SVG, and Calibration/profile/subscription lifecycle races are removed while preserving the existing visible presentation.
 
 Component versions validated when Core v2.2.2 was released:
 

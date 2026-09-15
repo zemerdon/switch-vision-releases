@@ -1,3 +1,13 @@
+## v2.7.10 — Renderer and Calibration stability
+
+- Gate Home Assistant updates by the entities each card actually consumes and coalesce relevant bursts to one visual commit per affected card/frame.
+- Replace whole-SVG activity animation redraws with retained LED updates; idle and detached cards no longer run continuous activity redraw work.
+- Pause telemetry rendering while Calibration is open, then resynchronize once from the newest Home Assistant state when Calibration closes.
+- Single-flight UI-settings/profile subscriptions and profile loads, reject stale profile responses from overwriting dirty editor state, and clean timer/subscription lifecycle across disconnect/reconnect.
+- Keep delayed status/copy housekeeping and continuous colour previews from rebuilding the complete Calibration editor or replacing active controls.
+- Add permanent browser/runtime coverage for ten-card relevance/burst behavior, activity start/expiry, Calibration control identity, stale-load protection, detached staging and subscription cleanup.
+- Preserve visible Live and Calibration SVG presentation; the accepted HAOS candidate showed the same visible output while eliminating the previous main-thread redraw storm.
+
 ## v2.7.9 — Exact-model faceplate mapping integrity
 
 - Replace stale oversized visual fallbacks with already-shipped exact UniFi faceplates for `USW Flex`, `USW Flex Mini`, `USW-Lite-8-PoE`, `USW-Enterprise-8-PoE`, `USW Pro XG 8 PoE`, and `USW Pro HD 24 PoE`.
