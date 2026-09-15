@@ -1,3 +1,11 @@
+## v2.7.9 — Exact-model faceplate mapping integrity
+
+- Replace stale oversized visual fallbacks with already-shipped exact UniFi faceplates for `USW Flex`, `USW Flex Mini`, `USW-Lite-8-PoE`, `USW-Enterprise-8-PoE`, `USW Pro XG 8 PoE`, and `USW Pro HD 24 PoE`.
+- Enable the existing owner-calibrated 32-position optical faceplate/profile for `USW Pro Aggregation`, preserving its authoritative 28 × SFP+ + 4 × SFP28 topology and API-port map.
+- Enable the approved stock 24+2 canvas for `US 16 PoE 150W` while preserving its authoritative 16 RJ45 + 2 SFP physical counts; no nonexistent 16-port artwork is invented.
+- Add permanent exact-model regressions that lock faceplate/profile pairs, preserve known-good compact UniFi mappings, and keep non-exact fallback models' physical counts authoritative.
+- Keep support-confidence states unchanged; this release corrects presentation assignments only and does not promote hardware validation status.
+
 ## v2.7.8 — Hybrid UniFi telemetry and presentation integrity
 
 - Add hybrid UniFi runtime binding so an SNMP-backed card can consume fresh UniFi API metadata without replacing SNMP link/activity/counter behavior.

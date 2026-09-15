@@ -1,3 +1,13 @@
+# Switch Vision Core v2.7.9
+
+Core 2.7.9 corrects exact-model faceplate assignments after field testing exposed the USW Flex Mini using an obsolete oversized 24-port fallback. The audit was expanded across the supported-model registry instead of treating the Mini as a one-off fix.
+
+Existing bundled exact assets are now used for the USW Flex and Flex Mini (5 RJ45), USW-Lite-8-PoE (8 RJ45), USW-Enterprise-8-PoE and USW Pro XG 8 PoE (8 RJ45 + 2 optical), USW Pro HD 24 PoE (24 RJ45 + 4 optical), and USW Pro Aggregation (32 optical positions). US 16 PoE 150W is enabled with the approved oversized 24+2 stock canvas because no exact 16+2 artwork is bundled; its physical 16+2 count remains authoritative.
+
+The release does not infer faceplates from vendor name alone and does not force a visually similar asset onto hardware whose physical topology has no exact bundled match. Permanent regressions now protect the corrected exact-model matrix and the true physical counts of intentional fallback models.
+
+Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core because the packaged registry and frontend visual recommendation metadata change in this release.
+
 # Switch Vision Core v2.7.8
 
 Core 2.7.8 improves mixed SNMP + UniFi operation without changing the established Switch Vision presentation model.
