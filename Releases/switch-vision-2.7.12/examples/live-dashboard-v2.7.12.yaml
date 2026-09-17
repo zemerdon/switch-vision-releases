@@ -1,0 +1,102 @@
+views:
+  - title: Switch Vision
+    path: switch-vision
+    type: custom:vertical-layout
+    layout:
+      width: 800
+      max_cols: 1
+    cards:
+      - type: markdown
+        content: |
+          ## Switch Vision
+
+          Live switch view. Calibration buttons are enabled in this example.
+
+      - type: custom:switch-vision-3650
+        title: Cisco 3650 Server Stack
+        member: SW5
+        selected_switch: SW5
+        discovery_selected_switch: SW5
+        calibration_profile: SW5
+        calibration_profile_load: true
+        calibration_profile_auto_load: true
+        demo: false
+        calibration_button: true
+        activity_hold_seconds: 12
+        switch_ip: 192.168.1.102
+        management_ip: 192.168.1.102
+        status_entity_prefix: sensor.sw5_port_
+        status_entity_suffix: _status
+
+      - type: custom:switch-vision-3650
+        title: Cisco 3650 Server Stack
+        member: SW6
+        selected_switch: SW6
+        discovery_selected_switch: SW6
+        calibration_profile: SW6
+        calibration_profile_load: true
+        calibration_profile_auto_load: true
+        demo: false
+        calibration_button: true
+        activity_hold_seconds: 12
+        switch_ip: 192.168.1.102
+        management_ip: 192.168.1.102
+        stack_enabled: true
+        stack_uptime_mode: inherit_stack
+        stack_uptime_source: sensor.sw5_uptime
+        status_entity_prefix: sensor.sw6_port_
+        status_entity_suffix: _status
+
+      # Experimental 2960X example. Uses 3650 visual faceplate until native faceplate exists.
+      - type: custom:switch-vision-3650
+        title: Cisco 2960X
+        member: SW7
+        selected_switch: SW7
+        discovery_selected_switch: SW7
+        calibration_profile: SW7
+        calibration_profile_load: true
+        calibration_profile_auto_load: true
+        demo: false
+        calibration_button: true
+        activity_hold_seconds: 12
+        switch_ip: 192.168.1.103
+        management_ip: 192.168.1.103
+        stack_enabled: false
+        status_entity_prefix: sensor.sw7_port_
+        status_entity_suffix: _status
+
+      # Experimental 2960X 24-port example. Native 24-port faceplate pending.
+      - type: custom:switch-vision-3650
+        title: Cisco 2960X
+        member: SW8
+        selected_switch: SW8
+        discovery_selected_switch: SW8
+        calibration_profile: SW8
+        calibration_profile_load: true
+        calibration_profile_auto_load: true
+        demo: false
+        calibration_button: true
+        activity_hold_seconds: 12
+        switch_ip: 192.168.1.104
+        management_ip: 192.168.1.104
+        stack_enabled: false
+        status_entity_prefix: sensor.sw8_port_
+        status_entity_suffix: _status
+
+      # Experimental 2960S example. Uses 3650 visual faceplate until native faceplate exists.
+      - type: custom:switch-vision-3650
+        title: Cisco 2960S
+        member: SW9
+        selected_switch: SW9
+        discovery_selected_switch: SW9
+        calibration_profile: SW9
+        calibration_profile_load: true
+        calibration_profile_auto_load: true
+        demo: false
+        calibration_button: true
+        activity_hold_seconds: 12
+        switch_ip: 192.168.1.106
+        management_ip: 192.168.1.106
+        stack_enabled: false
+        status_entity_prefix: sensor.sw9_port_
+        status_entity_suffix: _status

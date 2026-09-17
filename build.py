@@ -685,6 +685,34 @@ def remove_historical_release_notes() -> None:
                 path.unlink()
 
 
+def validate_stock_asset_manifest(base: Path, source_layout: bool = False) -> None:
+    """Require the packaged stock visual-asset manifest to match release-owned files."""
+    import hashlib
+
+    prefix = base / "src" if source_layout else base
+    manifest_path = prefix / "custom_components" / "switch_vision" / "stock-assets.json"
+    try:
+        payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(f"Stock asset manifest is unavailable or invalid: {exc}") from exc
+    if payload.get("schema") != "switch-vision-stock-assets-v1":
+        raise SystemExit("Stock asset manifest schema is invalid")
+    assets = payload.get("assets")
+    if not isinstance(assets, dict):
+        raise SystemExit("Stock asset manifest assets mapping is invalid")
+    extensions = {".png", ".jpg", ".jpeg", ".webp", ".svg"}
+    expected: dict[str, dict[str, str]] = {}
+    for kind in ("logos", "faceplates"):
+        folder = prefix / kind
+        rows: dict[str, str] = {}
+        for path in sorted(folder.iterdir()):
+            if path.is_file() and path.suffix.lower() in extensions:
+                rows[path.name] = hashlib.sha256(path.read_bytes()).hexdigest()
+        expected[kind] = rows
+    if assets != expected:
+        raise SystemExit("Stock asset manifest does not exactly match release-owned logos/faceplates")
+
+
 def ensure_required_sources() -> None:
     required = [
         SRC / "js" / "switch-vision.js",
@@ -692,6 +720,7 @@ def ensure_required_sources() -> None:
         SRC / "layouts" / "c3650.json",
         SRC / "calibration" / "c3650.json",
         SRC / "custom_components" / "switch_vision" / "manifest.json",
+        SRC / "custom_components" / "switch_vision" / "stock-assets.json",
         SRC / "custom_components" / "switch_vision" / "switch-vision-panel.js",
         SRC / "custom_components" / "switch_vision" / "switch-vision-dashboard-strategy.js",
         SRC / "custom_components" / "switch_vision" / "switch-vision-card.js",
@@ -1608,6 +1637,7 @@ def validate_embedded_versions(base: Path, version: str, source_layout: bool = F
     validate_calibration_test_mode_ui(base, source_layout=source_layout)
     validate_activity_led_2_0(base, source_layout=source_layout)
     validate_source_manifest(base, version, source_layout=source_layout)
+    validate_stock_asset_manifest(base, source_layout=source_layout)
     if errors:
         raise SystemExit("Version propagation validation failed:\n- " + "\n- ".join(errors))
 

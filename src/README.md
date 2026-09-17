@@ -10,9 +10,9 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current Core source version
 
-### Switch Vision v2.7.11
+### Switch Vision v2.7.12
 
-**v2.7.11** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.
+**v2.7.12** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.
 
 Core v2.7.10 focuses on renderer and Calibration stability: Home Assistant updates are relevance-gated and frame-coalesced, activity updates retained LEDs instead of rebuilding the switch SVG, and Calibration/profile/subscription lifecycle races are removed while preserving the existing visible presentation.
 

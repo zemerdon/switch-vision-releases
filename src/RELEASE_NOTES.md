@@ -1,3 +1,13 @@
+# Switch Vision Core v2.7.12
+
+Core 2.7.12 tightens the complete non-secret backup bridge so portable backups contain user visual assets without redundantly copying every stock Switch Vision logo and faceplate.
+
+Core now ships an exact stock-asset manifest covering release-owned logos and faceplates by filename and SHA-256. The asset-list backup API reports only files that are not stock, or whose content has been locally changed. A user-modified file keeps being treated as user data even when it reuses a stock filename. Discovery can therefore back up custom visuals quickly while a fresh Core installation supplies the normal stock library.
+
+If the packaged stock manifest is missing or invalid, Core does not claim the new custom-asset backup capability. Normal asset listing remains available, but complete backup fails closed rather than silently omitting user data.
+
+This release does not change rendering, Calibration geometry, hardware support confidence, passwords, API keys or SNMP credential handling. Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core before using the coordinated complete-backup workflow.
+
 # Switch Vision Core v2.7.11
 
 Core 2.7.11 adds the narrow Core-side bridge required by Switch Vision Discovery's complete non-secret configuration backup workflow. Custom visual assets remain owned by Core under `/config/www/switch-vision/logos` and `/config/www/switch-vision/faceplates`; Discovery never receives broad filesystem access.

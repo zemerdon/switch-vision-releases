@@ -1,3 +1,11 @@
+## v2.7.12 — Custom asset backup classification
+
+- Package an exact SHA-256 manifest of release-owned logo and faceplate assets so Core can distinguish stock visuals from user data at runtime.
+- Extend the narrow asset-list backup contract to advertise only truly custom logo/faceplate files to complete backups, avoiding repeated export of the full stock visual library.
+- Treat a stock-named file whose content differs from the packaged stock SHA-256 as custom user data so local overrides are preserved.
+- Fail the complete-backup capability back to the older API level if the stock manifest is missing or invalid; normal asset listing remains fail-soft.
+- Preserve rendering, Calibration geometry, device support and credential handling unchanged.
+
 ## v2.7.11 — Portable backup asset bridge
 
 - Add a narrow admin-only Home Assistant WebSocket bridge for exporting and restoring Switch Vision-owned custom logo and faceplate files used by complete configuration backups.
