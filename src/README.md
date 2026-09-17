@@ -103,18 +103,20 @@ UniFi2MQTT is optional and is only required for users using the read-only UniFi 
 
 ---
 
-## Activity LEDs in v2.2
+## Activity LEDs
 
-Switch Vision Core v2.2 measures activity relative to negotiated link speed rather than using one fixed byte-rate threshold for every port.
+Switch Vision Core measures activity relative to negotiated link speed rather than using one fixed byte-rate threshold for every port. Core v2.7.13 keeps the existing Slow / Medium / Fast utilisation classification but renders active ports with natural, irregular per-port flicker instead of a fixed metronomic blink cycle.
 
 Activity LED controls include:
 
 - Low / Normal / High / Custom sensitivity presets
-- configurable Medium and Fast utilisation thresholds
-- Slow / Medium / Fast blink periods
-- activity hold time
-- hysteresis
+- configurable utilisation thresholds separating the Slow, Medium and Fast bands
+- Slow / Medium / Fast period values used as **average flicker cadence** controls, not exact repeating periods
+- activity hold time, which preserves the validity of the last real traffic sample between telemetry updates rather than creating synthetic activity
+- hysteresis to keep activity-band transitions stable
 - safe fallback when negotiated speed is unavailable
+
+The animation does not increase SNMP or UniFi polling frequency; it only presents the most recent real telemetry sample more naturally between polls. Existing saved Activity LED settings remain compatible.
 
 Settings are available under:
 
