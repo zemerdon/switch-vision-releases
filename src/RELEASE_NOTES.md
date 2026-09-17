@@ -1,3 +1,13 @@
+# Switch Vision Core v2.7.11
+
+Core 2.7.11 adds the narrow Core-side bridge required by Switch Vision Discovery's complete non-secret configuration backup workflow. Custom visual assets remain owned by Core under `/config/www/switch-vision/logos` and `/config/www/switch-vision/faceplates`; Discovery never receives broad filesystem access.
+
+The new admin-only WebSocket contract can read or restore only validated Switch Vision logo/faceplate filenames. Each file is bounded to 16 MiB, restore content is base64-decoded with validation, SHA-256 must match the backup manifest, and writes use an atomic temporary-file replacement. The existing asset-list response advertises the backup API version so a coordinated Discovery build can fail closed when Core is too old.
+
+This release does not change card rendering, factory faceplates, Calibration geometry, labels, LED behavior or hardware support confidence. It stores no backup passwords, API keys, SNMP communities or other credentials.
+
+Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core before using the complete configuration backup/restore feature.
+
 # Switch Vision Core v2.7.10
 
 Core 2.7.10 is a renderer, Calibration and lifecycle stability release. It keeps the existing faceplates, geometry, labels, LED colours, activity timing and Calibration presentation unchanged while substantially reducing unnecessary browser work on multi-switch dashboards.

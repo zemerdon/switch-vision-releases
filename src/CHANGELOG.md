@@ -1,3 +1,10 @@
+## v2.7.11 — Portable backup asset bridge
+
+- Add a narrow admin-only Home Assistant WebSocket bridge for exporting and restoring Switch Vision-owned custom logo and faceplate files used by complete configuration backups.
+- Keep the bridge confined to `/config/www/switch-vision/{logos,faceplates}` with basename/extension validation, a 16 MiB per-file limit, SHA-256 integrity checks and atomic replacement.
+- Advertise backup API capability through the existing asset-list contract so Discovery can fail closed rather than silently create or restore an incomplete whole-stack backup against an older Core.
+- Preserve the existing renderer, faceplate geometry, Calibration presentation and dashboard behavior; no credential storage or broad `/config` filesystem access is introduced.
+
 ## v2.7.10 — Renderer and Calibration stability
 
 - Gate Home Assistant updates by the entities each card actually consumes and coalesce relevant bursts to one visual commit per affected card/frame.
