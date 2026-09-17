@@ -116,10 +116,10 @@
               "activity_led_sensitivity_preset": "Low is calmer, Normal is the v2.2 default, High reacts to very light traffic, and Custom uses your utilisation thresholds.",
               "activity_slow_max_utilization_pct": "Used only with Custom. Below this utilisation the LED uses the Slow band.",
               "activity_medium_max_utilization_pct": "Used only with Custom. At or above this utilisation the LED uses the Fast band.",
-              "activity_slow_period_ms": "Time for one complete Slow blink cycle. Larger values blink more slowly.",
-              "activity_medium_period_ms": "Time for one complete Medium blink cycle.",
-              "activity_fast_period_ms": "Time for one complete Fast blink cycle. Minimum supported value is 120 ms.",
-              "activity_hold_seconds": "Keeps the last detected activity visible between telemetry samples. The default 12 seconds is tuned for the current 10-second traffic cadence.",
+              "activity_slow_period_ms": "Average cadence for Slow activity flicker. Larger values make light-traffic flashes less frequent.",
+              "activity_medium_period_ms": "Average cadence for Medium activity flicker. Larger values spread the irregular flashes farther apart.",
+              "activity_fast_period_ms": "Average cadence for Fast activity flicker. Heavy traffic stays mostly lit with short irregular drop-outs; minimum supported value is 120 ms.",
+              "activity_hold_seconds": "Keeps the last real activity sample valid between telemetry samples. It does not create traffic; the default 12 seconds bridges the current 10-second traffic cadence.",
               "activity_hysteresis_pct": "Adds a buffer around utilisation thresholds so activity does not rapidly jump between Slow, Medium, and Fast near a boundary."
             }
           },

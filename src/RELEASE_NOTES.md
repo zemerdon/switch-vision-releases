@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.13
+
+Core 2.7.13 changes only the visual presentation of real port activity. The link LED remains a steady authoritative link-state indicator, while the Activity LED no longer repeats a perfectly timed blink cycle. Each active port now gets its own deterministic irregular flicker pattern so a dashboard looks closer to a physical switch: light traffic produces occasional short flashes, medium traffic produces more frequent uneven flicker, and heavy traffic produces a dense mostly-on shimmer with brief irregular drop-outs.
+
+The existing Activity LED configuration is preserved. Sensitivity presets, Custom utilisation thresholds and hysteresis still decide whether measured RX + TX throughput is Slow, Medium or Fast. The existing Slow / Medium / Fast period values now control average flicker cadence instead of an exact metronome period, so saved settings migrate without a new configuration schema. Activity Hold remains the validity bridge between slower traffic-counter samples; it does not create traffic and no SNMP or UniFi polling interval is increased for animation.
+
+The renderer continues to update retained LED elements only while activity is valid. Permanent browser coverage proves independent per-port patterns, irregular timing, denser visual activity at higher traffic bands and clean expiry back to off. Calibration geometry, link-state truth, hardware support, faceplates and credential handling are unchanged.
+
 # Switch Vision Core v2.7.12
 
 Core 2.7.12 tightens the complete non-secret backup bridge so portable backups contain user visual assets without redundantly copying every stock Switch Vision logo and faceplate.

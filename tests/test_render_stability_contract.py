@@ -64,6 +64,20 @@ class RenderStabilityContractTests(unittest.TestCase):
         self.assertIn("cvActivitySfp", self.source)
         self.assertIn("__activity_state_maps", self.source)
 
+    def test_activity_visuals_are_irregular_independent_and_not_metronomic(self) -> None:
+        required = (
+            "function activityFlickerSeed(value)",
+            "function nextActivityRandom(state)",
+            "function activityFlickerDurationMs(config, level, state, on)",
+            "function resetActivityFlicker(state, key, config, level, now, sampleUpdated = 0)",
+            "function activityFlickerOn(config, state, key, level, now)",
+            "return activityFlickerOn(config, state, key, displayLevel, now);",
+        )
+        for marker in required:
+            self.assertIn(marker, self.source)
+        self.assertNotIn("const phase = elapsed % period;", self.source)
+        self.assertNotIn("dutyCycle(displayLevel)", self.source)
+
     def test_render_normalization_is_scoped_to_one_visual_pass(self) -> None:
         self.assertIn("function beginCalibrationUiRenderPass()", self.source)
         self.assertIn("const calibrationUiRenderPassCache = new WeakMap();", self.source)
@@ -153,10 +167,70 @@ async function scenarioCalibrationStability() {
 async function scenarioActivity() {
   const now = Date.now(); let states = {'sensor.sw1_port_1_status':entity('up', now-10000),'sensor.sw1_port_1_speed_mbps':entity('1000', now-10000),'sensor.sw1_port_1_rx_bytes':entity('1000', now-10000),'sensor.sw1_port_1_tx_bytes':entity('1000', now-10000)}; const conn = immediateConnection(); const card = document.createElement('switch-vision-3650'); card.setConfig({member:'SW1', selected_switch:'SW1', calibration_profile_load:false, calibration_profile_auto_load:false, port_count:48, sfp_port_count:4, status_entity_prefix:'sensor.sw1_port_', status_entity_suffix:'_status', activity_hold_seconds:0.5, activity_animation_refresh_ms:100}); document.body.appendChild(card); card.hass = makeHass(states, conn); await sleep(40); let redraws = 0, ticks = 0; const r = card.redrawSwitchSvg.bind(card), a = card.refreshActivityLeds.bind(card); card.redrawSwitchSvg = (...args) => { redraws++; return r(...args); }; card.refreshActivityLeds = (...args) => { ticks++; return a(...args); }; states = {...states,'sensor.sw1_port_1_rx_bytes':entity('500000',now),'sensor.sw1_port_1_tx_bytes':entity('250000',now)}; card.hass = makeHass(states, conn); await sleep(160); const active = {redraws, ticks, timer:card._activityRenderTimer != null}; await sleep(700); const led = card.shadowRoot.querySelector('[data-cv-activity-port="1"]'); const expired = {redraws, ticks, timer:card._activityRenderTimer != null, cls:led?.getAttribute('class')}; card.remove(); return {active, expired};
 }
+function scenarioNaturalActivityPattern() {
+  const originalNow = Date.now;
+  let clock = 100000;
+  Date.now = () => clock;
+  try {
+    const config = {
+      activity_led_sensitivity_preset:'normal',
+      activity_slow_period_ms:500,
+      activity_medium_period_ms:250,
+      activity_fast_period_ms:120,
+      activity_hold_seconds:4,
+      activity_hysteresis_pct:20,
+    };
+    const ceiling = 100000000;
+    const summarize = (sequence) => {
+      const toggles = [];
+      let previous = sequence[0];
+      for (let i = 1; i < sequence.length; i++) {
+        if (sequence[i] !== previous) {
+          toggles.push(i);
+          previous = sequence[i];
+        }
+      }
+      const gaps = [];
+      for (let i = 1; i < toggles.length; i++) gaps.push(toggles[i] - toggles[i - 1]);
+      return {
+        on: sequence.filter(Boolean).length,
+        transitions: toggles.length,
+        uniqueGaps: [...new Set(gaps)].length,
+        signature: sequence.map(v => v ? '1' : '0').join(''),
+      };
+    };
+    const sample = (key, deltaBytes) => {
+      const map = new Map();
+      clock = 100000;
+      const initialRx = {value:1000, updated:clock};
+      const initialTx = {value:1000, updated:clock};
+      updateActivityState(map, key, initialRx, initialTx, config, ceiling);
+      clock += 1000;
+      const activeRx = {value:1000 + deltaBytes, updated:clock};
+      const activeTx = {value:1000, updated:clock};
+      updateActivityState(map, key, activeRx, activeTx, config, ceiling);
+      const started = clock;
+      const sequence = [];
+      for (let i = 0; i < 60; i++) {
+        clock = started + (i * 50);
+        sequence.push(updateActivityState(map, key, activeRx, activeTx, config, ceiling));
+      }
+      return summarize(sequence);
+    };
+    return {
+      slow:sample('SW1:port:1',5000),
+      medium:sample('SW1:port:2',50000),
+      mediumPeer:sample('SW1:port:3',50000),
+      fast:sample('SW1:port:4',200000),
+    };
+  } finally {
+    Date.now = originalNow;
+  }
+}
 async function scenarioColour() {
   const conn = immediateConnection(); const card = document.createElement('switch-vision-3650'); card.setConfig({member:'SW1', selected_switch:'SW1', calibration_profile_load:false, calibration_profile_auto_load:false, calibration_mode:true, calibration_controls:true, demo:true, port_count:48, sfp_port_count:4}); document.body.appendChild(card); card.hass = makeHass({}, conn); await sleep(40); let renders=0, redraws=0; const r=card.render.bind(card), d=card.redrawSwitchSvg.bind(card); card.render=(...args)=>{renders++;return r(...args)}; card.redrawSwitchSvg=(...args)=>{redraws++;return d(...args)}; const hue=card.shadowRoot.querySelector('[data-cv-colour-hue]'); const original=hue; for(let i=0;i<10;i++){hue.value=String(i*31);hue.dispatchEvent(new Event('input',{bubbles:true}));} const immediate={renders,redraws,same:original===card.shadowRoot.querySelector('[data-cv-colour-hue]')}; await sleep(25); const after={renders,redraws,same:original===card.shadowRoot.querySelector('[data-cv-colour-hue]'),dirty:card._calibrationDirty}; card.remove(); return {immediate,after};
 }
-(async () => { try { const result = {live:await scenarioLiveGate(), subscriptions:await scenarioSubscriptions(), profile:await scenarioProfileRace(), calibration:await scenarioCalibrationStability(), activity:await scenarioActivity(), colour:await scenarioColour()}; document.getElementById('result').textContent = JSON.stringify(result); } catch (err) { document.getElementById('result').textContent = JSON.stringify({error:String(err), stack:err?.stack||''}); } })();
+(async () => { try { const result = {live:await scenarioLiveGate(), subscriptions:await scenarioSubscriptions(), profile:await scenarioProfileRace(), calibration:await scenarioCalibrationStability(), activity:await scenarioActivity(), naturalActivity:scenarioNaturalActivityPattern(), colour:await scenarioColour()}; document.getElementById('result').textContent = JSON.stringify(result); } catch (err) { document.getElementById('result').textContent = JSON.stringify({error:String(err), stack:err?.stack||''}); } })();
 """
         document = '<!doctype html><html><body><pre id="result">pending</pre><script>' + source + '</script><script>' + harness + '</script></body></html>'
         with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False, encoding="utf-8") as handle:
@@ -194,6 +268,11 @@ async function scenarioColour() {
         self.assertEqual(payload["activity"]["expired"]["redraws"], 1)
         self.assertFalse(payload["activity"]["expired"]["timer"])
         self.assertEqual(payload["activity"]["expired"]["cls"], "cv-led-off")
+        self.assertGreater(payload["naturalActivity"]["medium"]["on"], payload["naturalActivity"]["slow"]["on"])
+        self.assertGreater(payload["naturalActivity"]["fast"]["on"], payload["naturalActivity"]["medium"]["on"])
+        self.assertGreaterEqual(payload["naturalActivity"]["medium"]["transitions"], 4)
+        self.assertGreaterEqual(payload["naturalActivity"]["medium"]["uniqueGaps"], 2)
+        self.assertNotEqual(payload["naturalActivity"]["medium"]["signature"], payload["naturalActivity"]["mediumPeer"]["signature"])
         self.assertEqual(payload["colour"]["immediate"]["renders"], 0)
         self.assertEqual(payload["colour"]["immediate"]["redraws"], 0)
         self.assertTrue(payload["colour"]["immediate"]["same"])

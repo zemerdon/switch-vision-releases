@@ -1,3 +1,11 @@
+## v2.7.13 — Natural independent Activity LED flicker
+
+- Replace the fixed repeating Activity LED metronome with deterministic irregular per-port flicker driven only by real RX + TX counter movement.
+- Preserve Slow / Medium / Fast utilisation classification, sensitivity presets, custom thresholds, hysteresis and saved period settings; the three period values now control average flicker cadence rather than an exact repeating cycle.
+- Keep light traffic as occasional short flashes, medium traffic as frequent irregular flicker, and heavy traffic as a dense mostly-on shimmer with short uneven drop-outs.
+- Keep the link LED solid and authoritative, retain the existing poll cadence, and use Activity Hold only to keep the last real activity sample valid between slower telemetry updates.
+- Add permanent browser/runtime regression coverage for irregular timing, independent per-port patterns, traffic-density ordering, retained-LED updates and clean expiry.
+
 ## v2.7.12 — Custom asset backup classification
 
 - Package an exact SHA-256 manifest of release-owned logo and faceplate assets so Core can distinguish stock visuals from user data at runtime.
