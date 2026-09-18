@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.16
+
+Core 2.7.16 repairs the factory presentation of the two stock 48-port faceplates. The stock 48-RJ45/4-SFP plate now uses zemerdon's accepted calibrated geometry as its default, including the corrected port/LED/number positions, explicit SFP label anchors, and visible `G1`, `G2`, `G3/TE3`, and `G4/TE4` uplink labels.
+
+Both stock 48-port profiles now carry explicit native-canvas presentation sizes that resolve to the same standard render-space label sizes already used by the stock 24-port plates: 13 px RJ45 numbers, 13.5 px SFP labels, and 16.5 px status labels. This prevents the old schema-1 defaults from being scaled down and clamped to the renderer's 8 px minimum on a fresh install. The stock 48-RJ45/2-SFP plate keeps its existing port geometry; only its missing presentation/font metadata and explicit SFP label visibility are repaired.
+
+Permanent geometry coverage now verifies the 48-RJ45/4-SFP factory profile round-trips exactly to the accepted owner-supplied 2048×448 geometry snapshot and that both stock 48-port plates retain the standard label sizes. Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core.
+
 # Switch Vision Core v2.7.15
 
 Core 2.7.15 adds the admin-only WebSocket deletion contract required by the Switch Vision Hub Calibration Profiles manager. The Hub already uses authenticated Home Assistant WebSocket commands to inspect calibration profiles; deletion now uses that same control path instead of depending on an admin service call that is not reliable from the Discovery ingress process.

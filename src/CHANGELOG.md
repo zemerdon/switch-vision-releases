@@ -1,3 +1,10 @@
+## v2.7.16 — Stock 48-port faceplate presentation repair
+
+- Promote zemerdon's supplied calibrated `48rj45-4sfp` geometry to the stock factory default, including corrected RJ45 placement, explicit SFP label anchors, and the `G1`, `G2`, `G3/TE3`, `G4/TE4` visible uplink labels.
+- Restore the standard 13 px RJ45 numbers, 13.5 px SFP labels, and 16.5 px status labels on both stock 48-port faceplates instead of allowing missing native-canvas presentation metadata to collapse those labels to the 8 px renderer minimum.
+- Keep the stock `48rj45-2sfp` port geometry unchanged while adding only the missing explicit presentation metadata and label visibility contract.
+- Add a permanent factory-geometry regression that proves the stock 48-port/4-SFP render-space geometry exactly matches the accepted owner-supplied geometry snapshot and both stock 48-port plates retain the standard label sizes.
+
 ## v2.7.15 — Calibration profile deletion bridge
 
 - Add an admin-only Home Assistant WebSocket command for deleting one unused calibration profile so the Switch Vision Hub can use the same authenticated control path as its existing calibration reads.

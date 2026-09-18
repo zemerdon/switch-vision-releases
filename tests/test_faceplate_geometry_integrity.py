@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import importlib.util
 import json
 import re
 import struct
@@ -12,6 +14,14 @@ FACEPLATES = SRC / "faceplates"
 CALIBRATIONS = SRC / "calibration"
 CARD = SRC / "js" / "switch-vision.js"
 REGISTRY = SRC / "devices" / "supported_devices.json"
+
+_CANVAS_SPEC = importlib.util.spec_from_file_location(
+    "switch_vision_faceplate_native_canvas",
+    SRC / "faceplate_native_canvas.py",
+)
+assert _CANVAS_SPEC and _CANVAS_SPEC.loader
+_CANVAS = importlib.util.module_from_spec(_CANVAS_SPEC)
+_CANVAS_SPEC.loader.exec_module(_CANVAS)
 
 
 def png_size(path: Path) -> tuple[int, int]:
@@ -144,8 +154,58 @@ def test_brendan_pro_max_keeps_original_standard_24_plus_2_geometry() -> None:
     assert row["visuals"]["calibration_profile"] == "unifi_24p_rj45_2sfp"
 
 
+def test_stock_48_port_factory_presentation_contract() -> None:
+    expected_fonts = {
+        "port_number_font_size": 13.0,
+        "sfp_label_font_size": 13.5,
+        "status_led_font_size": 16.5,
+    }
+
+    for filename in ("48rj45-2sfp.png", "48rj45-4sfp.png"):
+        payload = faceplate_calibrations()[filename]
+        rendered = _CANVAS.render_space_calibration(payload)
+        ui = rendered.get("ui") or {}
+        status_leds = ui.get("status_leds") or {}
+        assert ui.get("port_number_font_size") == expected_fonts["port_number_font_size"], filename
+        assert ui.get("sfp_label_font_size") == expected_fonts["sfp_label_font_size"], filename
+        assert status_leds.get("font_size") == expected_fonts["status_led_font_size"], filename
+
+    four = _CANVAS.render_space_calibration(faceplate_calibrations()["48rj45-4sfp.png"])
+    assert list(four.get("sfp") or {}) == ["G1", "G2", "G3/TE3", "G4/TE4"]
+    assert four["sfp"]["G1"]["label"] == [1709, 188]
+    assert four["sfp"]["G2"]["label"] == [1838, 188]
+    assert four["sfp"]["G3/TE3"]["label"] == [1710, 402]
+    assert four["sfp"]["G4/TE4"]["label"] == [1839, 402]
+    assert all(item.get("label_show") is True for item in four["sfp"].values())
+
+    owner_ui = json.loads(json.dumps(four.get("ui") or {}))
+    if isinstance(owner_ui.get("faceplate"), dict):
+        owner_ui["faceplate"].pop("file", None)
+        owner_ui["faceplate"].pop("source", None)
+    owner_geometry = {
+        "image": {
+            "width": 2048,
+            "height": 448,
+            "coordinate_space": "switch-vision-render-2048x448-v1",
+        },
+        "ports": four.get("ports") or {},
+        "sfp": four.get("sfp") or {},
+        "status_leds": four.get("status_leds") or {},
+        "ui": owner_ui,
+    }
+    canonical = json.dumps(
+        owner_geometry,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    assert hashlib.sha256(canonical).hexdigest() == (
+        "3069b582f48b4a8906907d37ef0b617fe7fdbdfb4bd4aeecc09a43e3f9a59b03"
+    )
+
+
 if __name__ == "__main__":
     test_all_shipped_faceplates_own_valid_native_geometry()
     test_every_dashboard_default_profile_resolves_to_its_faceplate_geometry()
     test_brendan_pro_max_keeps_original_standard_24_plus_2_geometry()
+    test_stock_48_port_factory_presentation_contract()
     print("Switch Vision shipped faceplate geometry integrity: PASS")
