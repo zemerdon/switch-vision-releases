@@ -1,3 +1,13 @@
+# Switch Vision Core v2.7.14
+
+Core 2.7.14 restores the factory visual contract that each shipped faceplate owns its supplied absolute geometry. Exact-model defaults now resolve geometry from the recommended faceplate first, legacy profile aliases resolve to the faceplate-native calibration, and missing UniFi factory bindings for the 8-RJ45 + 2-SFP and 32-optical faceplates are repaired. The USW Pro Max 24 is restored to its original standard `unifi-24p-rj45-2sfp.png` / `unifi_24p_rj45_2sfp` contract instead of the later inline reassignment.
+
+Existing saved calibrations are protected. Core only auto-repairs a stored profile when its complete persisted presentation fingerprint still exactly matches a reviewed obsolete factory default; any real user calibration change prevents migration. Qualified migrations render the corrected geometry immediately and are persisted best-effort into the correct faceplate-specific profile namespace.
+
+The Native dashboard header now uses a fixed high-contrast Switch Vision foreground/background pair for the summary, version badge and mobile menu control so custom Home Assistant theme token combinations cannot make the header unreadable.
+
+Permanent coverage now audits all 17 shipped faceplates for native image dimensions, authoritative calibration coverage, in-bounds geometry and runtime parity, and all dashboard model recommendations must resolve to the geometry belonging to their shipped faceplate. Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core.
+
 # Switch Vision Core v2.7.13
 
 Core 2.7.13 changes only the visual presentation of real port activity. The link LED remains a steady authoritative link-state indicator, while the Activity LED no longer repeats a perfectly timed blink cycle. Each active port now gets its own deterministic irregular flicker pattern so a dashboard looks closer to a physical switch: light traffic produces occasional short flashes, medium traffic produces more frequent uneven flicker, and heavy traffic produces a dense mostly-on shimmer with brief irregular drop-outs.

@@ -1,3 +1,12 @@
+## v2.7.14 — Faceplate geometry integrity and upgrade repair
+
+- Make each shipped faceplate the primary authority for its factory/default geometry instead of allowing broad port-count/profile fallbacks to substitute another layout.
+- Restore the USW Pro Max 24 to its original standard `unifi-24p-rj45-2sfp.png` / `unifi_24p_rj45_2sfp` visual contract.
+- Add the missing `unifi_8_rj45_2sfp` and `unifi_32sfp` factory bindings and route legacy Cisco profile aliases to their current faceplate-native geometry.
+- Automatically repair saved profiles only when their complete persisted presentation fingerprint exactly matches a reviewed obsolete factory default; preserve any genuinely user-adjusted calibration.
+- Give the Native dashboard summary/version/menu header a fixed high-contrast foreground/background pair independent of custom Home Assistant theme token combinations.
+- Add permanent all-faceplate/model geometry integrity coverage across the 17 shipped faceplates and dashboard-supported exact-model recommendations.
+
 ## v2.7.13 — Natural independent Activity LED flicker
 
 - Replace the fixed repeating Activity LED metronome with deterministic irregular per-port flicker driven only by real RX + TX counter movement.

@@ -54,9 +54,12 @@ EXPECTED_24_PLUS_2_MODELS = {
     "USW-Pro-24-PoE",
     "USW Pro 24",
     "USW-24-PoE",
-    "USW Pro Max 24",
     "USW Pro XG 24 PoE",
 }
+
+# Brendan Pratt's original 2.4.10 hardware contract predates the later inline
+# artwork sweep and intentionally uses the standard 24+2 faceplate geometry.
+BRENDAN_STANDARD_24_PLUS_2_MODEL = "USW Pro Max 24"
 
 EXPECTED_24_PLUS_4_MODELS = {
     "USW Pro HD 24 PoE",
@@ -133,6 +136,15 @@ def main() -> None:
         assert Path(row["default_faceplate"]).name == "unifi-24-rj45-2sfp-inline.png"
         assert row["visuals"]["calibration_profile"] == "unifi_24_rj45_2sfp_inline"
         assert Path(row["visuals"]["recommended_faceplate"]).name == "unifi-24-rj45-2sfp-inline.png"
+
+    brendan = by_model[BRENDAN_STANDARD_24_PLUS_2_MODEL]
+    assert brendan["vendor"] == "Ubiquiti"
+    assert brendan["ports"]["rj45"] == 24
+    assert brendan["ports"]["uplinks"] == 2
+    assert brendan["calibration_profile"] == "unifi_24p_rj45_2sfp"
+    assert Path(brendan["default_faceplate"]).name == "unifi-24p-rj45-2sfp.png"
+    assert brendan["visuals"]["calibration_profile"] == "unifi_24p_rj45_2sfp"
+    assert Path(brendan["visuals"]["recommended_faceplate"]).name == "unifi-24p-rj45-2sfp.png"
 
     for model in EXPECTED_24_PLUS_4_MODELS:
         row = by_model[model]

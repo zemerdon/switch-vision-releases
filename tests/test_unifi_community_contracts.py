@@ -46,8 +46,10 @@ for model, (rj45, uplinks, poe, dashboard, profile) in expected.items():
         assert contribution["api_capabilities"]["per_port_traffic"] is False, model
 
 promax = source_models["USW Pro Max 24"]
-assert promax["default_faceplate"] == "faceplates/unifi-24-rj45-2sfp-inline.png"
-assert promax["calibration_profile"] == "unifi_24_rj45_2sfp_inline"
+# Preserve the original Brendan 2.4.10 visual contract. The later inline
+# reassignment was registry drift, not new hardware evidence.
+assert promax["default_faceplate"] == "faceplates/unifi-24p-rj45-2sfp.png"
+assert promax["calibration_profile"] == "unifi_24p_rj45_2sfp"
 assert "ports 17-24 are 2.5G-capable RJ45" in " ".join(promax["notes"])
 assert "ports_25_26_10g_sfp_plus" in promax["validation"]["uplinks"]
 
