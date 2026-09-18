@@ -1,3 +1,9 @@
+## v2.7.15 — Calibration profile deletion bridge
+
+- Add an admin-only Home Assistant WebSocket command for deleting one unused calibration profile so the Switch Vision Hub can use the same authenticated control path as its existing calibration reads.
+- Reuse the existing protected deletion implementation for both the service and WebSocket contracts, preserving factory-profile and active-profile deletion safeguards.
+- Return explicit deletion results to Hub callers so bulk profile cleanup can fail visibly instead of reporting success after an inaccessible service call.
+
 ## v2.7.14 — Faceplate geometry integrity and upgrade repair
 
 - Make each shipped faceplate the primary authority for its factory/default geometry instead of allowing broad port-count/profile fallbacks to substitute another layout.

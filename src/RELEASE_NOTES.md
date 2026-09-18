@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.15
+
+Core 2.7.15 adds the admin-only WebSocket deletion contract required by the Switch Vision Hub Calibration Profiles manager. The Hub already uses authenticated Home Assistant WebSocket commands to inspect calibration profiles; deletion now uses that same control path instead of depending on an admin service call that is not reliable from the Discovery ingress process.
+
+The existing deletion protections are unchanged. Factory calibration profiles and active calibration profiles remain protected, while unused profiles can be deleted individually or in bulk. The service and WebSocket paths share the same deletion implementation so their validation, storage mutation, update event and result semantics cannot drift.
+
+This release does not change faceplate geometry, calibration content, hardware support, renderer behavior or device telemetry. Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core.
+
 # Switch Vision Core v2.7.14
 
 Core 2.7.14 restores the factory visual contract that each shipped faceplate owns its supplied absolute geometry. Exact-model defaults now resolve geometry from the recommended faceplate first, legacy profile aliases resolve to the faceplate-native calibration, and missing UniFi factory bindings for the 8-RJ45 + 2-SFP and 32-optical faceplates are repaired. The USW Pro Max 24 is restored to its original standard `unifi-24p-rj45-2sfp.png` / `unifi_24p_rj45_2sfp` contract instead of the later inline reassignment.
