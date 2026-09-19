@@ -230,7 +230,42 @@ function scenarioNaturalActivityPattern() {
 async function scenarioColour() {
   const conn = immediateConnection(); const card = document.createElement('switch-vision-3650'); card.setConfig({member:'SW1', selected_switch:'SW1', calibration_profile_load:false, calibration_profile_auto_load:false, calibration_mode:true, calibration_controls:true, demo:true, port_count:48, sfp_port_count:4}); document.body.appendChild(card); card.hass = makeHass({}, conn); await sleep(40); let renders=0, redraws=0; const r=card.render.bind(card), d=card.redrawSwitchSvg.bind(card); card.render=(...args)=>{renders++;return r(...args)}; card.redrawSwitchSvg=(...args)=>{redraws++;return d(...args)}; const hue=card.shadowRoot.querySelector('[data-cv-colour-hue]'); const original=hue; for(let i=0;i<10;i++){hue.value=String(i*31);hue.dispatchEvent(new Event('input',{bubbles:true}));} const immediate={renders,redraws,same:original===card.shadowRoot.querySelector('[data-cv-colour-hue]')}; await sleep(25); const after={renders,redraws,same:original===card.shadowRoot.querySelector('[data-cv-colour-hue]'),dirty:card._calibrationDirty}; card.remove(); return {immediate,after};
 }
-(async () => { try { const result = {live:await scenarioLiveGate(), subscriptions:await scenarioSubscriptions(), profile:await scenarioProfileRace(), calibration:await scenarioCalibrationStability(), activity:await scenarioActivity(), naturalActivity:scenarioNaturalActivityPattern(), colour:await scenarioColour()}; document.getElementById('result').textContent = JSON.stringify(result); } catch (err) { document.getElementById('result').textContent = JSON.stringify({error:String(err), stack:err?.stack||''}); } })();
+async function scenarioFaceplateHeight() {
+  const conn = immediateConnection();
+  const makeCard = async (member, maxHeight) => {
+    const card = document.createElement('switch-vision-3650');
+    const config = {member, selected_switch:member, calibration_profile_load:false, calibration_profile_auto_load:false, demo:true, port_count:48, sfp_port_count:4};
+    if (maxHeight !== undefined) config.faceplate_max_height = maxHeight;
+    card.setConfig(config);
+    document.body.appendChild(card);
+    card.hass = makeHass({}, conn);
+    await sleep(30);
+    return card;
+  };
+  const compact = await makeCard('SWH115', 115);
+  const roomy = await makeCard('SWH200', 200);
+  const automatic = await makeCard('SWHAUTO');
+  const snapshot = (card) => ({
+    maxHeight: card.resolvedFaceplateMaxHeight(card.calibrationData()),
+    maxWidth: parseFloat(card.shadowRoot.querySelector('.cv-card')?.style.maxWidth || '0'),
+  });
+  const result = {compact:snapshot(compact), roomy:snapshot(roomy), automatic:snapshot(automatic)};
+  compact.remove(); roomy.remove(); automatic.remove();
+
+  const editor = document.createElement('switch-vision-3650');
+  editor.setConfig({member:'SWHEDIT', selected_switch:'SWHEDIT', calibration_profile_load:false, calibration_profile_auto_load:false, calibration_mode:true, calibration_controls:true, demo:true, port_count:48, sfp_port_count:4});
+  document.body.appendChild(editor);
+  editor.hass = makeHass({}, conn);
+  await sleep(30);
+  const input = editor.shadowRoot.querySelector('[data-cv-field="faceplate-max-height"]');
+  input.value = '115';
+  input.dispatchEvent(new Event('change', {bubbles:true}));
+  await sleep(20);
+  result.editor = {saved:editor._calibrationWorking?.ui?.faceplate?.max_height, dirty:editor._calibrationDirty === true};
+  editor.remove();
+  return result;
+}
+(async () => { try { const result = {live:await scenarioLiveGate(), subscriptions:await scenarioSubscriptions(), profile:await scenarioProfileRace(), calibration:await scenarioCalibrationStability(), activity:await scenarioActivity(), naturalActivity:scenarioNaturalActivityPattern(), colour:await scenarioColour(), faceplateHeight:await scenarioFaceplateHeight()}; document.getElementById('result').textContent = JSON.stringify(result); } catch (err) { document.getElementById('result').textContent = JSON.stringify({error:String(err), stack:err?.stack||''}); } })();
 """
         document = '<!doctype html><html><body><pre id="result">pending</pre><script>' + source + '</script><script>' + harness + '</script></body></html>'
         with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False, encoding="utf-8") as handle:
@@ -280,6 +315,13 @@ async function scenarioColour() {
         self.assertEqual(payload["colour"]["after"]["redraws"], 1)
         self.assertTrue(payload["colour"]["after"]["same"])
         self.assertTrue(payload["colour"]["after"]["dirty"])
+        self.assertEqual(payload["faceplateHeight"]["compact"]["maxHeight"], 115)
+        self.assertEqual(payload["faceplateHeight"]["roomy"]["maxHeight"], 200)
+        self.assertIsNone(payload["faceplateHeight"]["automatic"]["maxHeight"])
+        self.assertLess(payload["faceplateHeight"]["compact"]["maxWidth"], payload["faceplateHeight"]["roomy"]["maxWidth"])
+        self.assertLess(payload["faceplateHeight"]["roomy"]["maxWidth"], payload["faceplateHeight"]["automatic"]["maxWidth"])
+        self.assertEqual(payload["faceplateHeight"]["editor"].get("saved"), 115, payload["faceplateHeight"])
+        self.assertTrue(payload["faceplateHeight"]["editor"]["dirty"])
 
 
 if __name__ == "__main__":

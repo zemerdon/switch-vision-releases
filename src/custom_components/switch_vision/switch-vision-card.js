@@ -2522,7 +2522,8 @@ function defaultUiLayout() {
       show: true,
       file: "__default__",
       fit: "fill",
-      opacity: 1
+      opacity: 1,
+      max_height: null
     },
     calibration_button: { show: true, x: 1888, y: 14, width: 138, height: 34, anchor: "top_right" },
     test_mode_button: { show: true, x: 1888, y: 58, width: 138, height: 34, anchor: "top_right" },
@@ -2808,6 +2809,12 @@ function applyConfigToCalibrationForEdit(cal, config = {}) {
     }
     if (config.faceplate_fit !== undefined) faceplateAsset.fit = String(config.faceplate_fit || "fill");
     if (config.faceplate_opacity !== undefined) faceplateAsset.opacity = Number(config.faceplate_opacity);
+    cal.ui.faceplate = normaliseFaceplateAsset(faceplateAsset);
+  }
+  if (Object.prototype.hasOwnProperty.call(config, "faceplate_max_height")) {
+    const maxHeight = normaliseFaceplateMaxHeight(config.faceplate_max_height);
+    if (maxHeight === null) delete faceplateAsset.max_height;
+    else faceplateAsset.max_height = maxHeight;
     cal.ui.faceplate = normaliseFaceplateAsset(faceplateAsset);
   }
 
@@ -4432,6 +4439,9 @@ function normaliseImportedFaceplateProfile(raw) {
     for (const key of ["ui", "ports", "sfp", "stack", "management", "profile", "profile_name", "base_profile_name"]) {
       delete faceplate[key];
     }
+    // Card height is switch/card-scoped presentation state, not transferable
+    // faceplate geometry. Keep the destination card's own setting on import.
+    delete faceplate.max_height;
   }
   // Transfer metadata is informational only. The card that launches Import is
   // the sole authority for the destination profile and scope.
@@ -4498,6 +4508,7 @@ function geometryTransferPresentationUi(source) {
   if (ui.faceplate && typeof ui.faceplate === "object" && !Array.isArray(ui.faceplate)) {
     delete ui.faceplate.file;
     delete ui.faceplate.source;
+    delete ui.faceplate.max_height;
   }
   return ui;
 }
@@ -4510,6 +4521,7 @@ function geometryTransferExportData(cal, { scope, baseProfile, profile } = {}) {
   if (geometryUi.faceplate && typeof geometryUi.faceplate === "object" && !Array.isArray(geometryUi.faceplate)) {
     delete geometryUi.faceplate.file;
     delete geometryUi.faceplate.source;
+    delete geometryUi.faceplate.max_height;
   }
   return {
     schema_version: 2,
@@ -4748,6 +4760,10 @@ function faceplateTransferExportData(cal, { scope, baseProfile, profile, facepla
   delete payload.profile_name;
   delete payload.profile_scope;
   delete payload.base_profile_name;
+  if (payload.ui?.faceplate && typeof payload.ui.faceplate === "object" && !Array.isArray(payload.ui.faceplate)) {
+    payload.ui = clonePlainData(payload.ui);
+    delete payload.ui.faceplate.max_height;
+  }
   return payload;
 }
 
@@ -4859,6 +4875,12 @@ function validateImportedCalibration(raw, currentCal = null) {
       const opacity = Number(faceplate.opacity ?? 1);
       if (!Number.isFinite(opacity) || opacity < 0 || opacity > 1) errors.push("ui.faceplate.opacity must be between 0 and 1.");
       if (faceplate.fit !== undefined && !["fill", "contain", "cover"].includes(String(faceplate.fit).toLowerCase())) errors.push("ui.faceplate.fit must be fill, contain, or cover.");
+      if (faceplate.max_height !== undefined && faceplate.max_height !== null && faceplate.max_height !== "") {
+        const maxHeight = Number(faceplate.max_height);
+        if (!Number.isFinite(maxHeight) || maxHeight < SV_FACEPLATE_MAX_HEIGHT_MIN_PX || maxHeight > SV_FACEPLATE_MAX_HEIGHT_MAX_PX) {
+          errors.push(`ui.faceplate.max_height must be between ${SV_FACEPLATE_MAX_HEIGHT_MIN_PX} and ${SV_FACEPLATE_MAX_HEIGHT_MAX_PX} px, or omitted for Auto.`);
+        }
+      }
     }
     for (const boxName of ["logo", "calibration_button", "test_mode_button", "status_panel", "status_panel_2"]) {
       const box = ui[boxName];
@@ -5592,6 +5614,16 @@ const SV_ASSET_DEFAULT = "__default__";
 // Retained only to migrate profiles created by v1.9.35 or older builds that
 // could hide the faceplate. It is never offered or preserved as an active state.
 const SV_ASSET_NONE = "__none__";
+const SV_FACEPLATE_MAX_HEIGHT_MIN_PX = 48;
+const SV_FACEPLATE_MAX_HEIGHT_MAX_PX = 1024;
+
+function normaliseFaceplateMaxHeight(value) {
+  if (value === undefined || value === null || value === "") return null;
+  if (String(value).trim().toLowerCase() === "auto") return null;
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric) || numeric <= 0) return null;
+  return Math.max(SV_FACEPLATE_MAX_HEIGHT_MIN_PX, Math.min(SV_FACEPLATE_MAX_HEIGHT_MAX_PX, Math.round(numeric)));
+}
 
 function normaliseFaceplateAsset(value = {}) {
   const faceplate = { fit: "fill", opacity: 1, ...(value && typeof value === "object" ? value : {}) };
@@ -5621,6 +5653,9 @@ function normaliseFaceplateAsset(value = {}) {
   faceplate.fit = ["fill", "contain", "cover"].includes(String(faceplate.fit || "fill").toLowerCase()) ? String(faceplate.fit).toLowerCase() : "fill";
   const opacity = Number(faceplate.opacity);
   faceplate.opacity = Number.isFinite(opacity) ? Math.max(0, Math.min(1, opacity)) : 1;
+  const maxHeight = normaliseFaceplateMaxHeight(faceplate.max_height);
+  if (maxHeight === null) delete faceplate.max_height;
+  else faceplate.max_height = maxHeight;
   return faceplate;
 }
 
@@ -7244,6 +7279,31 @@ const testModeBadge = testModeActive && testModeUi.show !== false
     return safe;
   }
 
+  resolvedFaceplateMaxHeight(cal = null) {
+    if (Object.prototype.hasOwnProperty.call(this.config || {}, "faceplate_max_height")) {
+      return normaliseFaceplateMaxHeight(this.config.faceplate_max_height);
+    }
+    const data = cal && typeof cal === "object"
+      ? cal
+      : (this._calibrationWorking || this._profileCalibration || calibration);
+    return normaliseFaceplateMaxHeight(ensureCalibrationUi(data).ui?.faceplate?.max_height);
+  }
+
+  faceplateWidthCapForHeight(cal, maxHeight, imageWidth = null, imageHeight = null) {
+    const globalMaxWidth = this._globalFaceplateWidthMode === "auto"
+      ? 2048
+      : Math.round(Number(this._globalFaceplateWidth) || 800);
+    const heightLimit = normaliseFaceplateMaxHeight(maxHeight);
+    if (heightLimit === null) return globalMaxWidth;
+
+    const width = Number(imageWidth || cal?.image?.width);
+    const height = Number(imageHeight || cal?.image?.height);
+    if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
+      return globalMaxWidth;
+    }
+    return Math.max(1, Math.min(globalMaxWidth, Math.round(heightLimit * (width / height))));
+  }
+
   faceplateProfileToken(filename = this.activeFaceplateFilename()) {
     const file = String(filename || SV_ASSET_DEFAULT).trim();
     if (!file || file === SV_ASSET_DEFAULT || file === SV_ASSET_NONE) return "";
@@ -7774,6 +7834,7 @@ const testModeBadge = testModeActive && testModeUi.show !== false
     const assetLibrary = this._assetLibrary || { logos: [], faceplates: [], logos_path: "/config/www/switch-vision/logos", faceplates_path: "/config/www/switch-vision/faceplates" };
     const logoSelection = logoUi.show === false ? SV_ASSET_NONE : (logoUi.source === "custom" ? String(logoUi.file || SV_ASSET_DEFAULT) : SV_ASSET_DEFAULT);
     const faceplateSelection = faceplateSelectionValue(faceplateAssetUi);
+    const faceplateMaxHeightValue = normaliseFaceplateMaxHeight(faceplateAssetUi?.max_height);
     const assetStatus = this._assetLibraryLoading ? "Scanning folders…" : (this._assetLibraryError ? "Asset listing unavailable — check the custom component" : `${assetLibrary.logos.length} logo(s) · ${assetLibrary.faceplates.length} faceplate(s)`);
     ensureStatusPanelFieldState(statusUi);
     // Status Box 1 controls always edit switch-summary rows. Port selection no
@@ -7962,6 +8023,10 @@ const testModeBadge = testModeActive && testModeUi.show !== false
           <span class="cv-cal-current" title="Logos: ${htmlEscape(assetLibrary.logos_path)} · Faceplates: ${htmlEscape(assetLibrary.faceplates_path)}">${htmlEscape(assetStatus)}</span>
         </div>
         <div class="cv-cal-tools-row cv-cal-style-row cv-cal-faceplate-tip">
+          <label>Max faceplate height
+            <input class="cv-cal-input" data-cv-field="faceplate-max-height" type="number" min="${SV_FACEPLATE_MAX_HEIGHT_MIN_PX}" max="${SV_FACEPLATE_MAX_HEIGHT_MAX_PX}" step="1" value="${faceplateMaxHeightValue === null ? "" : faceplateMaxHeightValue}" placeholder="Auto">
+          </label>
+          <span class="cv-cal-current">px · blank = Auto · saved for this switch/card</span>
           <span class="cv-cal-current"><b>Tip:</b> Faceplates replace the switch artwork. For best results, use wide images (2048 px or wider).</span>
           <span class="cv-cal-current" data-cv-faceplate-info>Detected image dimensions appear after selection.</span>
         </div>
@@ -8393,8 +8458,11 @@ const testModeBadge = testModeActive && testModeUi.show !== false
       SV_VERSION,
       faceplateRefreshToken
     );
-    const faceplateMaxWidth = this._globalFaceplateWidthMode === "auto" ? 2048 : Math.round(Number(this._globalFaceplateWidth) || 800);
-    const faceplateWidthStatus = this._globalFaceplateWidthMode === "auto" ? "auto width" : `${faceplateMaxWidth}px max`;
+    const globalFaceplateMaxWidth = this._globalFaceplateWidthMode === "auto" ? 2048 : Math.round(Number(this._globalFaceplateWidth) || 800);
+    const faceplateMaxHeight = this.resolvedFaceplateMaxHeight(activeCalibration);
+    const faceplateRenderMaxWidth = this.faceplateWidthCapForHeight(activeCalibration, faceplateMaxHeight);
+    const faceplateWidthStatus = this._globalFaceplateWidthMode === "auto" ? "auto width" : `${globalFaceplateMaxWidth}px max`;
+    const faceplateHeightStatus = faceplateMaxHeight === null ? "" : ` · ≤${faceplateMaxHeight}px faceplate`;
     const attemptedUnifiRuntime = hasUnifiBinding(this.config) && Boolean(rawUnifiRuntime(this.config) || this._unifiLastFetchAt);
     const unifiFreshness = attemptedUnifiRuntime ? unifiRuntimeFreshness(this.config) : null;
     const unifiRuntimeWarning = unifiFreshness?.stale
@@ -8403,10 +8471,10 @@ const testModeBadge = testModeActive && testModeUi.show !== false
     const faceplateImageHtml = `<img class="cv-image" data-cv-faceplate-image data-cv-faceplate-fallback="${htmlEscape(recommendedFaceplateUrl)}" src="${htmlEscape(faceplateUrl || recommendedFaceplateUrl)}" style="object-fit:${htmlEscape(activeCalibration.ui?.faceplate?.fit || "fill")};opacity:${Math.max(0, Math.min(1, Number(activeCalibration.ui?.faceplate?.opacity ?? 1)))}">`;
 
     this.shadowRoot.innerHTML = `<link rel="stylesheet" href="/local/switch-vision/css/switch-vision.css?v=${SV_VERSION}">
-      <div class="cv-card" style="width:100%;max-width:${faceplateMaxWidth}px;margin-inline:auto" tabindex="0">
+      <div class="cv-card" style="width:100%;max-width:${faceplateRenderMaxWidth}px;margin-inline:auto" tabindex="0">
         ${showCardHeader ? `<div class="cv-header">
           <div class="cv-title">${htmlEscape(title)}</div>
-          <div class="cv-status">v${SV_VERSION} · ${calibrationEnabled(this.config) ? (calibrationControlsEnabled(this.config) ? "interactive calibration" : "calibration") : (this.config.demo ? "demo" : "live")} · ${faceplateWidthStatus} · native 2048 × 448</div>
+          <div class="cv-status">v${SV_VERSION} · ${calibrationEnabled(this.config) ? (calibrationControlsEnabled(this.config) ? "interactive calibration" : "calibration") : (this.config.demo ? "demo" : "live")} · ${faceplateWidthStatus}${faceplateHeightStatus} · native 2048 × 448</div>
         </div>` : ""}
         ${unifiRuntimeWarning ? `<div class="cv-runtime-warning">${htmlEscape(unifiRuntimeWarning)}</div>` : ""}
         ${this.calibrationControls(activeCalibration)}
@@ -8423,6 +8491,17 @@ const testModeBadge = testModeActive && testModeUi.show !== false
     this.attachCalibrationControlHandlers(activeCalibration);
     this.attachCalibrationButtonHandler();
     const faceplateImage = this.shadowRoot.querySelector("[data-cv-faceplate-image]");
+    const cardRoot = this.shadowRoot.querySelector(".cv-card");
+    if (faceplateImage && cardRoot && faceplateMaxHeight !== null) {
+      const applyFaceplateHeightCap = () => {
+        const width = faceplateImage.naturalWidth || activeCalibration?.image?.width || 0;
+        const height = faceplateImage.naturalHeight || activeCalibration?.image?.height || 0;
+        const widthCap = this.faceplateWidthCapForHeight(activeCalibration, faceplateMaxHeight, width, height);
+        cardRoot.style.maxWidth = `${widthCap}px`;
+      };
+      if (faceplateImage.complete && faceplateImage.naturalWidth) applyFaceplateHeightCap();
+      else faceplateImage.addEventListener("load", applyFaceplateHeightCap, { once: true });
+    }
     const info = this.shadowRoot.querySelector("[data-cv-faceplate-info]");
     if (faceplateImage && info) {
       const updateInfo = () => { const w = faceplateImage.naturalWidth || 0; const h = faceplateImage.naturalHeight || 0; info.textContent = w && h ? `Detected image: ${w} × ${h} px · Aspect ratio ${(w/h).toFixed(2)}:1${w < 2048 ? " · Recommended width: 2048 px" : ""}` : "Detected image dimensions unavailable"; };
@@ -9475,6 +9554,20 @@ const testModeBadge = testModeActive && testModeUi.show !== false
           this.render();
         }
       });
+    }
+
+    const faceplateMaxHeightInput = this.shadowRoot.querySelector('[data-cv-field="faceplate-max-height"]');
+    if (faceplateMaxHeightInput) {
+      const updateFaceplateMaxHeight = () => {
+        ensureCalibrationUi(cal);
+        const maxHeight = normaliseFaceplateMaxHeight(faceplateMaxHeightInput.value);
+        if (maxHeight === null) delete cal.ui.faceplate.max_height;
+        else cal.ui.faceplate.max_height = maxHeight;
+        this.markCalibrationDirty();
+        this.render();
+      };
+      faceplateMaxHeightInput.addEventListener("change", updateFaceplateMaxHeight);
+      faceplateMaxHeightInput.addEventListener("blur", updateFaceplateMaxHeight);
     }
 
     const exportTextarea = this.shadowRoot.querySelector('.cv-cal-export');
