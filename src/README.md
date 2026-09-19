@@ -10,11 +10,11 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current Core source version
 
-### Switch Vision v2.7.18
+### Switch Vision v2.7.19
 
-**v2.7.18** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.
+**v2.7.19** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.
 
-Core v2.7.18 makes the Calibration-only **Faceplate Height** control height-only: Compact (115 px), Medium (150 px), Large (200 px), and Custom 80–1024 px change the faceplate height without reducing card width, while the SVG overlay follows the same vertical mapping. **Auto** remains unchanged, the selection persists through Save Profile / Done and later Home Assistant reloads, and the setting stays per switch/card outside Lovelace/YAML.
+Core v2.7.19 makes the Calibration-only **Card Height** control a viewport setting: Compact (115 px), Medium (150 px), Large (200 px), and Custom 80–1024 px keep the faceplate at normal width and natural aspect ratio while centrally cropping only overflow above/below the selected card viewport. **Auto** remains unchanged, the selection persists through Save Profile / Done and later Home Assistant reloads, and the setting stays per switch/card outside Lovelace/YAML.
 
 Component versions validated when Core v2.2.2 was released:
 

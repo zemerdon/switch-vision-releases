@@ -12,6 +12,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 CARD = ROOT / "src" / "js" / "switch-vision.js"
 MIRROR = ROOT / "src" / "custom_components" / "switch_vision" / "switch-vision-card.js"
+CSS = ROOT / "src" / "css" / "switch-vision.css"
 
 
 def find_chromium() -> Path | None:
@@ -35,6 +36,7 @@ class RenderStabilityContractTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.source = CARD.read_text(encoding="utf-8")
+        cls.css = CSS.read_text(encoding="utf-8")
 
     def test_card_sources_remain_exact_mirrors(self) -> None:
         self.assertEqual(CARD.read_bytes(), MIRROR.read_bytes())
@@ -49,7 +51,11 @@ class RenderStabilityContractTests(unittest.TestCase):
         self.assertIn("delete faceplate.max_height;", self.source)
         self.assertNotIn("faceplateWidthCapForHeight(", self.source)
         self.assertIn('const faceplateRenderMaxWidth = globalFaceplateMaxWidth;', self.source)
-        self.assertIn('const faceplateSvgAspect = faceplateMaxHeight === null ? "xMidYMid meet" : "none";', self.source)
+        self.assertIn('const stageClass = fixedCardHeight ? "cv-stage cv-stage-fixed" : "cv-stage";', self.source)
+        self.assertIn('<div class="cv-faceplate-canvas">', self.source)
+        self.assertIn('preserveAspectRatio="xMidYMid meet"', self.source)
+        self.assertIn(".cv-stage.cv-stage-fixed .cv-faceplate-canvas", self.css)
+        self.assertIn("transform:translateY(-50%)", self.css)
 
     def test_live_hass_path_is_relevance_gated_and_frame_coalesced(self) -> None:
         required = (
@@ -273,8 +279,13 @@ async function scenarioFaceplateHeight() {
   const snapshot = (card) => ({
     maxHeight: card.resolvedFaceplateMaxHeight(card.calibrationData()),
     maxWidth: parseFloat(card.shadowRoot.querySelector('.cv-card')?.style.maxWidth || '0'),
-    imageHeight: card.shadowRoot.querySelector('[data-cv-faceplate-image]')?.style.height || null,
+    stageHeight: card.shadowRoot.querySelector('.cv-stage')?.style.height || "auto",
+    fixedViewport: card.shadowRoot.querySelector('.cv-stage')?.classList.contains('cv-stage-fixed') === true,
+    imageHeight: card.shadowRoot.querySelector('[data-cv-faceplate-image]')?.style.height || "auto",
     svgAspect: card.shadowRoot.querySelector('.cv-svg')?.getAttribute('preserveAspectRatio') || null,
+    canvasWrapped: Boolean(card.shadowRoot.querySelector('.cv-faceplate-canvas')),
+    calibrateRight: card.shadowRoot.querySelector('[data-cv-action="toggle-calibration"]')?.style.right || null,
+    calibrateHeight: card.shadowRoot.querySelector('[data-cv-action="toggle-calibration"]')?.style.height || null,
     preset: card.shadowRoot.querySelector('[data-cv-field="faceplate-height-preset"]')?.value || null,
     customMin: card.shadowRoot.querySelector('[data-cv-field="faceplate-height-custom"]')?.min || null,
   });
@@ -428,16 +439,28 @@ async function scenarioFaceplateHeight() {
         self.assertEqual(payload["faceplateHeight"]["automatic"]["maxWidth"], payload["faceplateHeight"]["compact"]["maxWidth"])
         self.assertEqual(payload["faceplateHeight"]["automatic"]["maxWidth"], payload["faceplateHeight"]["medium"]["maxWidth"])
         self.assertEqual(payload["faceplateHeight"]["automatic"]["maxWidth"], payload["faceplateHeight"]["roomy"]["maxWidth"])
+        self.assertEqual(payload["faceplateHeight"]["automatic"]["stageHeight"], "auto")
+        self.assertFalse(payload["faceplateHeight"]["automatic"]["fixedViewport"])
+        self.assertEqual(payload["faceplateHeight"]["compact"]["stageHeight"], "115px")
+        self.assertEqual(payload["faceplateHeight"]["medium"]["stageHeight"], "150px")
+        self.assertEqual(payload["faceplateHeight"]["roomy"]["stageHeight"], "200px")
+        self.assertEqual(payload["faceplateHeight"]["custom"]["stageHeight"], "96px")
+        self.assertEqual(payload["faceplateHeight"]["customMinimum"]["stageHeight"], "80px")
+        self.assertTrue(payload["faceplateHeight"]["compact"]["fixedViewport"])
+        self.assertTrue(payload["faceplateHeight"]["medium"]["fixedViewport"])
+        self.assertTrue(payload["faceplateHeight"]["roomy"]["fixedViewport"])
         self.assertEqual(payload["faceplateHeight"]["automatic"]["imageHeight"], "auto")
+        self.assertEqual(payload["faceplateHeight"]["compact"]["imageHeight"], "auto")
+        self.assertEqual(payload["faceplateHeight"]["medium"]["imageHeight"], "auto")
+        self.assertEqual(payload["faceplateHeight"]["roomy"]["imageHeight"], "auto")
         self.assertEqual(payload["faceplateHeight"]["automatic"]["svgAspect"], "xMidYMid meet")
-        self.assertEqual(payload["faceplateHeight"]["compact"]["imageHeight"], "115px")
-        self.assertEqual(payload["faceplateHeight"]["medium"]["imageHeight"], "150px")
-        self.assertEqual(payload["faceplateHeight"]["roomy"]["imageHeight"], "200px")
-        self.assertEqual(payload["faceplateHeight"]["custom"]["imageHeight"], "96px")
-        self.assertEqual(payload["faceplateHeight"]["customMinimum"]["imageHeight"], "80px")
-        self.assertEqual(payload["faceplateHeight"]["compact"]["svgAspect"], "none")
-        self.assertEqual(payload["faceplateHeight"]["medium"]["svgAspect"], "none")
-        self.assertEqual(payload["faceplateHeight"]["roomy"]["svgAspect"], "none")
+        self.assertEqual(payload["faceplateHeight"]["compact"]["svgAspect"], "xMidYMid meet")
+        self.assertEqual(payload["faceplateHeight"]["medium"]["svgAspect"], "xMidYMid meet")
+        self.assertEqual(payload["faceplateHeight"]["roomy"]["svgAspect"], "xMidYMid meet")
+        self.assertTrue(payload["faceplateHeight"]["automatic"]["canvasWrapped"])
+        self.assertTrue(payload["faceplateHeight"]["medium"]["canvasWrapped"])
+        self.assertEqual(payload["faceplateHeight"]["medium"]["calibrateRight"], "6px")
+        self.assertEqual(payload["faceplateHeight"]["medium"]["calibrateHeight"], "24px")
         self.assertIsNone(payload["faceplateHeight"]["configOnly"]["maxHeight"])
         self.assertEqual(payload["faceplateHeight"]["configOnly"]["maxWidth"], payload["faceplateHeight"]["automatic"]["maxWidth"])
         self.assertEqual(payload["faceplateHeight"]["configOnly"]["imageHeight"], "auto")

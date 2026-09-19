@@ -1,0 +1,15 @@
+# Switch Vision Discovery generated dashboard card example
+# Review/copy only. Discovery does not install this automatically.
+
+type: custom:switch-vision-3650
+title: Cisco 3650 SW3
+member: SW3
+selected_switch: SW3
+calibration_profile: SW3
+calibration_profile_load: true
+demo: false
+calibration_button: true
+activity_hold_seconds: 12
+status_entity_prefix: sensor.sw3_port_
+status_entity_suffix: _status
+switch_ip: 192.168.1.3

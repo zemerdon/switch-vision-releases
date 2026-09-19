@@ -1,3 +1,12 @@
+## v2.7.19 — Card-height viewport sizing
+
+- Rework Calibration **Card Height** so presets control the card viewport rather than resizing or vertically distorting the faceplate artwork.
+- Keep the faceplate at its normal width and natural aspect ratio, keep the SVG overlay on the standard 2048×448 mapping, and center the full faceplate canvas behind the shorter/taller viewport.
+- Use the existing stage overflow mask to crop only excess top/bottom content when the selected viewport is shorter than the natural faceplate render height.
+- Keep the on-card Calibrate / Done control reachable in fixed-height mode with a viewport-relative placement, while Auto continues to use its saved calibrated position.
+- Preserve the existing per-switch persistence contract, YAML isolation, 80–1024 px Custom bounds, and Compact 115 / Medium 150 / Large 200 presets.
+- Extend maintained Chromium coverage to prove card width and faceplate image height stay unchanged while only the stage viewport height changes and the 150 px value still survives save/reload.
+
 ## v2.7.18 — Exact-height faceplate sizing
 
 - Change Calibration **Faceplate Height** so it changes only the rendered height; the card keeps its normal width instead of shrinking proportionally.
