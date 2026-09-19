@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.20
+
+Core 2.7.20 fixes Calibration font-size controls for faceplates stored in native image coordinates. The controls now always show the **effective rendered pixel size** instead of the larger internal value used by a 6000×1325 source image. For example, the stock native values `38.0859375`, `39.55078125`, `48.33984375`, and `46.875` are shown as **13 px**, **13.5 px**, **16.5 px**, and **16 px** respectively.
+
+Edits work in those same visible pixel units. Switch Vision converts the value back to native-image storage internally and converts it back to render space when drawing, so the faceplate geometry does not change and users no longer need to understand the native coordinate multiplier. Native validation limits also scale with that multiplier, allowing the full 8–50 px Calibration range instead of unintentionally clipping larger rendered font choices.
+
+Status Box 2 now follows the same conversion path as Status Box 1, Status LEDs, RJ45 numbers, and SFP/uplink labels. The 2.7.19 Card Height viewport behaviour is otherwise unchanged. Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core.
+
 # Switch Vision Core v2.7.19
 
 Core 2.7.19 changes the new Calibration height control from faceplate resizing to a true **card viewport height**. Selecting Compact, Medium, Large or Custom now leaves the switch faceplate at its normal width and natural aspect ratio. The standard 2048×448 SVG overlay is unchanged, so ports, LEDs, labels and calibration geometry keep their normal proportions.

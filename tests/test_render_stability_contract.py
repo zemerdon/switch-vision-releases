@@ -49,6 +49,11 @@ class RenderStabilityContractTests(unittest.TestCase):
         self.assertIn("const SV_FACEPLATE_MAX_HEIGHT_MIN_PX = 80;", self.source)
         self.assertIn("preserveFaceplateMaxHeight: true", self.source)
         self.assertIn("delete faceplate.max_height;", self.source)
+        self.assertIn("function calibrationNativeRenderScale(source)", self.source)
+        self.assertIn("function calibrationFontSizeForControl(source, storedValue, fallbackRenderValue)", self.source)
+        self.assertIn("function calibrationFontSizeFromControl(source, renderValue, fallbackRenderValue)", self.source)
+        self.assertIn("normaliseStoredCalibrationFontSize(cal, cal.ui.port_number_font_size", self.source)
+        self.assertIn('panel.font_size = calibrationFontSizeFromControl(cal, renderFontSize, 16)', self.source)
         self.assertNotIn("faceplateWidthCapForHeight(", self.source)
         self.assertIn('const faceplateRenderMaxWidth = globalFaceplateMaxWidth;', self.source)
         self.assertIn('const stageClass = fixedCardHeight ? "cv-stage cv-stage-fixed" : "cv-stage";', self.source)
@@ -372,7 +377,72 @@ async function scenarioFaceplateHeight() {
 
   return result;
 }
-(async () => { try { const result = {live:await scenarioLiveGate(), subscriptions:await scenarioSubscriptions(), profile:await scenarioProfileRace(), calibration:await scenarioCalibrationStability(), activity:await scenarioActivity(), naturalActivity:scenarioNaturalActivityPattern(), colour:await scenarioColour(), faceplateHeight:await scenarioFaceplateHeight()}; document.getElementById('result').textContent = JSON.stringify(result); } catch (err) { document.getElementById('result').textContent = JSON.stringify({error:String(err), stack:err?.stack||''}); } })();
+async function scenarioNativeFontControls() {
+  const conn = immediateConnection();
+  const card = document.createElement('switch-vision-3650');
+  card.setConfig({member:'SWFONT', selected_switch:'SWFONT', calibration_profile_load:false, calibration_profile_auto_load:false, calibration_mode:true, calibration_controls:true, demo:true, port_count:48, sfp_port_count:4});
+  document.body.appendChild(card);
+  card.hass = makeHass({}, conn);
+  await sleep(30);
+
+  const nativeCal = JSON.parse(JSON.stringify(card.calibrationData()));
+  nativeCal.image = {...(nativeCal.image || {}), width:6000, height:1325, coordinate_space:'image-native-v1'};
+  nativeCal.ui.port_number_font_size = 38.0859375;
+  nativeCal.ui.sfp_label_font_size = 39.55078125;
+  nativeCal.ui.status_leds = {...nativeCal.ui.status_leds, font_size:48.33984375};
+  nativeCal.ui.status_panel = {...nativeCal.ui.status_panel, font_size:46.875, title_font_size:46.875};
+  nativeCal.ui.status_panel_2 = {...nativeCal.ui.status_panel_2, font_size:46.875, title_font_size:46.875};
+  card._calibrationWorking = nativeCal;
+  card.render();
+  await sleep(20);
+
+  const value = (field) => card.shadowRoot.querySelector(`[data-cv-field="${field}"]`)?.value || null;
+  const initial = {
+    rj45:value('port-number-font-size'),
+    sfp:value('sfp-label-font-size'),
+    leds:value('status-led-font-size'),
+    status1:value('status-font-size'),
+    status2:value('status2-font-size'),
+  };
+  const setValue = async (field, next) => {
+    const input = card.shadowRoot.querySelector(`[data-cv-field="${field}"]`);
+    input.value = String(next);
+    input.dispatchEvent(new Event('change', {bubbles:true}));
+    await sleep(15);
+  };
+  await setValue('port-number-font-size', 14);
+  await setValue('sfp-label-font-size', 15);
+  await setValue('status-led-font-size', 17);
+  await setValue('status-font-size', 18);
+  await setValue('status2-font-size', 19);
+
+  const working = card._calibrationWorking;
+  const after = {
+    rj45:value('port-number-font-size'),
+    sfp:value('sfp-label-font-size'),
+    leds:value('status-led-font-size'),
+    status1:value('status-font-size'),
+    status2:value('status2-font-size'),
+  };
+  const stored = {
+    rj45:working.ui.port_number_font_size,
+    sfp:working.ui.sfp_label_font_size,
+    leds:working.ui.status_leds.font_size,
+    status1:working.ui.status_panel.font_size,
+    status2:working.ui.status_panel_2.font_size,
+  };
+  const renderCal = calibrationRenderSpaceData(working);
+  const rendered = {
+    rj45:renderCal.ui.port_number_font_size,
+    sfp:renderCal.ui.sfp_label_font_size,
+    leds:renderCal.ui.status_leds.font_size,
+    status1:renderCal.ui.status_panel.font_size,
+    status2:renderCal.ui.status_panel_2.font_size,
+  };
+  card.remove();
+  return {initial, after, stored, rendered};
+}
+(async () => { try { const result = {live:await scenarioLiveGate(), subscriptions:await scenarioSubscriptions(), profile:await scenarioProfileRace(), calibration:await scenarioCalibrationStability(), activity:await scenarioActivity(), naturalActivity:scenarioNaturalActivityPattern(), colour:await scenarioColour(), faceplateHeight:await scenarioFaceplateHeight(), nativeFonts:await scenarioNativeFontControls()}; document.getElementById('result').textContent = JSON.stringify(result); } catch (err) { document.getElementById('result').textContent = JSON.stringify({error:String(err), stack:err?.stack||''}); } })();
 """
         document = '<!doctype html><html><body><pre id="result">pending</pre><script>' + source + '</script><script>' + harness + '</script></body></html>'
         with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False, encoding="utf-8") as handle:
@@ -468,6 +538,14 @@ async function scenarioFaceplateHeight() {
         self.assertEqual(payload["faceplateHeight"]["persistenceSave"]["cached"], 150)
         self.assertEqual(payload["faceplateHeight"]["persistenceLoad"]["loaded"], 150)
         self.assertEqual(payload["faceplateHeight"]["persistenceLoad"]["resolved"], 150)
+        self.assertEqual(payload["nativeFonts"]["initial"], {"rj45":"13","sfp":"13.5","leds":"16.5","status1":"16","status2":"16"})
+        self.assertEqual(payload["nativeFonts"]["after"], {"rj45":"14","sfp":"15","leds":"17","status1":"18","status2":"19"})
+        self.assertAlmostEqual(payload["nativeFonts"]["stored"]["rj45"], 41.015625, places=6)
+        self.assertAlmostEqual(payload["nativeFonts"]["stored"]["sfp"], 43.9453125, places=6)
+        self.assertAlmostEqual(payload["nativeFonts"]["stored"]["leds"], 49.8046875, places=6)
+        self.assertAlmostEqual(payload["nativeFonts"]["stored"]["status1"], 52.734375, places=6)
+        self.assertAlmostEqual(payload["nativeFonts"]["stored"]["status2"], 55.6640625, places=6)
+        self.assertEqual(payload["nativeFonts"]["rendered"], {"rj45":14,"sfp":15,"leds":17,"status1":18,"status2":19})
 
 
 if __name__ == "__main__":

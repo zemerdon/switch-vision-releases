@@ -1,3 +1,12 @@
+## v2.7.20 — Calibration font-size pixel controls
+
+- Fix native-canvas Calibration font-size fields showing scaled storage values such as `38.0859375`, `39.55078125`, `46.875`, and `48.33984375` instead of their effective rendered pixel sizes.
+- Show and edit font sizes consistently in the 2048×448 render space: stock native profiles now display familiar values such as RJ45 **13 px**, SFP/uplink **13.5 px**, Status LEDs **16.5 px**, and Status Boxes **16 px**.
+- Convert edited render-space pixel values back into native-image storage units internally, preserving existing 6000×1325 calibration geometry without exposing that conversion to users.
+- Scale native-profile font validation bounds with the faceplate coordinate ratio so valid rendered sizes above ~17 px are no longer accidentally clamped by the old raw-storage 50-unit ceiling.
+- Fix Status Box 2 font-size editing so its profile value and temporary render override use the correct respective coordinate spaces.
+- Add maintained Chromium coverage that verifies native stored values display as 13 / 13.5 / 16.5 / 16, edits round-trip through native storage, and render back at the exact requested pixel sizes.
+
 ## v2.7.19 — Card-height viewport sizing
 
 - Rework Calibration **Card Height** so presets control the card viewport rather than resizing or vertically distorting the faceplate artwork.
