@@ -10,11 +10,11 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current Core source version
 
-### Switch Vision v2.7.16
+### Switch Vision v2.7.17
 
-**v2.7.16** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.
+**v2.7.17** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.
 
-Core v2.7.16 repairs the two stock 48-port faceplate presentation contracts. The 48-RJ45/4-SFP factory default now uses the accepted owner-supplied geometry and explicit `G1`, `G2`, `G3/TE3`, `G4/TE4` label placement, while both stock 48-port faceplates retain the standard 13 / 13.5 / 16.5 px port, SFP and status-label sizing after native-canvas conversion.
+Core v2.7.17 adds a Calibration-only **Faceplate Height** control for each switch/card. **Auto** remains the default so existing cards keep their current size; users can choose Compact (115 px), Medium (150 px), Large (200 px), or a Custom 80–1024 px ceiling. Aspect ratio is preserved, and the setting is stored only in that switch/card's calibration profile rather than Lovelace/YAML.
 
 Component versions validated when Core v2.2.2 was released:
 

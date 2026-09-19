@@ -1,3 +1,11 @@
+## v2.7.17 — Per-switch faceplate height calibration
+
+- Add a Calibration-only **Faceplate Height** control saved with each switch/card profile; existing cards remain unchanged because **Auto** is the default.
+- Add **Compact (115 px)**, **Medium (150 px)**, **Large (200 px)** and **Custom** presets, with Custom clamped to a hard 80–1024 px range.
+- Preserve faceplate aspect ratio by translating the selected height limit into an effective maximum card width after the image dimensions are known, rather than stretching or squashing the artwork.
+- Keep the setting out of Lovelace/YAML card configuration and out of transferable faceplate geometry/import payloads so it remains presentation state owned by the destination switch/card.
+- Add maintained browser regression coverage for Auto, every preset, Custom, the 80 px minimum clamp, and ignored YAML attempts.
+
 ## v2.7.16 — Stock 48-port faceplate presentation repair
 
 - Promote zemerdon's supplied calibrated `48rj45-4sfp` geometry to the stock factory default, including corrected RJ45 placement, explicit SFP label anchors, and the `G1`, `G2`, `G3/TE3`, `G4/TE4` visible uplink labels.

@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.17
+
+Core 2.7.17 adds per-switch/card faceplate height control to Calibration without changing the default appearance. **Auto** remains the default and uses the existing width-driven rendering, so upgrades do not resize existing cards unless a user deliberately changes that switch's calibration.
+
+Calibration now offers **Compact (115 px)**, **Medium (150 px)**, **Large (200 px)** and **Custom**. Custom values are bounded to 80–1024 px. The renderer preserves the faceplate's aspect ratio by reducing that card's effective maximum width to satisfy the selected height ceiling; it never distorts the switch artwork.
+
+The height setting belongs only to the saved calibration profile for the current switch/card. It is not exposed as a Lovelace/YAML option and is excluded from geometry/faceplate transfer payloads so importing another faceplate does not overwrite the destination card's presentation preference. Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core.
+
 # Switch Vision Core v2.7.16
 
 Core 2.7.16 repairs the factory presentation of the two stock 48-port faceplates. The stock 48-RJ45/4-SFP plate now uses zemerdon's accepted calibrated geometry as its default, including the corrected port/LED/number positions, explicit SFP label anchors, and visible `G1`, `G2`, `G3/TE3`, and `G4/TE4` uplink labels.
