@@ -4634,6 +4634,9 @@ function geometryTransferPresentationV2(currentCal, geometry) {
     : {};
   next.ui.faceplate.file = current.ui?.faceplate?.file;
   next.ui.faceplate.source = current.ui?.faceplate?.source;
+  const currentMaxHeight = normaliseFaceplateMaxHeight(current.ui?.faceplate?.max_height);
+  if (currentMaxHeight === null) delete next.ui.faceplate.max_height;
+  else next.ui.faceplate.max_height = currentMaxHeight;
   next.model = current.model;
   next.profile = current.profile;
   next.stack = clonePlainData(current.stack || {});
@@ -4706,7 +4709,7 @@ function applyGeometryTransferData(currentCal, raw) {
     }
   }
 
-  const checked = validateImportedCalibration(next, current);
+  const checked = validateImportedCalibration(next, current, { preserveFaceplateMaxHeight: true });
   if (!checked.valid) return { ...checked, calibration: null };
   const applied = ensureCalibrationUi(cloneCalibrationData(checked.calibration));
 
@@ -4778,7 +4781,7 @@ function calibrationCoordinateValid(value, { width, height, size = false } = {})
   return first >= -width && first <= width * 2 && second >= -height && second <= height * 2;
 }
 
-function validateImportedCalibration(raw, currentCal = null) {
+function validateImportedCalibration(raw, currentCal = null, { preserveFaceplateMaxHeight = false } = {}) {
   const errors = [];
   const warnings = [];
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
@@ -4906,8 +4909,18 @@ function validateImportedCalibration(raw, currentCal = null) {
 
   let calibration = null;
   if (!errors.length) {
+    const normalised = normaliseImportedFaceplateProfile(raw);
+    if (preserveFaceplateMaxHeight) {
+      const maxHeight = normaliseFaceplateMaxHeight(raw?.ui?.faceplate?.max_height);
+      normalised.ui = normalised.ui && typeof normalised.ui === "object" && !Array.isArray(normalised.ui) ? normalised.ui : {};
+      normalised.ui.faceplate = normalised.ui.faceplate && typeof normalised.ui.faceplate === "object" && !Array.isArray(normalised.ui.faceplate)
+        ? normalised.ui.faceplate
+        : {};
+      if (maxHeight === null) delete normalised.ui.faceplate.max_height;
+      else normalised.ui.faceplate.max_height = maxHeight;
+    }
     calibration = ensureCalibrationUi(cloneCalibrationData({
-      ...normaliseImportedFaceplateProfile(raw),
+      ...normalised,
       schema_version: 2,
       schema: "switch-vision-interactive-calibration-v1"
     }));
@@ -6574,7 +6587,7 @@ const testModeBadge = testModeActive && testModeUi.show !== false
       } else {
         if (this._calibrationDirty === true && !(await this.showConfirmation("Save the current calibration changes and close the editor?\n\nChoose Cancel to keep editing.", { title: "Save calibration changes?", confirmLabel: "Save and close" }))) return;
         const working = this.calibrationData();
-        const validation = validateImportedCalibration(calibrationExportData(working), working);
+        const validation = validateImportedCalibration(calibrationExportData(working), working, { preserveFaceplateMaxHeight: true });
         if (!validation.valid) {
           this.setCalibrationSaveStatus(`Cannot finish: ${validation.errors[0] || "calibration validation failed"}`, true);
           this.render();
@@ -6845,7 +6858,7 @@ const testModeBadge = testModeActive && testModeUi.show !== false
 
       const loaded = result?.calibration;
       if (loaded && typeof loaded === "object") {
-        const loadedValidation = validateImportedCalibration(loaded, this.baseCalibrationData());
+        const loadedValidation = validateImportedCalibration(loaded, this.baseCalibrationData(), { preserveFaceplateMaxHeight: true });
         if (!loadedValidation.valid) {
           info.exists = false;
           info.invalid = true;
@@ -7441,7 +7454,7 @@ const testModeBadge = testModeActive && testModeUi.show !== false
     const profileError = profileNameValidationMessage(profile);
     if (profileError) throw new Error(profileError);
 
-    const validation = validateImportedCalibration(calibrationExportData(cal), cal);
+    const validation = validateImportedCalibration(calibrationExportData(cal), cal, { preserveFaceplateMaxHeight: true });
     if (!validation.valid) throw new Error(validation.errors[0] || "Calibration profile is invalid");
     const payload = calibrationExportData(validation.calibration);
     payload.profile_name = profile;

@@ -45,6 +45,8 @@ class RenderStabilityContractTests(unittest.TestCase):
         self.assertIn('data-cv-field="faceplate-height-preset"', self.source)
         self.assertIn('data-cv-field="faceplate-height-custom"', self.source)
         self.assertIn("const SV_FACEPLATE_MAX_HEIGHT_MIN_PX = 80;", self.source)
+        self.assertIn("preserveFaceplateMaxHeight: true", self.source)
+        self.assertIn("delete faceplate.max_height;", self.source)
 
     def test_live_hass_path_is_relevance_gated_and_frame_coalesced(self) -> None:
         required = (
@@ -313,6 +315,45 @@ async function scenarioFaceplateHeight() {
   result.configOnly = snapshot(configOnly);
   configOnly.remove();
 
+  let savedPayload = null;
+  const persistCard = document.createElement('switch-vision-3650');
+  persistCard.setConfig({member:'SWHSTORE', selected_switch:'SWHSTORE', calibration_profile_load:false, calibration_profile_auto_load:false, calibration_mode:true, calibration_controls:true, demo:true, port_count:48, sfp_port_count:4});
+  document.body.appendChild(persistCard);
+  const persistHass = makeHass({}, conn);
+  persistHass.callService = async (domain, service, data) => {
+    if (domain === 'switch_vision' && service === 'save_calibration') {
+      savedPayload = JSON.parse(JSON.stringify(data.calibration));
+    }
+  };
+  persistCard.hass = persistHass;
+  await sleep(30);
+  await choosePreset(persistCard, 'medium');
+  const savedProfile = await persistCard.saveCalibrationProfile(persistCard.calibrationData());
+  result.persistenceSave = {
+    profile:savedProfile,
+    sent:savedPayload?.ui?.faceplate?.max_height ?? null,
+    cached:persistCard._profileCalibration?.ui?.faceplate?.max_height ?? null,
+  };
+  persistCard.remove();
+
+  const reloadCard = document.createElement('switch-vision-3650');
+  reloadCard.setConfig({member:'SWHSTORE', selected_switch:'SWHSTORE', calibration_profile_load:true, calibration_profile_auto_load:false, demo:true, port_count:48, sfp_port_count:4});
+  document.body.appendChild(reloadCard);
+  const reloadCallWS = async (msg) => {
+    if (msg.type === 'switch_vision/get_calibration') return {profile:msg.profile, exists:true, source:'test storage', calibration:JSON.parse(JSON.stringify(savedPayload))};
+    if (msg.type === 'switch_vision/get_ui_settings') return defaultSettings;
+    if (msg.type === 'switch_vision/list_assets') return {logos:[], faceplates:[]};
+    return {};
+  };
+  reloadCard.hass = makeHass({}, conn, reloadCallWS);
+  await reloadCard.loadCalibrationProfile(true, {applyToWorking:false});
+  await sleep(20);
+  result.persistenceLoad = {
+    loaded:reloadCard._profileCalibration?.ui?.faceplate?.max_height ?? null,
+    resolved:reloadCard.resolvedFaceplateMaxHeight(reloadCard._profileCalibration),
+  };
+  reloadCard.remove();
+
   return result;
 }
 (async () => { try { const result = {live:await scenarioLiveGate(), subscriptions:await scenarioSubscriptions(), profile:await scenarioProfileRace(), calibration:await scenarioCalibrationStability(), activity:await scenarioActivity(), naturalActivity:scenarioNaturalActivityPattern(), colour:await scenarioColour(), faceplateHeight:await scenarioFaceplateHeight()}; document.getElementById('result').textContent = JSON.stringify(result); } catch (err) { document.getElementById('result').textContent = JSON.stringify({error:String(err), stack:err?.stack||''}); } })();
@@ -384,6 +425,10 @@ async function scenarioFaceplateHeight() {
         self.assertLess(payload["faceplateHeight"]["roomy"]["maxWidth"], payload["faceplateHeight"]["automatic"]["maxWidth"])
         self.assertIsNone(payload["faceplateHeight"]["configOnly"]["maxHeight"])
         self.assertEqual(payload["faceplateHeight"]["configOnly"]["maxWidth"], payload["faceplateHeight"]["automatic"]["maxWidth"])
+        self.assertEqual(payload["faceplateHeight"]["persistenceSave"]["sent"], 150)
+        self.assertEqual(payload["faceplateHeight"]["persistenceSave"]["cached"], 150)
+        self.assertEqual(payload["faceplateHeight"]["persistenceLoad"]["loaded"], 150)
+        self.assertEqual(payload["faceplateHeight"]["persistenceLoad"]["resolved"], 150)
 
 
 if __name__ == "__main__":

@@ -4,7 +4,8 @@
 - Add **Compact (115 px)**, **Medium (150 px)**, **Large (200 px)** and **Custom** presets, with Custom clamped to a hard 80–1024 px range.
 - Preserve faceplate aspect ratio by translating the selected height limit into an effective maximum card width after the image dimensions are known, rather than stretching or squashing the artwork.
 - Keep the setting out of Lovelace/YAML card configuration and out of transferable faceplate geometry/import payloads so it remains presentation state owned by the destination switch/card.
-- Add maintained browser regression coverage for Auto, every preset, Custom, the 80 px minimum clamp, and ignored YAML attempts.
+- Fix the pre-release save/reload path so the selected height does not revert to Auto after **Save Profile** or **Done**; normal stored calibration validation preserves `ui.faceplate.max_height`, while transferable faceplate/geometry imports continue to exclude it.
+- Extend maintained browser regression coverage for Auto, every preset, Custom, the 80 px minimum clamp, ignored YAML attempts, and an end-to-end 150 px save/reload through mocked Home Assistant storage.
 
 ## v2.7.16 — Stock 48-port faceplate presentation repair
 
