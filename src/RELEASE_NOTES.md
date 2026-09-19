@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.18
+
+Core 2.7.18 changes the new Calibration **Faceplate Height** control to the intended height-only behavior. Selecting Compact, Medium, Large or Custom no longer reduces the card width. The card stays at its normal Auto/custom global width while the faceplate is vertically mapped to the chosen pixel height.
+
+The SVG overlay follows the same vertical mapping, so RJ45/SFP geometry, LEDs, labels and calibration controls remain aligned with the faceplate. **Auto** remains the default and keeps the existing rendering unchanged. Fixed presets remain Compact 115 px, Medium 150 px and Large 200 px; Custom remains bounded to 80–1024 px.
+
+This build also carries the save/reload persistence repair: the selected per-switch/card height survives **Save Profile**, **Done**, rerender and later Home Assistant storage reloads. The setting remains Calibration-only, is not exposed through Lovelace/YAML, and transfer/import payloads cannot overwrite the destination card's height preference. Manual installs must replace `/config/custom_components/switch_vision/` and restart Home Assistant Core.
+
 # Switch Vision Core v2.7.17
 
 Core 2.7.17 adds per-switch/card faceplate height control to Calibration without changing the default appearance. **Auto** remains the default and uses the existing width-driven rendering, so upgrades do not resize existing cards unless a user deliberately changes that switch's calibration.

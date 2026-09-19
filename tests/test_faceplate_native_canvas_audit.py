@@ -93,7 +93,8 @@ class FaceplateNativeCanvasContract(unittest.TestCase):
             "function calibrationRenderSpaceData(source)",
             "const renderCal = calibrationRenderSpaceData(cal);",
             "uiFromCalibration(calibrationRenderSpaceData(this.calibrationData()))",
-            'viewBox="0 0 2048 448" preserveAspectRatio="xMidYMid meet"',
+            'const faceplateSvgAspect = faceplateMaxHeight === null ? "xMidYMid meet" : "none";',
+            'viewBox="0 0 2048 448" preserveAspectRatio="${faceplateSvgAspect}"',
         ):
             self.assertIn(needle, text)
 

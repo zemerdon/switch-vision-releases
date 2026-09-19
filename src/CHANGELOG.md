@@ -1,3 +1,11 @@
+## v2.7.18 — Exact-height faceplate sizing
+
+- Change Calibration **Faceplate Height** so it changes only the rendered height; the card keeps its normal width instead of shrinking proportionally.
+- Vertically map the faceplate image and SVG overlay to the selected height so ports, LEDs, labels and calibration controls remain aligned at Compact 115 px, Medium 150 px, Large 200 px or Custom 80–1024 px.
+- Keep **Auto** unchanged and preserve the existing global width behavior when no per-switch height is selected.
+- Retain the 2.7.17 save/reload persistence repair so the selected height survives Save Profile / Done and later Home Assistant profile reloads.
+- Add maintained Chromium checks proving every preset leaves card width unchanged, applies the exact requested image height, switches SVG mapping only for fixed-height mode, and persists 150 px end to end.
+
 ## v2.7.17 — Per-switch faceplate height calibration
 
 - Add a Calibration-only **Faceplate Height** control saved with each switch/card profile; existing cards remain unchanged because **Auto** is the default.
