@@ -162,7 +162,6 @@ It checks for source updates while visible, refreshes on focus, and supports an 
 | `show_status_leds` | Shows or hides chassis/status LED overlays. |
 | `show_status_panel` | Shows or hides Status Box 1. |
 | `faceplate_file` | `__default__` for the exact-model recommendation or a safe custom filename. |
-| `faceplate_max_height` | Optional per-card maximum rendered faceplate height in pixels (`48`–`1024`). Omit/leave Auto to use normal width-driven sizing. Native-panel Calibration saves this independently for the current switch/card. |
 | `faceplate_show` | Legacy/manual compatibility field. `false` no longer hides the faceplate and resolves to the visible model recommendation. |
 | `unknown_is_up` | Treats unknown status values as up when enabled. Normally leave disabled. |
 | `status_up_values` | Custom entity states treated as up. |
@@ -226,6 +225,8 @@ Each status box supports independent position, size, fonts, colours, border, fie
 | `calibration_show_led_rings` | Shows LED guide rings. |
 
 ### Saved profile geometry
+
+Faceplate height is a Calibration-only presentation setting stored as `ui.faceplate.max_height` in the saved switch/card profile. **Auto** is the default and leaves the field unset, preserving the existing width-driven rendering. Calibration offers **Compact (115 px)**, **Medium (150 px)**, **Large (200 px)**, and **Custom**; Custom is clamped to a hard minimum of **80 px** and maximum of **1024 px**. This is not a Lovelace/YAML card field.
 
 Each RJ45 port can contain:
 

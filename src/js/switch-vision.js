@@ -2811,12 +2811,6 @@ function applyConfigToCalibrationForEdit(cal, config = {}) {
     if (config.faceplate_opacity !== undefined) faceplateAsset.opacity = Number(config.faceplate_opacity);
     cal.ui.faceplate = normaliseFaceplateAsset(faceplateAsset);
   }
-  if (Object.prototype.hasOwnProperty.call(config, "faceplate_max_height")) {
-    const maxHeight = normaliseFaceplateMaxHeight(config.faceplate_max_height);
-    if (maxHeight === null) delete faceplateAsset.max_height;
-    else faceplateAsset.max_height = maxHeight;
-    cal.ui.faceplate = normaliseFaceplateAsset(faceplateAsset);
-  }
 
 
   const panel = ui.status_panel;
@@ -5614,8 +5608,14 @@ const SV_ASSET_DEFAULT = "__default__";
 // Retained only to migrate profiles created by v1.9.35 or older builds that
 // could hide the faceplate. It is never offered or preserved as an active state.
 const SV_ASSET_NONE = "__none__";
-const SV_FACEPLATE_MAX_HEIGHT_MIN_PX = 48;
+const SV_FACEPLATE_MAX_HEIGHT_MIN_PX = 80;
 const SV_FACEPLATE_MAX_HEIGHT_MAX_PX = 1024;
+const SV_FACEPLATE_HEIGHT_PRESETS = Object.freeze({
+  auto: null,
+  compact: 115,
+  medium: 150,
+  large: 200,
+});
 
 function normaliseFaceplateMaxHeight(value) {
   if (value === undefined || value === null || value === "") return null;
@@ -5623,6 +5623,21 @@ function normaliseFaceplateMaxHeight(value) {
   const numeric = Number(value);
   if (!Number.isFinite(numeric) || numeric <= 0) return null;
   return Math.max(SV_FACEPLATE_MAX_HEIGHT_MIN_PX, Math.min(SV_FACEPLATE_MAX_HEIGHT_MAX_PX, Math.round(numeric)));
+}
+
+function faceplateHeightPreset(value) {
+  const maxHeight = normaliseFaceplateMaxHeight(value);
+  if (maxHeight === null) return "auto";
+  for (const [preset, presetHeight] of Object.entries(SV_FACEPLATE_HEIGHT_PRESETS)) {
+    if (preset !== "auto" && maxHeight === presetHeight) return preset;
+  }
+  return "custom";
+}
+
+function faceplateHeightPresetValue(preset) {
+  const key = String(preset || "").trim().toLowerCase();
+  if (!Object.prototype.hasOwnProperty.call(SV_FACEPLATE_HEIGHT_PRESETS, key)) return null;
+  return SV_FACEPLATE_HEIGHT_PRESETS[key];
 }
 
 function normaliseFaceplateAsset(value = {}) {
@@ -7280,9 +7295,6 @@ const testModeBadge = testModeActive && testModeUi.show !== false
   }
 
   resolvedFaceplateMaxHeight(cal = null) {
-    if (Object.prototype.hasOwnProperty.call(this.config || {}, "faceplate_max_height")) {
-      return normaliseFaceplateMaxHeight(this.config.faceplate_max_height);
-    }
     const data = cal && typeof cal === "object"
       ? cal
       : (this._calibrationWorking || this._profileCalibration || calibration);
@@ -7835,6 +7847,14 @@ const testModeBadge = testModeActive && testModeUi.show !== false
     const logoSelection = logoUi.show === false ? SV_ASSET_NONE : (logoUi.source === "custom" ? String(logoUi.file || SV_ASSET_DEFAULT) : SV_ASSET_DEFAULT);
     const faceplateSelection = faceplateSelectionValue(faceplateAssetUi);
     const faceplateMaxHeightValue = normaliseFaceplateMaxHeight(faceplateAssetUi?.max_height);
+    const faceplateHeightPresetSelection = faceplateHeightPreset(faceplateMaxHeightValue);
+    const faceplateHeightPresetOptions = [
+      ["auto", "Auto"],
+      ["compact", "Compact (115 px)"],
+      ["medium", "Medium (150 px)"],
+      ["large", "Large (200 px)"],
+      ["custom", "Custom"],
+    ].map(([value, label]) => `<option value="${value}" ${value === faceplateHeightPresetSelection ? "selected" : ""}>${label}</option>`).join("");
     const assetStatus = this._assetLibraryLoading ? "Scanning folders…" : (this._assetLibraryError ? "Asset listing unavailable — check the custom component" : `${assetLibrary.logos.length} logo(s) · ${assetLibrary.faceplates.length} faceplate(s)`);
     ensureStatusPanelFieldState(statusUi);
     // Status Box 1 controls always edit switch-summary rows. Port selection no
@@ -8023,10 +8043,13 @@ const testModeBadge = testModeActive && testModeUi.show !== false
           <span class="cv-cal-current" title="Logos: ${htmlEscape(assetLibrary.logos_path)} · Faceplates: ${htmlEscape(assetLibrary.faceplates_path)}">${htmlEscape(assetStatus)}</span>
         </div>
         <div class="cv-cal-tools-row cv-cal-style-row cv-cal-faceplate-tip">
-          <label>Max faceplate height
-            <input class="cv-cal-input" data-cv-field="faceplate-max-height" type="number" min="${SV_FACEPLATE_MAX_HEIGHT_MIN_PX}" max="${SV_FACEPLATE_MAX_HEIGHT_MAX_PX}" step="1" value="${faceplateMaxHeightValue === null ? "" : faceplateMaxHeightValue}" placeholder="Auto">
+          <label>Faceplate Height
+            <select class="cv-cal-select" data-cv-field="faceplate-height-preset">${faceplateHeightPresetOptions}</select>
           </label>
-          <span class="cv-cal-current">px · blank = Auto · saved for this switch/card</span>
+          <label data-cv-faceplate-height-custom ${faceplateHeightPresetSelection === "custom" ? "" : "hidden"}>Custom Height (px)
+            <input class="cv-cal-input" data-cv-field="faceplate-height-custom" type="number" min="${SV_FACEPLATE_MAX_HEIGHT_MIN_PX}" max="${SV_FACEPLATE_MAX_HEIGHT_MAX_PX}" step="1" value="${faceplateHeightPresetSelection === "custom" ? faceplateMaxHeightValue : ""}" placeholder="${SV_FACEPLATE_MAX_HEIGHT_MIN_PX}">
+          </label>
+          <span class="cv-cal-current">Auto by default · Custom minimum ${SV_FACEPLATE_MAX_HEIGHT_MIN_PX}px · saved for this switch/card</span>
           <span class="cv-cal-current"><b>Tip:</b> Faceplates replace the switch artwork. For best results, use wide images (2048 px or wider).</span>
           <span class="cv-cal-current" data-cv-faceplate-info>Detected image dimensions appear after selection.</span>
         </div>
@@ -9556,18 +9579,41 @@ const testModeBadge = testModeActive && testModeUi.show !== false
       });
     }
 
-    const faceplateMaxHeightInput = this.shadowRoot.querySelector('[data-cv-field="faceplate-max-height"]');
-    if (faceplateMaxHeightInput) {
-      const updateFaceplateMaxHeight = () => {
-        ensureCalibrationUi(cal);
-        const maxHeight = normaliseFaceplateMaxHeight(faceplateMaxHeightInput.value);
-        if (maxHeight === null) delete cal.ui.faceplate.max_height;
-        else cal.ui.faceplate.max_height = maxHeight;
-        this.markCalibrationDirty();
-        this.render();
+    const faceplateHeightPresetSelect = this.shadowRoot.querySelector('[data-cv-field="faceplate-height-preset"]');
+    const faceplateHeightCustomWrap = this.shadowRoot.querySelector('[data-cv-faceplate-height-custom]');
+    const faceplateHeightCustomInput = this.shadowRoot.querySelector('[data-cv-field="faceplate-height-custom"]');
+    const commitFaceplateHeight = (value) => {
+      ensureCalibrationUi(cal);
+      const maxHeight = normaliseFaceplateMaxHeight(value);
+      if (maxHeight === null) delete cal.ui.faceplate.max_height;
+      else cal.ui.faceplate.max_height = maxHeight;
+      this.markCalibrationDirty();
+      this.render();
+    };
+    if (faceplateHeightPresetSelect) {
+      faceplateHeightPresetSelect.addEventListener("change", (event) => {
+        const preset = String(event.target.value || "auto").toLowerCase();
+        if (preset === "custom") {
+          if (faceplateHeightCustomWrap) faceplateHeightCustomWrap.hidden = false;
+          if (faceplateHeightCustomInput) {
+            faceplateHeightCustomInput.focus();
+            faceplateHeightCustomInput.select();
+          }
+          return;
+        }
+        commitFaceplateHeight(faceplateHeightPresetValue(preset));
+      });
+    }
+    if (faceplateHeightCustomInput) {
+      const updateCustomFaceplateHeight = () => {
+        const raw = String(faceplateHeightCustomInput.value || "").trim();
+        if (!raw) return;
+        const maxHeight = normaliseFaceplateMaxHeight(raw);
+        if (maxHeight === null) return;
+        faceplateHeightCustomInput.value = String(maxHeight);
+        commitFaceplateHeight(maxHeight);
       };
-      faceplateMaxHeightInput.addEventListener("change", updateFaceplateMaxHeight);
-      faceplateMaxHeightInput.addEventListener("blur", updateFaceplateMaxHeight);
+      faceplateHeightCustomInput.addEventListener("change", updateCustomFaceplateHeight);
     }
 
     const exportTextarea = this.shadowRoot.querySelector('.cv-cal-export');

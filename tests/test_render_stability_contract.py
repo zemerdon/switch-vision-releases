@@ -39,6 +39,13 @@ class RenderStabilityContractTests(unittest.TestCase):
     def test_card_sources_remain_exact_mirrors(self) -> None:
         self.assertEqual(CARD.read_bytes(), MIRROR.read_bytes())
 
+    def test_faceplate_height_is_calibration_only(self) -> None:
+        self.assertNotIn("config.faceplate_max_height", self.source)
+        self.assertNotIn('data-cv-field="faceplate-max-height"', self.source)
+        self.assertIn('data-cv-field="faceplate-height-preset"', self.source)
+        self.assertIn('data-cv-field="faceplate-height-custom"', self.source)
+        self.assertIn("const SV_FACEPLATE_MAX_HEIGHT_MIN_PX = 80;", self.source)
+
     def test_live_hass_path_is_relevance_gated_and_frame_coalesced(self) -> None:
         required = (
             "hasRelevantHassStateChange(previousHass, nextHass)",
@@ -232,37 +239,80 @@ async function scenarioColour() {
 }
 async function scenarioFaceplateHeight() {
   const conn = immediateConnection();
-  const makeCard = async (member, maxHeight) => {
+  const makeCard = async (member) => {
     const card = document.createElement('switch-vision-3650');
-    const config = {member, selected_switch:member, calibration_profile_load:false, calibration_profile_auto_load:false, demo:true, port_count:48, sfp_port_count:4};
-    if (maxHeight !== undefined) config.faceplate_max_height = maxHeight;
-    card.setConfig(config);
+    card.setConfig({member, selected_switch:member, calibration_profile_load:false, calibration_profile_auto_load:false, calibration_mode:true, calibration_controls:true, demo:true, port_count:48, sfp_port_count:4});
     document.body.appendChild(card);
     card.hass = makeHass({}, conn);
     await sleep(30);
     return card;
   };
-  const compact = await makeCard('SWH115', 115);
-  const roomy = await makeCard('SWH200', 200);
-  const automatic = await makeCard('SWHAUTO');
+  const choosePreset = async (card, preset) => {
+    const select = card.shadowRoot.querySelector('[data-cv-field="faceplate-height-preset"]');
+    select.value = preset;
+    select.dispatchEvent(new Event('change', {bubbles:true}));
+    await sleep(20);
+  };
+  const chooseCustom = async (card, height) => {
+    const select = card.shadowRoot.querySelector('[data-cv-field="faceplate-height-preset"]');
+    select.value = 'custom';
+    select.dispatchEvent(new Event('change', {bubbles:true}));
+    const customWrap = card.shadowRoot.querySelector('[data-cv-faceplate-height-custom]');
+    const input = card.shadowRoot.querySelector('[data-cv-field="faceplate-height-custom"]');
+    const visible = customWrap?.hidden === false;
+    input.value = String(height);
+    input.dispatchEvent(new Event('change', {bubbles:true}));
+    await sleep(20);
+    return visible;
+  };
   const snapshot = (card) => ({
     maxHeight: card.resolvedFaceplateMaxHeight(card.calibrationData()),
     maxWidth: parseFloat(card.shadowRoot.querySelector('.cv-card')?.style.maxWidth || '0'),
+    preset: card.shadowRoot.querySelector('[data-cv-field="faceplate-height-preset"]')?.value || null,
+    customMin: card.shadowRoot.querySelector('[data-cv-field="faceplate-height-custom"]')?.min || null,
   });
-  const result = {compact:snapshot(compact), roomy:snapshot(roomy), automatic:snapshot(automatic)};
-  compact.remove(); roomy.remove(); automatic.remove();
 
-  const editor = document.createElement('switch-vision-3650');
-  editor.setConfig({member:'SWHEDIT', selected_switch:'SWHEDIT', calibration_profile_load:false, calibration_profile_auto_load:false, calibration_mode:true, calibration_controls:true, demo:true, port_count:48, sfp_port_count:4});
-  document.body.appendChild(editor);
-  editor.hass = makeHass({}, conn);
+  const automatic = await makeCard('SWHAUTO');
+  const automaticSnapshot = snapshot(automatic);
+
+  const compact = await makeCard('SWH115');
+  await choosePreset(compact, 'compact');
+  const compactSnapshot = snapshot(compact);
+
+  const medium = await makeCard('SWH150');
+  await choosePreset(medium, 'medium');
+  const mediumSnapshot = snapshot(medium);
+
+  const roomy = await makeCard('SWH200');
+  await choosePreset(roomy, 'large');
+  const roomySnapshot = snapshot(roomy);
+
+  const custom = await makeCard('SWHCUSTOM');
+  const customVisible = await chooseCustom(custom, 96);
+  const customSnapshot = snapshot(custom);
+
+  const customMinimum = await makeCard('SWHMIN');
+  await chooseCustom(customMinimum, 40);
+  const customMinimumSnapshot = snapshot(customMinimum);
+
+  const result = {
+    automatic:automaticSnapshot,
+    compact:compactSnapshot,
+    medium:mediumSnapshot,
+    roomy:roomySnapshot,
+    custom:{...customSnapshot, visible:customVisible},
+    customMinimum:customMinimumSnapshot,
+  };
+  automatic.remove(); compact.remove(); medium.remove(); roomy.remove(); custom.remove(); customMinimum.remove();
+
+  const configOnly = document.createElement('switch-vision-3650');
+  configOnly.setConfig({member:'SWHYAML', selected_switch:'SWHYAML', faceplate_max_height:115, calibration_profile_load:false, calibration_profile_auto_load:false, demo:true, port_count:48, sfp_port_count:4});
+  document.body.appendChild(configOnly);
+  configOnly.hass = makeHass({}, conn);
   await sleep(30);
-  const input = editor.shadowRoot.querySelector('[data-cv-field="faceplate-max-height"]');
-  input.value = '115';
-  input.dispatchEvent(new Event('change', {bubbles:true}));
-  await sleep(20);
-  result.editor = {saved:editor._calibrationWorking?.ui?.faceplate?.max_height, dirty:editor._calibrationDirty === true};
-  editor.remove();
+  result.configOnly = snapshot(configOnly);
+  configOnly.remove();
+
   return result;
 }
 (async () => { try { const result = {live:await scenarioLiveGate(), subscriptions:await scenarioSubscriptions(), profile:await scenarioProfileRace(), calibration:await scenarioCalibrationStability(), activity:await scenarioActivity(), naturalActivity:scenarioNaturalActivityPattern(), colour:await scenarioColour(), faceplateHeight:await scenarioFaceplateHeight()}; document.getElementById('result').textContent = JSON.stringify(result); } catch (err) { document.getElementById('result').textContent = JSON.stringify({error:String(err), stack:err?.stack||''}); } })();
@@ -315,13 +365,25 @@ async function scenarioFaceplateHeight() {
         self.assertEqual(payload["colour"]["after"]["redraws"], 1)
         self.assertTrue(payload["colour"]["after"]["same"])
         self.assertTrue(payload["colour"]["after"]["dirty"])
-        self.assertEqual(payload["faceplateHeight"]["compact"]["maxHeight"], 115)
-        self.assertEqual(payload["faceplateHeight"]["roomy"]["maxHeight"], 200)
         self.assertIsNone(payload["faceplateHeight"]["automatic"]["maxHeight"])
-        self.assertLess(payload["faceplateHeight"]["compact"]["maxWidth"], payload["faceplateHeight"]["roomy"]["maxWidth"])
+        self.assertEqual(payload["faceplateHeight"]["automatic"]["preset"], "auto")
+        self.assertEqual(payload["faceplateHeight"]["compact"]["maxHeight"], 115)
+        self.assertEqual(payload["faceplateHeight"]["compact"]["preset"], "compact")
+        self.assertEqual(payload["faceplateHeight"]["medium"]["maxHeight"], 150)
+        self.assertEqual(payload["faceplateHeight"]["medium"]["preset"], "medium")
+        self.assertEqual(payload["faceplateHeight"]["roomy"]["maxHeight"], 200)
+        self.assertEqual(payload["faceplateHeight"]["roomy"]["preset"], "large")
+        self.assertEqual(payload["faceplateHeight"]["custom"]["maxHeight"], 96)
+        self.assertEqual(payload["faceplateHeight"]["custom"]["preset"], "custom")
+        self.assertTrue(payload["faceplateHeight"]["custom"]["visible"])
+        self.assertEqual(payload["faceplateHeight"]["custom"]["customMin"], "80")
+        self.assertEqual(payload["faceplateHeight"]["customMinimum"]["maxHeight"], 80)
+        self.assertEqual(payload["faceplateHeight"]["customMinimum"]["preset"], "custom")
+        self.assertLess(payload["faceplateHeight"]["compact"]["maxWidth"], payload["faceplateHeight"]["medium"]["maxWidth"])
+        self.assertLess(payload["faceplateHeight"]["medium"]["maxWidth"], payload["faceplateHeight"]["roomy"]["maxWidth"])
         self.assertLess(payload["faceplateHeight"]["roomy"]["maxWidth"], payload["faceplateHeight"]["automatic"]["maxWidth"])
-        self.assertEqual(payload["faceplateHeight"]["editor"].get("saved"), 115, payload["faceplateHeight"])
-        self.assertTrue(payload["faceplateHeight"]["editor"]["dirty"])
+        self.assertIsNone(payload["faceplateHeight"]["configOnly"]["maxHeight"])
+        self.assertEqual(payload["faceplateHeight"]["configOnly"]["maxWidth"], payload["faceplateHeight"]["automatic"]["maxWidth"])
 
 
 if __name__ == "__main__":
