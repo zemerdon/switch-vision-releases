@@ -1,3 +1,9 @@
+# Switch Vision Core v2.7.25
+
+Core 2.7.25 reconciles Dell N2128PX-ON registry metadata with the dedicated Dell 28 RJ45 + 2 SFP+ faceplate and owner-calibrated factory geometry that already ship.
+
+Current-build field feedback closes the Dell faceplate alignment and port-description presentation check. Dell remains Experimental; detailed per-port PoE presentation, system-sensor applicability, and VLAN/trunk semantics remain the evidence-backed promotion blockers.
+
 # Switch Vision Core v2.7.24
 
 Core 2.7.24 adds a dedicated owner-calibrated USW Flex Mini faceplate and factory calibration profile.

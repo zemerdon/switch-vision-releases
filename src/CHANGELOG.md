@@ -1,3 +1,10 @@
+## v2.7.25 — Dell visual-state metadata reconciliation
+
+- Reconcile the Dell N2128PX-ON registry notes with the already-shipped dedicated 28 RJ45 + 2 SFP+ faceplate and owner-calibrated factory geometry.
+- Record current-build field confirmation for Dell faceplate alignment and port-description presentation without changing its Experimental support status.
+- Keep only the evidence-backed remaining promotion blockers: detailed per-port PoE presentation, system-sensor applicability, and VLAN/trunk semantics.
+- Add a permanent regression that rejects stale generic-fallback or pending-Dell-calibration wording.
+
 ## v2.7.24 — Dedicated USW Flex Mini faceplate
 
 - Add the owner-calibrated USW Flex Mini factory faceplate and dedicated usw_flex_mini calibration profile.

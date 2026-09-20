@@ -44,6 +44,24 @@ class DellFaceplateScopeTests(unittest.TestCase):
         self.assertNotIn("contribution id", notes)
         self.assertNotIn("bundle received", notes)
 
+    def test_n2128px_on_visual_state_is_current_and_blockers_stay_bounded(self) -> None:
+        device = self.dell_device()
+        notes = "\n".join(str(note) for note in device.get("notes") or [])
+        lowered = notes.casefold()
+        self.assertIn("current-build field feedback confirms", lowered)
+        self.assertIn("faceplate alignment", lowered)
+        self.assertIn("port-description presentation", lowered)
+        self.assertIn("detailed per-port poe card/presentation", lowered)
+        self.assertIn("system-sensor applicability", lowered)
+        self.assertIn("vlan/trunk semantics", lowered)
+        for stale in (
+            "generic 48 rj45 + 4 sfp",
+            "exact dell faceplate pending",
+            "final dell faceplate calibration",
+        ):
+            self.assertNotIn(stale, lowered)
+        self.assertEqual(device.get("status"), "experimental")
+
     def test_factory_profile_is_dell_only_28_plus_2_and_contains_no_instance_state(self) -> None:
         profile = json.loads(PROFILE.read_text(encoding="utf-8"))
         self.assertEqual(profile.get("model"), "dell-n2128px-on")
