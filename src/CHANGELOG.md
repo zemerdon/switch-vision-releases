@@ -1,3 +1,11 @@
+## v2.7.23 — Compact UniFi exact-model faceplates
+
+- Add owner-calibrated UniFi **16 RJ45 + 2 SFP**, **9 RJ45 + 2 SFP**, and **3 SFP+** factory faceplates.
+- Replace oversized generic visuals for USW-16-PoE, US 16 PoE 150W, UDM Pro, UniFi Dream Machine PRO SE, UDM Pro Max, and USW WAN.
+- Keep shared faceplate geometry role-neutral so exact-model WAN/LAN and speed semantics remain registry/runtime-owned; the existing UDM Pro RJ45 port 9 WAN default is preserved.
+- Preserve the USW WAN rear RJ45 as real API port 4 while rendering only its three front 10G SFP+ cages.
+- Add permanent geometry/model regressions for native-canvas integrity, exact assignments, role neutrality, and the USW WAN rear-port/front-panel split.
+
 ## v2.7.22 — Rendered calibration control target alignment
 
 - Keep the on-card **Calibrate/Done** and **TEST MODE** controls exactly where they render today.

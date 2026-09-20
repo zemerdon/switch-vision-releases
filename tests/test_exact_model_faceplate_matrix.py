@@ -68,13 +68,44 @@ def test_exact_model_faceplate_matrix() -> None:
             0,
             32,
         ),
-        # No exact 16+2 asset exists yet.  The approved oversized canvas must
-        # remain explicit while the physical count stays authoritative.
-        "US 16 PoE 150W": (
-            "faceplates/24rj45-2sfp.png",
-            "stock_24rj45_2sfp",
+        # Owner-calibrated compact UniFi chassis.
+        "USW-16-PoE": (
+            "faceplates/unifi-16rj45-2sfp.png",
+            "unifi_16_rj45_2sfp",
             16,
             2,
+        ),
+        "US 16 PoE 150W": (
+            "faceplates/unifi-16rj45-2sfp.png",
+            "unifi_16_rj45_2sfp",
+            16,
+            2,
+        ),
+        "UDM Pro": (
+            "faceplates/unifi-9rj45-2sfp.png",
+            "unifi_9_rj45_2sfp",
+            9,
+            2,
+        ),
+        "UniFi Dream Machine PRO SE": (
+            "faceplates/unifi-9rj45-2sfp.png",
+            "unifi_9_rj45_2sfp",
+            9,
+            2,
+        ),
+        "UDM Pro Max": (
+            "faceplates/unifi-9rj45-2sfp.png",
+            "unifi_9_rj45_2sfp",
+            9,
+            2,
+        ),
+        # USW WAN has one real rear management RJ45 in the API contract,
+        # while the faceplate intentionally renders only the three front SFP+.
+        "USW WAN": (
+            "faceplates/unifi-3sfp.png",
+            "unifi_3sfp",
+            1,
+            3,
         ),
     }
 
@@ -140,12 +171,7 @@ def test_models_without_an_exact_asset_keep_truthful_physical_counts() -> None:
     # "improve" them by selecting a visually similar but physically false asset.
     expected_counts = {
         "USW Flex 2.5G 8 PoE": (9, 1),
-        "UDM Pro": (9, 2),
-        "UDM Pro Max": (9, 2),
-        "UniFi Dream Machine PRO SE": (9, 2),
         "USW Lite 16 PoE": (16, 0),
-        "USW-16-PoE": (16, 2),
-        "USW WAN": (1, 3),
     }
     for model, (rj45, uplinks) in expected_counts.items():
         assert model in rows, model

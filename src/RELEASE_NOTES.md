@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.23
+
+Core 2.7.23 adds three owner-calibrated UniFi factory faceplates and uses them for six exact models that previously relied on oversized generic artwork.
+
+USW-16-PoE and US 16 PoE 150W now use the new 16-RJ45 + 2-SFP visual. UDM Pro, UniFi Dream Machine PRO SE, and UDM Pro Max use the new 9-RJ45 + 2-SFP visual. USW WAN uses a front-only three-SFP+ visual.
+
+The shared factory geometry deliberately contains no model-specific WAN/LAN or supported-speed assumptions. Exact-model registry/runtime metadata remains authoritative, including the existing UDM Pro RJ45 port 9 WAN default. For USW WAN, the real rear management RJ45 remains part of the one-RJ45 + three-SFP+ device/API contract at API port 4, while the front-panel factory geometry intentionally contains only the three SFP+ cages.
+
 # Switch Vision Core v2.7.22
 
 Core 2.7.22 fixes Calibration target-box alignment for the on-card **Calibrate/Done** and **TEST MODE** controls.

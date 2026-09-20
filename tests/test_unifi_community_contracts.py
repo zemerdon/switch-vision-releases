@@ -55,8 +55,8 @@ assert "ports_25_26_10g_sfp_plus" in promax["validation"]["uplinks"]
 
 us16 = source_models["US 16 PoE 150W"]
 assert "ports_17_18_1g_sfp" in us16["validation"]["uplinks"]
-assert us16["default_faceplate"] == "faceplates/24rj45-2sfp.png"
-assert us16["calibration_profile"] == "stock_24rj45_2sfp"
+assert us16["default_faceplate"] == "faceplates/unifi-16rj45-2sfp.png"
+assert us16["calibration_profile"] == "unifi_16_rj45_2sfp"
 assert us16["visuals"]["status"] == "experimental"
 assert us16["visuals"]["recommended_faceplate"] == us16["default_faceplate"]
 assert us16["visuals"]["calibration_profile"] == us16["calibration_profile"]
