@@ -924,7 +924,9 @@ def sync_device_visual_recommendations() -> None:
         profile = visuals.get("calibration_profile") or ""
         api_port_map = device.get("unifi_api_port_map")
         has_api_port_map = isinstance(api_port_map, dict)
-        if not (faceplate and profile) and not has_api_port_map:
+        port_roles = device.get("port_roles")
+        has_port_roles = isinstance(port_roles, dict)
+        if not (faceplate and profile) and not has_api_port_map and not has_port_roles:
             continue
         item = {
             "model": device.get("model"),
@@ -940,6 +942,8 @@ def sync_device_visual_recommendations() -> None:
         }
         if has_api_port_map:
             item["unifi_api_port_map"] = api_port_map
+        if has_port_roles:
+            item["port_roles"] = port_roles
         recommendations.append(item)
     canonical = SRC / "js" / "switch-vision.js"
     text = canonical.read_text(encoding="utf-8", errors="ignore")

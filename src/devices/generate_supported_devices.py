@@ -13,6 +13,7 @@ except ImportError as exc:
     raise SystemExit("PyYAML is required to generate supported-device documentation: pip install PyYAML") from exc
 
 ALLOWED_STATUSES = {"detected", "experimental", "community_validated", "confirmed"}
+ALLOWED_PORT_ROLES = {"lan", "wan", "uplink"}
 REQUIRED_FIELDS = {
     "vendor", "family", "model", "status", "confirmed_since",
     "last_validated_version", "ports", "stack_support",
@@ -97,6 +98,29 @@ def load_registry(path: Path) -> dict:
                 mapped_indices.extend(values)
             if len(mapped_indices) != len(set(mapped_indices)):
                 raise SystemExit(f"UniFi API-port map reuses an API index for {model}")
+        port_roles = device.get("port_roles")
+        if port_roles is not None:
+            if not isinstance(port_roles, dict):
+                raise SystemExit(f"Port roles must be a mapping for {model}")
+            if not set(port_roles).issubset({"rj45", "sfp"}):
+                raise SystemExit(f"Port roles contain an unsupported group for {model}")
+            role_counts = {
+                "rj45": int(ports.get("rj45", 0) or 0),
+                "sfp": int(ports.get("uplinks", 0) or 0),
+            }
+            for group, mapping in port_roles.items():
+                if not isinstance(mapping, dict):
+                    raise SystemExit(f"Port roles {group} must be a mapping for {model}")
+                for raw_index, raw_role in mapping.items():
+                    try:
+                        role_index = int(raw_index)
+                    except (TypeError, ValueError):
+                        raise SystemExit(f"Port roles contain an invalid index for {model}") from None
+                    if role_index < 1 or role_index > role_counts[group]:
+                        raise SystemExit(f"Port roles {group} index is outside the physical port count for {model}")
+                    role = str(raw_role or "").strip().lower()
+                    if role not in ALLOWED_PORT_ROLES:
+                        raise SystemExit(f"Port roles contain unsupported role '{raw_role}' for {model}")
         visuals = device.get("visuals")
         if not isinstance(visuals, dict) or "status" not in visuals or "recommended_faceplate" not in visuals or "calibration_profile" not in visuals:
             raise SystemExit(f"Visual recommendation details are incomplete for {model}")
