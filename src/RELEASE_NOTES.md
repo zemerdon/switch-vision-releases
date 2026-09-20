@@ -1,3 +1,9 @@
+# Switch Vision Core v2.7.24
+
+Core 2.7.24 adds a dedicated owner-calibrated USW Flex Mini faceplate and factory calibration profile.
+
+USW Flex Mini now uses usw-flex-mini.png / usw_flex_mini instead of the shared generic five-RJ45 UniFi visual. Its proven functional contract remains unchanged at five 1G RJ45 ports with no optical uplinks. Other five-port models keep their existing visuals.
+
 # Switch Vision Core v2.7.23
 
 Core 2.7.23 adds three owner-calibrated UniFi factory faceplates and uses them for six exact models that previously relied on oversized generic artwork.

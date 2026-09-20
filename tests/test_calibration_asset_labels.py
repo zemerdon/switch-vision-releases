@@ -17,6 +17,7 @@ EXPECTED = {
     "unifi-24-rj45-2sfp-dark.png": "UniFi · 24 × RJ45 · 2 × SFP · Dark",
     "unifi-5rj45.png": "UniFi · 5 × RJ45",
     "unifi-8rj45.png": "UniFi · 8 × RJ45",
+    "usw-flex-mini.png": "UniFi USW Flex Mini · 5 × RJ45",
 }
 
 

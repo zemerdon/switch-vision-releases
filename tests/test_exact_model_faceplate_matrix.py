@@ -29,8 +29,8 @@ def test_exact_model_faceplate_matrix() -> None:
             0,
         ),
         "USW Flex Mini": (
-            "faceplates/unifi-5rj45.png",
-            "default_unifi_5_rj45",
+            "faceplates/usw-flex-mini.png",
+            "usw_flex_mini",
             5,
             0,
         ),

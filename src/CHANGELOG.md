@@ -1,3 +1,10 @@
+## v2.7.24 — Dedicated USW Flex Mini faceplate
+
+- Add the owner-calibrated USW Flex Mini factory faceplate and dedicated usw_flex_mini calibration profile.
+- Move only USW Flex Mini from the generic five-RJ45 UniFi presentation to the dedicated artwork while preserving the proven 5 × 1G RJ45 / no-uplink functional contract.
+- Preserve the supplied five RJ45 hitboxes, LEDs, port numbers, status-box selection and UI geometry as presentation data; exact model capabilities remain registry-owned.
+- Add permanent regression coverage for the supplied geometry round-trip and Flex Mini-only assignment.
+
 ## v2.7.23 — Compact UniFi exact-model faceplates
 
 - Add owner-calibrated UniFi **16 RJ45 + 2 SFP**, **9 RJ45 + 2 SFP**, and **3 SFP+** factory faceplates.
