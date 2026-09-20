@@ -9,8 +9,9 @@ def test_auto_width_default_and_original_responsive_behaviour():
  assert 'CONF_FACEPLATE_WIDTH_MODE: "auto"' in INIT
  assert 'effective = None if mode == "auto"' in INIT
  assert '"auto":"Auto (fit dashboard)"' in FLOW
- assert 'faceplateMaxWidth = this._globalFaceplateWidthMode === "auto" ? 2048' in JS
- assert 'style="width:100%;max-width:${faceplateMaxWidth}px;margin-inline:auto"' in JS
+ assert 'globalFaceplateMaxWidth = this._globalFaceplateWidthMode === "auto" ? 2048' in JS
+ assert 'const faceplateRenderMaxWidth = globalFaceplateMaxWidth' in JS
+ assert 'style="width:100%;max-width:${faceplateRenderMaxWidth}px;margin-inline:auto"' in JS
  assert 'auto width' in JS and 'native 2048 × 448' in JS
  assert '.page{width:100%;max-width:none;box-sizing:border-box;margin:0 auto;padding:10px 16px 40px}' in PANEL
  assert 'max-width:1280px' not in PANEL
