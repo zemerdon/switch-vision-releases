@@ -1,3 +1,9 @@
+## v2.7.22 — Rendered calibration control target alignment
+
+- Keep the on-card **Calibrate/Done** and **TEST MODE** controls exactly where they render today.
+- Make Calibration target boxes derive from the controls' real rendered browser bounds through the SVG screen transform, so the blue targets stay directly over the controls on unusually wide or non-2048:448 faceplates.
+- Preserve the TEST MODE target geometry even while the badge is inactive by retaining a hidden rendered marker at its real position.
+- Add a permanent regression contract proving rendered-control synchronization occurs before the Calibration overlay is drawn.
 ## v2.7.21 — Calibrated port roles
 
 - Add a persistent per-port **Port Role** selector beside **Supported Speed** in Calibration with Auto / Model default, LAN, WAN and Uplink choices.

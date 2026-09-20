@@ -1,0 +1,66 @@
+views:
+  - title: Switch Vision Calibration
+    path: switch-vision-calibration
+    type: custom:vertical-layout
+    layout:
+      width: 800
+      max_cols: 1
+    cards:
+      - type: markdown
+        content: |
+          ## Switch Vision Calibration
+
+          Use this page to tune the card layout and status panel.
+
+          1. Open a card and click **Calibrate**.
+          2. Move ports, LEDs, logo, status panel, or status rows.
+          3. Use **Status rows** to hide/show or reorder STACK, CPU, TEMP, UPTIME, FANS, PSU, POE, and IP.
+          4. Click **Save Profile** for each switch.
+          5. Return to the live dashboard and keep `calibration_button: true`.
+
+      - type: custom:switch-vision-3650
+        title: Calibration — SW1
+        member: SW1
+        demo: false
+        calibration_profile: SW1
+        calibration_button: true
+        calibration_mode: true
+        calibration_controls: true
+        status_entity_prefix: sensor.sw1_port_
+        status_entity_suffix: _status
+
+      - type: custom:switch-vision-3650
+        title: Calibration — SW2
+        member: SW2
+        demo: false
+        calibration_profile: SW2
+        calibration_button: true
+        calibration_mode: true
+        calibration_controls: true
+        stack_enabled: true
+        stack_uptime_mode: inherit_stack
+        stack_uptime_source: sensor.sw1_uptime
+        status_entity_prefix: sensor.sw2_port_
+        status_entity_suffix: _status
+
+      - type: custom:switch-vision-3650
+        title: Calibration — SW3
+        member: SW3
+        demo: false
+        calibration_profile: SW3
+        calibration_button: true
+        calibration_mode: true
+        calibration_controls: true
+        status_entity_prefix: sensor.sw3_port_
+        status_entity_suffix: _status
+
+      - type: custom:switch-vision-3650
+        title: Calibration — SW4
+        member: SW4
+        demo: false
+        calibration_profile: SW4
+        calibration_button: true
+        calibration_mode: true
+        calibration_controls: true
+        status_entity_prefix: sensor.sw4_port_
+        status_entity_suffix: _status

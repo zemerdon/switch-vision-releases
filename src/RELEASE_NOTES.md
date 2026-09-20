@@ -1,3 +1,10 @@
+# Switch Vision Core v2.7.22
+
+Core 2.7.22 fixes Calibration target-box alignment for the on-card **Calibrate/Done** and **TEST MODE** controls.
+
+The controls themselves do not move. Their current rendered positions remain authoritative. Calibration now measures each rendered control in browser screen space and converts those bounds back through the live SVG screen transform before drawing the blue target box. This keeps the target aligned even when a custom faceplate has a very different aspect ratio from the 2048×448 design coordinate space.
+
+The inactive TEST MODE badge retains an invisible position marker so its Calibration target still reflects the exact position where the badge will render when Test Mode is enabled.
 # Switch Vision Core v2.7.21
 
 Core 2.7.21 adds model-aware port roles to Calibration. A selected RJ45 or SFP port now has a **Port Role** control immediately beside **Supported Speed**, with Auto / Model default, LAN, WAN and Uplink choices. Auto inherits an exact-model registry default when one exists, while a saved per-device calibration can override that default.
