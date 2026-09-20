@@ -1,3 +1,10 @@
+# Switch Vision Core v2.7.21
+
+Core 2.7.21 adds model-aware port roles to Calibration. A selected RJ45 or SFP port now has a **Port Role** control immediately beside **Supported Speed**, with Auto / Model default, LAN, WAN and Uplink choices. Auto inherits an exact-model registry default when one exists, while a saved per-device calibration can override that default.
+
+The role contract is deliberately separate from UniFi's generic uplink marker. Known effective roles can appear in selected-port status details, but Switch Vision does not guess WAN from physical position. The UDM Pro exact-model registry now records physical RJ45 port 9 as WAN from owner calibration, allowing future UDM Pro cards to inherit that role automatically while customized devices can override it.
+
+Permanent regressions cover selector placement, persistence, transfer metadata and embedded exact-model role metadata.
 # Switch Vision Core v2.7.20
 
 Core 2.7.20 fixes Calibration font-size controls for faceplates stored in native image coordinates. The controls now always show the **effective rendered pixel size** instead of the larger internal value used by a 6000×1325 source image. For example, the stock native values `38.0859375`, `39.55078125`, `48.33984375`, and `46.875` are shown as **13 px**, **13.5 px**, **16.5 px**, and **16 px** respectively.

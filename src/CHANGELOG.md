@@ -1,3 +1,10 @@
+## v2.7.21 — Calibrated port roles
+
+- Add a persistent per-port **Port Role** selector beside **Supported Speed** in Calibration with Auto / Model default, LAN, WAN and Uplink choices.
+- Preserve per-device role overrides in calibration metadata while Auto inherits exact-model registry role metadata.
+- Expose known effective port roles in selected-port status details without treating UniFi uplink markers as implicit WAN classification.
+- Add validated exact-model `port_roles` metadata and record UDM Pro physical RJ45 port 9 as WAN from owner calibration.
+- Add permanent regression coverage for Calibration placement/persistence and embedded exact-model role metadata.
 ## v2.7.20 — Calibration font-size pixel controls
 
 - Fix native-canvas Calibration font-size fields showing scaled storage values such as `38.0859375`, `39.55078125`, `46.875`, and `48.33984375` instead of their effective rendered pixel sizes.

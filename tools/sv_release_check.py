@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -34,6 +35,7 @@ def run(args: list[str], cwd: Path) -> str:
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         check=False,
+        env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
     )
     if proc.stdout:
         print(proc.stdout, end="" if proc.stdout.endswith("\n") else "\n")
@@ -217,6 +219,9 @@ def main() -> int:
     run([sys.executable, "tools/check_core_release_parity.py"], root)
     validate_version_resource_contract(root, version)
     run_regressions(root)
+    # Regression imports may create __pycache__/pyc files inside generated roots.
+    # Remove only that disposable bytecode before invoking the hygiene-strict build.
+    cleanup_generated_junk(root)
 
     baseline_outputs = snapshot_build_outputs(root, version)
     run([sys.executable, "build.py", "-v", version], root)

@@ -10,9 +10,9 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current Core source version
 
-### Switch Vision v2.7.20
+### Switch Vision v2.7.21
 
-**v2.7.20** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.
+**v2.7.21** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.
 
 Core v2.7.20 makes Calibration font sizes user-facing render pixels on every faceplate, including native 6000×1325 profiles. RJ45, SFP/uplink, Status LED, and Status Box sizes now display/edit values such as 13, 13.5, 16.5, and 16 instead of native-coordinate storage values such as 38–48. The native conversion remains internal. The 2.7.19 per-switch **Card Height** viewport behaviour remains unchanged.
 

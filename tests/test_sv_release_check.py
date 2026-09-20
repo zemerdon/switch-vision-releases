@@ -38,6 +38,7 @@ def main() -> int:
         "snapshot_build_outputs(root, version)",
         "restore_build_outputs(baseline_outputs)",
         "node",
+        "PYTHONDONTWRITEBYTECODE",
     ):
         assert marker in source, marker
 
@@ -58,6 +59,10 @@ def main() -> int:
     # and exercised by the release entrypoint itself.
     assert callable(module.reject_generated_junk)
     assert callable(module.cleanup_generated_junk)
+    regressions_at = source.index("run_regressions(root)")
+    prebuild_cleanup_at = source.index("cleanup_generated_junk(root)", regressions_at)
+    snapshot_at = source.index("snapshot_build_outputs(root, version)", regressions_at)
+    assert regressions_at < prebuild_cleanup_at < snapshot_at, "release check must clean regression bytecode before the deterministic build"
 
     with tempfile.TemporaryDirectory(prefix="sv-core-release-output-") as tmp:
         fixture_root = Path(tmp)
