@@ -30,6 +30,11 @@ def status_label(value: str) -> str:
     return value.replace("_", " ").title()
 
 
+def visible_rj45_count(ports: dict) -> int:
+    """Return physical RJ45 socket count including dual-personality positions."""
+    return int(ports.get("rj45", 0) or 0) + int(ports.get("combo_ports", 0) or 0)
+
+
 def uplink_text(ports: dict) -> str:
     gigabit = int(ports.get("gigabit_sfp", 0) or 0)
     ten_gigabit = int(ports.get("ten_gigabit_sfp_plus", 0) or 0)
@@ -158,7 +163,7 @@ def markdown(data: dict) -> str:
         lines.append(
             "| {vendor} | {family} | `{model}` | {rj45} | {uplink_type} | {poe} | {stack} | `{faceplate}` | `{calibration}` | {uplink_validation} | {status} | v{validated} |".format(
                 vendor=device["vendor"], family=device["family"], model=device["model"],
-                rj45=ports["rj45"], uplinks="", uplink_type=uplink_text(ports),
+                rj45=visible_rj45_count(ports), uplinks="", uplink_type=uplink_text(ports),
                 poe=yes_no(ports.get("poe")), stack=yes_no(device["stack_support"]),
                 discovery=yes_no(device["discovery_support"]), dashboard=yes_no(device["dashboard_support"]),
                 faceplate=(device.get("visuals", {}).get("recommended_faceplate") or "Pending"), calibration=(device.get("visuals", {}).get("calibration_profile") or "Pending"),
@@ -183,7 +188,7 @@ def bbcode(data: dict) -> str:
     ]
     for device in data["devices"]:
         ports = device["ports"]
-        port_text = f"{ports['rj45']} RJ45 + {uplink_text(ports)}"
+        port_text = f"{visible_rj45_count(ports)} RJ45 + {uplink_text(ports)}"
         lines.append(
             "[tr][td]{vendor}[/td][td]{family}[/td][td][code]{model}[/code][/td][td]{ports}[/td][td]{poe}[/td][td]{stack}[/td][td]{visual}[/td][td]{uplink_validation}[/td][td]{status}[/td][td]v{validated}[/td][/tr]".format(
                 vendor=device["vendor"], family=device["family"], model=device["model"], ports=port_text,

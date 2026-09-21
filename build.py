@@ -909,6 +909,11 @@ def sync_authoritative_documents() -> None:
 
 
 
+def visible_rj45_count(ports: dict) -> int:
+    """Return physical RJ45 socket count including dual-personality positions."""
+    return int(ports.get("rj45", 0) or 0) + int(ports.get("combo_ports", 0) or 0)
+
+
 def sync_device_visual_recommendations() -> None:
     """Regenerate exact-model visual/API mapping metadata from the registry."""
     registry_path = SRC / "devices" / "supported_devices.yaml"
@@ -932,7 +937,7 @@ def sync_device_visual_recommendations() -> None:
             "model": device.get("model"),
             "status": device.get("status"),
             "family": device.get("family"),
-            "rj45": ports.get("rj45"),
+            "rj45": visible_rj45_count(ports),
             "uplinks": ports.get("uplinks"),
             "visual_status": visuals.get("status"),
             "faceplate": faceplate,
@@ -1314,7 +1319,7 @@ def validate_device_visual_recommendations(base: Path, source_layout: bool = Fal
         expected = {
             "status": device.get("status"),
             "family": device.get("family"),
-            "rj45": ports.get("rj45"),
+            "rj45": visible_rj45_count(ports),
             "uplinks": ports.get("uplinks"),
             "visual_status": visuals.get("status"),
             "faceplate": visuals.get("recommended_faceplate"),

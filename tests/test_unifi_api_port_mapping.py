@@ -54,6 +54,7 @@ class UniFiApiPortMappingTests(unittest.TestCase):
             "function unifiAccessPort(config, port)",
             "function unifiBoundSfpPort(config, port)",
             "function unifiSfpPort(config, port)",
+            "function sfpLogicalPort(config, sfpPort)",
             "function sfpVisibleLabel(config, sfpPort, fallback, calibration = null)",
         )
         functions = "\n\n".join(extract_js_function(source, sig) for sig in signatures)

@@ -65,6 +65,7 @@ class SpeedFormattingTests(unittest.TestCase):
         link_state = extract_js_function(source, "function linkStateIsUp(value)")
         port_speed = extract_js_function(source, "function portSpeed(hass, config, port)")
         sfp_speed = extract_js_function(source, "function sfpSpeedMbps(hass, config, port)")
+        sfp_logical = extract_js_function(source, "function sfpLogicalPort(config, sfpPort)")
 
         self.assertNotIn("max_speed_mbps", port_speed)
         self.assertNotIn("max_speed_mbps", sfp_speed)
@@ -80,6 +81,7 @@ function rawEntityState() {{ return null; }}
 function portEntity() {{ return null; }}
 function normalizeMember() {{ return 'sw1'; }}
 function mappedPortNumber(config, port) {{ return Number(port); }}
+{sfp_logical}
 {link_state}
 {port_speed}
 {sfp_speed}

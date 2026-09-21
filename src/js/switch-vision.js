@@ -755,12 +755,34 @@ function configuredPortCountAllows(config, field, port) {
 }
 
 function sfpVisibleLabel(config, sfpPort, fallback, calibration = null) {
+  const logicalPort = sfpLogicalPort(config, sfpPort);
+  if (logicalPort) return String(logicalPort);
+
   const ui = calibration?.ui;
   if (ui && Object.prototype.hasOwnProperty.call(ui, "sfp_label_suffix")) {
     const suffix = String(ui.sfp_label_suffix ?? "").trim().slice(0, 32);
     return `${sfpPort}${suffix ? ` ${suffix}` : ""}`;
   }
   return fallback;
+}
+
+function sfpLogicalPort(config, sfpPort) {
+  const n = Number(sfpPort);
+  if (!Number.isInteger(n) || n < 1) return null;
+
+  const raw = config?.sfp_logical_port_map;
+  let value = null;
+  if (Array.isArray(raw)) {
+    value = raw[n - 1];
+  } else if (raw && typeof raw === "object") {
+    value = raw[String(n)] ?? raw[`G${n}`] ?? raw[`g${n}`];
+  } else if (typeof raw === "string") {
+    const items = raw.split(",").map((item) => item.trim()).filter(Boolean);
+    value = items[n - 1];
+  }
+
+  const logical = Number(value);
+  return Number.isInteger(logical) && logical > 0 ? logical : null;
 }
 
 function sfpEntity(config, member, port) {
@@ -801,6 +823,9 @@ function sfpStatusEntities(config, member, port) {
 function sfpIsUp(hass, config, port) {
   if (config.demo) return true;
 
+  const logicalPort = sfpLogicalPort(config, port);
+  if (logicalPort) return portIsUp(hass, config, logicalPort);
+
   const unifi = unifiSfpPort(config, port);
   if (unifi) return linkStateIsUp(unifi.state);
 
@@ -815,8 +840,21 @@ function sfpIsUp(hass, config, port) {
 }
 
 
+function explicitEntityPrefix(config) {
+  const explicit = String(config?.entity_prefix ?? "").trim().toLowerCase();
+  if (/^[a-z0-9_]+$/.test(explicit)) return explicit;
+
+  const statusPrefix = String(config?.status_entity_prefix ?? "").trim().toLowerCase();
+  const match = statusPrefix.match(/^sensor\.([a-z0-9_]+)_port_$/);
+  return match ? match[1] : null;
+}
+
 function normalizePanelMember(config) {
   return String(config.member || "sw1").toLowerCase();
+}
+
+function normalizeEntityPrefix(config) {
+  return explicitEntityPrefix(config) || normalizePanelMember(config);
 }
 
 function usableValue(value) {
@@ -950,7 +988,7 @@ function cleanVlanList(value) {
 }
 
 function isJuniperPortPresentation(hass, config) {
-  const member = normalizePanelMember(config).toLowerCase();
+  const member = normalizeEntityPrefix(config).toLowerCase();
   const configured = [
     config?.switch_model,
     config?.detected_switch_model,
@@ -1004,7 +1042,7 @@ function normalizeDescription(value) {
 function selectedPortDetails(hass, config, port) {
   const internalPort = Number(port);
   const n = Number(mappedPortNumber(config, internalPort));
-  const member = normalizePanelMember(config);
+  const member = normalizeEntityPrefix(config);
   const range = portRange(n);
 
   // Prefer the mapped entity port, while retaining the internal calibration
@@ -1091,7 +1129,10 @@ function selectedPortDetails(hass, config, port) {
 
 function selectedSfpDetails(hass, config, port) {
   const n = Number(port);
-  const member = normalizePanelMember(config);
+  const logicalPort = sfpLogicalPort(config, n);
+  if (logicalPort) return selectedPortDetails(hass, config, logicalPort);
+
+  const member = normalizeEntityPrefix(config);
   const up = sfpIsUp(hass, config, n);
   const staticSfp = config.sfp?.[String(n)] || {};
 
@@ -1099,8 +1140,10 @@ function selectedSfpDetails(hass, config, port) {
     configuredEntity(config, n, "sfp_vlan_mode"),
     configuredEntity(config, n, "sfp_mode"),
     `sensor.${member}_sfp_10g_${n}_vlan_mode`,
+    `sensor.${member}_sfp_1g_${n}_vlan_mode`,
     `sensor.${member}_uplink_${n}_vlan_mode`,
     `sensor.${member}_sfp_10g_${n}_mode`,
+    `sensor.${member}_sfp_1g_${n}_mode`,
     `sensor.${member}_uplink_${n}_mode`
   ]);
 
@@ -1108,11 +1151,14 @@ function selectedSfpDetails(hass, config, port) {
     configuredEntity(config, n, "sfp_native_vlan"),
     configuredEntity(config, n, "native_vlan"),
     `sensor.${member}_sfp_10g_${n}_native_vlan`,
+    `sensor.${member}_sfp_1g_${n}_native_vlan`,
     `sensor.${member}_uplink_${n}_native_vlan`,
     configuredEntity(config, n, "sfp_vlan_id"),
     configuredEntity(config, n, "sfp_vlan"),
     `sensor.${member}_sfp_10g_${n}_vlan_id`,
     `sensor.${member}_sfp_10g_${n}_vlan`,
+    `sensor.${member}_sfp_1g_${n}_vlan_id`,
+    `sensor.${member}_sfp_1g_${n}_vlan`,
     `sensor.${member}_uplink_${n}_vlan_id`,
     `sensor.${member}_uplink_${n}_vlan`,
     `sensor.cisco_3650_${member}_uplinks_${member}_sfp_10g_${n}_vlan_id`,
@@ -1130,6 +1176,7 @@ function selectedSfpDetails(hass, config, port) {
     configuredEntity(config, n, "sfp_trunk_status"),
     configuredEntity(config, n, "trunk_status"),
     `sensor.${member}_sfp_10g_${n}_trunk_status`,
+    `sensor.${member}_sfp_1g_${n}_trunk_status`,
     `sensor.${member}_uplink_${n}_trunk_status`,
     `sensor.cisco_3650_${member}_uplinks_${member}_sfp_10g_${n}_trunk_status`,
     `sensor.cisco_3650_${member}_uplinks_${member}_uplink_${n}_trunk_status`,
@@ -1145,6 +1192,7 @@ function selectedSfpDetails(hass, config, port) {
       // Alias first.
       configuredEntity(config, n, "sfp_alias"),
       `sensor.${member}_sfp_10g_${n}_alias`,
+      `sensor.${member}_sfp_1g_${n}_alias`,
       `sensor.${member}_uplink_${n}_alias`,
       `sensor.cisco_3650_${member}_sfp_10g_${n}_alias`,
       `sensor.cisco_3650_${member}_uplink_${n}_alias`,
@@ -1154,6 +1202,7 @@ function selectedSfpDetails(hass, config, port) {
       // Description second.
       configuredEntity(config, n, "sfp_description"),
       `sensor.${member}_sfp_10g_${n}_description`,
+      `sensor.${member}_sfp_1g_${n}_description`,
       `sensor.${member}_uplink_${n}_description`,
       `sensor.cisco_3650_${member}_sfp_10g_${n}_description`,
       `sensor.cisco_3650_${member}_uplink_${n}_description`,
@@ -1163,6 +1212,7 @@ function selectedSfpDetails(hass, config, port) {
       // Name last.
       configuredEntity(config, n, "sfp_name"),
       `sensor.${member}_sfp_10g_${n}_name`,
+      `sensor.${member}_sfp_1g_${n}_name`,
       `sensor.${member}_uplink_${n}_name`,
       `sensor.cisco_3650_${member}_sfp_10g_${n}_name`,
       `sensor.cisco_3650_${member}_uplink_${n}_name`,
@@ -1198,7 +1248,7 @@ function switchPoeActive(hass, config) {
   if (runtime) {
     return runtime.ports.some((port) => String(port?.poe?.state || "").toUpperCase() === "UP");
   }
-  const member = normalizePanelMember(config).toLowerCase();
+  const member = normalizeEntityPrefix(config).toLowerCase();
   const poeUsed = firstEntityValue(hass, [
     `sensor.${member}_poe_used_mw`,
     `sensor.${member}_poe_used`,
@@ -1365,7 +1415,7 @@ function entityIdsFromValue(value) {
 
 function switchUptimeCandidates(config, cal, memberName) {
   const member = String(memberName || normalizePanelMember(config)).toUpperCase();
-  const m = member.toLowerCase();
+  const m = normalizeEntityPrefix(config).toLowerCase();
   const { stack, member: stackMember } = stackMemberSettings(config, cal, member);
   const mode = normaliseStackUptimeMode(stackMember.uptime_mode);
   const inheritedSource = stackMember.uptime_source || stack.uptime_source;
@@ -1459,7 +1509,7 @@ function formatJuniperOperatingState(value) {
 
 function switchStatusValues(hass, config, cal = calibration) {
   const member = normalizePanelMember(config).toUpperCase();
-  const m = member.toLowerCase();
+  const m = normalizeEntityPrefix(config).toLowerCase();
   const runtime = unifiRuntime(config);
   const rawRuntime = rawUnifiRuntime(config);
   if (!runtime && rawRuntime && String(config?.data_source || "").toLowerCase() === "unifi_api") {
@@ -1846,7 +1896,7 @@ function switchVisionStateMap(config, name, fallback) {
 }
 
 function normalizeMember(config) {
-  return String(config.member || "sw1").toLowerCase();
+  return normalizeEntityPrefix(config);
 }
 
 function readCounterSample(hass, entityId) {
@@ -1900,6 +1950,9 @@ function portTrafficCounterSample(hass, config, port, direction) {
 }
 
 function sfpTrafficCounterSample(hass, config, port, direction) {
+  const logicalPort = sfpLogicalPort(config, port);
+  if (logicalPort) return portTrafficCounterSample(hass, config, logicalPort, direction);
+
   const isUnifi = String(config?.data_source || "").toLowerCase() === "unifi_api";
   if (isUnifi && rawUnifiRuntime(config)) {
     const runtimePort = unifiSfpPort(config, port);
@@ -1947,6 +2000,12 @@ function sfpByteEntities(config, port, direction) {
 }
 
 function sfpSpeedMbps(hass, config, port) {
+  const logicalPort = sfpLogicalPort(config, port);
+  if (logicalPort) {
+    const value = Number(String(portSpeed(hass, config, logicalPort) || "").replace(/,/g, ""));
+    return Number.isFinite(value) && value > 0 ? value : null;
+  }
+
   const unifi = unifiSfpPort(config, port);
   if (unifi && linkStateIsUp(unifi.state) && unifi.speed_mbps != null) {
     const value = Number(unifi.speed_mbps);
@@ -2390,6 +2449,9 @@ function portTrafficRates(hass, config, port) {
 function sfpTrafficRates(hass, config, port) {
   if (config.demo) return { rxBps: 6200000000, txBps: 2100000000 };
 
+  const logicalPort = sfpLogicalPort(config, port);
+  if (logicalPort) return portTrafficRates(hass, config, logicalPort);
+
   const member = normalizeMember(config);
   const key = `${member}:sfp:${port}`;
   const rx = sfpTrafficCounterSample(hass, config, port, "rx");
@@ -2407,6 +2469,9 @@ function sfpTrafficRates(hass, config, port) {
 
 function testSfpActivity(hass, config, port) {
   if (config.demo) return true;
+
+  const logicalPort = sfpLogicalPort(config, port);
+  if (logicalPort) return testPortActivity(hass, config, logicalPort);
 
   const member = normalizeMember(config);
   const key = `${member}:sfp:${port}`;
@@ -4343,7 +4408,10 @@ function drawPanel(svg, { hass, config, calibration, layout }) {
         String(currentCalibrationTarget?.type || "").toLowerCase() === "number_labels"
         || (calibrationMatches(config, "sfp", sfpPort, calibration) && String(currentCalibrationTarget?.part || config.calibration_part || "center").toLowerCase() === "label")
       );
-      const cls = labelActive ? "cv-sfp-label cv-calibration-active-text" : (isSelected(config, "sfp", sfpPort) ? "cv-sfp-label cv-sfp-label-selected" : "cv-sfp-label");
+      const sharedLogicalPort = sfpLogicalPort(config, sfpPort);
+      const sfpSelected = isSelected(config, "sfp", sfpPort)
+        || (sharedLogicalPort && isSelected(config, "port", sharedLogicalPort));
+      const cls = labelActive ? "cv-sfp-label cv-calibration-active-text" : (sfpSelected ? "cv-sfp-label cv-sfp-label-selected" : "cv-sfp-label");
       const portUi = uiFromCalibration(calibration);
       const defaultSfpLabel = sfpVisibleLabel(config, sfpPort, layoutLabel?.text || name, calibration);
       const visibleSfpLabel = String(sfp.display_name || defaultSfpLabel);
@@ -5729,7 +5797,7 @@ function calibrationPersistedFingerprint(cal) {
 }
 
 
-const SV_DEVICE_VISUAL_RECOMMENDATIONS = [{"model":"WS-C3650-48PD-E","status":"confirmed","family":"Catalyst 3650","rj45":48,"uplinks":4,"visual_status":"confirmed","faceplate":"faceplates/48rj45-4sfp.png","optional_faceplates":[],"profile":"default_cisco_48_port","canvas":{"width":2048,"height":448}},{"model":"WS-C3650-48PD-L","status":"confirmed","family":"Catalyst 3650","rj45":48,"uplinks":4,"visual_status":"confirmed","faceplate":"faceplates/48rj45-4sfp.png","optional_faceplates":[],"profile":"default_cisco_48_port","canvas":{"width":2048,"height":448}},{"model":"WS-C2960X-48FPD-L","status":"confirmed","family":"Catalyst 2960X","rj45":48,"uplinks":2,"visual_status":"confirmed","faceplate":"faceplates/48rj45-2sfp.png","optional_faceplates":[],"profile":"cisco_2960s_48p","canvas":{"width":2048,"height":448}},{"model":"WS-C2960X-24PS-L","status":"experimental","family":"Catalyst 2960X","rj45":24,"uplinks":4,"visual_status":"confirmed","faceplate":"faceplates/24rj45-4sfp.png","optional_faceplates":[],"profile":"cisco_2960x_24p","canvas":{"width":2048,"height":448}},{"model":"WS-C2960X-24TS-L","status":"experimental","family":"Catalyst 2960X","rj45":24,"uplinks":4,"visual_status":"confirmed","faceplate":"faceplates/24rj45-4sfp.png","optional_faceplates":[],"profile":"cisco_2960x_24p","canvas":{"width":2048,"height":448}},{"model":"WS-C2960S-48FPD-L","status":"confirmed","family":"Catalyst 2960S","rj45":48,"uplinks":2,"visual_status":"confirmed","faceplate":"faceplates/48rj45-2sfp.png","optional_faceplates":[],"profile":"cisco_2960s_48p","canvas":{"width":2048,"height":448}},{"model":"WS-C3560CG-8PC-S","status":"experimental","family":"Catalyst 3560-C","rj45":8,"uplinks":2,"visual_status":"confirmed","faceplate":"faceplates/c3560cg-8pc-s.png","optional_faceplates":["faceplates/24rj45-2sfp.png"],"profile":"cisco_3560cg_8pc","canvas":{"width":2048,"height":329}},{"model":"WS-C3850-12XS-E","status":"community_validated","family":"Catalyst 3850","rj45":0,"uplinks":12,"visual_status":"community_validated","faceplate":"faceplates/cisco-3850-12xs.png","optional_faceplates":[],"profile":"cisco_3850_12xs","canvas":{"width":2048,"height":448}},{"model":"EX3300-48P","status":"confirmed","family":"EX3300","rj45":48,"uplinks":4,"visual_status":"confirmed","faceplate":"faceplates/48rj45-4sfp.png","optional_faceplates":[],"profile":"default_cisco_48_port","canvas":{"width":2048,"height":448}},{"model":"CRS328-24P-4S+RM","status":"experimental","family":"CRS328","rj45":24,"uplinks":4,"visual_status":"experimental","faceplate":"faceplates/24rj45-4sfp.png","optional_faceplates":[],"profile":"stock_24rj45_4sfp","canvas":{"width":2048,"height":448}},{"model":"SG500X-24","status":"community_validated","family":"Small Business SG500X","rj45":24,"uplinks":4,"visual_status":"community_validated","faceplate":"faceplates/24rj45-4sfp.png","optional_faceplates":[],"profile":"cisco_2960x_24p","canvas":{"width":2048,"height":448}},{"model":"S5720-12TP-LI-AC","status":"community_validated","family":"S5720","rj45":8,"uplinks":4,"visual_status":"community_validated","faceplate":"faceplates/24rj45-4sfp.png","optional_faceplates":[],"profile":"stock_24rj45_4sfp","canvas":{"width":2048,"height":448}},{"model":"XS1930-10","status":"experimental","family":"XS1930","rj45":8,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/c3560cg-8pc-s.png","optional_faceplates":[],"profile":"cisco_3560cg_8pc","canvas":{"width":2048,"height":329}},{"model":"USW-Enterprise-8-PoE","status":"experimental","family":"UniFi Switch Enterprise","rj45":8,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-8-rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_8_rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"USW-Pro-24-PoE","status":"experimental","family":"UniFi Switch Pro","rj45":24,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-24-rj45-2sfp-inline.png","optional_faceplates":["faceplates/24rj45-4sfp.png"],"profile":"unifi_24_rj45_2sfp_inline","canvas":{"width":2048,"height":448}},{"model":"USW Lite 16 PoE","status":"experimental","family":"UniFi Switch Lite","rj45":16,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/24rj45-2sfp.png","optional_faceplates":[],"profile":"stock_24rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"USW Pro XG 8 PoE","status":"experimental","family":"UniFi Switch Pro XG","rj45":8,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-8-rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_8_rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"S5735-L8P4X-A1","status":"community_validated","family":"S5735-L","rj45":8,"uplinks":4,"visual_status":"community_validated","faceplate":"faceplates/24rj45-4sfp.png","optional_faceplates":[],"profile":"stock_24rj45_4sfp","canvas":{"width":2048,"height":448}},{"model":"UDM Pro","status":"experimental","family":"UniFi Dream Machine Pro","rj45":9,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-9rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_9_rj45_2sfp","canvas":{"width":2048,"height":448},"port_roles":{"rj45":{"9":"wan"}}},{"model":"N2128PX-ON","status":"experimental","family":"Dell EMC Networking N2000","rj45":28,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/dell-28-rj45-2sfp.png","optional_faceplates":[],"profile":"dell_28rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"US 48 PoE 500W","status":"experimental","family":"UniFi Switch","rj45":48,"uplinks":4,"visual_status":"experimental","faceplate":"faceplates/48rj45-4sfp.png","optional_faceplates":[],"profile":"stock_48rj45_4sfp","canvas":{"width":2048,"height":448}},{"model":"US 48","status":"experimental","family":"UniFi Switch","rj45":48,"uplinks":4,"visual_status":"experimental","faceplate":"faceplates/48rj45-4sfp.png","optional_faceplates":[],"profile":"stock_48rj45_4sfp","canvas":{"width":2048,"height":448}},{"model":"US XG 16","status":"experimental","family":"UniFi Switch XG","rj45":4,"uplinks":12,"visual_status":"detected","faceplate":"faceplates/unifi-4-rj45-12sfp.png","optional_faceplates":[],"profile":"unifi_4_rj45_12sfp","canvas":{"width":2048,"height":448},"unifi_api_port_map":{"rj45":[13,14,15,16],"sfp":[1,2,3,4,5,6,7,8,9,10,11,12]}},{"model":"USW Pro Aggregation","status":"detected","family":"UniFi Switch Pro Aggregation","rj45":0,"uplinks":32,"visual_status":"detected","faceplate":"faceplates/unifi-32sfp.png","optional_faceplates":[],"profile":"unifi_32sfp","canvas":{"width":2048,"height":448},"unifi_api_port_map":{"rj45":[],"sfp":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32]}},{"model":"US 8 60W","status":"experimental","family":"UniFi Switch 8 60W","rj45":8,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/unifi-8rj45.png","optional_faceplates":[],"profile":"default_unifi_8_rj45","canvas":{"width":2048,"height":448}},{"model":"USW Flex","status":"experimental","family":"UniFi Switch Flex","rj45":5,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/unifi-5rj45.png","optional_faceplates":[],"profile":"default_unifi_5_rj45","canvas":{"width":2048,"height":448}},{"model":"USW Flex 2.5G 8 PoE","status":"experimental","family":"UniFi Switch Flex 2.5G 8 PoE","rj45":9,"uplinks":1,"visual_status":"experimental","faceplate":"faceplates/24rj45-2sfp.png","optional_faceplates":[],"profile":"stock_24rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"USW Flex Mini","status":"experimental","family":"UniFi Switch Flex Mini","rj45":5,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/usw-flex-mini.png","optional_faceplates":[],"profile":"usw_flex_mini","canvas":{"width":2048,"height":448}},{"model":"USW Pro 24","status":"experimental","family":"UniFi Switch Pro 24","rj45":24,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-24-rj45-2sfp-inline.png","optional_faceplates":[],"profile":"unifi_24_rj45_2sfp_inline","canvas":{"width":2048,"height":448}},{"model":"USW-16-PoE","status":"experimental","family":"UniFi Switch 16 PoE","rj45":16,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-16rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_16_rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"USW-24-PoE","status":"experimental","family":"UniFi Switch 24 PoE","rj45":24,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-24-rj45-2sfp-inline.png","optional_faceplates":[],"profile":"unifi_24_rj45_2sfp_inline","canvas":{"width":2048,"height":448}},{"model":"USW-Lite-8-PoE","status":"experimental","family":"UniFi Switch Lite 8 PoE","rj45":8,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/unifi-8rj45.png","optional_faceplates":[],"profile":"default_unifi_8_rj45","canvas":{"width":2048,"height":448}},{"model":"UniFi Dream Machine PRO SE","status":"experimental","family":"UniFi Dream Machine Pro SE","rj45":9,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-9rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_9_rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"UCG Ultra","status":"experimental","family":"UniFi Cloud Gateway Ultra","rj45":5,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/unifi-5rj45.png","optional_faceplates":[],"profile":"default_unifi_5_rj45","canvas":{"width":2048,"height":448}},{"model":"US 16 PoE 150W","status":"experimental","family":"UniFi Switch 16 PoE 150W","rj45":16,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-16rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_16_rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"USW Pro Max 24","status":"experimental","family":"UniFi Switch Pro Max 24","rj45":24,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-24p-rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_24p_rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"USW Ultra","status":"experimental","family":"UniFi Switch Ultra","rj45":8,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/unifi-8rj45.png","optional_faceplates":[],"profile":"default_unifi_8_rj45","canvas":{"width":2048,"height":448}},{"model":"WS-C3750-48P","status":"experimental","family":"Catalyst 3750","rj45":48,"uplinks":4,"visual_status":"experimental","faceplate":"faceplates/48rj45-4sfp.png","optional_faceplates":[],"profile":"default_cisco_48_port","canvas":{"width":2048,"height":448}},{"model":"UDM Pro Max","status":"experimental","family":"UniFi Dream Machine Pro Max","rj45":9,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-9rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_9_rj45_2sfp","canvas":{"width":2048,"height":448},"unifi_api_port_map":{"rj45":[1,2,3,4,5,6,7,8,9],"sfp":[10,11]}},{"model":"USW Pro XG 24 PoE","status":"experimental","family":"UniFi Switch Pro XG","rj45":24,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-24-rj45-2sfp-inline.png","optional_faceplates":[],"profile":"unifi_24_rj45_2sfp_inline","canvas":{"width":2048,"height":448},"unifi_api_port_map":{"rj45":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],"sfp":[25,26]}},{"model":"HP 1810-24G","status":"experimental","family":"1810","rj45":24,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/24rj45-2sfp.png","optional_faceplates":[],"profile":"stock_24rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"GS1900-8","status":"experimental","family":"GS1900","rj45":8,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/24rj45-2sfp.png","optional_faceplates":[],"profile":"stock_24rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"SR-S25G3420F","status":"experimental","family":"SR-S25G","rj45":16,"uplinks":4,"visual_status":"experimental","faceplate":"faceplates/24rj45-4sfp.png","optional_faceplates":[],"profile":"stock_24rj45_4sfp","canvas":{"width":2048,"height":448}},{"model":"US-8-150W","status":"experimental","family":"UniFi Switch 8 150W","rj45":8,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-8-rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_8_rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"US-24-250W","status":"experimental","family":"UniFi Switch 24 250W","rj45":24,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-24p-rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_24p_rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"PowerConnect 5548P","status":"experimental","family":"PowerConnect 5500","rj45":48,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/48rj45-2sfp.png","optional_faceplates":[],"profile":"stock_48rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"GS1900-24E","status":"experimental","family":"GS1900","rj45":24,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/24rj45-2sfp.png","optional_faceplates":[],"profile":"stock_24rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"WS-C3750X-48P","status":"experimental","family":"Catalyst 3750X","rj45":48,"uplinks":4,"visual_status":"experimental","faceplate":"faceplates/48rj45-4sfp.png","optional_faceplates":[],"profile":"default_cisco_48_port","canvas":{"width":2048,"height":448}},{"model":"SG350-20","status":"experimental","family":"Cisco Small Business SG350","rj45":16,"uplinks":4,"visual_status":"experimental","faceplate":"faceplates/24rj45-4sfp.png","optional_faceplates":[],"profile":"stock_24rj45_4sfp","canvas":{"width":2048,"height":448}},{"model":"HP J8693A Switch 3500yl-48G","status":"experimental","family":"3500yl","rj45":44,"uplinks":4,"visual_status":"experimental","faceplate":"faceplates/48rj45-4sfp.png","optional_faceplates":[],"profile":"stock_48rj45_4sfp","canvas":{"width":2048,"height":448}},{"model":"USW Pro HD 24 PoE","status":"experimental","family":"UniFi Switch Pro HD","rj45":24,"uplinks":4,"visual_status":"experimental","faceplate":"faceplates/unifi-24-rj45-4sfp-inline.png","optional_faceplates":[],"profile":"unifi_24_rj45_4sfp_inline","canvas":{"width":2048,"height":448}},{"model":"USW Aggregation","status":"experimental","family":"UniFi Switch Aggregation","rj45":0,"uplinks":8,"visual_status":"experimental","faceplate":"faceplates/unifi-32sfp.png","optional_faceplates":[],"profile":"unifi_32sfp","canvas":{"width":2048,"height":448},"unifi_api_port_map":{"rj45":[],"sfp":[1,2,3,4,5,6,7,8]}},{"model":"USW Enterprise 24 PoE","status":"experimental","family":"UniFi Switch Enterprise","rj45":24,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-24p-rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_24p_rj45_2sfp","canvas":{"width":2048,"height":448},"unifi_api_port_map":{"rj45":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],"sfp":[25,26]}},{"model":"USW Flex 2.5G 5","status":"experimental","family":"UniFi Switch Flex","rj45":5,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/unifi-5rj45.png","optional_faceplates":[],"profile":"default_unifi_5_rj45","canvas":{"width":2048,"height":448},"unifi_api_port_map":{"rj45":[1,2,3,4,5],"sfp":[]}},{"model":"USW WAN","status":"experimental","family":"UniFi WAN Switch","rj45":1,"uplinks":3,"visual_status":"experimental","faceplate":"faceplates/unifi-3sfp.png","optional_faceplates":[],"profile":"unifi_3sfp","canvas":{"width":2048,"height":448},"unifi_api_port_map":{"rj45":[4],"sfp":[1,2,3]}},{"model":"GS1915-24EP","status":"experimental","family":"GS1915","rj45":24,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/24rj45-2sfp.png","optional_faceplates":[],"profile":"stock_24rj45_2sfp","canvas":{"width":2048,"height":448}}];
+const SV_DEVICE_VISUAL_RECOMMENDATIONS = [{"model":"WS-C3650-48PD-E","status":"confirmed","family":"Catalyst 3650","rj45":48,"uplinks":4,"visual_status":"confirmed","faceplate":"faceplates/48rj45-4sfp.png","optional_faceplates":[],"profile":"default_cisco_48_port","canvas":{"width":2048,"height":448}},{"model":"WS-C3650-48PD-L","status":"confirmed","family":"Catalyst 3650","rj45":48,"uplinks":4,"visual_status":"confirmed","faceplate":"faceplates/48rj45-4sfp.png","optional_faceplates":[],"profile":"default_cisco_48_port","canvas":{"width":2048,"height":448}},{"model":"WS-C2960X-48FPD-L","status":"confirmed","family":"Catalyst 2960X","rj45":48,"uplinks":2,"visual_status":"confirmed","faceplate":"faceplates/48rj45-2sfp.png","optional_faceplates":[],"profile":"cisco_2960s_48p","canvas":{"width":2048,"height":448}},{"model":"WS-C2960X-24PS-L","status":"experimental","family":"Catalyst 2960X","rj45":24,"uplinks":4,"visual_status":"confirmed","faceplate":"faceplates/24rj45-4sfp.png","optional_faceplates":[],"profile":"cisco_2960x_24p","canvas":{"width":2048,"height":448}},{"model":"WS-C2960X-24TS-L","status":"experimental","family":"Catalyst 2960X","rj45":24,"uplinks":4,"visual_status":"confirmed","faceplate":"faceplates/24rj45-4sfp.png","optional_faceplates":[],"profile":"cisco_2960x_24p","canvas":{"width":2048,"height":448}},{"model":"WS-C2960S-48FPD-L","status":"confirmed","family":"Catalyst 2960S","rj45":48,"uplinks":2,"visual_status":"confirmed","faceplate":"faceplates/48rj45-2sfp.png","optional_faceplates":[],"profile":"cisco_2960s_48p","canvas":{"width":2048,"height":448}},{"model":"WS-C3560CG-8PC-S","status":"experimental","family":"Catalyst 3560-C","rj45":8,"uplinks":2,"visual_status":"confirmed","faceplate":"faceplates/c3560cg-8pc-s.png","optional_faceplates":["faceplates/24rj45-2sfp.png"],"profile":"cisco_3560cg_8pc","canvas":{"width":2048,"height":329}},{"model":"WS-C3850-12XS-E","status":"community_validated","family":"Catalyst 3850","rj45":0,"uplinks":12,"visual_status":"community_validated","faceplate":"faceplates/cisco-3850-12xs.png","optional_faceplates":[],"profile":"cisco_3850_12xs","canvas":{"width":2048,"height":448}},{"model":"EX3300-48P","status":"confirmed","family":"EX3300","rj45":48,"uplinks":4,"visual_status":"confirmed","faceplate":"faceplates/48rj45-4sfp.png","optional_faceplates":[],"profile":"default_cisco_48_port","canvas":{"width":2048,"height":448}},{"model":"CRS328-24P-4S+RM","status":"experimental","family":"CRS328","rj45":24,"uplinks":4,"visual_status":"experimental","faceplate":"faceplates/24rj45-4sfp.png","optional_faceplates":[],"profile":"stock_24rj45_4sfp","canvas":{"width":2048,"height":448}},{"model":"SG500X-24","status":"community_validated","family":"Small Business SG500X","rj45":24,"uplinks":4,"visual_status":"community_validated","faceplate":"faceplates/24rj45-4sfp.png","optional_faceplates":[],"profile":"cisco_2960x_24p","canvas":{"width":2048,"height":448}},{"model":"S5720-12TP-LI-AC","status":"community_validated","family":"S5720","rj45":8,"uplinks":4,"visual_status":"community_validated","faceplate":"faceplates/24rj45-4sfp.png","optional_faceplates":[],"profile":"stock_24rj45_4sfp","canvas":{"width":2048,"height":448}},{"model":"XS1930-10","status":"experimental","family":"XS1930","rj45":8,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/c3560cg-8pc-s.png","optional_faceplates":[],"profile":"cisco_3560cg_8pc","canvas":{"width":2048,"height":329}},{"model":"USW-Enterprise-8-PoE","status":"experimental","family":"UniFi Switch Enterprise","rj45":8,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-8-rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_8_rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"USW-Pro-24-PoE","status":"experimental","family":"UniFi Switch Pro","rj45":24,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-24-rj45-2sfp-inline.png","optional_faceplates":["faceplates/24rj45-4sfp.png"],"profile":"unifi_24_rj45_2sfp_inline","canvas":{"width":2048,"height":448}},{"model":"USW Lite 16 PoE","status":"experimental","family":"UniFi Switch Lite","rj45":16,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/24rj45-2sfp.png","optional_faceplates":[],"profile":"stock_24rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"USW Pro XG 8 PoE","status":"experimental","family":"UniFi Switch Pro XG","rj45":8,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-8-rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_8_rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"S5735-L8P4X-A1","status":"community_validated","family":"S5735-L","rj45":8,"uplinks":4,"visual_status":"community_validated","faceplate":"faceplates/24rj45-4sfp.png","optional_faceplates":[],"profile":"stock_24rj45_4sfp","canvas":{"width":2048,"height":448}},{"model":"UDM Pro","status":"experimental","family":"UniFi Dream Machine Pro","rj45":9,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-9rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_9_rj45_2sfp","canvas":{"width":2048,"height":448},"port_roles":{"rj45":{"9":"wan"}}},{"model":"N2128PX-ON","status":"experimental","family":"Dell EMC Networking N2000","rj45":28,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/dell-28-rj45-2sfp.png","optional_faceplates":[],"profile":"dell_28rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"US 48 PoE 500W","status":"experimental","family":"UniFi Switch","rj45":48,"uplinks":4,"visual_status":"experimental","faceplate":"faceplates/48rj45-4sfp.png","optional_faceplates":[],"profile":"stock_48rj45_4sfp","canvas":{"width":2048,"height":448}},{"model":"US 48","status":"experimental","family":"UniFi Switch","rj45":48,"uplinks":4,"visual_status":"experimental","faceplate":"faceplates/48rj45-4sfp.png","optional_faceplates":[],"profile":"stock_48rj45_4sfp","canvas":{"width":2048,"height":448}},{"model":"US XG 16","status":"experimental","family":"UniFi Switch XG","rj45":4,"uplinks":12,"visual_status":"detected","faceplate":"faceplates/unifi-4-rj45-12sfp.png","optional_faceplates":[],"profile":"unifi_4_rj45_12sfp","canvas":{"width":2048,"height":448},"unifi_api_port_map":{"rj45":[13,14,15,16],"sfp":[1,2,3,4,5,6,7,8,9,10,11,12]}},{"model":"USW Pro Aggregation","status":"detected","family":"UniFi Switch Pro Aggregation","rj45":0,"uplinks":32,"visual_status":"detected","faceplate":"faceplates/unifi-32sfp.png","optional_faceplates":[],"profile":"unifi_32sfp","canvas":{"width":2048,"height":448},"unifi_api_port_map":{"rj45":[],"sfp":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32]}},{"model":"US 8 60W","status":"experimental","family":"UniFi Switch 8 60W","rj45":8,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/unifi-8rj45.png","optional_faceplates":[],"profile":"default_unifi_8_rj45","canvas":{"width":2048,"height":448}},{"model":"USW Flex","status":"experimental","family":"UniFi Switch Flex","rj45":5,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/unifi-5rj45.png","optional_faceplates":[],"profile":"default_unifi_5_rj45","canvas":{"width":2048,"height":448}},{"model":"USW Flex 2.5G 8 PoE","status":"experimental","family":"UniFi Switch Flex 2.5G 8 PoE","rj45":9,"uplinks":1,"visual_status":"experimental","faceplate":"faceplates/24rj45-2sfp.png","optional_faceplates":[],"profile":"stock_24rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"USW Flex Mini","status":"experimental","family":"UniFi Switch Flex Mini","rj45":5,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/usw-flex-mini.png","optional_faceplates":[],"profile":"usw_flex_mini","canvas":{"width":2048,"height":448}},{"model":"USW Pro 24","status":"experimental","family":"UniFi Switch Pro 24","rj45":24,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-24-rj45-2sfp-inline.png","optional_faceplates":[],"profile":"unifi_24_rj45_2sfp_inline","canvas":{"width":2048,"height":448}},{"model":"USW-16-PoE","status":"experimental","family":"UniFi Switch 16 PoE","rj45":16,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-16rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_16_rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"USW-24-PoE","status":"experimental","family":"UniFi Switch 24 PoE","rj45":24,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-24-rj45-2sfp-inline.png","optional_faceplates":[],"profile":"unifi_24_rj45_2sfp_inline","canvas":{"width":2048,"height":448}},{"model":"USW-Lite-8-PoE","status":"experimental","family":"UniFi Switch Lite 8 PoE","rj45":8,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/unifi-8rj45.png","optional_faceplates":[],"profile":"default_unifi_8_rj45","canvas":{"width":2048,"height":448}},{"model":"UniFi Dream Machine PRO SE","status":"experimental","family":"UniFi Dream Machine Pro SE","rj45":9,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-9rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_9_rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"UCG Ultra","status":"experimental","family":"UniFi Cloud Gateway Ultra","rj45":5,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/unifi-5rj45.png","optional_faceplates":[],"profile":"default_unifi_5_rj45","canvas":{"width":2048,"height":448}},{"model":"US 16 PoE 150W","status":"experimental","family":"UniFi Switch 16 PoE 150W","rj45":16,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-16rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_16_rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"USW Pro Max 24","status":"experimental","family":"UniFi Switch Pro Max 24","rj45":24,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-24p-rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_24p_rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"USW Ultra","status":"experimental","family":"UniFi Switch Ultra","rj45":8,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/unifi-8rj45.png","optional_faceplates":[],"profile":"default_unifi_8_rj45","canvas":{"width":2048,"height":448}},{"model":"WS-C3750-48P","status":"experimental","family":"Catalyst 3750","rj45":48,"uplinks":4,"visual_status":"experimental","faceplate":"faceplates/48rj45-4sfp.png","optional_faceplates":[],"profile":"default_cisco_48_port","canvas":{"width":2048,"height":448}},{"model":"UDM Pro Max","status":"experimental","family":"UniFi Dream Machine Pro Max","rj45":9,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-9rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_9_rj45_2sfp","canvas":{"width":2048,"height":448},"unifi_api_port_map":{"rj45":[1,2,3,4,5,6,7,8,9],"sfp":[10,11]}},{"model":"USW Pro XG 24 PoE","status":"experimental","family":"UniFi Switch Pro XG","rj45":24,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-24-rj45-2sfp-inline.png","optional_faceplates":[],"profile":"unifi_24_rj45_2sfp_inline","canvas":{"width":2048,"height":448},"unifi_api_port_map":{"rj45":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],"sfp":[25,26]}},{"model":"HP 1810-24G","status":"experimental","family":"1810","rj45":24,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/24rj45-2sfp.png","optional_faceplates":[],"profile":"stock_24rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"HP ProCurve 1810G-24","status":"experimental","family":"1810","rj45":24,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/24rj45-2sfp.png","optional_faceplates":[],"profile":"stock_24rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"GS1900-8","status":"experimental","family":"GS1900","rj45":8,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/24rj45-2sfp.png","optional_faceplates":[],"profile":"stock_24rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"SR-S25G3420F","status":"experimental","family":"SR-S25G","rj45":16,"uplinks":4,"visual_status":"experimental","faceplate":"faceplates/24rj45-4sfp.png","optional_faceplates":[],"profile":"stock_24rj45_4sfp","canvas":{"width":2048,"height":448}},{"model":"US-8-150W","status":"experimental","family":"UniFi Switch 8 150W","rj45":8,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-8-rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_8_rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"US-24-250W","status":"experimental","family":"UniFi Switch 24 250W","rj45":24,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-24p-rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_24p_rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"PowerConnect 5548P","status":"experimental","family":"PowerConnect 5500","rj45":48,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/48rj45-2sfp.png","optional_faceplates":[],"profile":"stock_48rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"GS1900-24E","status":"experimental","family":"GS1900","rj45":24,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/24rj45-2sfp.png","optional_faceplates":[],"profile":"stock_24rj45_2sfp","canvas":{"width":2048,"height":448}},{"model":"WS-C3750X-48P","status":"experimental","family":"Catalyst 3750X","rj45":48,"uplinks":4,"visual_status":"experimental","faceplate":"faceplates/48rj45-4sfp.png","optional_faceplates":[],"profile":"default_cisco_48_port","canvas":{"width":2048,"height":448}},{"model":"WS-C3750X-48P-S","status":"experimental","family":"Catalyst 3750X","rj45":48,"uplinks":4,"visual_status":"experimental","faceplate":"faceplates/48rj45-4sfp.png","optional_faceplates":[],"profile":"default_cisco_48_port","canvas":{"width":2048,"height":448}},{"model":"SG350-20","status":"experimental","family":"Cisco Small Business SG350","rj45":18,"uplinks":4,"visual_status":"experimental","faceplate":"faceplates/24rj45-4sfp.png","optional_faceplates":[],"profile":"stock_24rj45_4sfp","canvas":{"width":2048,"height":448}},{"model":"HP J8693A Switch 3500yl-48G","status":"experimental","family":"3500yl","rj45":48,"uplinks":4,"visual_status":"experimental","faceplate":"faceplates/48rj45-4sfp.png","optional_faceplates":[],"profile":"stock_48rj45_4sfp","canvas":{"width":2048,"height":448}},{"model":"USW Pro HD 24 PoE","status":"experimental","family":"UniFi Switch Pro HD","rj45":24,"uplinks":4,"visual_status":"experimental","faceplate":"faceplates/unifi-24-rj45-4sfp-inline.png","optional_faceplates":[],"profile":"unifi_24_rj45_4sfp_inline","canvas":{"width":2048,"height":448}},{"model":"USW Aggregation","status":"experimental","family":"UniFi Switch Aggregation","rj45":0,"uplinks":8,"visual_status":"experimental","faceplate":"faceplates/unifi-32sfp.png","optional_faceplates":[],"profile":"unifi_32sfp","canvas":{"width":2048,"height":448},"unifi_api_port_map":{"rj45":[],"sfp":[1,2,3,4,5,6,7,8]}},{"model":"USW Enterprise 24 PoE","status":"experimental","family":"UniFi Switch Enterprise","rj45":24,"uplinks":2,"visual_status":"experimental","faceplate":"faceplates/unifi-24p-rj45-2sfp.png","optional_faceplates":[],"profile":"unifi_24p_rj45_2sfp","canvas":{"width":2048,"height":448},"unifi_api_port_map":{"rj45":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],"sfp":[25,26]}},{"model":"USW Flex 2.5G 5","status":"experimental","family":"UniFi Switch Flex","rj45":5,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/unifi-5rj45.png","optional_faceplates":[],"profile":"default_unifi_5_rj45","canvas":{"width":2048,"height":448},"unifi_api_port_map":{"rj45":[1,2,3,4,5],"sfp":[]}},{"model":"USW WAN","status":"experimental","family":"UniFi WAN Switch","rj45":1,"uplinks":3,"visual_status":"experimental","faceplate":"faceplates/unifi-3sfp.png","optional_faceplates":[],"profile":"unifi_3sfp","canvas":{"width":2048,"height":448},"unifi_api_port_map":{"rj45":[4],"sfp":[1,2,3]}},{"model":"GS1915-24EP","status":"experimental","family":"GS1915","rj45":24,"uplinks":0,"visual_status":"experimental","faceplate":"faceplates/24rj45-2sfp.png","optional_faceplates":[],"profile":"stock_24rj45_2sfp","canvas":{"width":2048,"height":448}}];
 
 function exactModelVisualRecommendation(model) {
   const exact = String(model || "").trim().toUpperCase();
@@ -7831,7 +7899,7 @@ const testModeBadge = testModeUi.show !== false
 
 
   detectedExactModel() {
-    const member = normalizePanelMember(this.config).toLowerCase();
+    const member = normalizeEntityPrefix(this.config).toLowerCase();
     const discoveredModel = this._hass ? firstEntityValue(this._hass, [
       `sensor.${member}_model`,
       `sensor.${member}_switch_model`,
@@ -10927,13 +10995,20 @@ const testModeBadge = testModeUi.show !== false
         event.stopPropagation();
         event.stopImmediatePropagation();
 
+        const calibrationActive = calibrationControlsEnabled(this.config);
+        const sharedLogicalPort = !calibrationActive && type === "sfp"
+          ? sfpLogicalPort(this.config, id)
+          : null;
+        const selectedType = sharedLogicalPort ? "port" : type;
+        const selectedId = sharedLogicalPort || id;
+
         const nextConfig = {
           ...this.config,
-          selected_interface: { type, id },
-          selected_port: type === "port" ? id : null
+          selected_interface: { type: selectedType, id: selectedId },
+          selected_port: selectedType === "port" ? selectedId : null
         };
 
-        if (calibrationControlsEnabled(this.config)) {
+        if (calibrationActive) {
           nextConfig.calibration_target = `${type}:${id}`;
           nextConfig.calibration_part = type === "port" ? "entire" : "center";
         }

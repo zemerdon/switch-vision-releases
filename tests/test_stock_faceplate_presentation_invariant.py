@@ -49,11 +49,16 @@ class StockFaceplatePresentationInvariantTests(unittest.TestCase):
         self.assertIn("const visibleLabel = String(port.display_name || n);", source)
         self.assertNotIn("port_label_offset", source)
 
+        sfp_logical_fn = extract_js_function(
+            source,
+            "function sfpLogicalPort(config, sfpPort)",
+        )
         sfp_fn = extract_js_function(
             source,
             "function sfpVisibleLabel(config, sfpPort, fallback, calibration = null)",
         )
         harness = f"""
+{sfp_logical_fn}
 {sfp_fn}
 function expect(actual, expected, label) {{
   if (actual !== expected) throw new Error(`${{label}}: got ${{actual}}, expected ${{expected}}`);

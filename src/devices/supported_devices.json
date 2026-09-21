@@ -2728,6 +2728,81 @@
       }
     },
     {
+      "vendor": "HP",
+      "family": "1810",
+      "model": "HP ProCurve 1810G-24",
+      "status": "experimental",
+      "confirmed_since": "2.4.47",
+      "last_validated_version": "2.4.47",
+      "evidence": "support_my_switch_real_hardware_plus_hpe_manufacturer_contract",
+      "ports": {
+        "rj45": 22,
+        "poe": false,
+        "uplinks": 2,
+        "uplink_type": "2 dual-personality 1G RJ45/SFP",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 0,
+        "combo_ports": 2,
+        "combo_logical_ports": [
+          23,
+          24
+        ]
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "hp-procurve-1810g-24-22p-2dual",
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "P.2.24"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "A sanitized real-hardware Support My Switch contribution identifies HP ProCurve 1810G-24 on sysObjectID 1.3.6.1.4.1.11.2.3.7.11.104 with firmware P.2.24.",
+        "The contributed IF-MIB exposes logical Ethernet interfaces 1-24 plus a non-physical CPU interface; HPE manufacturer documentation identifies this J9450A generation as 22 fixed copper ports plus two dual-personality RJ45/mini-GBIC positions.",
+        "Ports 23-24 remain neutral uplink/combo positions because the contributed targeted walk contains no DOT3-MAU rows proving which medium was active.",
+        "The stock 24RJ45+2SFP faceplate is a closest existing visual for the physical connector layout; shared combo positions must not be treated as independent duplicate logical ports."
+      ],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed_sysdescr_and_sysobjectid",
+        "rj45_mapping": "real_hardware_indexes_1_22_fixed_copper_confirmed",
+        "poe": "not_applicable",
+        "system_sensors": "not_exposed_in_contributed_targeted_capture",
+        "uplinks": "manufacturer_confirmed_dual_personality_indexes_23_24_medium_pending",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      },
+      "contributions": [
+        {
+          "id": "evidence-hp-procurve-1810g-24-a",
+          "source_component": "Discovery SNMP",
+          "source_discovery_version": "2.4.46",
+          "devices_observed": 1,
+          "validation_scope": "exact_identity_22_fixed_plus_2_dual_personality_ports",
+          "api_capabilities": {},
+          "dashboard_validation": "pending_post_admission_user_validation",
+          "contributor": {
+            "display_name": "community contributor",
+            "public_credit": false
+          }
+        }
+      ]
+    },
+    {
       "vendor": "Zyxel",
       "family": "GS1900",
       "model": "GS1900-8",
@@ -3013,7 +3088,7 @@
       "model": "GS1900-24E",
       "status": "experimental",
       "confirmed_since": "2.3.24",
-      "last_validated_version": "2.3.24",
+      "last_validated_version": "2.4.47",
       "evidence": "support_my_switch_real_hardware_contribution",
       "ports": {
         "rj45": 24,
@@ -3021,12 +3096,13 @@
         "uplinks": 0,
         "uplink_type": "none",
         "gigabit_sfp": 0,
-        "ten_gigabit_sfp_plus": 0
+        "ten_gigabit_sfp_plus": 0,
+        "combo_ports": 0
       },
       "stack_support": false,
       "discovery_support": true,
       "dashboard_support": true,
-      "mapping_profile": "",
+      "mapping_profile": "zyxel-gs1900-24e",
       "calibration_profile": "stock_24rj45_2sfp",
       "default_faceplate": "faceplates/24rj45-2sfp.png",
       "optional_faceplates": [],
@@ -3143,24 +3219,99 @@
     },
     {
       "vendor": "Cisco",
+      "family": "Catalyst 3750X",
+      "model": "WS-C3750X-48P-S",
+      "status": "experimental",
+      "confirmed_since": "2.4.47",
+      "last_validated_version": "2.4.47",
+      "evidence": "support_my_switch_real_hardware_contribution",
+      "ports": {
+        "rj45": 48,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "C3KX network-module SFP/SFP+",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": true,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-3750x-48p-c3kx",
+      "calibration_profile": "default_cisco_48_port",
+      "default_faceplate": "faceplates/48rj45-4sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "15.2(4)E10"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "A sanitized real-hardware contribution proves exact SKU WS-C3750X-48P-S on hardware revision V06 and IOS 15.2(4)E10.",
+        "ENTITY-MIB reports the -S SKU while chassis/stack evidence reports base physical model WS-C3750X-48P; the observed interface set matches the reviewed C3KX family contract.",
+        "C3KX network-module Gi aliases are de-duplicated against Te aliases, yielding 48 RJ45 plus two 1G SFP and two 10G SFP+ cages for the contributed module exposure.",
+        "Aggregate PoE, CPU and temperature telemetry are contribution-confirmed; fan/PSU state and detailed per-port PoE remain pending because the targeted collector did not capture those state tables."
+      ],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed_entity_mib_exact_sku",
+        "rj45_mapping": "real_hardware_48_confirmed_family_contract_reproduced",
+        "poe": "aggregate_real_hardware_confirmed_per_port_pending",
+        "system_sensors": "cpu_temperature_confirmed_fan_psu_state_pending",
+        "uplinks": "real_hardware_c3kx_alias_dedup_mapping_confirmed",
+        "stack": "single_member_observed_family_stack_support_inherited"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/48rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "default_cisco_48_port",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      },
+      "contributions": [
+        {
+          "id": "evidence-cisco-c3750x-48p-s-a",
+          "source_component": "Discovery SNMP",
+          "source_discovery_version": "2.4.46",
+          "devices_observed": 1,
+          "validation_scope": "exact_sku_single_member_c3kx_alias_dedup_and_aggregate_telemetry",
+          "api_capabilities": {},
+          "dashboard_validation": "pending_post_admission_user_validation",
+          "contributor": {
+            "display_name": "community contributor",
+            "public_credit": false
+          }
+        }
+      ]
+    },
+    {
+      "vendor": "Cisco",
       "family": "Cisco Small Business SG350",
       "model": "SG350-20",
       "status": "experimental",
       "confirmed_since": "2.3.24",
-      "last_validated_version": "2.3.24",
+      "last_validated_version": "2.4.47",
       "evidence": "support_my_switch_real_hardware_contribution",
       "ports": {
         "rj45": 16,
         "poe": false,
         "uplinks": 4,
         "uplink_type": "2 dual-personality copper/SFP + 2 SFP",
-        "gigabit_sfp": 2,
-        "ten_gigabit_sfp_plus": 0
+        "gigabit_sfp": 4,
+        "ten_gigabit_sfp_plus": 0,
+        "combo_ports": 2,
+        "combo_logical_ports": [
+          17,
+          18
+        ]
       },
       "stack_support": false,
       "discovery_support": true,
       "dashboard_support": true,
-      "mapping_profile": "",
+      "mapping_profile": "cisco-sg350-20-16p-2dual-2sfp",
       "calibration_profile": "stock_24rj45_4sfp",
       "default_faceplate": "faceplates/24rj45-4sfp.png",
       "optional_faceplates": [],
@@ -3214,7 +3365,7 @@
       "model": "HP J8693A Switch 3500yl-48G",
       "status": "experimental",
       "confirmed_since": "2.3.24",
-      "last_validated_version": "2.3.24",
+      "last_validated_version": "2.4.47",
       "evidence": "support_my_switch_real_hardware_contribution",
       "ports": {
         "rj45": 44,
@@ -3222,12 +3373,19 @@
         "uplinks": 4,
         "uplink_type": "4 dual-personality 1G RJ45/SFP",
         "gigabit_sfp": 4,
-        "ten_gigabit_sfp_plus": 0
+        "ten_gigabit_sfp_plus": 0,
+        "combo_ports": 4,
+        "combo_logical_ports": [
+          45,
+          46,
+          47,
+          48
+        ]
       },
       "stack_support": false,
       "discovery_support": true,
       "dashboard_support": true,
-      "mapping_profile": "",
+      "mapping_profile": "hp-3500yl-48g-44p-4dual",
       "calibration_profile": "stock_48rj45_4sfp",
       "default_faceplate": "faceplates/48rj45-4sfp.png",
       "optional_faceplates": [],
