@@ -10,11 +10,11 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current Core source version
 
-### Switch Vision v2.7.25
+### Switch Vision v2.7.26
 
-**v2.7.25** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.
+**v2.7.26** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.
 
-Core v2.7.20 makes Calibration font sizes user-facing render pixels on every faceplate, including native 6000×1325 profiles. RJ45, SFP/uplink, Status LED, and Status Box sizes now display/edit values such as 13, 13.5, 16.5, and 16 instead of native-coordinate storage values such as 38–48. The native conversion remains internal. The 2.7.19 per-switch **Card Height** viewport behaviour remains unchanged.
+Core v2.7.26 publishes the exact-model/combo-port batch and adds fail-closed Cisco fan/PSU and per-port PoE presentation. Dual-personality RJ45/SFP positions share one logical port state, WS-C3750X-48P-S and HP ProCurve 1810G-24 use their reviewed physical contracts, 1G SFP rich details use the explicit telemetry prefix, and Cisco PoE rows appear only when Discovery proves an exact physical-port join.
 
 Component versions validated when Core v2.2.2 was released:
 

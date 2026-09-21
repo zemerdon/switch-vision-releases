@@ -1,3 +1,12 @@
+## v2.7.26 — Exact-model, combo-port and Cisco telemetry release
+
+- Publish the exact WS-C3750X-48P-S Experimental contract and HP ProCurve 1810G-24 dual-personality contract already validated on local main.
+- Preserve shared logical-port state/details between RJ45 and SFP hitboxes for dual-personality ports while keeping Calibration geometry independent.
+- Complete 1G SFP VLAN/trunk/alias/description/name binding through the explicit entity-prefix contract.
+- Aggregate real Cisco ENVMON fan/PSU state entities without inventing health when rows are absent.
+- Show selected-port Cisco PoE state, class and power only when Discovery has an exact physical-port join; hide missing telemetry.
+- Add permanent regression coverage for Cisco telemetry binding and fail-closed presentation.
+
 ## v2.7.25 — Dell visual-state metadata reconciliation
 
 - Reconcile the Dell N2128PX-ON registry notes with the already-shipped dedicated 28 RJ45 + 2 SFP+ faceplate and owner-calibrated factory geometry.
@@ -676,6 +685,4 @@
 - Make UniFi / Ubiquiti an explicit visual family instead of a generic stock fallback.
 - Preserve existing saved/custom calibrations while refreshed defaults apply on reset.
 
-## Earlier releases
-
-Earlier detailed changelog entries have been consolidated from the public changelog as part of the Switch Vision public-attribution privacy policy. Public changelog and release-note text must not contain contributor/tester identities, submission identifiers, contribution package names, or submission filenames unless explicitly approved by the project owner.
+## Earlier relea

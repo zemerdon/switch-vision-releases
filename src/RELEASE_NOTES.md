@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.26
+
+Core 2.7.26 publishes the locally validated exact-model and combo-port batch together with richer Cisco hardware telemetry.
+
+The renderer now supports shared RJ45/SFP logical ports for dual-personality hardware, exact WS-C3750X-48P-S and HP ProCurve 1810G-24 presentation contracts, and the corrected 1G SFP rich-detail/entity-prefix binding used by WS-C2960XR-48LPS-I.
+
+Cisco ENVMON fan and power-supply state sensors can now be summarized in the switch status panel without synthesizing healthy state when telemetry is absent. Selected Cisco ports can also show RFC 3621 PoE delivery state/class and Cisco per-port power consumption when Discovery proves an exact ENTITY-MIB physical-port join; missing or ambiguous joins remain hidden.
+
 # Switch Vision Core v2.7.25
 
 Core 2.7.25 reconciles Dell N2128PX-ON registry metadata with the dedicated Dell 28 RJ45 + 2 SFP+ faceplate and owner-calibrated factory geometry that already ship.
