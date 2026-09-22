@@ -58,7 +58,6 @@ The repository now contains:
 - `VERSION` — Core release identity;
 - `Releases/switch-vision-2.2.2/` — generated install tree;
 - `tools/check_core_release_parity.py` — source/release parity validation;
-- `.github/workflows/validate-core-source.yml` — continuous parity validation.
 
 The restored `Releases/switch-vision-2.2.2/` tree was verified byte-for-byte
 against the previously published v2.2.2 install ZIP contents before being
