@@ -39,4 +39,4 @@ assert (ROOT / "src/faceplates/unifi-8rj45.png").is_file()
 assert (ROOT / "src/calibration/faceplate-unifi-8-rj45-2sfp.json").is_file()
 assert (ROOT / "src/calibration/faceplate-unifi-8rj45.json").is_file()
 
-print("Ian UniFi exact visual mapping regressions: PASS")
+print("UniFi 8-port exact visual mapping regressions: PASS")

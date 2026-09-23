@@ -141,7 +141,7 @@ def test_every_dashboard_default_profile_resolves_to_its_faceplate_geometry() ->
         assert visuals.get("calibration_profile") == profile, model
 
 
-def test_brendan_pro_max_keeps_original_standard_24_plus_2_geometry() -> None:
+def test_pro_max_keeps_original_standard_24_plus_2_geometry() -> None:
     devices = {
         str(row.get("model")): row
         for row in json.loads(REGISTRY.read_text(encoding="utf-8")).get("devices", [])
@@ -206,6 +206,6 @@ def test_stock_48_port_factory_presentation_contract() -> None:
 if __name__ == "__main__":
     test_all_shipped_faceplates_own_valid_native_geometry()
     test_every_dashboard_default_profile_resolves_to_its_faceplate_geometry()
-    test_brendan_pro_max_keeps_original_standard_24_plus_2_geometry()
+    test_pro_max_keeps_original_standard_24_plus_2_geometry()
     test_stock_48_port_factory_presentation_contract()
     print("Switch Vision shipped faceplate geometry integrity: PASS")

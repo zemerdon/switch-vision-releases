@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.27
+
+Core 2.7.27 is a privacy-maintenance release. It removes unapproved contributor/tester identity references from public release history and identity-specific references in public source regression material.
+
+Technical validation facts are preserved, but public attribution is neutral by default unless zemerdon explicitly approves the exact credit. Release preflight now checks carried historical release content fail-closed so an older attribution cannot be republished inside a newer package.
+
+There are no telemetry, device mapping, faceplate, calibration, or runtime behaviour changes in this patch.
+
 # Switch Vision Core v2.7.26
 
 Core 2.7.26 publishes the locally validated exact-model and combo-port batch together with richer Cisco hardware telemetry.

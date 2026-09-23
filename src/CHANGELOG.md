@@ -1,3 +1,11 @@
+## v2.7.27 — Public attribution privacy hardening
+
+- Remove unapproved contributor/tester identities from current and carried public release history.
+- Remove identity-specific names from public-source regression filenames, comments, output strings, and variable labels.
+- Keep technical validation facts while using neutral community attribution unless zemerdon explicitly approves exact public credit.
+- Strengthen release/publication privacy gates so carried historical release content is scanned fail-closed before publication.
+- No telemetry, device mapping, faceplate, calibration, or runtime behaviour changes.
+
 ## v2.7.26 — Exact-model, combo-port and Cisco telemetry release
 
 - Publish the exact WS-C3750X-48P-S Experimental contract and HP ProCurve 1810G-24 dual-personality contract already validated on local main.

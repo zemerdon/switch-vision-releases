@@ -43,7 +43,7 @@ class Catalyst3750ContractTests(unittest.TestCase):
         )
         serialized = json.dumps(self.device)
         self.assertNotIn("SV-2026-", serialized)
-        self.assertNotIn("Carlos", serialized)
+        self.assertNotRegex(serialized, r'"public_credit"\s*:\s*true')
 
 
 if __name__ == "__main__":

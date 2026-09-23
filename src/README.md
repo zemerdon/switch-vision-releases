@@ -10,9 +10,9 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current Core source version
 
-### Switch Vision v2.7.26
+### Switch Vision v2.7.27
 
-**v2.7.26** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.
+**v2.7.27** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.
 
 Core v2.7.26 publishes the exact-model/combo-port batch and adds fail-closed Cisco fan/PSU and per-port PoE presentation. Dual-personality RJ45/SFP positions share one logical port state, WS-C3750X-48P-S and HP ProCurve 1810G-24 use their reviewed physical contracts, 1G SFP rich details use the explicit telemetry prefix, and Cisco PoE rows appear only when Discovery proves an exact physical-port join.
 

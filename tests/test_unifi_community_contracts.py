@@ -46,7 +46,7 @@ for model, (rj45, uplinks, poe, dashboard, profile) in expected.items():
         assert contribution["api_capabilities"]["per_port_traffic"] is False, model
 
 promax = source_models["USW Pro Max 24"]
-# Preserve the original Brendan 2.4.10 visual contract. The later inline
+# Preserve the original 2.4.10 visual contract. The later inline
 # reassignment was registry drift, not new hardware evidence.
 assert promax["default_faceplate"] == "faceplates/unifi-24p-rj45-2sfp.png"
 assert promax["calibration_profile"] == "unifi_24p_rj45_2sfp"
