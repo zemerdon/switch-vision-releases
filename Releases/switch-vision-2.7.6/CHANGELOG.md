@@ -1,4 +1,4 @@
-## v2.7.6 — Ian UniFi 8-port visual mapping corrections
+## v2.7.6 — UniFi 8-port visual mapping corrections
 
 - Map exact `US-8-150W` to the already shipped owner-calibrated `unifi-8-rj45-2sfp.png` / `unifi_8_rj45_2sfp` visual, matching its proven 8 × RJ45 + 2 × 1G SFP physical contract without changing Experimental support confidence.
 - Map exact `US 8 60W` to the already shipped `unifi-8rj45.png` / `default_unifi_8_rj45` visual, matching its proven eight-RJ45/no-uplink physical contract and preserving its ports 5-8 PoE evidence.
