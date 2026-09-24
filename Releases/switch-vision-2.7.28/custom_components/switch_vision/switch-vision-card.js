@@ -6362,6 +6362,7 @@ class SwitchVision3650 extends HTMLElement {
     this.cancelScheduledLiveRefresh();
     this.cancelScheduledCalibrationSvgRefresh();
     this.stopActivityAnimation();
+    this._activityAnimationTargets = null;
     clearInterval(this._unifiRefreshTimer);
     this._unifiRefreshTimer = null;
     clearTimeout(this._calibrationSaveStatusTimer);
@@ -6653,25 +6654,56 @@ class SwitchVision3650 extends HTMLElement {
     return false;
   }
 
-  refreshActivityLeds() {
-    if (!this.isConnected || calibrationControlsEnabled(this.config) || !this.shadowRoot) return;
-    const activeCalibration = this._activityRenderCalibration;
-    if (!activeCalibration) return;
-
+  cacheActivityAnimationTargets() {
     const portActivityTargets = new Map();
-    const ensurePortTargets = (port) => {
-      if (!portActivityTargets.has(port)) portActivityTargets.set(port, { leds: [], labels: [] });
-      return portActivityTargets.get(port);
+    const sfpActivityTargets = new Map();
+    const ensureTargets = (map, port) => {
+      if (!map.has(port)) map.set(port, { leds: [], labels: [] });
+      return map.get(port);
     };
-    for (const element of this.shadowRoot.querySelectorAll("[data-cv-activity-port]")) {
-      const port = Number(element.dataset.cvActivityPort || 0);
-      if (port) ensurePortTargets(port).leds.push(element);
+
+    if (this.shadowRoot) {
+      for (const element of this.shadowRoot.querySelectorAll("[data-cv-activity-port]")) {
+        const port = Number(element.dataset.cvActivityPort || 0);
+        if (port) ensureTargets(portActivityTargets, port).leds.push(element);
+      }
+      for (const element of this.shadowRoot.querySelectorAll("[data-cv-activity-port-number]")) {
+        const port = Number(element.dataset.cvActivityPortNumber || 0);
+        if (port) ensureTargets(portActivityTargets, port).labels.push(element);
+      }
+      for (const element of this.shadowRoot.querySelectorAll("[data-cv-activity-sfp]")) {
+        const port = Number(element.dataset.cvActivitySfp || 0);
+        if (port) ensureTargets(sfpActivityTargets, port).leds.push(element);
+      }
+      for (const element of this.shadowRoot.querySelectorAll("[data-cv-activity-sfp-label]")) {
+        const port = Number(element.dataset.cvActivitySfpLabel || 0);
+        if (port) ensureTargets(sfpActivityTargets, port).labels.push(element);
+      }
     }
-    for (const element of this.shadowRoot.querySelectorAll("[data-cv-activity-port-number]")) {
-      const port = Number(element.dataset.cvActivityPortNumber || 0);
-      if (port) ensurePortTargets(port).labels.push(element);
-    }
-    for (const [port, targets] of portActivityTargets.entries()) {
+
+    this._activityAnimationTargets = {
+      ports: portActivityTargets,
+      sfp: sfpActivityTargets,
+    };
+    return this._activityAnimationTargets;
+  }
+
+  hasActivityAnimationTargets() {
+    const targets = this._activityAnimationTargets;
+    return Boolean(
+      targets
+      && ((targets.ports instanceof Map && targets.ports.size > 0)
+        || (targets.sfp instanceof Map && targets.sfp.size > 0))
+    );
+  }
+
+  refreshActivityLeds() {
+    if (!this.isConnected || calibrationControlsEnabled(this.config)) return;
+    const activeCalibration = this._activityRenderCalibration;
+    const cachedTargets = this._activityAnimationTargets;
+    if (!activeCalibration || !cachedTargets) return;
+
+    for (const [port, targets] of cachedTargets.ports.entries()) {
       const up = portIsUp(this._hass, this.config, port);
       const cls = activityClass(this.config, up && testPortActivity(this._hass, this.config, port));
       for (const element of targets.leds) {
@@ -6689,20 +6721,7 @@ class SwitchVision3650 extends HTMLElement {
       }
     }
 
-    const sfpActivityTargets = new Map();
-    const ensureSfpTargets = (port) => {
-      if (!sfpActivityTargets.has(port)) sfpActivityTargets.set(port, { leds: [], labels: [] });
-      return sfpActivityTargets.get(port);
-    };
-    for (const element of this.shadowRoot.querySelectorAll("[data-cv-activity-sfp]")) {
-      const port = Number(element.dataset.cvActivitySfp || 0);
-      if (port) ensureSfpTargets(port).leds.push(element);
-    }
-    for (const element of this.shadowRoot.querySelectorAll("[data-cv-activity-sfp-label]")) {
-      const port = Number(element.dataset.cvActivitySfpLabel || 0);
-      if (port) ensureSfpTargets(port).labels.push(element);
-    }
-    for (const [port, targets] of sfpActivityTargets.entries()) {
+    for (const [port, targets] of cachedTargets.sfp.entries()) {
       const up = sfpIsUp(this._hass, this.config, port);
       const cls = activityClass(this.config, up && testSfpActivity(this._hass, this.config, port));
       for (const element of targets.leds) {
@@ -6729,7 +6748,7 @@ class SwitchVision3650 extends HTMLElement {
   }
 
   scheduleActivityAnimationIfNeeded() {
-    if (!this.isConnected || calibrationControlsEnabled(this.config)) {
+    if (!this.isConnected || calibrationControlsEnabled(this.config) || !this.hasActivityAnimationTargets()) {
       this.stopActivityAnimation();
       return;
     }
@@ -6741,7 +6760,7 @@ class SwitchVision3650 extends HTMLElement {
 
     const refreshMs = Math.max(80, Number(this.config?.activity_animation_refresh_ms ?? 150));
     this._activityRenderTimer = setInterval(() => {
-      if (!this.isConnected || calibrationControlsEnabled(this.config)) {
+      if (!this.isConnected || calibrationControlsEnabled(this.config) || !this.hasActivityAnimationTargets()) {
         this.stopActivityAnimation();
         return;
       }
@@ -8964,6 +8983,7 @@ const testModeBadge = testModeUi.show !== false
 
     this._trackedEntityIds = dependencies;
     this._activityRenderCalibration = renderCal;
+    this.cacheActivityAnimationTargets();
   }
 
   render() {
