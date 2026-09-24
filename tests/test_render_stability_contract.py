@@ -190,6 +190,30 @@ async function scenarioCalibrationStability() {
 async function scenarioActivity() {
   const now = Date.now(); let states = {'sensor.sw1_port_1_status':entity('up', now-10000),'sensor.sw1_port_1_speed_mbps':entity('1000', now-10000),'sensor.sw1_port_1_rx_bytes':entity('1000', now-10000),'sensor.sw1_port_1_tx_bytes':entity('1000', now-10000)}; const conn = immediateConnection(); const card = document.createElement('switch-vision-3650'); card.setConfig({member:'SW1', selected_switch:'SW1', calibration_profile_load:false, calibration_profile_auto_load:false, port_count:48, sfp_port_count:4, status_entity_prefix:'sensor.sw1_port_', status_entity_suffix:'_status', activity_hold_seconds:0.5, activity_animation_refresh_ms:100}); document.body.appendChild(card); card.hass = makeHass(states, conn); await sleep(40); let redraws = 0, ticks = 0; const r = card.redrawSwitchSvg.bind(card), a = card.refreshActivityLeds.bind(card); card.redrawSwitchSvg = (...args) => { redraws++; return r(...args); }; card.refreshActivityLeds = (...args) => { ticks++; return a(...args); }; states = {...states,'sensor.sw1_port_1_rx_bytes':entity('500000',now),'sensor.sw1_port_1_tx_bytes':entity('250000',now)}; card.hass = makeHass(states, conn); await sleep(160); const active = {redraws, ticks, timer:card._activityRenderTimer != null}; await sleep(700); const led = card.shadowRoot.querySelector('[data-cv-activity-port="1"]'); const expired = {redraws, ticks, timer:card._activityRenderTimer != null, cls:led?.getAttribute('class')}; card.remove(); return {active, expired};
 }
+function scenarioActivityTargetScheduling() {
+  const card = document.createElement('switch-vision-3650');
+  document.body.appendChild(card);
+  card.attachShadow({mode:'open'});
+  card.config = {activity_animation_refresh_ms:1000};
+  card.hasActiveActivity = () => true;
+  const run = (markup) => {
+    card.shadowRoot.innerHTML = markup;
+    card.cacheActivityAnimationTargets();
+    const port = card._activityAnimationTargets.ports.get(1) || {leds:[], labels:[]};
+    card.scheduleActivityAnimationIfNeeded();
+    const out = {timer:card._activityRenderTimer != null, leds:port.leds.length, labels:port.labels.length};
+    card.stopActivityAnimation();
+    return out;
+  };
+  const out = {
+    none:run(''),
+    ledOnly:run('<circle data-cv-activity-port="1"></circle>'),
+    labelOnly:run('<text data-cv-activity-port-number="1"></text>'),
+    both:run('<circle data-cv-activity-port="1"></circle><text data-cv-activity-port-number="1"></text>'),
+  };
+  card.remove();
+  return out;
+}
 function scenarioNaturalActivityPattern() {
   const originalNow = Date.now;
   let clock = 100000;
@@ -442,7 +466,7 @@ async function scenarioNativeFontControls() {
   card.remove();
   return {initial, after, stored, rendered};
 }
-(async () => { try { const result = {live:await scenarioLiveGate(), subscriptions:await scenarioSubscriptions(), profile:await scenarioProfileRace(), calibration:await scenarioCalibrationStability(), activity:await scenarioActivity(), naturalActivity:scenarioNaturalActivityPattern(), colour:await scenarioColour(), faceplateHeight:await scenarioFaceplateHeight(), nativeFonts:await scenarioNativeFontControls()}; document.getElementById('result').textContent = JSON.stringify(result); } catch (err) { document.getElementById('result').textContent = JSON.stringify({error:String(err), stack:err?.stack||''}); } })();
+(async () => { try { const result = {live:await scenarioLiveGate(), subscriptions:await scenarioSubscriptions(), profile:await scenarioProfileRace(), calibration:await scenarioCalibrationStability(), activity:await scenarioActivity(), activityTargets:scenarioActivityTargetScheduling(), naturalActivity:scenarioNaturalActivityPattern(), colour:await scenarioColour(), faceplateHeight:await scenarioFaceplateHeight(), nativeFonts:await scenarioNativeFontControls()}; document.getElementById('result').textContent = JSON.stringify(result); } catch (err) { document.getElementById('result').textContent = JSON.stringify({error:String(err), stack:err?.stack||''}); } })();
 """
         document = '<!doctype html><html><body><pre id="result">pending</pre><script>' + source + '</script><script>' + harness + '</script></body></html>'
         with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False, encoding="utf-8") as handle:
@@ -480,6 +504,10 @@ async function scenarioNativeFontControls() {
         self.assertEqual(payload["activity"]["expired"]["redraws"], 1)
         self.assertFalse(payload["activity"]["expired"]["timer"])
         self.assertEqual(payload["activity"]["expired"]["cls"], "cv-led-off")
+        self.assertEqual(payload["activityTargets"]["none"], {"timer": False, "leds": 0, "labels": 0})
+        self.assertEqual(payload["activityTargets"]["ledOnly"], {"timer": True, "leds": 1, "labels": 0})
+        self.assertEqual(payload["activityTargets"]["labelOnly"], {"timer": True, "leds": 0, "labels": 1})
+        self.assertEqual(payload["activityTargets"]["both"], {"timer": True, "leds": 1, "labels": 1})
         self.assertGreater(payload["naturalActivity"]["medium"]["on"], payload["naturalActivity"]["slow"]["on"])
         self.assertGreater(payload["naturalActivity"]["fast"]["on"], payload["naturalActivity"]["medium"]["on"])
         self.assertGreaterEqual(payload["naturalActivity"]["medium"]["transitions"], 4)

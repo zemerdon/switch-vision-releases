@@ -71,18 +71,39 @@ class PortLabelStyleModeTests(unittest.TestCase):
         for marker in required:
             self.assertIn(marker, self.source)
 
-    def test_retained_activity_refresh_evaluates_each_port_once_and_updates_both_visuals(self) -> None:
-        start = self.source.index('  refreshActivityLeds() {')
-        end = self.source.index('\n  stopActivityAnimation() {', start)
-        block = self.source[start:end]
-        self.assertIn('const portActivityTargets = new Map();', block)
-        self.assertIn('const sfpActivityTargets = new Map();', block)
-        self.assertIn('for (const [port, targets] of portActivityTargets.entries())', block)
-        self.assertIn('for (const [port, targets] of sfpActivityTargets.entries())', block)
-        self.assertEqual(block.count('testPortActivity(this._hass, this.config, port)'), 1)
-        self.assertEqual(block.count('testSfpActivity(this._hass, this.config, port)'), 1)
-        self.assertIn('for (const element of targets.leds)', block)
-        self.assertIn('for (const element of targets.labels)', block)
+    def test_retained_activity_refresh_uses_cached_visible_targets_and_evaluates_each_port_once(self) -> None:
+        cache_start = self.source.index('  cacheActivityAnimationTargets() {')
+        refresh_start = self.source.index('  refreshActivityLeds() {', cache_start)
+        cache_block = self.source[cache_start:refresh_start]
+        refresh_end = self.source.index('\n  stopActivityAnimation() {', refresh_start)
+        refresh_block = self.source[refresh_start:refresh_end]
+
+        for marker in (
+            'this.shadowRoot.querySelectorAll("[data-cv-activity-port]")',
+            'this.shadowRoot.querySelectorAll("[data-cv-activity-port-number]")',
+            'this.shadowRoot.querySelectorAll("[data-cv-activity-sfp]")',
+            'this.shadowRoot.querySelectorAll("[data-cv-activity-sfp-label]")',
+            'this._activityAnimationTargets = {',
+        ):
+            self.assertIn(marker, cache_block)
+
+        self.assertIn('const cachedTargets = this._activityAnimationTargets;', refresh_block)
+        self.assertIn('for (const [port, targets] of cachedTargets.ports.entries())', refresh_block)
+        self.assertIn('for (const [port, targets] of cachedTargets.sfp.entries())', refresh_block)
+        self.assertNotIn('querySelectorAll(', refresh_block)
+        self.assertEqual(refresh_block.count('testPortActivity(this._hass, this.config, port)'), 1)
+        self.assertEqual(refresh_block.count('testSfpActivity(this._hass, this.config, port)'), 1)
+        self.assertIn('for (const element of targets.leds)', refresh_block)
+        self.assertIn('for (const element of targets.labels)', refresh_block)
+
+        redraw_start = self.source.index('  redrawSwitchSvg(activeCalibration = null) {')
+        redraw_end = self.source.index('\n  render() {', redraw_start)
+        self.assertIn('this.cacheActivityAnimationTargets();', self.source[redraw_start:redraw_end])
+
+        schedule_start = self.source.index('  scheduleActivityAnimationIfNeeded() {')
+        schedule_end = self.source.index('\n  set hass(hass) {', schedule_start)
+        schedule_block = self.source[schedule_start:schedule_end]
+        self.assertEqual(schedule_block.count('!this.hasActivityAnimationTargets()'), 2)
 
 
     def test_style_helpers_execute_expected_static_activity_and_link_speed_colours(self) -> None:
