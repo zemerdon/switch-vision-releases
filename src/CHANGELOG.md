@@ -1,4 +1,6 @@
-## v2.7.28 — Unified Port Label styles and hardware-style activity flicker
+## v2.7.29 — Unified Port Label styles, per-port LED visibility and hardware-style activity flicker
+
+- Supersede the unreleased 2.7.28 same-version local candidate so standard update detection installs the finalized source rather than treating an older 2.7.28 build as Latest.
 
 - Add **Port Label Style** with Static, Activity, and Link speed modes for RJ45 and SFP/uplink labels.
 - Keep Static as the backward-compatible default and preserve existing RJ45/SFP static label colours.

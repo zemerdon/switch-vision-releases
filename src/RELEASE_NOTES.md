@@ -1,6 +1,6 @@
-# Switch Vision Core v2.7.28
+# Switch Vision Core v2.7.29
 
-Core 2.7.28 adds a unified **Port Label Style** control to Calibration for both RJ45 port labels and SFP/uplink labels, and completes the activity-animation work with a faster hardware-style heavy-traffic flicker.
+Core 2.7.29 supersedes the unreleased same-version 2.7.28 local candidate so normal Switch Vision update flows detect the finalized source changes. It adds a unified **Port Label Style** control to Calibration for both RJ45 port labels and SFP/uplink labels, and completes the activity-animation work with a faster hardware-style heavy-traffic flicker.
 
 The selected-port controls now use the same visible terminology regardless of port type and remain available whenever an RJ45 or SFP/uplink port target is selected, regardless of which editable part is chosen. **Port Label Style** appears first, followed by **Port Label** Show/Hide, **Activity LED** Show/Hide, and **Link LED** Show/Hide. The style choices are **Static**, **Activity**, and **Link speed**. Static remains the default for backward-compatible appearance. Activity uses the same per-port activity state as the Activity LED so the label and LED stay synchronized, while Link speed reuses the existing link-speed colour logic and custom link-LED colour overrides.
 
