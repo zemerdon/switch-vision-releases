@@ -10,11 +10,11 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current Core source version
 
-### Switch Vision v2.7.27
+### Switch Vision v2.7.28
 
-**v2.7.27** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.
+**v2.7.28** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.
 
-Core v2.7.26 publishes the exact-model/combo-port batch and adds fail-closed Cisco fan/PSU and per-port PoE presentation. Dual-personality RJ45/SFP positions share one logical port state, WS-C3750X-48P-S and HP ProCurve 1810G-24 use their reviewed physical contracts, 1G SFP rich details use the explicit telemetry prefix, and Cisco PoE rows appear only when Discovery proves an exact physical-port join.
+Core v2.7.28 adds a unified Calibration **Port Label Style** control for RJ45 and SFP/uplink labels. Static remains the default, Activity keeps labels synchronized with the matching Activity LED, and Link speed follows the existing link-speed colour logic. Selected-port controls now use the same **Port Label Style** and **Port Label** wording regardless of port type.
 
 Component versions validated when Core v2.2.2 was released:
 

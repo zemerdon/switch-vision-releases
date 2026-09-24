@@ -1,3 +1,13 @@
+## v2.7.28 — Unified Port Label styles
+
+- Add **Port Label Style** with Static, Activity, and Link speed modes for RJ45 and SFP/uplink labels.
+- Keep Static as the backward-compatible default and preserve existing RJ45/SFP static label colours.
+- Make Activity-style labels consume the same per-port activity decision as the Activity LED so both remain synchronized.
+- Reuse the existing link-speed palette and custom link-LED colour override for Link speed mode.
+- Normalize selected-port Calibration wording to **Port Label Style** followed by **Port Label** Show/Hide regardless of port type.
+- Preserve existing type-specific visibility persistence internally for saved-profile compatibility.
+- Add permanent regressions for persistence, RJ45/SFP parity, activity synchronization, JavaScript mirror parity, and render stability.
+
 ## v2.7.27 — Public attribution privacy hardening
 
 - Remove unapproved contributor/tester identities from current and carried public release history.

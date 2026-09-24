@@ -1,3 +1,13 @@
+# Switch Vision Core v2.7.28
+
+Core 2.7.28 adds a unified **Port Label Style** control to Calibration for both RJ45 port labels and SFP/uplink labels.
+
+The selected-port controls now use the same visible terminology regardless of port type: **Port Label Style** appears first, followed by **Port Label** Show/Hide. The style choices are **Static**, **Activity**, and **Link speed**. Static remains the default for backward-compatible appearance. Activity uses the same per-port activity state as the Activity LED so the label and LED stay synchronized, while Link speed reuses the existing link-speed colour logic and custom link-LED colour overrides.
+
+RJ45 and SFP/uplink labels keep their existing saved static colours when Static is selected. The underlying visibility fields remain type-specific internally for profile compatibility, but that implementation detail is no longer exposed in the calibration wording.
+
+Permanent regression coverage verifies the shared Port Label Style contract, persisted calibration setting, RJ45/SFP behavior parity, exact activity synchronization, shipped JavaScript mirror parity, and existing render-stability behavior.
+
 # Switch Vision Core v2.7.27
 
 Core 2.7.27 is a privacy-maintenance release. It removes unapproved contributor/tester identity references from public release history and identity-specific references in public source regression material.
