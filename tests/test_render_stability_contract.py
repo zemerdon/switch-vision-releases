@@ -101,6 +101,37 @@ class RenderStabilityContractTests(unittest.TestCase):
         self.assertNotIn("const phase = elapsed % period;", self.source)
         self.assertNotIn("dutyCycle(displayLevel)", self.source)
 
+    def test_fast_activity_flicker_matches_hardware_reference(self) -> None:
+        self.assertIn(
+            "if (on) return Math.max(90, Math.round(cadence * (1.04 + (a * 0.13))));",
+            self.source,
+        )
+        self.assertIn(
+            "return Math.max(25, Math.round(cadence * (0.24 + (a * 0.06) + (b * 0.03))));",
+            self.source,
+        )
+        self.assertIn("activity_animation_refresh_ms: 25,", self.source)
+        self.assertIn(
+            "const refreshMs = Math.max(20, Number(this.config?.activity_animation_refresh_ms ?? 25));",
+            self.source,
+        )
+
+        cadence = 120
+        on_min = round(cadence * 1.04)
+        on_max = round(cadence * (1.04 + 0.13))
+        off_min = round(cadence * 0.24)
+        off_max = round(cadence * (0.24 + 0.06 + 0.03))
+        average_on = cadence * (1.04 + (0.5 * 0.13))
+        average_off = cadence * (0.24 + (0.5 * 0.06) + (0.5 * 0.03))
+        average_cycle = average_on + average_off
+
+        self.assertEqual((on_min, on_max), (125, 140))
+        self.assertEqual((off_min, off_max), (29, 40))
+        self.assertGreaterEqual(1000 / average_cycle, 5.8)
+        self.assertLessEqual(1000 / average_cycle, 6.2)
+        self.assertGreaterEqual(average_on / average_cycle, 0.78)
+        self.assertLessEqual(average_on / average_cycle, 0.82)
+
     def test_render_normalization_is_scoped_to_one_visual_pass(self) -> None:
         self.assertIn("function beginCalibrationUiRenderPass()", self.source)
         self.assertIn("const calibrationUiRenderPassCache = new WeakMap();", self.source)

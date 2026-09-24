@@ -2285,10 +2285,12 @@ function activityFlickerDurationMs(config, level, state, on) {
     return Math.max(100, Math.round(cadence * (0.35 + (a * 0.70) + (b * 0.20))));
   }
 
-  // Heavy traffic: mostly illuminated with short uneven drop-outs, mimicking
-  // the dense shimmer of a busy physical switch rather than a regular blink.
-  if (on) return Math.max(150, Math.round(cadence * (1.35 + (a * 1.65))));
-  return Math.max(80, Math.round(cadence * (0.15 + (a * 0.55) + (b * 0.15))));
+  // Heavy traffic: hardware-style rapid flicker tuned from the supplied
+  // reference. At the 120 ms factory cadence this yields about 125–140 ms ON
+  // and 29–40 ms OFF, averaging ~6 flashes/sec at roughly 80% ON duty while
+  // retaining deterministic per-port jitter.
+  if (on) return Math.max(90, Math.round(cadence * (1.04 + (a * 0.13))));
+  return Math.max(25, Math.round(cadence * (0.24 + (a * 0.06) + (b * 0.03))));
 }
 
 function resetActivityFlicker(state, key, config, level, now, sampleUpdated = 0) {
@@ -6484,7 +6486,7 @@ class SwitchVision3650 extends HTMLElement {
       activity_decay_ms: 3000,
       activity_slot_ms: 220,
       activity_heavy_slot_ms: 120,
-      activity_animation_refresh_ms: 150,
+      activity_animation_refresh_ms: 25,
       activity_led_sensitivity_preset: "normal",
       activity_slow_max_utilization_pct: 0.10,
       activity_medium_max_utilization_pct: 1.0,
@@ -6758,7 +6760,7 @@ class SwitchVision3650 extends HTMLElement {
     }
     if (this._activityRenderTimer) return;
 
-    const refreshMs = Math.max(80, Number(this.config?.activity_animation_refresh_ms ?? 150));
+    const refreshMs = Math.max(20, Number(this.config?.activity_animation_refresh_ms ?? 25));
     this._activityRenderTimer = setInterval(() => {
       if (!this.isConnected || calibrationControlsEnabled(this.config) || !this.hasActivityAnimationTargets()) {
         this.stopActivityAnimation();
