@@ -32,7 +32,7 @@ class PortLabelStyleModeTests(unittest.TestCase):
         block_end = self.source.index('const isPortLedSize', block_start)
         block = self.source[block_start:block_end]
         style_at = block.index('Port Label Style')
-        label_at = block.index('cv-cal-quick-label">Port Label')
+        label_at = block.index('>Port Label</span>')
         show_at = block.index('data-cv-action="show-number-label"')
         hide_at = block.index('data-cv-action="hide-number-label"')
         self.assertLess(style_at, label_at)
@@ -58,6 +58,76 @@ class PortLabelStyleModeTests(unittest.TestCase):
         self.assertNotIn('"Port number")', self.source)
         self.assertIn('option("label", type === "sfps" ? "All Port Labels" : "Port Label")', self.source)
         self.assertNotIn('"SFP label"', self.source)
+
+    def test_selected_port_controls_remain_visible_for_every_port_part(self) -> None:
+        block_start = self.source.index('const portNumberKeys = editable?.type === "number_labels"')
+        block_end = self.source.index('const isPortLedSize', block_start)
+        block = self.source[block_start:block_end]
+
+        for marker in (
+            'editable?.type === "port"',
+            'editable?.type === "ports"',
+            'editable?.type === "sfp"',
+            'editable?.type === "sfps"',
+            'data-cv-field="port-number-mode"',
+            'data-cv-action="show-number-label"',
+            'data-cv-action="hide-number-label"',
+            'data-cv-action="show-activity-led"',
+            'data-cv-action="hide-activity-led"',
+            'data-cv-action="show-link-led"',
+            'data-cv-action="hide-link-led"',
+        ):
+            self.assertIn(marker, block)
+
+        self.assertNotIn('editable?.part === "number" && editable?.type === "port"', block)
+        self.assertNotIn('editable?.part === "label" && editable?.type === "sfp"', block)
+
+        template_start = block.index('const numberLabelVisibilityControls')
+        template = block[template_start:]
+        self.assertLess(template.index('Port Label Style'), template.index('>Port Label</span>'))
+        self.assertLess(template.index('>Port Label</span>'), template.index('${selectedPortLedVisibilityControls}'))
+
+        led_controls_start = block.index('const selectedPortLedVisibilityControls')
+        led_controls_end = block.index('const numberLabelVisibilityControls', led_controls_start)
+        led_controls = block[led_controls_start:led_controls_end]
+        self.assertLess(led_controls.index('>Activity LED</span>'), led_controls.index('>Link LED</span>'))
+
+    def test_selected_port_led_visibility_is_persisted_and_render_gated(self) -> None:
+        required = (
+            'port.led_left_show = port.led_left_show !== false;',
+            'port.led_right_show = port.led_right_show !== false;',
+            'sfp.led_left_show = sfp.led_left_show !== false;',
+            'sfp.led_right_show = sfp.led_right_show !== false;',
+            '"led_left_show", "led_right_show", "number_show"',
+            'if (port.led_left_show !== false) portLed(',
+            'const activityLed = port.led_right_show !== false ? portLed(',
+            'if (sfp.led_left_show !== false) sfpLed(',
+            'const sfpActivityLed = sfp.led_right_show !== false ? sfpLed(',
+            'const field = activity ? "led_right_show" : "led_left_show";',
+            'cal.ports[key][field] = show;',
+            'cal.sfp[key][field] = show;',
+        )
+        for marker in required:
+            self.assertIn(marker, self.source)
+
+        self.assertIn(
+            'config.show_port_leds && portUi.show_activity_leds !== false && port.led_right_show !== false',
+            self.source,
+        )
+        self.assertIn(
+            'portUi.show_activity_leds !== false && sfp.led_right_show !== false',
+            self.source,
+        )
+
+    def test_selected_port_visibility_controls_have_explanatory_tooltips(self) -> None:
+        required = (
+            'title="Choose how port labels are drawn:',
+            'title="Show or hide the selected port label without changing its saved position, text, colour, or style."',
+            'title="Show or hide the selected port Activity LED without changing its telemetry mapping, position, size, or saved timing.',
+            'title="Show or hide the selected port Link LED without changing its link/speed telemetry mapping, position, size, or colour.',
+        )
+        for marker in required:
+            self.assertIn(marker, self.source)
 
     def test_rj45_and_sfp_labels_share_activity_and_link_speed_modes(self) -> None:
         required = (

@@ -2,15 +2,15 @@
 
 Core 2.7.28 adds a unified **Port Label Style** control to Calibration for both RJ45 port labels and SFP/uplink labels, and completes the activity-animation work with a faster hardware-style heavy-traffic flicker.
 
-The selected-port controls now use the same visible terminology regardless of port type: **Port Label Style** appears first, followed by **Port Label** Show/Hide. The style choices are **Static**, **Activity**, and **Link speed**. Static remains the default for backward-compatible appearance. Activity uses the same per-port activity state as the Activity LED so the label and LED stay synchronized, while Link speed reuses the existing link-speed colour logic and custom link-LED colour overrides.
+The selected-port controls now use the same visible terminology regardless of port type and remain available whenever an RJ45 or SFP/uplink port target is selected, regardless of which editable part is chosen. **Port Label Style** appears first, followed by **Port Label** Show/Hide, **Activity LED** Show/Hide, and **Link LED** Show/Hide. The style choices are **Static**, **Activity**, and **Link speed**. Static remains the default for backward-compatible appearance. Activity uses the same per-port activity state as the Activity LED so the label and LED stay synchronized, while Link speed reuses the existing link-speed colour logic and custom link-LED colour overrides.
 
-RJ45 and SFP/uplink labels keep their existing saved static colours when Static is selected. The underlying visibility fields remain type-specific internally for profile compatibility, but that implementation detail is no longer exposed in the calibration wording.
+RJ45 and SFP/uplink labels keep their existing saved static colours when Static is selected. Port-label visibility remains stored per port using the existing type-specific fields, while Activity and Link LED visibility are now also saved per selected port. The existing profile-wide Activity LED and Link LED switches remain master controls. Hiding an individual LED preserves that port's telemetry mapping, position, size, colour and saved timing. Explanatory tooltips are included for Port Label Style, Port Label, Activity LED and Link LED controls.
 
 Activity animation now caches only the visible LED/label targets after each redraw. If no visible activity target exists, no activity timer runs; LED-only and Activity-label-only modes update only their visible target, while both-visible mode shares one activity decision.
 
 Heavy/Fast activity is tuned to the supplied physical-switch reference while keeping the existing **120 ms Fast period** setting and supported range unchanged. At the factory Fast value, busy ports use approximately **125–140 ms ON / 29–40 ms OFF**, averaging about **6 flashes per second** at roughly **80% ON duty**. The internal activity render sample is reduced to 25 ms only while visible active targets exist so those short drop-outs remain visible without restoring hidden background work.
 
-Permanent regression coverage verifies the shared Port Label Style contract, persisted calibration setting, RJ45/SFP behavior parity, exact activity synchronization, hardware-style Fast timing, visible-target timer gating, shipped JavaScript mirror parity, and existing render-stability behavior.
+Permanent regression and browser coverage verifies the shared Port Label Style contract, controls remaining visible across every RJ45/SFP editable part, reversible per-port label/Activity/Link LED visibility, explanatory tooltips, RJ45/SFP behavior parity, exact activity synchronization, hardware-style Fast timing, visible-target timer gating, shipped JavaScript mirror parity, and existing render-stability behavior.
 
 # Switch Vision Core v2.7.27
 

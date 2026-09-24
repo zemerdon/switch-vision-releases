@@ -2967,6 +2967,8 @@ if (
     if (!port || typeof port !== "object") continue;
     port.led_left_size = normalisePortLedRectangleSize(port.led_left_size);
     port.led_right_size = normalisePortLedRectangleSize(port.led_right_size);
+    port.led_left_show = port.led_left_show !== false;
+    port.led_right_show = port.led_right_show !== false;
     port.number_show = port.number_show !== false;
     port.supported_speed = normalisePortSupportedSpeed(port.supported_speed);
     port.port_role = normalisePortRole(port.port_role);
@@ -2982,6 +2984,8 @@ if (
       sfp.label = fallback ? [Number(fallback.x), Number(fallback.y)] : [Number(sfp.center?.[0] || 0), Number(sfp.center?.[1] || 0) - 58];
     }
     sfp.label_show = sfp.label_show !== false;
+    sfp.led_left_show = sfp.led_left_show !== false;
+    sfp.led_right_show = sfp.led_right_show !== false;
     sfp.supported_speed = normalisePortSupportedSpeed(sfp.supported_speed);
     sfp.port_role = normalisePortRole(sfp.port_role);
     const displayName = String(sfp.display_name || "").trim().slice(0, 96);
@@ -4505,7 +4509,7 @@ function drawPanel(svg, { hass, config, calibration, layout }) {
     const speed = portSpeed(hass, config, n);
     const portUi = uiFromCalibration(calibration);
     const portNumberMode = normalisePortNumberMode(portUi.port_number_mode);
-    const activityNeeded = portNumberMode === "activity" || (config.show_port_leds && portUi.show_activity_leds !== false);
+    const activityNeeded = portNumberMode === "activity" || (config.show_port_leds && portUi.show_activity_leds !== false && port.led_right_show !== false);
     const activityOn = activityNeeded
       ? (calibrationTestMode ? true : (up && testPortActivity(hass, config, n)))
       : false;
@@ -4513,7 +4517,7 @@ function drawPanel(svg, { hass, config, calibration, layout }) {
     const linkCls = speedClass(speed, calibrationTestMode ? true : up);
 
     if (config.show_port_leds) {
-      portLed(
+      if (port.led_left_show !== false) portLed(
         svg,
         port.led_left[0],
         port.led_left[1],
@@ -4524,7 +4528,7 @@ function drawPanel(svg, { hass, config, calibration, layout }) {
         "led_left"
       );
 
-      const activityLed = portLed(
+      const activityLed = port.led_right_show !== false ? portLed(
         svg,
         port.led_right[0],
         port.led_right[1],
@@ -4533,7 +4537,7 @@ function drawPanel(svg, { hass, config, calibration, layout }) {
         calibration,
         port.led_right_size,
         "led_right"
-      );
+      ) : null;
       if (activityLed) activityLed.dataset.cvActivityPort = String(n);
     }
 
@@ -4575,7 +4579,7 @@ function drawPanel(svg, { hass, config, calibration, layout }) {
     const portNumberMode = normalisePortNumberMode(portUi.port_number_mode);
     const up = sfpIsUp(hass, config, sfpPort);
     const liveSfpSpeed = sfpSpeedMbps(hass, config, sfpPort);
-    const activityNeeded = portNumberMode === "activity" || portUi.show_activity_leds !== false;
+    const activityNeeded = portNumberMode === "activity" || (portUi.show_activity_leds !== false && sfp.led_right_show !== false);
     const activityOn = activityNeeded
       ? (calibrationTestMode ? true : (up && testSfpActivity(hass, config, sfpPort)))
       : false;
@@ -4612,7 +4616,7 @@ function drawPanel(svg, { hass, config, calibration, layout }) {
       }
     }
 
-    sfpLed(
+    if (sfp.led_left_show !== false) sfpLed(
       svg,
       sfp,
       "led_left",
@@ -4620,13 +4624,13 @@ function drawPanel(svg, { hass, config, calibration, layout }) {
       calibration
     );
 
-    const sfpActivityLed = sfpLed(
+    const sfpActivityLed = sfp.led_right_show !== false ? sfpLed(
       svg,
       sfp,
       "led_right",
       activityCls,
       calibration
-    );
+    ) : null;
     if (sfpActivityLed) sfpActivityLed.dataset.cvActivitySfp = String(sfpPort);
   }
 
@@ -4877,7 +4881,7 @@ function normaliseImportedFaceplateProfile(raw) {
 
 const SV_GEOMETRY_TRANSFER_TYPE = "switch-vision-geometry-profile-v1";
 const SV_FACEPLATE_TRANSFER_TYPE = "switch-vision-faceplate-profile-v2";
-const SV_GEOMETRY_ENTRY_KEYS = Object.freeze(["center", "number", "label", "led_left", "led_right", "hitbox", "led_left_size", "led_right_size", "number_show", "label_show", "supported_speed", "port_role"]);
+const SV_GEOMETRY_ENTRY_KEYS = Object.freeze(["center", "number", "label", "led_left", "led_right", "hitbox", "led_left_size", "led_right_size", "led_left_show", "led_right_show", "number_show", "label_show", "supported_speed", "port_role"]);
 const SV_GEOMETRY_BOX_KEYS = Object.freeze(["x", "y", "width", "height"]);
 const SV_GEOMETRY_RENDER_COORDINATE_SPACE = "switch-vision-render-2048x448-v1";
 
@@ -8481,30 +8485,52 @@ const testModeBadge = testModeUi.show !== false
     else if (editable) targetText = `${editable.type}:${editable.id} · ${partText}`;
     const portNumberKeys = editable?.type === "number_labels"
       ? sortedCalibrationPortKeys(cal)
-      : (editable?.part === "number" && editable?.type === "port"
+      : (editable?.type === "port"
         ? [editable.key]
-        : (editable?.part === "number" && editable?.type === "ports" ? calibrationPortKeysForEditable(cal, editable) : []));
+        : (editable?.type === "ports" ? calibrationPortKeysForEditable(cal, editable) : []));
     const sfpLabelKeys = editable?.type === "number_labels"
       ? Object.keys(cal.sfp || {})
-      : (editable?.part === "label" && editable?.type === "sfp"
+      : (editable?.type === "sfp"
         ? [editable.key]
-        : (editable?.part === "label" && editable?.type === "sfps" ? calibrationSfpKeysForEditable(cal, editable) : []));
+        : (editable?.type === "sfps" ? calibrationSfpKeysForEditable(cal, editable) : []));
     const visiblePortNumberCount = portNumberKeys.filter((key) => cal.ports?.[key]?.number_show !== false).length;
     const visibleSfpLabelCount = sfpLabelKeys.filter((key) => cal.sfp?.[key]?.label_show !== false).length;
     const numberLabelCount = portNumberKeys.length + sfpLabelKeys.length;
     const visibleNumberLabelCount = visiblePortNumberCount + visibleSfpLabelCount;
+    const portEditingTarget = ["port", "ports", "sfp", "sfps"].includes(String(editable?.type || ""));
+    const selectedPortCount = portEditingTarget ? numberLabelCount : 0;
+    const visibleActivityLedCount = portEditingTarget
+      ? portNumberKeys.filter((key) => cal.ports?.[key]?.led_right_show !== false).length
+        + sfpLabelKeys.filter((key) => cal.sfp?.[key]?.led_right_show !== false).length
+      : 0;
+    const visibleLinkLedCount = portEditingTarget
+      ? portNumberKeys.filter((key) => cal.ports?.[key]?.led_left_show !== false).length
+        + sfpLabelKeys.filter((key) => cal.sfp?.[key]?.led_left_show !== false).length
+      : 0;
+    const visibilitySummary = (visible, total) => visible === total
+      ? "Visible"
+      : (visible === 0 ? "Hidden" : `${visible} of ${total} visible`);
+    const selectedPortLedVisibilityControls = selectedPortCount ? `
+      <span class="cv-cal-quick-label" title="Show or hide the selected port Activity LED without changing its telemetry mapping, position, size, or saved timing. The profile-wide Activity LED switch remains the master control.">Activity LED</span>
+      <button type="button" title="Show the selected port Activity LED." data-cv-action="show-activity-led">Show</button>
+      <button type="button" title="Hide the selected port Activity LED while preserving its saved calibration and telemetry mapping." data-cv-action="hide-activity-led">Hide</button>
+      <span class="cv-cal-current">${visibilitySummary(visibleActivityLedCount, selectedPortCount)}</span>
+      <span class="cv-cal-quick-label" title="Show or hide the selected port Link LED without changing its link/speed telemetry mapping, position, size, or colour. The profile-wide Link LED switch remains the master control.">Link LED</span>
+      <button type="button" title="Show the selected port Link LED." data-cv-action="show-link-led">Show</button>
+      <button type="button" title="Hide the selected port Link LED while preserving its saved calibration and link/speed mapping." data-cv-action="hide-link-led">Hide</button>
+      <span class="cv-cal-current">${visibilitySummary(visibleLinkLedCount, selectedPortCount)}</span>` : "";
     const numberLabelVisibilityControls = numberLabelCount ? `<div class="cv-cal-tools-row cv-cal-port-number-visibility">
-      <label title="Static uses the saved label colour; Activity flashes with the port activity indication; Link speed follows the link LED colour">Port Label Style
+      <label title="Choose how port labels are drawn: Static uses the saved label colour, Activity follows port activity, and Link speed follows the link/speed LED colour.">Port Label Style
         <select class="cv-cal-select" data-cv-field="port-number-mode">
           <option value="static" ${normalisePortNumberMode(calibrationUi.port_number_mode) === "static" ? "selected" : ""}>Static</option>
           <option value="activity" ${normalisePortNumberMode(calibrationUi.port_number_mode) === "activity" ? "selected" : ""}>Activity</option>
           <option value="link_speed" ${normalisePortNumberMode(calibrationUi.port_number_mode) === "link_speed" ? "selected" : ""}>Link speed</option>
         </select>
       </label>
-      <span class="cv-cal-quick-label">Port Label</span>
-      <button type="button" data-cv-action="show-number-label">Show</button>
-      <button type="button" data-cv-action="hide-number-label">Hide</button>
-      <span class="cv-cal-current">${visibleNumberLabelCount === numberLabelCount ? "Visible" : (visibleNumberLabelCount === 0 ? "Hidden" : `${visibleNumberLabelCount} of ${numberLabelCount} visible`)}</span>
+      <span class="cv-cal-quick-label" title="Show or hide the selected port label without changing its saved position, text, colour, or style.">Port Label</span>
+      <button type="button" title="Show the selected port label." data-cv-action="show-number-label">Show</button>
+      <button type="button" title="Hide the selected port label while preserving its saved calibration." data-cv-action="hide-number-label">Hide</button>
+      <span class="cv-cal-current">${visibilitySummary(visibleNumberLabelCount, numberLabelCount)}</span>${selectedPortLedVisibilityControls}
     </div>` : "";
     const isPortLedSize = ["led_left", "led_right"].includes(editable?.part);
     const visualSize = hitbox ? (isPortLedSize ? hitbox : visualHitboxSize(editable?.type, hitbox)) : null;
@@ -10296,14 +10322,14 @@ const testModeBadge = testModeUi.show !== false
         if (["show-number-label", "hide-number-label", "show-port-number", "hide-port-number"].includes(action)) {
           const portKeys = editable?.type === "number_labels"
             ? sortedCalibrationPortKeys(cal)
-            : (editable?.type === "port" && editable?.part === "number"
+            : (editable?.type === "port"
               ? [editable.key]
-              : (editable?.type === "ports" && editable?.part === "number" ? calibrationPortKeysForEditable(cal, editable) : []));
+              : (editable?.type === "ports" ? calibrationPortKeysForEditable(cal, editable) : []));
           const sfpKeys = editable?.type === "number_labels"
             ? Object.keys(cal.sfp || {})
-            : (editable?.type === "sfp" && editable?.part === "label"
+            : (editable?.type === "sfp"
               ? [editable.key]
-              : (editable?.type === "sfps" && editable?.part === "label" ? Object.keys(cal.sfp || {}) : []));
+              : (editable?.type === "sfps" ? calibrationSfpKeysForEditable(cal, editable) : []));
           if (!portKeys.length && !sfpKeys.length) return;
           const show = ["show-number-label", "show-port-number"].includes(action);
           for (const key of portKeys) {
@@ -10315,6 +10341,32 @@ const testModeBadge = testModeUi.show !== false
           const count = portKeys.length + sfpKeys.length;
           this.markCalibrationDirty();
           this.setCalibrationSaveStatus(`${show ? "Shown" : "Hidden"} ${count} port label${count === 1 ? "" : "s"}`, false);
+          this.render();
+          this.clearCalibrationSaveStatusSoon();
+          return;
+        }
+
+        if (["show-activity-led", "hide-activity-led", "show-link-led", "hide-link-led"].includes(action)) {
+          const portKeys = editable?.type === "port"
+            ? [editable.key]
+            : (editable?.type === "ports" ? calibrationPortKeysForEditable(cal, editable) : []);
+          const sfpKeys = editable?.type === "sfp"
+            ? [editable.key]
+            : (editable?.type === "sfps" ? calibrationSfpKeysForEditable(cal, editable) : []);
+          if (!portKeys.length && !sfpKeys.length) return;
+          const show = action.startsWith("show-");
+          const activity = action.includes("activity");
+          const field = activity ? "led_right_show" : "led_left_show";
+          for (const key of portKeys) {
+            if (cal.ports?.[key]) cal.ports[key][field] = show;
+          }
+          for (const key of sfpKeys) {
+            if (cal.sfp?.[key]) cal.sfp[key][field] = show;
+          }
+          const count = portKeys.length + sfpKeys.length;
+          const label = activity ? "Activity LED" : "Link LED";
+          this.markCalibrationDirty();
+          this.setCalibrationSaveStatus(`${show ? "Shown" : "Hidden"} ${count} ${label}${count === 1 ? "" : "s"}`, false);
           this.render();
           this.clearCalibrationSaveStatusSoon();
           return;

@@ -6,6 +6,9 @@
 - Reuse the existing link-speed palette and custom link-LED colour override for Link speed mode.
 - Normalize selected-port Calibration wording to **Port Label Style** followed by **Port Label** Show/Hide regardless of port type.
 - Preserve existing type-specific visibility persistence internally for saved-profile compatibility.
+- Keep **Port Label Style** and **Port Label** controls visible whenever an RJ45 or SFP/uplink port target is selected, regardless of the currently selected editable part.
+- Add per-selected-port **Activity LED** Show/Hide and **Link LED** Show/Hide immediately after Port Label; persist those choices per port while retaining the existing profile-wide LED switches as master controls.
+- Add explanatory tooltips for the selected-port Port Label Style, Port Label, Activity LED and Link LED controls without changing saved geometry or telemetry mappings.
 - Cache visible activity targets after redraw and stop the activity timer completely when no Activity LED or Activity-style label is visible.
 - Update LED-only and Activity-label-only modes only at their visible target; when both are visible, reuse one per-port activity decision.
 - Tune heavy/Fast activity at the existing 120 ms factory setting to approximately **125–140 ms ON / 29–40 ms OFF**, about **6 flashes/sec** and roughly **80% ON duty**.
