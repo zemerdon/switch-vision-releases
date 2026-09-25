@@ -1,3 +1,9 @@
+# Switch Vision Core v2.7.30
+
+Core 2.7.30 adds an exact HP ProCurve 1810G-24 visual to the existing supported-device contract. The model now ships with its dedicated `hp-1810-24g.png` faceplate and owner-calibrated factory geometry covering 24 RJ45 ports and 2 SFP positions in Switch Vision's 2048 × 448 render coordinate space.
+
+The existing stock 24RJ45+2SFP artwork remains available as an optional fallback. This release changes presentation/calibration only; it does not invent or alter the established HP 1810G-24 physical or telemetry contract.
+
 # Switch Vision Core v2.7.29
 
 Core 2.7.29 supersedes the unreleased same-version 2.7.28 local candidate so normal Switch Vision update flows detect the finalized source changes. It adds a unified **Port Label Style** control to Calibration for both RJ45 port labels and SFP/uplink labels, and completes the activity-animation work with a faster hardware-style heavy-traffic flicker.

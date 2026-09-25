@@ -1,3 +1,9 @@
+## v2.7.30 — HP ProCurve 1810G-24 exact faceplate and factory calibration
+
+- Add the exact HP ProCurve 1810G-24 faceplate as the default visual for the existing exact model contract.
+- Add its owner-calibrated 24 × RJ45 + 2 × SFP factory geometry in the standard 2048 × 448 render coordinate space.
+- Keep the stock 24RJ45+2SFP faceplate available as an optional fallback without changing the established physical/telemetry contract.
+
 ## v2.7.29 — Unified Port Label styles, per-port LED visibility and hardware-style activity flicker
 
 - Supersede the unreleased 2.7.28 same-version local candidate so standard update detection installs the finalized source rather than treating an older 2.7.28 build as Latest.
