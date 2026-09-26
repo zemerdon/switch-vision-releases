@@ -10,9 +10,9 @@ Switch Vision is now composed of independently versioned components. The Core/da
 
 ## Current Core source version
 
-### Switch Vision v2.7.30
+### Switch Vision v2.7.31
 
-**v2.7.30** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.
+**v2.7.31** is the current tested Switch Vision Core/dashboard source version. Public release status is authoritative on GitHub Releases.
 
 Core v2.7.28 adds a unified Calibration **Port Label Style** control for RJ45 and SFP/uplink labels. Static remains the default, Activity keeps labels synchronized with the matching Activity LED, and Link speed follows the existing link-speed colour logic. Selected-port controls now use the same **Port Label Style** and **Port Label** wording regardless of port type.
 

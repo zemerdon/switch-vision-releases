@@ -1,0 +1,52 @@
+{
+  "assets": {
+    "faceplates": {
+      "24rj45-2sfp.png": "917b638525ba0a6dbed76f7b619a38cf81a6da3c090bd60b3a76aa0006304bcd",
+      "24rj45-4sfp.png": "dfc1a7e3ec675e9ce534eb675c8692358e8e122fb09976956fb0858a77760851",
+      "48rj45-2sfp.png": "955d10fc23eb97555e7f6b45133dfa27b9569a2675f84d95b18aac43f5bd420c",
+      "48rj45-4sfp.png": "73c6f017a09f91d2979e50cd8c0de5f4763cac521174f527ec99edfbf5523047",
+      "c3560cg-8pc-s.png": "99378eefb832de346ef9a777071de837af08a03af30541764f50889a22fa6101",
+      "cisco-3850-12xs.png": "c67483d24fc708c9ffaa62b8721c3680ea215c03540f88f62850ad672f3c6f40",
+      "dell-28-rj45-2sfp.png": "075f0f6348d197bbf0a466b6ab9ee4b7b18b6147c31661eb3c2f64da29ef775c",
+      "hp-1810-24g.png": "af9a3b34e6c425746029771bb22f590217ed01b6a0952272d5be0a957bc082ca",
+      "submarine-48rj45-4sfp.png": "e48f3fa8c50ebaea97cde23defe62f94e12ce5869d6428a3c42996ba95646ab4",
+      "unifi-16rj45-2sfp.png": "e79357ce053610cb7abe5432c2d90b90b1d32818b29b010954f53d6fbe11a669",
+      "unifi-24-rj45-2sfp-dark.png": "43993a8b19c6330cfbe99f4f9ac1970ef72e16ce52497e2248a4bb628239b0ae",
+      "unifi-24-rj45-2sfp-inline.png": "636fb15305026837df92cc69f68f4d7baa9e9a58233a3f479f83010c42083dcc",
+      "unifi-24-rj45-4sfp-inline.png": "6aa66f1cbd5ee4a9c796a1d4b4b55b2cae4fd97f5ef0b83a34a75a1f68f1edca",
+      "unifi-24p-rj45-2sfp.png": "3843544aedd63e8d591fec3c77741686ce2820a1d49ab464cee2b25f23c1f7b7",
+      "unifi-32sfp.png": "3b212b725f07331e0cd0059a8910386f6ab7d5cfcd40f03a77c0a3ff59f5d357",
+      "unifi-3sfp.png": "c29601cbd4143e79d522226d5ee93f10864a77e4eca39551e5e84c154d95ca23",
+      "unifi-4-rj45-12sfp.png": "0d6c14587b4dff7c0a1b3b02c581d5f65c58b5c3067ba258ac7922873c3ef37d",
+      "unifi-5rj45.png": "8c9bdeb091f477a497579b717fedfc0d87a96c013ddf1def7fb1973f1b896414",
+      "unifi-8-rj45-2sfp.png": "0c4d0ec28e0de0e7792e2f3a48799f081b443380aa2c5060c5039219203a2b3c",
+      "unifi-8rj45.png": "c7a04169b5cf6834780a579285250ac00f97f56ac450eb757e1e0ba8dbfaf74f",
+      "unifi-9rj45-2sfp.png": "a6abcd8ae0af97ad7b0a85015e61b5645927c4ca98d83edb437d31342e20cfbc",
+      "usw-flex-mini.png": "1d0c11947bc391defd09e4ce14c32ba580dd2918b5be9ad273d67a14ec63ed34"
+    },
+    "logos": {
+      "cisco-1984.svg": "b5c6c2c1c134bb81e8a5e74d2ae1831a1c158f2dc0b7906a257a7d1f0627ff35",
+      "cisco-1996.svg": "1bd9e52ee95f4e76bc66b4b14a93fe0eab42f453167ef19d35793e82031ebc8c",
+      "cisco-2006.svg": "93e9bf8f6a83f3a0b0e4ebebf55531e52de5501e8244ab331896f86f5b576562",
+      "cisco-2016.svg": "5b4035237c926ae0f67b70853f708edaa9616aabeb57610538986a9e351a2581",
+      "cisco-dark.png": "d22443a38827568c3d58509d0857ee92a7a026f366f7cccd5e672b6506f3cb03",
+      "dell-black.png": "0bd8684c2e651d96c4e6a01d2f1f42fd0a7e6cd6aa40049e226aaba707367192",
+      "dell-blue.png": "ced955dd707c28218894dfd1a99243e22cdb246f865a12e6e93ea0a6e34b05ec",
+      "dell-modern.png": "a69aa4d8ebcfd6c955d8c7cab09936e8195b9406994e8f262189728dc8074a2e",
+      "dell-white.png": "06308a0499dfaf642d05a51e599cb42e6764c698760687feaadecbd74733e4f0",
+      "juniper.svg": "2a055f44b0006760e4901fdccb71dfded7da344a029cc1ad07a7c5db03ce7ce7",
+      "sv-logo.png": "dcae89237d7f4d44ea3182b1b6ef9a95774a98bbe82a400f5c4b012d3763a451",
+      "ubiquiti-networks.png": "f5b82637bc850d2ff7d7d6a0cda41136bc3321f92982b9c841062f3343f39340",
+      "unifi-2005.png": "1258172d202e43916071d61ff6fcc8adea653802d9e6717c2ba98bbde132410f",
+      "unifi-2013.png": "e5dbacacee830e259973d80390407c8f9bf80ab22cf2e0019b070656de99ffe2",
+      "unifi-2023.svg": "f2110e7e2a8e8552dc85bb0ead03963725f04a91bdb35c6a399b4b0ae877dc65",
+      "unifi-alt1.svg": "ba5b825ff8bfdc37c1aaa7501891be7332cbb92df39fc74420ed5ffac20d67e9",
+      "zyxel-2019.png": "9face86b47173cd36f1c7c140425f94fcc14f5cf5ccad1fdf04078c1d4260453",
+      "zyxel-black.png": "e561ec12ac03b22ebe2efe6ded82f0300086949d281dd1842e338c7ad6f49f06",
+      "zyxel-networks.png": "1b8eb156f2478fd03ba9901256d566d3f95cc8c2182e00d71a640c27dd17feb1",
+      "zyxel-pre-2016.png": "3bb78f603968948119eec3dc9fdf5f3dbaece40c8e693b3cafd7cfb581bb41d8",
+      "zyxel-white.png": "82d905a1d2f68998792ba67ea5b36699ff0423e75472799b410e9e6f0ef9f435"
+    }
+  },
+  "schema": "switch-vision-stock-assets-v1"
+}

@@ -1,3 +1,13 @@
+# Switch Vision Core v2.7.31
+
+Core 2.7.31 makes the latest Dell and Avaya exact-model support operational in the dashboard while preserving the real physical topology proven by hardware evidence.
+
+The Avaya ERS 3524GT-PWR+ is now present in Core's exact-model registry and uses the stock 24-RJ45/4-SFP visual. Its 20 fixed copper ports and four shared front copper/SFP combo positions retain one logical interface per physical position; unproven rear-interface bindings are not invented.
+
+Dell N4032F now has an Experimental Core visual contract using the existing 32-position optical faceplate until dedicated artwork exists. Its 24 front SFP+ connectors occupy positions 1-24. When Discovery observes the installed two-port rear QSFP expansion, the two real QSFP parent connectors bind to positions 25-26; the eight breakout-lane interfaces remain logical children rather than extra physical sockets. A base N4032F without that expansion renders only the 24 front positions.
+
+Dell N2128PX-ON keeps its dedicated 28-RJ45/2-SFP+ faceplate and gains selected-SFP optical diagnostics in the status panel when Discovery supplies the proven DDMI entities, including temperature, voltage, current, TX/RX optical power, media type, transceiver vendor and part number.
+
 # Switch Vision Core v2.7.30
 
 Core 2.7.30 adds an exact HP ProCurve 1810G-24 visual to the existing supported-device contract. The model now ships with its dedicated `hp-1810-24g.png` faceplate and owner-calibrated factory geometry covering 24 RJ45 ports and 2 SFP positions in Switch Vision's 2048 × 448 render coordinate space.

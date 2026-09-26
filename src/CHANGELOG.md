@@ -1,3 +1,13 @@
+## v2.7.31 — Contributed Dell/Avaya operational bindings
+
+- Add the exact Avaya ERS 3524GT-PWR+ Core registry/visual contract using the stock 24-RJ45/4-SFP faceplate, preserving 20 fixed copper ports plus four shared front combo positions.
+- Add the exact Dell N4032F Experimental visual contract using the reviewed 32-position optical fallback: 24 front SFP+ positions plus two observed rear QSFP parent connectors at positions 25-26 when the expansion is present.
+- Keep N4032F breakout lanes as logical child interfaces rather than inventing eight extra physical sockets; a base chassis without the rear module renders only 24 optical positions.
+- Extend N4032F status/speed/traffic entity resolution so faceplate positions 25-26 consume the real 40G rear-QSFP entities.
+- Add Dell N2128PX-ON selected-SFP optical diagnostics for the proven DDMI/transceiver entities while retaining its dedicated Dell 28-RJ45/2-SFP+ faceplate.
+- Keep the HP 3500yl current front-panel visual unchanged; its separately observed rear A1-A4 module remains outside current faceplate geometry until dedicated presentation exists.
+- Add permanent registry, faceplate-binding and optical-status regressions for these contracts.
+
 ## v2.7.30 — HP ProCurve 1810G-24 exact faceplate and factory calibration
 
 - Add the exact HP ProCurve 1810G-24 faceplate as the default visual for the existing exact model contract.
