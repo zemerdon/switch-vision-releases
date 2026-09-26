@@ -47,6 +47,7 @@ Only exact model identifiers are listed. Support for one SKU does not imply supp
 | Ubiquiti | UniFi Dream Machine Pro Max | `UDM Pro Max` | 9 | 2 10G SFP+ | No | No | `faceplates/unifi-9rj45-2sfp.png` | `unifi_9_rj45_2sfp` | Community Api Ports 10 11 10G Sfp Plus Confirmed Pending Rendered Validation | Experimental | v2.4.14 |
 | Ubiquiti | UniFi Switch Pro XG | `USW Pro XG 24 PoE` | 24 | 2 25G SFP28 | Yes | No | `faceplates/unifi-24-rj45-2sfp-inline.png` | `unifi_24_rj45_2sfp_inline` | Community Api Ports 25 26 25G Sfp28 Confirmed Pending Rendered Validation | Experimental | v2.4.14 |
 | HP | 1810 | `HP 1810-24G` | 24 | 2 Gigabit SFP | No | No | `faceplates/24rj45-2sfp.png` | `stock_24rj45_2sfp` | Real Hardware Indexes 25 26 Confirmed | Experimental | v2.3.36 |
+| HP | 2530 | `HP J9774A 2530-8G-PoEP` | 10 | 2 Gigabit SFP | Yes | No | `faceplates/24rj45-2sfp.png` | `stock_24rj45_2sfp` | Real Hardware Dual Personality Logical Ports 9 10 Confirmed | Experimental | v3.0.9 |
 | HP | 1810 | `HP ProCurve 1810G-24` | 24 | 2 Gigabit SFP | No | No | `faceplates/hp-1810-24g.png` | `hp_1810_24g` | Manufacturer Confirmed Dual Personality Indexes 23 24 Medium Pending | Experimental | v2.4.47 |
 | Zyxel | GS1900 | `GS1900-8` | 8 | 0 none | No | No | `faceplates/24rj45-2sfp.png` | `stock_24rj45_2sfp` | Not Applicable | Experimental | v2.3.36 |
 | Sirivision | SR-S25G | `SR-S25G3420F` | 16 | 4 10G SFP+ | No | No | `faceplates/24rj45-4sfp.png` | `stock_24rj45_4sfp` | Real Hardware Indexes 17 20 Confirmed | Experimental | v2.3.36 |

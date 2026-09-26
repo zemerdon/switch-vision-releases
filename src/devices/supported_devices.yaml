@@ -2548,6 +2548,56 @@ devices:
       width: 2048
       height: 448
 - vendor: HP
+  family: '2530'
+  model: HP J9774A 2530-8G-PoEP
+  status: experimental
+  confirmed_since: 3.0.9
+  last_validated_version: 3.0.9
+  evidence: privacy_processed_real_hardware_snmp_capture_with_hpe_platform_corroboration
+  ports:
+    rj45: 8
+    poe: true
+    uplinks: 2
+    uplink_type: 2 dual-personality 1G RJ45/SFP
+    gigabit_sfp: 2
+    ten_gigabit_sfp_plus: 0
+    combo_ports: 2
+    combo_logical_ports:
+    - 9
+    - 10
+  stack_support: false
+  discovery_support: true
+  dashboard_support: true
+  mapping_profile: hp-2530-8g-poep-8p-2dual
+  calibration_profile: stock_24rj45_2sfp
+  default_faceplate: faceplates/24rj45-2sfp.png
+  optional_faceplates: []
+  tested_firmware:
+  - YA.16.11.0031
+  contributor:
+    display_name: community contributor
+    public_credit: false
+  notes:
+  - Privacy-processed real-hardware SNMP evidence confirms exact HP J9774A 2530-8G-PoEP identity on sysObjectID 1.3.6.1.4.1.11.2.3.7.11.138 and numeric IF-MIB logical interfaces 1-10.
+  - Interfaces 1-8 are fixed 1G PoE+ copper positions; POWER-ETHERNET-MIB exposes PSE rows for those eight positions and a 67 W aggregate PoE budget.
+  - Interfaces 9-10 are dual-personality 1G RJ45/SFP positions and remain one logical port each across both media presentations.
+  - The stock 24 RJ45 + 2 SFP visual is a safe fallback container. Only ten RJ45 positions and two SFP cages are active, with the SFP cages mapped to logical ports 9 and 10; unused stock positions never create entities or physical ports.
+  validation:
+    exact_model_detection: real_hardware_sysobjectid_and_local_identity_confirmed
+    rj45_mapping: real_hardware_numeric_interfaces_1_8_fixed_copper_confirmed
+    poe: standard_power_ethernet_mib_ports_1_8_and_67w_budget_observed
+    system_sensors: pending
+    uplinks: real_hardware_dual_personality_logical_ports_9_10_confirmed
+    stack: not_applicable
+  visuals:
+    status: experimental
+    recommended_faceplate: faceplates/24rj45-2sfp.png
+    optional_faceplates: []
+    calibration_profile: stock_24rj45_2sfp
+    canvas:
+      width: 2048
+      height: 448
+- vendor: HP
   family: '1810'
   model: HP ProCurve 1810G-24
   status: experimental
