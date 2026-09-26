@@ -164,15 +164,15 @@ class DeviceRegistryContractTests(unittest.TestCase):
             self.assertEqual(visuals.get("calibration_profile"), profile, model)
             self.assertEqual(visuals.get("recommended_faceplate"), faceplate, model)
 
-    def test_existing_models_gain_community_evidence_without_promotion(self) -> None:
-        expected_units = {
-            "US 8 60W": 1,
-            "USW Flex Mini": 2,
-            "US 48 PoE 500W": 2,
+    def test_existing_models_keep_reviewed_community_evidence_and_status(self) -> None:
+        expected = {
+            "US 8 60W": (1, "experimental"),
+            "USW Flex Mini": (2, "community_validated"),
+            "US 48 PoE 500W": (2, "experimental"),
         }
-        for model, units in expected_units.items():
+        for model, (units, status) in expected.items():
             device = self.models[model]
-            self.assertEqual(device.get("status"), "experimental", model)
+            self.assertEqual(device.get("status"), status, model)
             rows = [
                 row
                 for row in device.get("contributions") or []
@@ -222,10 +222,28 @@ class DeviceRegistryContractTests(unittest.TestCase):
             {"rj45": [13, 14, 15, 16], "sfp": list(range(1, 13))},
         )
 
+    def test_discovery_only_models_are_now_core_registry_contracts(self) -> None:
+        xr = self.models["WS-C2960XR-48LPS-I"]
+        self.assertEqual(xr.get("status"), "experimental")
+        self.assertEqual((xr.get("ports") or {}).get("rj45"), 48)
+        self.assertEqual((xr.get("ports") or {}).get("gigabit_sfp"), 4)
+        self.assertEqual(xr.get("default_faceplate"), "faceplates/48rj45-4sfp.png")
+
+        fiber = self.models["UCG Fiber"]
+        self.assertEqual(fiber.get("status"), "experimental")
+        self.assertEqual((fiber.get("ports") or {}).get("rj45"), 5)
+        self.assertEqual((fiber.get("ports") or {}).get("ten_gigabit_sfp_plus"), 2)
+        self.assertEqual(fiber.get("unifi_api_port_map"), {"rj45": [1, 2, 3, 4, 5], "sfp": [6, 7]})
+        self.assertEqual(fiber.get("default_faceplate"), "faceplates/unifi-8-rj45-2sfp.png")
+
+        c2960 = self.models["WS-C2960X-24PS-L"]
+        self.assertEqual(c2960.get("status"), "community_validated")
+        self.assertEqual((c2960.get("validation") or {}).get("uplinks"), "confirmed")
+
     def test_pro_aggregation_preserves_25g_capability_contract_with_exact_optical_visual(self) -> None:
         device = self.models["USW Pro Aggregation"]
         ports = device.get("ports") or {}
-        self.assertEqual(device.get("status"), "detected")
+        self.assertEqual(device.get("status"), "experimental")
         self.assertIs(device.get("dashboard_support"), True)
         self.assertEqual(ports.get("rj45"), 0)
         self.assertEqual(ports.get("uplinks"), 32)
