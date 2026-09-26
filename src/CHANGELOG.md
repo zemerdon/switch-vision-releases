@@ -1,3 +1,11 @@
+## v2.7.32 — Exact registry alignment and HP 2530-8G-PoEP contract
+
+- Align Core's exact-model registry one-for-one with Discovery for all previously registered switches, including UCG Fiber and WS-C2960XR-48LPS-I, and remove stale support-confidence drift.
+- Add the exact HP J9774A 2530-8G-PoEP Experimental contract from reviewed real-hardware evidence: eight fixed 1G PoE+ copper ports plus two dual-personality 1G RJ45/SFP logical ports.
+- Use the existing stock 24-RJ45/2-SFP faceplate as the safe presentation fallback while limiting the generated card to ten active RJ45 positions and two SFP cages.
+- Bind the two SFP cages back to logical ports 9 and 10 through the existing shared-cage mapping contract so link state, speed, traffic, activity and selected-port details remain one logical interface per combo position.
+- Add permanent exact-model faceplate/logical-port regression coverage.
+
 ## v2.7.31 — Contributed Dell/Avaya operational bindings
 
 - Add the exact Avaya ERS 3524GT-PWR+ Core registry/visual contract using the stock 24-RJ45/4-SFP faceplate, preserving 20 fixed copper ports plus four shared front combo positions.

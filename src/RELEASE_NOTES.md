@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.32
+
+Core 2.7.32 synchronizes Core's exact-model registry with Discovery and adds an operational dashboard contract for the HP J9774A 2530-8G-PoEP.
+
+The HP J9774A uses the reviewed physical contract proven by real SNMP evidence: eight fixed 1G PoE+ copper ports plus two dual-personality 1G RJ45/SFP logical ports. Until dedicated artwork exists, Switch Vision uses the stock 24-RJ45/2-SFP faceplate as a presentation container, but activates only ten RJ45 positions and two SFP cages. The SFP cages map back to logical ports 9 and 10, so the copper and optical presentations share link state, speed, traffic, activity and selected-port details instead of creating duplicate entities.
+
+This release also brings Core's derivative exact-model registry into one-for-one alignment with Discovery for all previously registered switches, including the previously Discovery-only UCG Fiber and WS-C2960XR-48LPS-I entries and current support-confidence metadata.
+
 # Switch Vision Core v2.7.31
 
 Core 2.7.31 makes the latest Dell and Avaya exact-model support operational in the dashboard while preserving the real physical topology proven by hardware evidence.
