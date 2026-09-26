@@ -25,6 +25,7 @@ Only exact model identifiers are listed. Support for one SKU does not imply supp
 | Huawei | S5735-L | `S5735-L8P4X-A1` | 8 | 4 10G SFP+ | Yes | No | `faceplates/24rj45-4sfp.png` | `stock_24rj45_4sfp` | Community Confirmed Two Devices Four 10G Sfp Plus Positions And Link Speed | Community Validated | v2.6.7 |
 | Ubiquiti | UniFi Dream Machine Pro | `UDM Pro` | 9 | 2 10G SFP+ | No | No | `faceplates/unifi-9rj45-2sfp.png` | `unifi_9_rj45_2sfp` | Live Api Confirmed Connector And Speed | Experimental | v2.0.32 |
 | Dell | Dell EMC Networking N2000 | `N2128PX-ON` | 28 | 2 10G SFP+ | Yes | Yes | `faceplates/dell-28-rj45-2sfp.png` | `dell_28rj45_2sfp` | Contribution Confirmed Te Member 0 1 2 As 10G Sfp Plus | Experimental | v2.1.20 |
+| Dell | Dell Networking N4000 | `N4032F` | 0 | 24 10G SFP+ | No | No | `faceplates/unifi-32sfp.png` | `unifi_32sfp` | Real Hardware 24 Front 10G Sfp Plus Confirmed Optional Rear 2X40G Qsfp Bound When Observed | Experimental | v2.7.31 |
 | Ubiquiti | UniFi Switch | `US 48 PoE 500W` | 48 | 2 Gigabit SFP + 2 10G SFP+ | Yes | No | `faceplates/48rj45-4sfp.png` | `stock_48rj45_4sfp` | Live Api Confirmed Connector And Speed | Experimental | v2.1.15 |
 | Ubiquiti | UniFi Switch | `US 48` | 48 | 2 Gigabit SFP + 2 10G SFP+ | No | No | `faceplates/48rj45-4sfp.png` | `stock_48rj45_4sfp` | Live Api Confirmed Ports 49 50 10G Sfp Plus 51 52 1G Sfp | Experimental | v2.4.9 |
 | Ubiquiti | UniFi Switch XG | `US XG 16` | 4 | 12 10G SFP+ | No | No | `faceplates/unifi-4-rj45-12sfp.png` | `unifi_4_rj45_12sfp` | Live Api Confirmed Api Ports 1 12 10G Sfp Plus | Experimental | v2.4.9 |
@@ -62,6 +63,7 @@ Only exact model identifiers are listed. Support for one SKU does not imply supp
 | Ubiquiti | UniFi Switch Enterprise | `USW Enterprise 24 PoE` | 24 | 2 10G SFP+ | Yes | No | `faceplates/unifi-24p-rj45-2sfp.png` | `unifi_24p_rj45_2sfp` | Live Api Confirmed Ports 25 26 10G Sfp Plus | Experimental | v2.3.24 |
 | Ubiquiti | UniFi Switch Flex | `USW Flex 2.5G 5` | 5 | 0 none | No | No | `faceplates/unifi-5rj45.png` | `default_unifi_5_rj45` | Not Applicable | Experimental | v2.3.24 |
 | Ubiquiti | UniFi WAN Switch | `USW WAN` | 1 | 3 10G SFP+ | No | No | `faceplates/unifi-3sfp.png` | `unifi_3sfp` | Live Api Confirmed Api Ports 1 3 10G Sfp Plus | Experimental | v2.3.24 |
+| Avaya | Ethernet Routing Switch 3500 | `3524GT-PWR+` | 24 | 4 Gigabit SFP | Yes | No | `faceplates/24rj45-4sfp.png` | `stock_24rj45_4sfp` | Real Hardware Front Combo Ports 21 24 Confirmed Rear Two Pending Binding | Experimental | v3.0.4 |
 | Zyxel | GS1915 | `GS1915-24EP` | 24 | 0 none | Yes | No | `faceplates/24rj45-2sfp.png` | `stock_24rj45_2sfp` | Not Applicable | Experimental | v2.4.1 |
 
 ## Status definitions

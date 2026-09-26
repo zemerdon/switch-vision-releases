@@ -1177,6 +1177,83 @@
       }
     },
     {
+      "vendor": "Dell",
+      "family": "Dell Networking N4000",
+      "model": "N4032F",
+      "status": "experimental",
+      "confirmed_since": "2.7.31",
+      "last_validated_version": "2.7.31",
+      "evidence": "support_my_switch_real_hardware_contribution",
+      "ports": {
+        "rj45": 0,
+        "poe": false,
+        "uplinks": 24,
+        "uplink_type": "24x 10G SFP+ front-panel ports; observed optional rear 2x 40G QSFP+ expansion binds dynamically when present",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 24,
+        "forty_gigabit_qsfp_plus": 0
+      },
+      "discovery_optional_interfaces": [
+        {
+          "id": "rear_qsfp_expansion",
+          "location": "rear",
+          "media": "uplink",
+          "speed_mbps": 40000,
+          "interface_names": [
+            "Fo1/1/1",
+            "Fo1/1/2"
+          ],
+          "telemetry_only": false,
+          "observed_when_present": true,
+          "faceplate_positions": [
+            25,
+            26
+          ]
+        }
+      ],
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "dell-n4032f-24sfp2qsfp",
+      "calibration_profile": "unifi_32sfp",
+      "default_faceplate": "faceplates/unifi-32sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "6.5.4.23",
+        "6.3.3.8"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Real-hardware evidence confirms exact sysObjectID 1.3.6.1.4.1.674.10895.3044 and Dell N4032F identity across two captured firmware versions.",
+        "Te1/0/1-24 are the 24 front 10G SFP+ cages and form the base chassis contract.",
+        "The observed Dell 2 Port QSFP Expansion Card exposes Fo1/1/1-2 as two rear physical 40G parents. Discovery binds those parents to optical faceplate positions 25-26 only when they are actually observed.",
+        "Te1/1/1-8 are breakout lanes beneath the two rear QSFP parents and are never treated as eight extra physical sockets.",
+        "Until dedicated N4032F artwork exists, the reviewed 32-optical faceplate is the closest functional presentation. Generated cards hide unused positions, so base hardware renders 24 optical ports and an observed rear expansion renders 26.",
+        "This fallback changes presentation only; Dell interface identity, speed and physical-versus-logical topology remain authoritative."
+      ],
+      "validation": {
+        "exact_model_detection": "real_hardware_sysobjectid_model_and_two_firmware_versions_confirmed",
+        "rj45_mapping": "not_applicable",
+        "poe": "not_applicable",
+        "system_sensors": "pending",
+        "uplinks": "real_hardware_24_front_10g_sfp_plus_confirmed_optional_rear_2x40g_qsfp_bound_when_observed",
+        "stack": "not_observed_not_required"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-32sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_32sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
       "vendor": "Ubiquiti",
       "family": "UniFi Switch",
       "model": "US 48 PoE 500W",
@@ -3401,6 +3478,8 @@
       "notes": [
         "The existing exact-model numeric-interface classifier maps ports 1-44 as RJ45 and 45-48 as neutral uplink positions.",
         "A community contribution confirmed that generated entities use uplink_1..uplink_4 names; Discovery 2.3.24 binds generated cards to those entities instead of incorrectly forcing sfp_10g names.",
+        "Fresh real-hardware evidence confirms an optional rear high-speed module exposes A1-A4 as four 10G interfaces; Discovery keeps those interfaces telemetry-only and does not add them to the current card geometry.",
+        "The current 48-RJ45/4-SFP faceplate remains intentional until rear-module presentation is designed; no rear connector geometry is invented.",
         "The four front-panel positions are dual-personality RJ45/mini-GBIC; exact medium-specific rendered validation remains pending."
       ],
       "validation": {
@@ -3850,6 +3929,84 @@
             "per_port_traffic": false
           },
           "dashboard_validation": "pending_post_fix_user_validation",
+          "contributor": {
+            "display_name": "community contributor",
+            "public_credit": false
+          }
+        }
+      ]
+    },
+    {
+      "vendor": "Avaya",
+      "family": "Ethernet Routing Switch 3500",
+      "model": "3524GT-PWR+",
+      "status": "experimental",
+      "confirmed_since": "3.0.3",
+      "last_validated_version": "3.0.4",
+      "evidence": "support_my_switch_real_hardware_contribution",
+      "ports": {
+        "rj45": 20,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "4 shared front 1G RJ45/SFP combo positions; 2 rear SFP positions documented but telemetry binding pending",
+        "gigabit_sfp": 4,
+        "ten_gigabit_sfp_plus": 0,
+        "combo_ports": 4,
+        "combo_logical_ports": [
+          21,
+          22,
+          23,
+          24
+        ]
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "avaya-ers3524gt-pwrplus-20p-4dual",
+      "calibration_profile": "stock_24rj45_4sfp",
+      "default_faceplate": "faceplates/24rj45-4sfp.png",
+      "optional_faceplates": [],
+      "tested_firmware": [
+        "v5.1.0.007"
+      ],
+      "contributor": {
+        "display_name": "community contributor",
+        "public_credit": false
+      },
+      "notes": [
+        "Real-hardware SNMP evidence confirms exact sysObjectID 1.3.6.1.4.1.45.3.80.4 and IF-MIB logical ports 1-24 at 1 Gbps.",
+        "Ports 1-20 are fixed copper; logical ports 21-24 are dual-personality front copper/SFP positions and use shared logical-port mapping rather than duplicate entities.",
+        "Standard POWER-ETHERNET-MIB exposes all 24 PSE rows, a 370 W budget, and active PoE delivery in the captured contribution.",
+        "The chassis also has two rear SFP positions, but this contribution does not provide a trustworthy independent IF-MIB binding for them; they remain documented capability only and are not fabricated into the current dashboard contract.",
+        "The stock 24-RJ45/4-SFP faceplate is the conservative initial visual; exact Avaya artwork and optional environment telemetry are non-blocking follow-up."
+      ],
+      "validation": {
+        "exact_model_detection": "real_hardware_sysobjectid_and_sysdescr_confirmed",
+        "rj45_mapping": "real_hardware_numeric_ifname_ports_1_20_confirmed",
+        "poe": "real_hardware_standard_power_ethernet_mib_24_pse_370w_confirmed",
+        "system_sensors": "vendor_enterprise_candidates_present_optional_followup",
+        "uplinks": "real_hardware_front_combo_ports_21_24_confirmed_rear_two_pending_binding",
+        "stack": "not_observed_not_required_for_initial_dashboard"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_4sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      },
+      "contributions": [
+        {
+          "id": "evidence-avaya-ers3524gt-pwrplus-a",
+          "source_component": "Discovery SNMP",
+          "source_discovery_version": "3.0.2",
+          "devices_observed": 1,
+          "validation_scope": "exact_model_20_fixed_copper_4_front_combo_standard_poe",
+          "api_capabilities": {},
+          "dashboard_validation": "pending_post_admission_user_validation",
           "contributor": {
             "display_name": "community contributor",
             "public_credit": false
