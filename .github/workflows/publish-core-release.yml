@@ -4,10 +4,14 @@ on:
   pull_request:
     types:
       - opened
-      - reopened
-      - synchronize
     branches:
       - main
+    paths:
+      - .sv-release-request.json
+
+concurrency:
+  group: switch-vision-release-${{ github.repository }}
+  cancel-in-progress: false
 
 permissions:
   contents: read
@@ -23,7 +27,6 @@ jobs:
       version: ${{ steps.request.outputs.version }}
       target_sha: ${{ steps.request.outputs.target_sha }}
       publish: ${{ steps.request.outputs.publish }}
-      title: ${{ steps.request.outputs.title }}
     env:
       BASE_SHA: ${{ github.event.pull_request.base.sha }}
 
@@ -43,7 +46,6 @@ jobs:
 
           test -f .sv-release-request.json
 
-          git fetch origin main --tags
           mapfile -t changed < <(git diff --name-only "$BASE_SHA...HEAD")
           if [ "${#changed[@]}" -ne 1 ] || [ "${changed[0]}" != ".sv-release-request.json" ]; then
             echo "ERROR: release-request PR must change only .sv-release-request.json"
@@ -57,10 +59,11 @@ jobs:
           from pathlib import Path
 
           data = json.loads(Path('.sv-release-request.json').read_text(encoding='utf-8'))
-          version = str(data.get('version') or '').strip().lstrip('v')
-          target = str(data.get('target_sha') or '').strip()
-          publish = data.get('publish', False)
-          title = str(data.get('title') or f'Switch Vision Core v{version}').strip()
+          if set(data) != {'version', 'target_sha', 'publish'}:
+              raise SystemExit('ERROR: release request must contain exactly version,target_sha,publish')
+          version = str(data['version']).strip().lstrip('v')
+          target = str(data['target_sha']).strip()
+          publish = data['publish']
 
           if not re.fullmatch(r'\d+\.\d+\.\d+', version):
               raise SystemExit('ERROR: request.version must be an exact semantic version')
@@ -68,13 +71,10 @@ jobs:
               raise SystemExit('ERROR: request.target_sha must be a full 40-character commit SHA')
           if not isinstance(publish, bool):
               raise SystemExit('ERROR: request.publish must be true or false')
-          if not title or '\n' in title or '\r' in title:
-              raise SystemExit('ERROR: request.title must be a single non-empty line')
 
           print(f'version={version}')
           print(f'target_sha={target}')
           print(f'publish={str(publish).lower()}')
-          print(f'title={title}')
           PY
 
           TARGET_SHA="$(python3 -c 'import json; print(json.load(open(".sv-release-request.json"))["target_sha"])')"
@@ -174,7 +174,7 @@ jobs:
       GH_REPO: ${{ github.repository }}
       VERSION: ${{ needs.preflight.outputs.version }}
       TARGET_SHA: ${{ needs.preflight.outputs.target_sha }}
-      RELEASE_TITLE: ${{ needs.preflight.outputs.title }}
+      RELEASE_TITLE: "Switch Vision Core v${{ needs.preflight.outputs.version }}"
 
     steps:
       - name: Download validated publication payload
