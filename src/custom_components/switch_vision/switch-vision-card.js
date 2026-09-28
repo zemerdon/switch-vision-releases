@@ -876,11 +876,39 @@ function sfpStatusEntities(config, member, port) {
   ];
 }
 
+function sfpHasDedicatedTelemetry(hass, config, port) {
+  const n = Number(port);
+  for (const entityId of sfpStatusEntities(config, config.member || "sw1", n)) {
+    if (entityId && hass?.states?.[entityId]) return true;
+  }
+  for (const direction of ["rx", "tx"]) {
+    for (const entityId of sfpByteEntities(config, n, direction)) {
+      if (entityId && hass?.states?.[entityId]) return true;
+    }
+  }
+  return false;
+}
+
 function sfpIsUp(hass, config, port) {
   if (config.demo) return true;
 
+  const n = Number(port);
+  const configured = config?.sfp_status_entity_template
+    ? templateEntity(config.sfp_status_entity_template, n)
+    : null;
+  if (configured) {
+    const state = entityState(hass, configured);
+    if (state === "1" || state === "up" || state === "on" || state === "true") return true;
+    if (state === "2" || state === "down" || state === "off" || state === "false") return false;
+  }
+
   const logicalPort = sfpLogicalPort(config, port);
-  if (logicalPort) return portIsUp(hass, config, logicalPort);
+  if (logicalPort) {
+    const logicalEntity = portEntity(config, logicalPort, "status");
+    if (logicalEntity && hass?.states?.[logicalEntity]) {
+      return portIsUp(hass, config, logicalPort);
+    }
+  }
 
   const unifi = unifiSfpPort(config, port);
   if (unifi) return linkStateIsUp(unifi.state);
@@ -1330,7 +1358,9 @@ function selectedSfpOpticalDetails(hass, config, port) {
 function selectedSfpDetails(hass, config, port) {
   const n = Number(port);
   const logicalPort = sfpLogicalPort(config, n);
-  if (logicalPort) return selectedPortDetails(hass, config, logicalPort);
+  if (logicalPort && !sfpHasDedicatedTelemetry(hass, config, n)) {
+    return selectedPortDetails(hass, config, logicalPort);
+  }
 
   const member = normalizeEntityPrefix(config);
   const up = sfpIsUp(hass, config, n);
@@ -2150,15 +2180,18 @@ function portTrafficCounterSample(hass, config, port, direction) {
 }
 
 function sfpTrafficCounterSample(hass, config, port, direction) {
-  const logicalPort = sfpLogicalPort(config, port);
-  if (logicalPort) return portTrafficCounterSample(hass, config, logicalPort, direction);
-
   const isUnifi = String(config?.data_source || "").toLowerCase() === "unifi_api";
   if (isUnifi && rawUnifiRuntime(config)) {
     const runtimePort = unifiSfpPort(config, port);
     return runtimePort ? unifiTrafficCounterSample(runtimePort, direction) : null;
   }
-  return readFirstCounterSample(hass, sfpByteEntities(config, port, direction));
+
+  const sfpSample = readFirstCounterSample(hass, sfpByteEntities(config, port, direction));
+  if (sfpSample !== null) return sfpSample;
+
+  const logicalPort = sfpLogicalPort(config, port);
+  if (logicalPort) return portTrafficCounterSample(hass, config, logicalPort, direction);
+  return null;
 }
 
 function portByteEntity(config, port, direction) {
@@ -2205,12 +2238,6 @@ function sfpByteEntities(config, port, direction) {
 }
 
 function sfpSpeedMbps(hass, config, port) {
-  const logicalPort = sfpLogicalPort(config, port);
-  if (logicalPort) {
-    const value = Number(String(portSpeed(hass, config, logicalPort) || "").replace(/,/g, ""));
-    return Number.isFinite(value) && value > 0 ? value : null;
-  }
-
   const unifi = unifiSfpPort(config, port);
   if (unifi && linkStateIsUp(unifi.state) && unifi.speed_mbps != null) {
     const value = Number(unifi.speed_mbps);
@@ -2246,6 +2273,12 @@ function sfpSpeedMbps(hass, config, port) {
     const raw = rawEntityState(hass, entityId);
     const value = Number(String(raw || "").replace(/,/g, ""));
     if (Number.isFinite(value) && value > 0) return value / 1000000;
+  }
+
+  const logicalPort = sfpLogicalPort(config, port);
+  if (logicalPort) {
+    const value = Number(String(portSpeed(hass, config, logicalPort) || "").replace(/,/g, ""));
+    return Number.isFinite(value) && value > 0 ? value : null;
   }
   return null;
 }
@@ -2665,7 +2698,9 @@ function sfpTrafficRates(hass, config, port) {
   if (config.demo) return { rxBps: 6200000000, txBps: 2100000000 };
 
   const logicalPort = sfpLogicalPort(config, port);
-  if (logicalPort) return portTrafficRates(hass, config, logicalPort);
+  if (logicalPort && !sfpHasDedicatedTelemetry(hass, config, port)) {
+    return portTrafficRates(hass, config, logicalPort);
+  }
 
   const member = normalizeMember(config);
   const key = `${member}:sfp:${port}`;
@@ -2686,7 +2721,9 @@ function testSfpActivity(hass, config, port) {
   if (config.demo) return true;
 
   const logicalPort = sfpLogicalPort(config, port);
-  if (logicalPort) return testPortActivity(hass, config, logicalPort);
+  if (logicalPort && !sfpHasDedicatedTelemetry(hass, config, port)) {
+    return testPortActivity(hass, config, logicalPort);
+  }
 
   const member = normalizeMember(config);
   const key = `${member}:sfp:${port}`;

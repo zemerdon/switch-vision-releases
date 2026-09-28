@@ -65,21 +65,82 @@ if (sfpVisibleLabel({{}}, 1, 'G1') !== 'G1') throw new Error('ordinary SFP label
         result = subprocess.run(["node", "-e", harness], cwd=ROOT, text=True, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
-    def test_shared_cage_uses_access_port_telemetry(self) -> None:
+    def test_shared_cage_prefers_sfp_telemetry_then_logical_fallback(self) -> None:
         source = CARD.read_text(encoding="utf-8")
-        expectations = {
-            "function sfpIsUp(hass, config, port)": "return portIsUp(hass, config, logicalPort);",
-            "function sfpSpeedMbps(hass, config, port)": "portSpeed(hass, config, logicalPort)",
-            "function sfpTrafficCounterSample(hass, config, port, direction)": "return portTrafficCounterSample(hass, config, logicalPort, direction);",
-            "function sfpTrafficRates(hass, config, port)": "return portTrafficRates(hass, config, logicalPort);",
-            "function testSfpActivity(hass, config, port)": "return testPortActivity(hass, config, logicalPort);",
-            "function selectedSfpDetails(hass, config, port)": "return selectedPortDetails(hass, config, logicalPort);",
-        }
-        for signature, expected in expectations.items():
-            with self.subTest(signature=signature):
-                body = extract_js_function(source, signature)
-                self.assertIn("sfpLogicalPort(config", body)
-                self.assertIn(expected, body)
+        entity_state = extract_js_function(source, "function entityState(hass, entityId)")
+        port_range = extract_js_function(source, "function portRange(port)")
+        template_entity = extract_js_function(source, "function templateEntity(template, port)")
+        mapping = extract_js_function(source, "function sfpLogicalPort(config, sfpPort)")
+        status_entities = extract_js_function(source, "function sfpStatusEntities(config, member, port)")
+        sfp_is_up = extract_js_function(source, "function sfpIsUp(hass, config, port)")
+
+        harness = f"""
+{entity_state}
+{port_range}
+{template_entity}
+{mapping}
+function n4032RearQsfpEntity() {{ return null; }}
+function unifiSfpPort() {{ return null; }}
+function linkStateIsUp(value) {{ return String(value || '').toLowerCase() === 'up'; }}
+function portEntity(config, port, type) {{
+  return 'sensor.' + config.entity_prefix + '_port_' + port + '_' + type;
+}}
+function portIsUp(hass, config, port) {{
+  const state = entityState(hass, portEntity(config, port, 'status'));
+  return state === 'up' || state === '1';
+}}
+{status_entities}
+{sfp_is_up}
+
+const config = {{
+  entity_prefix: 'sgcava53',
+  member: 'sgcava53',
+  sfp_logical_port_map: [21, 22, 23, 24],
+  sfp_status_entity_template: 'sensor.sgcava53_sfp_1g_{{port}}_status'
+}};
+
+let hass = {{states: {{
+  'sensor.sgcava53_sfp_1g_1_status': {{state: 'up'}},
+  'sensor.sgcava53_port_21_status': {{state: 'down'}}
+}}}};
+if (!sfpIsUp(hass, config, 1)) throw new Error('explicit SFP status must win over shared logical-port status');
+
+hass = {{states: {{
+  'sensor.sgcava53_sfp_1g_1_status': {{state: 'down'}},
+  'sensor.sgcava53_port_21_status': {{state: 'up'}}
+}}}};
+if (sfpIsUp(hass, config, 1)) throw new Error('explicit SFP down state must remain authoritative');
+
+hass = {{states: {{
+  'sensor.sgcava53_port_21_status': {{state: 'up'}}
+}}}};
+if (!sfpIsUp(hass, config, 1)) throw new Error('shared logical-port status must remain a fallback');
+"""
+        result = subprocess.run(["node", "-e", harness], cwd=ROOT, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+        counter = extract_js_function(source, "function sfpTrafficCounterSample(hass, config, port, direction)")
+        self.assertLess(
+            counter.index("readFirstCounterSample(hass, sfpByteEntities"),
+            counter.index("const logicalPort = sfpLogicalPort(config, port)"),
+        )
+
+        speed = extract_js_function(source, "function sfpSpeedMbps(hass, config, port)")
+        self.assertLess(
+            speed.index("const mbpsCandidates"),
+            speed.index("const logicalPort = sfpLogicalPort(config, port)"),
+        )
+
+        rates = extract_js_function(source, "function sfpTrafficRates(hass, config, port)")
+        activity = extract_js_function(source, "function testSfpActivity(hass, config, port)")
+        self.assertIn("!sfpHasDedicatedTelemetry(hass, config, port)", rates)
+        self.assertIn("return portTrafficRates(hass, config, logicalPort);", rates)
+        self.assertIn("!sfpHasDedicatedTelemetry(hass, config, port)", activity)
+        self.assertIn("return testPortActivity(hass, config, logicalPort);", activity)
+
+        details = extract_js_function(source, "function selectedSfpDetails(hass, config, port)")
+        self.assertIn("!sfpHasDedicatedTelemetry(hass, config, n)", details)
+        self.assertIn("return selectedPortDetails(hass, config, logicalPort);", details)
 
     def test_shared_cage_click_selects_logical_access_port_outside_calibration(self) -> None:
         source = CARD.read_text(encoding="utf-8")
