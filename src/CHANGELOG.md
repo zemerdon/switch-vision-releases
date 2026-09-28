@@ -1,3 +1,11 @@
+## v2.7.33 — Shared SFP telemetry preference repair
+
+- Fix shared RJ45/SFP cage resolution so dedicated SFP telemetry is preferred when Discovery provides it, instead of stopping at the shared logical copper-port entities.
+- Restore Avaya ERS 3524GT-PWR+ SFP link/status, speed, traffic, activity and selected-port telemetry for its four shared logical ports 21–24 while preserving one logical interface per combo position.
+- Keep logical-port fallback unchanged for combo-port models that expose only the shared access-port telemetry, including the HP J9774A contract.
+- Add permanent shared-SFP regressions covering dedicated 1G SFP telemetry, fallback behavior, activity and speed/detail resolution.
+- No physical topology, model-support status, faceplate geometry or Calibration contract changes.
+
 ## v2.7.32 — Exact registry alignment and HP 2530-8G-PoEP contract
 
 - Align Core's exact-model registry one-for-one with Discovery for all previously registered switches, including UCG Fiber and WS-C2960XR-48LPS-I, and remove stale support-confidence drift.
