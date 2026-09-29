@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate supported-device documentation from the authoritative YAML registry."""
+"""Generate Core compatibility registry/docs from the Discovery-derived JSON projection."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -52,7 +52,7 @@ def uplink_text(ports: dict) -> str:
 
 
 def load_registry(path: Path) -> dict:
-    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    data = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(data, dict):
         raise SystemExit("Device registry root must be a mapping")
     devices = data.get("devices")
@@ -152,7 +152,7 @@ def markdown(data: dict) -> str:
     lines = [
         "# Supported Devices",
         "",
-        "This document is generated from `devices/supported_devices.yaml`.",
+        "This document is generated from the Discovery-derived `devices/supported_devices.json` projection.",
         "Only exact model identifiers are listed. Support for one SKU does not imply support for nearby variants.",
         "",
         "| Vendor | Family | Exact model | RJ45 | Uplinks | PoE | Stack | Recommended faceplate | Calibration profile | Uplink validation | Status | Last validated |",
@@ -213,8 +213,12 @@ def main() -> None:
     args.docs_dir.mkdir(parents=True, exist_ok=True)
     (args.docs_dir / "SUPPORTED_DEVICES.md").write_text(markdown(data), encoding="utf-8", newline="\n")
     (args.docs_dir / "SUPPORTED_DEVICES_FORUM.bbcode").write_text(bbcode(data), encoding="utf-8", newline="\n")
-    (args.registry.parent / "supported_devices.json").write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8", newline="\n")
-    print(f"Generated supported-device documentation for {len(data['devices'])} exact model(s).")
+    (args.registry.parent / "supported_devices.yaml").write_text(
+        yaml.safe_dump(data, sort_keys=False, allow_unicode=True),
+        encoding="utf-8",
+        newline="\n",
+    )
+    print(f"Generated Core compatibility registry/documentation for {len(data['devices'])} exact model(s).")
 
 
 if __name__ == "__main__":

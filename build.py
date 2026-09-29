@@ -168,7 +168,7 @@ def resolve_version(version_arg: str | None, bump: str | None = None) -> str:
 def generate_supported_device_docs() -> None:
     """Validate the exact-model registry and regenerate Markdown/BBCode outputs."""
     generator = SRC / "devices" / "generate_supported_devices.py"
-    registry = SRC / "devices" / "supported_devices.yaml"
+    registry = SRC / "devices" / "supported_devices.json"
     result = subprocess.run(
         [sys.executable, str(generator), str(registry), str(SRC / "docs")],
         cwd=PROJECT_ROOT,
@@ -916,8 +916,8 @@ def visible_rj45_count(ports: dict) -> int:
 
 def sync_device_visual_recommendations() -> None:
     """Regenerate exact-model visual/API mapping metadata from the registry."""
-    registry_path = SRC / "devices" / "supported_devices.yaml"
-    data = yaml.safe_load(registry_path.read_text(encoding="utf-8"))
+    registry_path = SRC / "devices" / "supported_devices.json"
+    data = json.loads(registry_path.read_text(encoding="utf-8"))
     devices = data.get("devices", []) if isinstance(data, dict) else []
     recommendations = []
     for device in devices if isinstance(devices, list) else []:

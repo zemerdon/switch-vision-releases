@@ -5,11 +5,306 @@ generated_documents:
 support_statuses:
   detected: Model identification works, but telemetry and layout are not validated.
   experimental: A profile exists, but real-hardware validation is incomplete.
-  community_validated: A real user has validated the applicable physical mapping, port selection, LEDs, link/speed behaviour, PoE, optical positions, sensors and rendered alignment.
+  community_validated: A real user has validated the applicable physical mapping,
+    port selection, LEDs, link/speed behaviour, PoE, optical positions, sensors and
+    rendered alignment.
   confirmed: Repeatably tested and treated as officially supported.
+projection:
+  schema: 1
+  source_component: discovery
+  source_registry_sha256: 7fe5b3230e15a9e3beb35ab67fd39ff3297e51b15738f218f90c0db46ea711b6
+  device_field_allowlist:
+  - vendor
+  - family
+  - model
+  - status
+  - confirmed_since
+  - last_validated_version
+  - evidence
+  - ports
+  - stack_support
+  - discovery_support
+  - dashboard_support
+  - mapping_profile
+  - calibration_profile
+  - default_faceplate
+  - optional_faceplates
+  - tested_firmware
+  - contributor
+  - contributions
+  - notes
+  - validation
+  - visuals
+  - unifi_api_port_map
+  - port_roles
+  - discovery_optional_interfaces
 devices:
+- vendor: HP
+  family: '1810'
+  model: HP 1810-24G
+  status: experimental
+  confirmed_since: 2.3.36
+  last_validated_version: 2.3.36
+  evidence: privacy_processed_real_hardware_snmp_contribution
+  ports:
+    rj45: 24
+    poe: false
+    uplinks: 2
+    uplink_type: 2x 1G SFP
+    gigabit_sfp: 2
+    ten_gigabit_sfp_plus: 0
+  stack_support: false
+  discovery_support: true
+  dashboard_support: true
+  mapping_profile: hp-1810-24g-24p-2sfp
+  calibration_profile: stock_24rj45_2sfp
+  default_faceplate: faceplates/24rj45-2sfp.png
+  optional_faceplates: []
+  tested_firmware: []
+  contributor:
+    display_name: community contributor
+    public_credit: false
+  notes:
+  - A privacy-processed real-hardware SNMP contribution confirms 24 fixed 1G copper
+    interfaces plus two 1G SFP cages.
+  - Logical IP and link-aggregation interfaces are excluded from the front panel.
+  - The neutral 24+2 faceplate is an Experimental geometry fallback pending rendered
+    confirmation.
+  validation:
+    exact_model_detection: contribution_confirmed
+    rj45_mapping: real_hardware_indexes_1_24_confirmed
+    poe: not_applicable
+    system_sensors: pending
+    uplinks: real_hardware_indexes_25_26_confirmed
+    stack: not_applicable
+  visuals:
+    status: experimental
+    recommended_faceplate: faceplates/24rj45-2sfp.png
+    optional_faceplates: []
+    calibration_profile: stock_24rj45_2sfp
+    canvas:
+      width: 2048
+      height: 448
+- vendor: HP
+  family: '2530'
+  model: HP J9774A 2530-8G-PoEP
+  status: experimental
+  confirmed_since: 3.0.9
+  last_validated_version: 3.0.9
+  evidence: privacy_processed_real_hardware_snmp_capture_with_hpe_platform_corroboration
+  ports:
+    rj45: 8
+    poe: true
+    uplinks: 2
+    uplink_type: 2 dual-personality 1G RJ45/SFP
+    gigabit_sfp: 2
+    ten_gigabit_sfp_plus: 0
+    combo_ports: 2
+    combo_logical_ports:
+    - 9
+    - 10
+  stack_support: false
+  discovery_support: true
+  dashboard_support: true
+  mapping_profile: hp-2530-8g-poep-8p-2dual
+  calibration_profile: stock_24rj45_2sfp
+  default_faceplate: faceplates/24rj45-2sfp.png
+  optional_faceplates: []
+  tested_firmware:
+  - YA.16.11.0031
+  contributor:
+    display_name: community contributor
+    public_credit: false
+  notes:
+  - Privacy-processed real-hardware SNMP evidence confirms exact HP J9774A 2530-8G-PoEP
+    identity on sysObjectID 1.3.6.1.4.1.11.2.3.7.11.138 and numeric IF-MIB logical
+    interfaces 1-10.
+  - Interfaces 1-8 are fixed 1G PoE+ copper positions; POWER-ETHERNET-MIB exposes
+    PSE rows for those eight positions and a 67 W aggregate PoE budget.
+  - Interfaces 9-10 are dual-personality 1G RJ45/SFP positions and remain one logical
+    port each across both media presentations.
+  - The stock 24 RJ45 + 2 SFP visual is a safe fallback container. Only ten RJ45 positions
+    and two SFP cages are active, with the SFP cages mapped to logical ports 9 and
+    10; unused stock positions never create entities or physical ports.
+  validation:
+    exact_model_detection: real_hardware_sysobjectid_and_local_identity_confirmed
+    rj45_mapping: real_hardware_numeric_interfaces_1_8_fixed_copper_confirmed
+    poe: standard_power_ethernet_mib_ports_1_8_and_67w_budget_observed
+    system_sensors: pending
+    uplinks: real_hardware_dual_personality_logical_ports_9_10_confirmed
+    stack: not_applicable
+  visuals:
+    status: experimental
+    recommended_faceplate: faceplates/24rj45-2sfp.png
+    optional_faceplates: []
+    calibration_profile: stock_24rj45_2sfp
+    canvas:
+      width: 2048
+      height: 448
+- vendor: HP
+  family: '1810'
+  model: HP ProCurve 1810G-24
+  status: experimental
+  confirmed_since: 2.4.47
+  last_validated_version: 2.4.47
+  evidence: support_my_switch_real_hardware_plus_hpe_manufacturer_contract
+  ports:
+    rj45: 22
+    poe: false
+    uplinks: 2
+    uplink_type: 2 dual-personality 1G RJ45/SFP
+    gigabit_sfp: 2
+    ten_gigabit_sfp_plus: 0
+    combo_ports: 2
+    combo_logical_ports:
+    - 23
+    - 24
+  stack_support: false
+  discovery_support: true
+  dashboard_support: true
+  mapping_profile: hp-procurve-1810g-24-22p-2dual
+  calibration_profile: hp_1810_24g
+  default_faceplate: faceplates/hp-1810-24g.png
+  optional_faceplates:
+  - faceplates/24rj45-2sfp.png
+  tested_firmware:
+  - P.2.24
+  contributor:
+    display_name: community contributor
+    public_credit: false
+  contributions:
+  - id: evidence-hp-procurve-1810g-24-a
+    source_component: Discovery SNMP
+    source_discovery_version: 2.4.46
+    devices_observed: 1
+    validation_scope: exact_identity_22_fixed_plus_2_dual_personality_ports
+    api_capabilities: {}
+    dashboard_validation: pending_post_admission_user_validation
+    contributor:
+      display_name: community contributor
+      public_credit: false
+  notes:
+  - A sanitized real-hardware Support My Switch contribution identifies HP ProCurve
+    1810G-24 on sysObjectID 1.3.6.1.4.1.11.2.3.7.11.104 with firmware P.2.24.
+  - The contributed IF-MIB exposes logical Ethernet interfaces 1-24 plus a non-physical
+    CPU interface; HPE manufacturer documentation identifies this J9450A generation
+    as 22 fixed copper ports plus two dual-personality RJ45/mini-GBIC positions.
+  - Ports 23-24 remain neutral uplink/combo positions because the contributed targeted
+    walk contains no DOT3-MAU rows proving which medium was active.
+  - The exact HP ProCurve 1810G-24 faceplate and calibrated geometry are the default
+    visual; shared combo positions must not be treated as independent duplicate logical
+    ports.
+  validation:
+    exact_model_detection: contribution_confirmed_sysdescr_and_sysobjectid
+    rj45_mapping: real_hardware_indexes_1_22_fixed_copper_confirmed
+    poe: not_applicable
+    system_sensors: not_exposed_in_contributed_targeted_capture
+    uplinks: manufacturer_confirmed_dual_personality_indexes_23_24_medium_pending
+    stack: not_applicable
+  visuals:
+    status: experimental
+    recommended_faceplate: faceplates/hp-1810-24g.png
+    optional_faceplates:
+    - faceplates/24rj45-2sfp.png
+    calibration_profile: hp_1810_24g
+    canvas:
+      width: 2048
+      height: 448
+- vendor: Zyxel
+  family: GS1900
+  model: GS1900-8
+  status: experimental
+  confirmed_since: 2.3.36
+  last_validated_version: 2.3.36
+  evidence: privacy_processed_real_hardware_snmp_contribution
+  ports:
+    rj45: 8
+    poe: false
+    uplinks: 0
+    uplink_type: none
+    gigabit_sfp: 0
+    ten_gigabit_sfp_plus: 0
+  stack_support: false
+  discovery_support: true
+  dashboard_support: true
+  mapping_profile: zyxel-gs1900-8
+  calibration_profile: stock_24rj45_2sfp
+  default_faceplate: faceplates/24rj45-2sfp.png
+  optional_faceplates: []
+  tested_firmware: []
+  contributor:
+    display_name: community contributor
+    public_credit: false
+  notes:
+  - Privacy-processed real-hardware evidence confirms eight physical 1G copper interfaces.
+  - LAG interfaces are logical and excluded from the front panel.
+  - Exact local GS1900-8 identity prevents the shared Zyxel enterprise branch from
+    being mistaken for XS1930-10.
+  validation:
+    exact_model_detection: contribution_confirmed
+    rj45_mapping: real_hardware_eight_ports_confirmed
+    poe: not_applicable
+    system_sensors: pending
+    uplinks: not_applicable
+    stack: not_applicable
+  visuals:
+    status: experimental
+    recommended_faceplate: faceplates/24rj45-2sfp.png
+    optional_faceplates: []
+    calibration_profile: stock_24rj45_2sfp
+    canvas:
+      width: 2048
+      height: 448
+- vendor: Sirivision
+  family: SR-S25G
+  model: SR-S25G3420F
+  status: experimental
+  confirmed_since: 2.3.36
+  last_validated_version: 2.3.36
+  evidence: privacy_processed_real_hardware_snmp_contribution
+  ports:
+    rj45: 16
+    poe: false
+    uplinks: 4
+    uplink_type: 4x 10G optical
+    gigabit_sfp: 0
+    ten_gigabit_sfp_plus: 4
+  stack_support: false
+  discovery_support: true
+  dashboard_support: true
+  mapping_profile: sirivision-sr-s25g3420f
+  calibration_profile: stock_24rj45_4sfp
+  default_faceplate: faceplates/24rj45-4sfp.png
+  optional_faceplates: []
+  tested_firmware: []
+  contributor:
+    display_name: community contributor
+    public_credit: false
+  notes:
+  - Privacy-processed real-hardware evidence confirms 16 2.5G-capable copper interfaces
+    plus four 10G optical positions.
+  - The device reports under Realtek enterprise 1.3.6.1.4.1.27282; Switch Vision assigns
+    Sirivision only when the exact local model SR-S25G3420F is present.
+  - Connector capability remains separate from live negotiated speed because down-port
+    IF-MIB speed values are not reliable capability truth.
+  validation:
+    exact_model_detection: contribution_confirmed
+    rj45_mapping: real_hardware_indexes_1_16_confirmed
+    poe: not_applicable
+    system_sensors: pending
+    uplinks: real_hardware_indexes_17_20_confirmed
+    stack: not_applicable
+  visuals:
+    status: experimental
+    recommended_faceplate: faceplates/24rj45-4sfp.png
+    optional_faceplates: []
+    calibration_profile: stock_24rj45_4sfp
+    canvas:
+      width: 2048
+      height: 448
 - vendor: Cisco
   family: Catalyst 3650
+  model: WS-C3650-48PD-E
   status: confirmed
   confirmed_since: 1.2.26
   last_validated_version: 1.8.0
@@ -24,6 +319,7 @@ devices:
   stack_support: true
   discovery_support: true
   dashboard_support: true
+  mapping_profile: cisco-3650-48p-2x10g
   calibration_profile: default_cisco_48_port
   default_faceplate: faceplates/48rj45-4sfp.png
   optional_faceplates: []
@@ -32,14 +328,12 @@ devices:
   contributor:
     display_name: community contributor
     public_credit: false
-  model: WS-C3650-48PD-E
   notes:
   - Exact model entry; no support is implied for other Catalyst 3650 SKUs.
   - Validated on real hardware through production and test-rack Support My Switch
     contributions.
   - Standalone and two-member stack layouts validated.
   - Validated for the Switch Vision v1.8.0 Gold baseline.
-  mapping_profile: cisco-3650-48p-2x10g
   validation:
     exact_model_detection: confirmed
     rj45_mapping: confirmed
@@ -57,6 +351,7 @@ devices:
       height: 448
 - vendor: Cisco
   family: Catalyst 3650
+  model: WS-C3650-48PD-L
   status: confirmed
   confirmed_since: 1.2.26
   last_validated_version: 1.8.0
@@ -71,6 +366,7 @@ devices:
   stack_support: true
   discovery_support: true
   dashboard_support: true
+  mapping_profile: cisco-3650-48p-2x10g
   calibration_profile: default_cisco_48_port
   default_faceplate: faceplates/48rj45-4sfp.png
   optional_faceplates: []
@@ -79,14 +375,12 @@ devices:
   contributor:
     display_name: community contributor
     public_credit: false
-  model: WS-C3650-48PD-L
   notes:
   - Exact model entry; no support is implied for other Catalyst 3650 SKUs.
   - Validated on real hardware through production and test-rack Support My Switch
     contributions.
   - Standalone and two-member stack layouts validated.
   - Validated for the Switch Vision v1.8.0 Gold baseline.
-  mapping_profile: cisco-3650-48p-2x10g
   validation:
     exact_model_detection: confirmed
     rj45_mapping: confirmed
@@ -177,11 +471,16 @@ devices:
     public_credit: true
   notes:
   - Exact model detected and mapped from a real test-rack contribution.
-  - RJ45 mapping, generated entities, dashboard operation, PoE, and system sensors validated on real hardware.
-  - All four Gigabit SFP uplinks were validated on real WS-C2960X-24PS-L hardware with a 1G DAC.
-  - Gi1/0/25 through Gi1/0/28 are presented as logical faceplate/entity SFP1 through SFP4.
-  - Owner field validation on 2026-09-23 reconfirmed the live dashboard, port mapping, PoE, system sensors, all four 1G SFP uplinks, and approved faceplate alignment.
-  - Promoted to Community Validated in Discovery 3.0.0 from the established real-hardware contract plus the distinct current field/render validation session.
+  - RJ45 mapping, generated entities, dashboard operation, PoE, and system sensors
+    validated on real hardware.
+  - All four Gigabit SFP uplinks were validated on real WS-C2960X-24PS-L hardware
+    with a 1G DAC.
+  - Gi1/0/25 through Gi1/0/28 are presented as logical faceplate/entity SFP1 through
+    SFP4.
+  - Owner field validation on 2026-09-23 reconfirmed the live dashboard, port mapping,
+    PoE, system sensors, all four 1G SFP uplinks, and approved faceplate alignment.
+  - Promoted to Community Validated in Discovery 3.0.0 from the established real-hardware
+    contract plus the distinct current field/render validation session.
   - Model-specific 24-port faceplate and calibration geometry added in v1.8.9.
   validation:
     exact_model_detection: confirmed
@@ -242,6 +541,60 @@ devices:
     recommended_faceplate: faceplates/24rj45-4sfp.png
     optional_faceplates: []
     calibration_profile: cisco_2960x_24p
+    canvas:
+      width: 2048
+      height: 448
+- vendor: Cisco
+  family: Catalyst 2960X
+  model: WS-C2960XR-48LPS-I
+  status: experimental
+  confirmed_since: 2.4.42
+  last_validated_version: 2.4.42
+  evidence: privacy_processed_real_hardware_snmp_contribution_with_catalyst_2960_family_corroboration
+  ports:
+    rj45: 48
+    poe: true
+    uplinks: 4
+    uplink_type: 4x 1G SFP
+    gigabit_sfp: 4
+    ten_gigabit_sfp_plus: 0
+  stack_support: true
+  discovery_support: true
+  dashboard_support: true
+  mapping_profile: cisco-2960xr-48lps-48p-4sfp
+  calibration_profile: default_cisco_48_port
+  default_faceplate: faceplates/48rj45-4sfp.png
+  optional_faceplates: []
+  tested_firmware:
+  - 15.2(7)E14
+  contributor:
+    display_name: community contributor
+    public_credit: false
+  notes:
+  - A provenance-backed real-hardware SNMP walk confirms the exact WS-C2960XR-48LPS-I
+    identity and all 52 front-panel interfaces.
+  - Gi1/0/1 through Gi1/0/48 are the 48 RJ45 access ports; Gi1/0/49 through Gi1/0/52
+    are four physical 1G SFP uplinks.
+  - The current capture materially agrees with reviewed Catalyst 2960X/Cisco IF-MIB,
+    CPU, ENVMON and PoE telemetry behavior, so family/manufacturer evidence is reused
+    where the exact walk agrees.
+  - Cisco PoE aggregate, CPU and temperature telemetry are present in the contribution.
+    Per-port PoE behavior, fan/PSU status and real multi-member stack behavior remain
+    pending rather than blocking the dashboard.
+  - The existing stock 48 RJ45 + 4 SFP faceplate is used until dedicated exact artwork
+    exists; physical topology is not altered by the visual fallback.
+  validation:
+    exact_model_detection: contribution_confirmed_exact_model
+    rj45_mapping: contribution_confirmed_gi1_0_1_48
+    poe: aggregate_telemetry_observed_per_port_behavior_pending
+    system_sensors: cpu_and_temperature_observed_family_correlated
+    uplinks: contribution_confirmed_gi1_0_49_52_1g_sfp
+    stack: stack_capability_observed_multi_member_behavior_pending
+  visuals:
+    status: experimental
+    recommended_faceplate: faceplates/48rj45-4sfp.png
+    optional_faceplates: []
+    calibration_profile: default_cisco_48_port
     canvas:
       width: 2048
       height: 448
@@ -329,8 +682,8 @@ devices:
   - Real-hardware activity, uplink media selection, VLAN, PoE and status validation
     remain pending contributor testing.
   - Remains Experimental until those real-hardware checks are completed.
-  - Gi0/9 and Gi0/10 remain dual-purpose combo uplink positions; their physical
-    semantics are unchanged.
+  - Gi0/9 and Gi0/10 remain dual-purpose combo uplink positions; their physical semantics
+    are unchanged.
   validation:
     exact_model_detection: contribution_confirmed
     rj45_mapping: candidate
@@ -352,7 +705,7 @@ devices:
   model: WS-C3850-12XS-E
   status: community_validated
   confirmed_since: 2.3.46
-  last_validated_version: 2.7.3
+  last_validated_version: 2.4.5
   evidence: privacy_processed_real_hardware_full_walk_factory_no_module
   ports:
     rj45: 0
@@ -374,14 +727,23 @@ devices:
     display_name: community contributor
     public_credit: false
   notes:
-  - Privacy-processed real-hardware full-walk evidence confirms the exact WS-C3850-12XS-E chassis on IOS XE 16.12.14.
+  - Privacy-processed real-hardware full-walk evidence confirms the exact WS-C3850-12XS-E
+    chassis on IOS XE 16.12.14.
   - The twelve fixed front-panel SFP+ cages are Te<member>/0/1 through Te<member>/0/12.
-  - IOS may expose Te<member>/1/1 through Te<member>/1/4 even with the optional network-module bay empty; those rows are software-visible but non-physical and must never create Switch Vision ports or generated entities.
-  - This exact entry covers only the factory/no-module topology; no module-equipped Catalyst 3850 variant is inferred from it.
-  - The existing Cisco Catalyst 3850 12XS faceplate is the exact-model default and uses the owner-supplied 2048 x 448 calibration geometry.
-  - Three separate real-hardware capture sessions materially agree on exact identity and the fixed twelve-port SFP+ topology.
-  - Live rendered field confirmation verifies the twelve-cage alignment plus active-port link, negotiated 10G speed, and traffic activity presentation.
-  - Cisco ENVMON temperature, fan, and power-supply state evidence is repeatable across the independent captures; non-applicable RJ45, PoE, and stack capabilities remain explicitly excluded.
+  - IOS may expose Te<member>/1/1 through Te<member>/1/4 even with the optional network-module
+    bay empty; those rows are software-visible but non-physical and must never create
+    Switch Vision ports or generated entities.
+  - This exact entry covers only the factory/no-module topology; no module-equipped
+    Catalyst 3850 variant is inferred from it.
+  - The exact Core faceplate/calibration provides twelve SFP positions using the owner-supplied
+    2048 x 448 render geometry.
+  - Three separate real-hardware capture sessions materially agree on exact identity
+    and the fixed twelve-port SFP+ topology.
+  - Live rendered field confirmation verifies the twelve-cage alignment plus active-port
+    link, negotiated 10G speed, and traffic activity presentation.
+  - Cisco ENVMON temperature, fan, and power-supply state evidence is repeatable across
+    the independent captures; non-applicable RJ45, PoE, and stack capabilities remain
+    explicitly excluded.
   validation:
     exact_model_detection: community_confirmed_three_capture_sessions
     rj45_mapping: not_applicable
@@ -428,8 +790,8 @@ devices:
     sensors, and dynamic VLAN presentation validated on real hardware.
   - Physical SFP/SFP+ uplink link state, activity, and 64-bit traffic counters validated
     on real hardware.
-  - The four physical uplink cages are dual-speed; ge-0/1/N and xe-0/1/N are alternate
-    identities for the same four cages and are not additive physical ports.
+  - 'The four physical uplink cages are dual-speed: ge-0/1/N and xe-0/1/N are alternate
+    identities for the same four cages and are not additive physical ports.'
   - Confirmed for standalone Switch Vision operation in v1.8.26.
   - Juniper Virtual Chassis support remains unvalidated and is not included in the
     confirmed support scope.
@@ -447,63 +809,6 @@ devices:
     recommended_faceplate: faceplates/48rj45-4sfp.png
     optional_faceplates: []
     calibration_profile: default_cisco_48_port
-    canvas:
-      width: 2048
-      height: 448
-- vendor: MikroTik
-  family: CRS328
-  model: CRS328-24P-4S+RM
-  status: experimental
-  confirmed_since: 2.6.11
-  last_validated_version: 2.3.21
-  last_validated_component: Discovery
-  evidence: privacy_processed_real_hardware_snmp_contribution
-  ports:
-    rj45: 24
-    poe: true
-    uplinks: 4
-    uplink_type: 4x 10G SFP+
-    gigabit_sfp: 0
-    ten_gigabit_sfp_plus: 4
-  stack_support: false
-  discovery_support: true
-  dashboard_support: true
-  mapping_profile: mikrotik-crs328-24p-4splus
-  calibration_profile: stock_24rj45_4sfp
-  default_faceplate: faceplates/24rj45-4sfp.png
-  optional_faceplates: []
-  tested_firmware:
-  - RouterOS 7.21.5
-  contributor:
-    display_name: community contributor
-    public_credit: false
-  notes:
-  - Privacy-processed real-hardware evidence reports the local RouterOS model string
-    CRS328-24P-4S+; CRS328-24P-4S+RM is retained here as the exact marketed registry SKU.
-  - The contributed IF-MIB maps ether1 through ether24 to the 24 copper front-panel
-    ports and sfp-sfpplus1 through sfp-sfpplus4 to four physical 10G SFP+ cages.
-  - bridge and lo are non-physical interfaces and are excluded from front-panel rendering.
-  - All four SFP+ cages were empty in the contributed capture, so live optical link,
-    activity and negotiated-speed validation remain pending.
-  - PoE capability is hardware-confirmed for the exact model; Switch Vision PoE and
-    environmental SNMP presentation remain pending current-build field confirmation.
-  - The neutral 24 RJ45 plus 4 SFP faceplate is a temporary geometry fallback; rendered
-    MikroTik-specific alignment remains pending field confirmation.
-  - The real-hardware capture was field-tested with Discovery 2.3.21. Core 2.6.11
-    promotes the verified support metadata into the stable Core registry and is not
-    itself a new hardware-validation claim.
-  validation:
-    exact_model_detection: contribution_confirmed_local_routeros_identity
-    rj45_mapping: contribution_confirmed_ether1_through_ether24_pending_rendered_validation
-    poe: exact_hardware_capability_confirmed_snmp_values_pending
-    system_sensors: pending_supplemental_snmp_validation
-    uplinks: contribution_confirmed_four_sfp_plus_positions_live_link_pending
-    stack: not_applicable
-  visuals:
-    status: experimental
-    recommended_faceplate: faceplates/24rj45-4sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_24rj45_4sfp
     canvas:
       width: 2048
       height: 448
@@ -538,11 +843,15 @@ devices:
   - Contribution sysObjectID is 1.3.6.1.4.1.9.6.1.85.24.1.
   - The supplied walk exposes gi1/1 through gi1/24 and te1/1 through te1/4.
   - The contribution model text identifies 24 Gigabit ports and four 10-Gigabit ports.
-  - Current real-hardware validation confirms RJ45 mapping, four uplink positions, port selection, link/activity and speed indicators, interface labels/descriptions, system/status telemetry, and rendered alignment; PoE is not applicable.
-  - Stack-specific operation, VLAN presentation, and sustained-traffic testing remain separately unvalidated and are not part of this Community Validated scope.
+  - Current real-hardware validation confirms RJ45 mapping, four uplink positions,
+    port selection, link/activity and speed indicators, interface labels/descriptions,
+    system/status telemetry, and rendered alignment; PoE is not applicable.
+  - Stack-specific operation, VLAN presentation, and sustained-traffic testing remain
+    separately unvalidated and are not part of this Community Validated scope.
   - v2.0.22 audit regression checks passed against the supplied contribution/API sample
     data; live dashboard validation status is unchanged.
-  - Community Validated from real-hardware field confirmation on Core 2.6.7; existing mapping and physical layout remain authoritative.
+  - Community Validated from real-hardware field confirmation on Core 2.6.7; existing
+    mapping and physical layout remain authoritative.
   validation:
     exact_model_detection: contribution_confirmed
     rj45_mapping: community_confirmed_ports_1_24
@@ -591,11 +900,15 @@ devices:
   - v2.0.31 adds a vendor-neutral ifDescr fallback so the switch can be discovered
     and generated without a model override.
   - The exact model profile maps ports 1-8 as RJ45 and ports 9-12 as 1G SFP positions.
-  - The generic 24 RJ45 + 4 SFP faceplate is used as a temporary fallback until a smaller exact-model visual is supplied.
+  - The generic 24 RJ45 + 4 SFP faceplate is used as a temporary fallback until a
+    smaller exact-model visual is supplied.
   - The contribution exposes standard ifOperStatus, ifSpeed and 32-bit ifInOctets/ifOutOctets;
     v2.0.31 uses those when ifXTable/HC values are absent.
-  - Current real-hardware validation confirms all eight RJ45 positions, all four 1G SFP positions, port selection, link/activity and negotiated speed, system/status telemetry, the corrected non-10G presentation, and rendered alignment.
-  - PoE is not applicable to this exact model entry; Community Validated field confirmation was completed on Core 2.6.7.
+  - Current real-hardware validation confirms all eight RJ45 positions, all four 1G
+    SFP positions, port selection, link/activity and negotiated speed, system/status
+    telemetry, the corrected non-10G presentation, and rendered alignment.
+  - PoE is not applicable to this exact model entry; Community Validated field confirmation
+    was completed on Core 2.6.7.
   - Ports 9-12 are physical 1G SFP cages; Discovery caps generated speed telemetry
     for these positions at 1000 Mbps when IF-MIB reports an implausible higher value.
   validation:
@@ -693,9 +1006,23 @@ devices:
   optional_faceplates: []
   tested_firmware:
   - 7.4.1.16850
+  - 7.5.10
   contributor:
     display_name: community contributor
     public_credit: false
+  contributions:
+  - id: evidence-unifi-enterprise8-refresh-a
+    source_component: UniFi2MQTT 2.0.50
+    source_discovery_version: 2.3.21
+    devices_observed: 1
+    validation_scope: additional_real_hardware_api_validation
+    api_capabilities:
+      port_detail: true
+      per_port_traffic: false
+    dashboard_validation: existing_registry_entry_revalidated
+    contributor:
+      display_name: community contributor
+      public_credit: false
   notes:
   - Initial Experimental profile created from Support My Switch contribution community
     validation.
@@ -710,12 +1037,15 @@ devices:
     data; live dashboard validation status is unchanged.
   - v2.0.28 live UniFi2MQTT validation confirmed the normalized API layout on 3 physical
     device(s).
-  - The bundled UniFi eight-RJ45 plus two-SFP faceplate/profile matches the repeated
-    physical/API topology and replaces the obsolete oversized fallback.
+  - v2.0.32 uses the generic 48 RJ45 + 4 SFP faceplate as the universal temporary
+    fallback until a smaller matching generic visual is supplied.
   - v2.0.32 dashboard generation is enabled through the UniFi API/UniFi2MQTT data
     path; support status remains Experimental pending wider live validation.
   - UniFi visual selection is explicit for this exact model and follows its validated
     API port geometry; no Cisco-specific profile fallback is used.
+  - The anonymous anonymous-retained-evidence snapshot adds fresh live validation
+    of the existing 8 RJ45 + 2 SFP+ topology, including active 1G copper and 10G optical
+    links.
   validation:
     exact_model_detection: contribution_confirmed_multiple_devices
     rj45_mapping: candidate_repeated_evidence
@@ -875,6 +1205,16 @@ devices:
   contributor:
     display_name: community contributor
     public_credit: false
+  contributions:
+  - id: evidence-unifi-pro-xg8-snmp-a
+    source_component: Discovery SNMP
+    source_discovery_version: 2.3.21
+    devices_observed: 1
+    validation_scope: exact_compact_sysdescr_and_physical_ifname_mapping
+    dashboard_validation: pending_post_fix_user_validation
+    contributor:
+      display_name: community contributor
+      public_credit: false
   notes:
   - Experimental profile created from sanitized official UniFi Integration API samples.
   - API detail identifies ports 1-8 as RJ45 up to 10G and ports 9-10 as 10G SFP+.
@@ -884,12 +1224,15 @@ devices:
     data; live dashboard validation status is unchanged.
   - v2.0.28 live UniFi2MQTT validation confirmed the normalized API layout on 1 physical
     device(s).
-  - The bundled UniFi eight-RJ45 plus two-SFP faceplate/profile matches the confirmed
-    physical/API topology and replaces the obsolete oversized fallback.
+  - v2.0.32 uses the generic 48 RJ45 + 4 SFP faceplate as the universal temporary
+    fallback until a smaller matching generic visual is supplied.
   - v2.0.32 dashboard generation is enabled through the UniFi API/UniFi2MQTT data
     path; support status remains Experimental pending wider live validation.
   - UniFi visual selection is explicit for this exact model and follows its validated
     API port geometry; no Cisco-specific profile fallback is used.
+  - The anonymous anonymous-retained-evidence SNMP capture proves compact sysDescr
+    USWProXG8PoE and physical ifName 0/1..0/10; ports 0/1..0/8 are RJ45 and 0/9..0/10
+    are 10G SFP+ with a live 10G optical link observed.
   validation:
     exact_model_detection: api_confirmed
     rj45_mapping: api_confirmed_port_indices
@@ -939,11 +1282,15 @@ devices:
     eight copper ports.
   - XGigabitEthernet0/0/1 through XGigabitEthernet0/0/4 are repeatedly observed and
     mapped as the four high-speed uplink positions.
-  - Real-hardware field validation confirms PoE/status telemetry and applicable system/status sensor presentation.
+  - Real-hardware field validation confirms PoE/status telemetry and applicable system/status
+    sensor presentation.
   - v2.0.22 audit regression checks passed against the supplied contribution/API sample
     data; live dashboard validation status is unchanged.
-  - The generic 24 RJ45 + 4 SFP faceplate remains temporary artwork pending an exact-model faceplate; its current rendered alignment is field-validated.
-  - Current real-hardware validation confirms ports 1-8, all four 10G SFP+ positions, port selection, link/activity/speed indicators, PoE/status information, applicable sensor presentation, and rendered alignment on Core 2.6.7.
+  - The generic 24 RJ45 + 4 SFP faceplate remains temporary artwork pending an exact-model
+    faceplate; its current rendered alignment is field-validated.
+  - Current real-hardware validation confirms ports 1-8, all four 10G SFP+ positions,
+    port selection, link/activity/speed indicators, PoE/status information, applicable
+    sensor presentation, and rendered alignment on Core 2.6.7.
   validation:
     exact_model_detection: contribution_confirmed_two_devices
     rj45_mapping: community_confirmed_two_devices_ports_1_8
@@ -977,9 +1324,6 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: ubiquiti-udm-pro-api
-  port_roles:
-    rj45:
-      '9': wan
   calibration_profile: unifi_9_rj45_2sfp
   default_faceplate: faceplates/unifi-9rj45-2sfp.png
   optional_faceplates: []
@@ -1002,8 +1346,8 @@ devices:
     path; support status remains Experimental pending wider live validation.
   - UniFi visual selection is explicit for this exact model and follows its validated
     API port geometry; no Cisco-specific profile fallback is used.
-  - The bundled owner-calibrated 9-RJ45 + 2-SFP UniFi faceplate now matches the proven front-panel
-    connector layout; exact-model port roles remain registry-driven.
+  - The bundled owner-calibrated 9-RJ45 + 2-SFP UniFi faceplate now matches the proven
+    front-panel connector layout; exact-model port roles remain registry-driven.
   validation:
     exact_model_detection: live_api_confirmed
     rj45_mapping: live_api_confirmed_port_indices
@@ -1019,6 +1363,9 @@ devices:
     canvas:
       width: 2048
       height: 448
+  port_roles:
+    rj45:
+      '9': wan
 - vendor: Dell
   family: Dell EMC Networking N2000
   model: N2128PX-ON
@@ -1056,12 +1403,12 @@ devices:
     interface topology.
   - POWER-ETHERNET-MIB discovery exposes PoE candidates; detailed per-port PoE presentation
     remains pending contributor validation.
-  - The dedicated Dell 28 RJ45 + 2 SFP+ faceplate and owner-calibrated factory
-    geometry are selected by default; current-build field feedback confirms
-    faceplate alignment and port-description presentation for this exact model.
-  - Remaining promotion blockers are detailed per-port PoE card/presentation
-    validation, system-sensor applicability, and VLAN/trunk semantics where source
-    evidence can prove them.
+  - The dedicated Dell 28 RJ45 + 2 SFP+ faceplate and owner-calibrated factory geometry
+    are selected by default; current-build field feedback confirms faceplate alignment
+    and port-description presentation for this exact model.
+  - Remaining promotion blockers are detailed per-port PoE card/presentation validation,
+    system-sensor applicability, and VLAN/trunk semantics where source evidence can
+    prove them.
   validation:
     exact_model_detection: contribution_confirmed_sysobjectid_model_and_two_firmware_versions
     rj45_mapping: contribution_confirmed_standalone_and_two_member_stack
@@ -1081,30 +1428,18 @@ devices:
   family: Dell Networking N4000
   model: N4032F
   status: experimental
-  confirmed_since: 2.7.31
-  last_validated_version: 2.7.31
+  confirmed_since: 3.0.8
+  last_validated_version: 3.0.8
   evidence: support_my_switch_real_hardware_contribution
   ports:
     rj45: 0
     poe: false
     uplinks: 24
-    uplink_type: 24x 10G SFP+ front-panel ports; observed optional rear 2x 40G QSFP+ expansion binds dynamically when present
+    uplink_type: 24x 10G SFP+ front-panel ports; observed optional rear 2x 40G QSFP+
+      expansion binds dynamically when present
     gigabit_sfp: 0
     ten_gigabit_sfp_plus: 24
     forty_gigabit_qsfp_plus: 0
-  discovery_optional_interfaces:
-  - id: rear_qsfp_expansion
-    location: rear
-    media: uplink
-    speed_mbps: 40000
-    interface_names:
-    - Fo1/1/1
-    - Fo1/1/2
-    telemetry_only: false
-    observed_when_present: true
-    faceplate_positions:
-    - 25
-    - 26
   stack_support: false
   discovery_support: true
   dashboard_support: true
@@ -1119,12 +1454,22 @@ devices:
     display_name: community contributor
     public_credit: false
   notes:
-  - Real-hardware evidence confirms exact sysObjectID 1.3.6.1.4.1.674.10895.3044 and Dell N4032F identity across two captured firmware versions.
-  - Te1/0/1-24 are the 24 front 10G SFP+ cages and form the base chassis contract.
-  - The observed Dell 2 Port QSFP Expansion Card exposes Fo1/1/1-2 as two rear physical 40G parents. Discovery binds those parents to optical faceplate positions 25-26 only when they are actually observed.
-  - Te1/1/1-8 are breakout lanes beneath the two rear QSFP parents and are never treated as eight extra physical sockets.
-  - Until dedicated N4032F artwork exists, the reviewed 32-optical faceplate is the closest functional presentation. Generated cards hide unused positions, so base hardware renders 24 optical ports and an observed rear expansion renders 26.
-  - This fallback changes presentation only; Dell interface identity, speed and physical-versus-logical topology remain authoritative.
+  - Current real-hardware evidence confirms sysObjectID 1.3.6.1.4.1.674.10895.3044
+    and exact model N4032F.
+  - Te1/0/1-24 are the 24 front 10G SFP+ interfaces and form the base physical contract.
+  - The installed Dell 2 Port QSFP Expansion Card exposes two rear physical 40G connectors
+    as Fo1/1/1-2. When observed, Switch Vision binds them to optical faceplate positions
+    25-26.
+  - Te1/1/1-8 are breakout-lane interface views of the two rear QSFP connectors and
+    are not eight additional physical sockets.
+  - The current capture reports all eight breakout lanes notPresent while both QSFP
+    parent interfaces remain present.
+  - Until dedicated N4032F artwork exists, the closest reviewed optical faceplate
+    is faceplates/unifi-32sfp.png; positions 1-24 represent the front SFP+ ports,
+    observed rear QSFP parents use 25-26, and unused positions remain hidden by the
+    generated card count.
+  - The fallback faceplate is presentation-only; the real Dell interface identity,
+    speed and physical/logical contract remain authoritative.
   validation:
     exact_model_detection: real_hardware_sysobjectid_model_and_two_firmware_versions_confirmed
     rj45_mapping: not_applicable
@@ -1140,6 +1485,19 @@ devices:
     canvas:
       width: 2048
       height: 448
+  discovery_optional_interfaces:
+  - id: rear_qsfp_expansion
+    location: rear
+    media: uplink
+    speed_mbps: 40000
+    interface_names:
+    - Fo1/1/1
+    - Fo1/1/2
+    telemetry_only: false
+    observed_when_present: true
+    faceplate_positions:
+    - 25
+    - 26
 - vendor: Ubiquiti
   family: UniFi Switch
   model: US 48 PoE 500W
@@ -1167,7 +1525,7 @@ devices:
     display_name: community contributor
     public_credit: false
   contributions:
-  - id: community validation
+  - id: community-validation-1
     source_component: UniFi2MQTT 2.0.47
     devices_observed: 2
     validation_scope: physical_api_contract
@@ -1238,7 +1596,7 @@ devices:
     display_name: community contributor
     public_credit: false
   contributions:
-  - id: community validation
+  - id: community-validation-1
     source_component: UniFi2MQTT 2.0.47
     devices_observed: 1
     validation_scope: physical_api_contract
@@ -1293,25 +1651,6 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: ubiquiti-us-xg-16-api
-  unifi_api_port_map:
-    rj45:
-    - 13
-    - 14
-    - 15
-    - 16
-    sfp:
-    - 1
-    - 2
-    - 3
-    - 4
-    - 5
-    - 6
-    - 7
-    - 8
-    - 9
-    - 10
-    - 11
-    - 12
   calibration_profile: unifi_4_rj45_12sfp
   default_faceplate: faceplates/unifi-4-rj45-12sfp.png
   optional_faceplates: []
@@ -1320,7 +1659,7 @@ devices:
     display_name: community contributor
     public_credit: false
   contributions:
-  - id: community validation
+  - id: community-validation-1
     source_component: UniFi2MQTT 2.0.47
     devices_observed: 2
     validation_scope: physical_api_contract
@@ -1343,8 +1682,9 @@ devices:
   - Owner-calibrated 12-SFP+ + 4-RJ45 faceplate geometry is now bundled for this exact
     topology; dashboard rendering is enabled while live rendered alignment remains
     pending community confirmation.
-  - Support confidence is Experimental from corroborating hardware evidence; visual confidence
-    remains Detected until model-specific live rendered alignment/behavior is confirmed.
+  - Support confidence is Experimental from corroborating hardware evidence; visual
+    confidence remains Detected until model-specific live rendered alignment/behavior
+    is confirmed.
   validation:
     exact_model_detection: live_api_confirmed_two_units
     rj45_mapping: live_api_confirmed_api_ports_13_16
@@ -1360,6 +1700,25 @@ devices:
     canvas:
       width: 2048
       height: 448
+  unifi_api_port_map:
+    rj45:
+    - 13
+    - 14
+    - 15
+    - 16
+    sfp:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+    - 11
+    - 12
 - vendor: Ubiquiti
   family: UniFi Switch Pro Aggregation
   model: USW Pro Aggregation
@@ -1379,6 +1738,57 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: ubiquiti-usw-pro-aggregation-api
+  calibration_profile: unifi_32sfp
+  default_faceplate: faceplates/unifi-32sfp.png
+  optional_faceplates: []
+  tested_firmware: []
+  contributor:
+    display_name: community contributor
+    public_credit: false
+  contributions:
+  - id: community-validation-1
+    source_component: UniFi2MQTT 2.0.47
+    devices_observed: 1
+    validation_scope: physical_api_contract
+    api_capabilities:
+      port_detail: true
+      per_port_traffic: false
+    dashboard_validation: exact_card_generated
+    contributor:
+      display_name: community contributor
+      public_credit: false
+  notes:
+  - Community hardware evidence confirms a 32-port optical-only switch: physical/API
+      ports 1-28 are SFP+ with 10G maximum capability and ports 29-32 are SFP28 with
+      25G maximum capability.
+  - Ports 29 and 30 were observed negotiating at 10G despite 25G SFP28 capability;
+    Switch Vision must display the current 10G link speed while retaining 25G as maximum
+    capability metadata.
+  - Port detail is available while per-port traffic is unavailable through the contributed
+    UniFi API path.
+  - Core 2.6.32 supplies the owner-calibrated 32-position optical faceplate with SFP1-SFP28
+    plus TWE1-TWE4 geometry.
+  - Dashboard support uses the exact Core 2.6.32 32-position optical faceplate while
+    preserving the authoritative 28 SFP+ plus 4 SFP28 topology.
+  - Promoted to Experimental in 2.4.42 under the dashboard-first model policy because
+    the complete 32-port API binding and shipped 32-position optical visual already
+    establish a safe reproducible card contract; dedicated visual field confirmation
+    remains a later fidelity/Community Validated concern.
+  validation:
+    exact_model_detection: live_api_confirmed
+    rj45_mapping: not_applicable
+    poe: not_applicable
+    system_sensors: pending
+    uplinks: live_api_confirmed_28x10g_sfp_plus_4x25g_sfp28
+    stack: not_applicable
+  visuals:
+    status: experimental
+    recommended_faceplate: faceplates/unifi-32sfp.png
+    optional_faceplates: []
+    calibration_profile: unifi_32sfp
+    canvas:
+      width: 2048
+      height: 448
   unifi_api_port_map:
     rj45: []
     sfp:
@@ -1414,44 +1824,100 @@ devices:
     - 30
     - 31
     - 32
-  calibration_profile: unifi_32sfp
-  default_faceplate: faceplates/unifi-32sfp.png
+- vendor: Ubiquiti
+  family: UniFi Switch 8 150W
+  model: US-8-150W
+  status: experimental
+  confirmed_since: 2.3.32
+  last_validated_version: 2.4.11
+  evidence: privacy_processed_real_hardware_snmp_contribution
+  ports:
+    rj45: 8
+    poe: true
+    uplinks: 2
+    uplink_type: 2x 1G SFP
+    gigabit_sfp: 2
+    ten_gigabit_sfp_plus: 0
+  stack_support: false
+  discovery_support: true
+  dashboard_support: true
+  mapping_profile: ubiquiti-us-8-150w-snmp
+  calibration_profile: unifi_8_rj45_2sfp
+  default_faceplate: faceplates/unifi-8-rj45-2sfp.png
   optional_faceplates: []
-  tested_firmware: []
+  tested_firmware:
+  - 7.5.15.17146
   contributor:
     display_name: community contributor
     public_credit: false
-  contributions:
-  - id: community-validation-1
-    source_component: UniFi2MQTT 2.0.47
-    devices_observed: 1
-    validation_scope: physical_api_contract
-    api_capabilities:
-      port_detail: true
-      per_port_traffic: false
-    dashboard_validation: exact_card_generated
-    contributor:
-      display_name: community contributor
-      public_credit: false
   notes:
-  - Community hardware evidence confirms a 32-port optical-only switch: physical/API ports 1-28 are SFP+ with 10G maximum capability and ports 29-32 are SFP28 with 25G maximum capability.
-  - Ports 29 and 30 were observed negotiating at 10G despite 25G SFP28 capability; Switch Vision must display the current 10G link speed while retaining 25G as maximum capability metadata.
-  - Port detail is available while per-port traffic is unavailable through the contributed UniFi API path.
-  - Core 2.6.32 supplies the owner-calibrated 32-position optical faceplate with SFP1-SFP28 plus TWE1-TWE4 geometry.
-  - Dashboard support uses the exact Core 2.6.32 32-position optical faceplate while preserving the authoritative 28 SFP+ plus 4 SFP28 topology.
-  - Promoted to Experimental in 2.4.42 under the dashboard-first model policy because the complete 32-port API binding and shipped 32-position optical visual already establish a safe reproducible card contract; dedicated visual field confirmation remains a later fidelity/Community Validated concern.
+  - Privacy-processed real-hardware SNMP evidence confirms exact US-8-150W identity
+    and interfaces 0/1 through 0/10.
+  - Ports 0/1 through 0/8 are RJ45 and 0/9 through 0/10 are 1G SFP positions.
+  - PoE hardware capability is retained as Experimental; detailed Switch Vision PoE
+    presentation remains pending a focused current-build confirmation.
+  - Discovery 2.4.11 aligns this exact model to Core 2.7.6's existing canonical unifi_8_rj45_2sfp
+    visual/profile; support status remains Experimental and model-specific live rendered
+    alignment remains pending.
   validation:
-    exact_model_detection: live_api_confirmed
-    rj45_mapping: not_applicable
-    poe: not_applicable
+    exact_model_detection: real_hardware_snmp_confirmed
+    rj45_mapping: real_hardware_snmp_ports_0_1_0_8_confirmed
+    poe: platform_capability_confirmed_telemetry_pending
     system_sensors: pending
-    uplinks: live_api_confirmed_28x10g_sfp_plus_4x25g_sfp28
+    uplinks: real_hardware_snmp_ports_0_9_0_10_1g_sfp_confirmed
     stack: not_applicable
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/unifi-32sfp.png
+    recommended_faceplate: faceplates/unifi-8-rj45-2sfp.png
     optional_faceplates: []
-    calibration_profile: unifi_32sfp
+    calibration_profile: unifi_8_rj45_2sfp
+    canvas:
+      width: 2048
+      height: 448
+- vendor: Ubiquiti
+  family: UniFi Switch 24 250W
+  model: US-24-250W
+  status: experimental
+  confirmed_since: 2.3.32
+  last_validated_version: 2.3.31
+  evidence: privacy_processed_real_hardware_snmp_contribution
+  ports:
+    rj45: 24
+    poe: true
+    uplinks: 2
+    uplink_type: 2x 1G SFP
+    gigabit_sfp: 2
+    ten_gigabit_sfp_plus: 0
+  stack_support: false
+  discovery_support: true
+  dashboard_support: true
+  mapping_profile: ubiquiti-us-24-250w-snmp
+  calibration_profile: unifi_24p_rj45_2sfp
+  default_faceplate: faceplates/unifi-24p-rj45-2sfp.png
+  optional_faceplates: []
+  tested_firmware:
+  - 7.5.15.17146
+  contributor:
+    display_name: community contributor
+    public_credit: false
+  notes:
+  - Privacy-processed real-hardware SNMP evidence confirms exact US-24-250W identity
+    and interfaces 0/1 through 0/26.
+  - Ports 0/1 through 0/24 are RJ45 and 0/25 through 0/26 are 1G SFP positions.
+  - PoE hardware capability is retained as Experimental; detailed Switch Vision PoE
+    presentation remains pending a focused current-build confirmation.
+  validation:
+    exact_model_detection: real_hardware_snmp_confirmed
+    rj45_mapping: real_hardware_snmp_ports_0_1_0_24_confirmed
+    poe: platform_capability_confirmed_telemetry_pending
+    system_sensors: pending
+    uplinks: real_hardware_snmp_ports_0_25_0_26_1g_sfp_confirmed
+    stack: not_applicable
+  visuals:
+    status: experimental
+    recommended_faceplate: faceplates/unifi-24p-rj45-2sfp.png
+    optional_faceplates: []
+    calibration_profile: unifi_24p_rj45_2sfp
     canvas:
       width: 2048
       height: 448
@@ -1460,7 +1926,7 @@ devices:
   model: US 8 60W
   status: experimental
   confirmed_since: 2.1.19
-  last_validated_version: 2.7.6
+  last_validated_version: 2.4.11
   evidence: support_my_switch_community validation_unifi_api
   ports:
     rj45: 8
@@ -1481,7 +1947,7 @@ devices:
     display_name: community contributor
     public_credit: false
   contributions:
-  - id: community validation
+  - id: community-validation-1
     source_component: UniFi2MQTT 2.0.47
     devices_observed: 1
     validation_scope: physical_api_contract
@@ -1498,9 +1964,6 @@ devices:
   - PoE output capability is exposed only on ports 5 through 8, using 802.3af metadata.
   - The contribution proves link state and PoE-active state are independent.
   - Per-port RX/TX traffic is not exposed by the current UniFi API path.
-  - Core 2.7.6 replaces the temporary oversized stock faceplate with the shipped
-    UniFi 8-RJ45 faceplate/profile because its connector count exactly matches this
-    model's proven physical/API topology; model-specific live alignment remains pending.
   - Rendered dashboard validation remains pending before promotion beyond Experimental.
   - UniFi visual selection is explicit for this exact model and follows its validated
     API port geometry; no Cisco-specific profile fallback is used.
@@ -1508,6 +1971,9 @@ devices:
     1G RJ45 unit with PoE capability limited to physical/API ports 5-8 using 802.3af.
   - community validation was captured with UniFi2MQTT 2.0.47 and did not include explicit
     Switch Vision dashboard/card validation, so Experimental status is unchanged.
+  - Discovery 2.4.11 aligns this exact model to Core 2.7.6's existing canonical default_unifi_8_rj45
+    visual/profile; support status remains Experimental and model-specific live rendered
+    alignment remains pending.
   validation:
     exact_model_detection: live_api_confirmed
     rj45_mapping: live_api_confirmed_port_indices
@@ -1557,8 +2023,8 @@ devices:
   - Live evidence includes link state, negotiated speed, CPU, memory and uptime.
   - Per-port RX/TX traffic is not exposed by the current UniFi API path.
   - SNMP is therefore required for Switch Vision per-port Activity LED animation.
-  - The bundled five-RJ45 UniFi faceplate/profile matches the authoritative five-port
-    API topology and replaces the obsolete oversized fallback.
+  - No exact five-port Switch Vision visual is assigned yet; the universal temporary
+    fallback preserves the real API port count.
   - Rendered dashboard validation remains pending before promotion beyond Experimental.
   - UniFi visual selection is explicit for this exact model and follows its validated
     API port geometry; no Cisco-specific profile fallback is used.
@@ -1693,14 +2159,22 @@ devices:
   notes:
   - Experimental profile created from Support My Switch contribution community validation.
   - Three independent live UniFi API devices expose the same five 1G RJ45-port topology.
-  - No per-port PoE output capability is exposed by the contributed normalized API data.
+  - No per-port PoE output capability is exposed by the contributed normalized API
+    data.
   - Per-port RX/TX traffic is not exposed by the current UniFi API path.
-  - The exact five-port UniFi faceplate is assigned while preserving the authoritative five-port 1G RJ45 topology.
-  - Owner field validation on 2026-09-23 confirmed the live Switch Vision dashboard, five-port mapping, port behavior, and approved dedicated Flex Mini faceplate alignment.
-  - UniFi visual selection is explicit for this exact model and follows its validated API port geometry; no Cisco-specific profile fallback is used.
-  - community validation from community contributor independently reconfirms two additional units with the same five-port 1G RJ45 topology.
-  - The anonymous anonymous-retained-evidence snapshot independently repeats the five-RJ45 API topology; this particular device was offline, so it does not add live link-state validation.
-  - Promoted to Community Validated in Discovery 3.0.0 after independent API corroboration plus current live dashboard/faceplate field confirmation.
+  - The exact five-port UniFi faceplate is assigned while preserving the authoritative
+    five-port 1G RJ45 topology.
+  - Owner field validation on 2026-09-23 confirmed the live Switch Vision dashboard,
+    five-port mapping, port behavior, and approved dedicated Flex Mini faceplate alignment.
+  - UniFi visual selection is explicit for this exact model and follows its validated
+    API port geometry; no Cisco-specific profile fallback is used.
+  - community validation from community contributor independently reconfirms two additional
+    units with the same five-port 1G RJ45 topology.
+  - The anonymous anonymous-retained-evidence snapshot independently repeats the five-RJ45
+    API topology; this particular device was offline, so it does not add live link-state
+    validation.
+  - Promoted to Community Validated in Discovery 3.0.0 after independent API corroboration
+    plus current live dashboard/faceplate field confirmation.
   validation:
     exact_model_detection: live_api_confirmed_three_devices
     rj45_mapping: live_api_confirmed_repeated_port_indices
@@ -1803,8 +2277,8 @@ devices:
   - Rendered dashboard validation remains pending before promotion beyond Experimental.
   - UniFi visual selection is explicit for this exact model and follows its validated
     API port geometry; no Cisco-specific profile fallback is used.
-  - The bundled owner-calibrated 16-RJ45 + 2-SFP UniFi faceplate now matches the proven physical
-    connector layout while preserving the exact API port contract.
+  - The bundled owner-calibrated 16-RJ45 + 2-SFP UniFi faceplate now matches the proven
+    physical connector layout while preserving the exact API port contract.
   validation:
     exact_model_detection: live_api_confirmed
     rj45_mapping: live_api_confirmed_port_indices
@@ -1912,8 +2386,8 @@ devices:
   - Live evidence includes link state, negotiated speed, CPU, memory and uptime.
   - Per-port RX/TX traffic is not exposed by the current UniFi API path.
   - SNMP is therefore required for Switch Vision per-port Activity LED animation.
-  - The bundled eight-RJ45 UniFi faceplate/profile matches the authoritative eight-port
-    API topology and replaces the obsolete oversized fallback.
+  - A dedicated 8-port Switch Vision visual is not currently assigned to this registry
+    profile; the universal temporary fallback preserves the real port count.
   - Rendered dashboard validation remains pending before promotion beyond Experimental.
   - UniFi visual selection is explicit for this exact model and follows its validated
     API port geometry; no Cisco-specific profile fallback is used.
@@ -1970,8 +2444,8 @@ devices:
     beyond Experimental.
   - UniFi visual selection is explicit for this exact model and follows its validated
     API port geometry; no Cisco-specific profile fallback is used.
-  - The bundled owner-calibrated 9-RJ45 + 2-SFP UniFi faceplate now matches the proven physical
-    connector layout; the shared faceplate carries no WAN/LAN role guesses.
+  - The bundled owner-calibrated 9-RJ45 + 2-SFP UniFi faceplate now matches the proven
+    physical connector layout; the shared faceplate carries no WAN/LAN role guesses.
   validation:
     exact_model_detection: live_api_confirmed
     rj45_mapping: live_api_confirmed_ports_1_9
@@ -1987,20 +2461,13 @@ devices:
     canvas:
       width: 2048
       height: 448
-- status: experimental
+- vendor: Ubiquiti
+  family: UniFi Cloud Gateway Ultra
+  model: UCG Ultra
+  status: experimental
   confirmed_since: 2.4.10
   last_validated_version: 2.4.10
   evidence: multiple_real_hardware_unifi_api_contributions
-  stack_support: false
-  discovery_support: true
-  optional_faceplates: []
-  tested_firmware: []
-  contributor:
-    display_name: community contributor
-    public_credit: false
-  vendor: Ubiquiti
-  family: UniFi Cloud Gateway Ultra
-  model: UCG Ultra
   ports:
     rj45: 5
     poe: false
@@ -2008,12 +2475,19 @@ devices:
     uplink_type: none
     gigabit_sfp: 0
     ten_gigabit_sfp_plus: 0
+  stack_support: false
+  discovery_support: true
   dashboard_support: true
   mapping_profile: ubiquiti-ucg-ultra-api
   calibration_profile: default_unifi_5_rj45
   default_faceplate: faceplates/unifi-5rj45.png
+  optional_faceplates: []
+  tested_firmware: []
+  contributor:
+    display_name: community contributor
+    public_credit: false
   contributions:
-  - id: community validation
+  - id: community-validation-1
     source_component: UniFi2MQTT 2.0.47
     source_discovery_version: 2.1.37
     devices_observed: 1
@@ -2025,7 +2499,7 @@ devices:
     contributor:
       display_name: community contributor
       public_credit: false
-  - id: community validation
+  - id: community-validation-2
     source_component: UniFi2MQTT 2.0.47
     source_discovery_version: 2.1.37
     devices_observed: 1
@@ -2067,20 +2541,87 @@ devices:
     canvas:
       width: 2048
       height: 448
-- status: experimental
-  confirmed_since: 2.4.10
-  last_validated_version: 2.4.10
-  evidence: multiple_real_hardware_unifi_api_contributions
+- vendor: Ubiquiti
+  family: UniFi Cloud Gateway Fiber
+  model: UCG Fiber
+  status: experimental
+  confirmed_since: 2.4.42
+  last_validated_version: 2.4.42
+  evidence: real_hardware_unifi_api_contribution_with_unifi_platform_corroboration
+  ports:
+    rj45: 5
+    poe: true
+    uplinks: 2
+    uplink_type: 2x 10G SFP+
+    gigabit_sfp: 0
+    ten_gigabit_sfp_plus: 2
   stack_support: false
   discovery_support: true
+  dashboard_support: true
+  mapping_profile: ubiquiti-ucg-fiber-api
+  calibration_profile: unifi_8_rj45_2sfp
+  default_faceplate: faceplates/unifi-8-rj45-2sfp.png
   optional_faceplates: []
   tested_firmware: []
   contributor:
     display_name: community contributor
     public_credit: false
-  vendor: Ubiquiti
+  contributions:
+  - id: community-validation-1
+    source_component: UniFi2MQTT
+    devices_observed: 1
+    validation_scope: physical_api_contract
+    api_capabilities:
+      port_detail: true
+      per_port_traffic: false
+    dashboard_validation: safe_family_visual_generated
+    contributor:
+      display_name: community contributor
+      public_credit: false
+  notes:
+  - Real-hardware UniFi API evidence exposes seven physical switching ports and UniFi2MQTT
+    deliberately accepts this gateway/switch hybrid as a Switch Vision switching device.
+  - API ports 1-4 are RJ45 with 2.5G maximum capability; port 4 exposes PoE output
+    capability with 802.3at evidence.
+  - API port 5 is a 10G-capable RJ45 port; API ports 6-7 are 10G SFP+ cages.
+  - The exact topology is bound by API port index. Controller-reported role/state
+    remains authoritative; WAN/LAN role is not inferred from physical position.
+  - The existing 8 RJ45 + 2 SFP UniFi visual is a safe same-manufacturer container
+    for the proven 5 RJ45 + 2 SFP+ contract; unused visual positions do not create
+    entities or physical ports. Dedicated UCG Fiber artwork remains a later fidelity
+    task.
+  validation:
+    exact_model_detection: live_api_confirmed
+    rj45_mapping: live_api_confirmed_ports_1_5_with_multigig_capabilities
+    poe: live_api_confirmed_port_4_802_3at_capable
+    system_sensors: live_api_platform_telemetry_available
+    uplinks: live_api_confirmed_ports_6_7_10g_sfp_plus
+    stack: not_applicable
+  visuals:
+    status: experimental
+    recommended_faceplate: faceplates/unifi-8-rj45-2sfp.png
+    optional_faceplates: []
+    calibration_profile: unifi_8_rj45_2sfp
+    canvas:
+      width: 2048
+      height: 448
+  unifi_api_port_map:
+    rj45:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    sfp:
+    - 6
+    - 7
+- vendor: Ubiquiti
   family: UniFi Switch 16 PoE 150W
   model: US 16 PoE 150W
+  status: experimental
+  confirmed_since: 2.4.10
+  last_validated_version: 2.4.10
+  evidence: multiple_real_hardware_unifi_api_contributions
   ports:
     rj45: 16
     poe: true
@@ -2088,12 +2629,19 @@ devices:
     uplink_type: 2x 1G SFP
     gigabit_sfp: 2
     ten_gigabit_sfp_plus: 0
+  stack_support: false
+  discovery_support: true
   dashboard_support: true
   mapping_profile: ubiquiti-us-16-poe-150w-api
   calibration_profile: unifi_16_rj45_2sfp
   default_faceplate: faceplates/unifi-16rj45-2sfp.png
+  optional_faceplates: []
+  tested_firmware: []
+  contributor:
+    display_name: community contributor
+    public_credit: false
   contributions:
-  - id: community validation
+  - id: community-validation-1
     source_component: UniFi2MQTT 2.0.47
     source_discovery_version: 2.1.37
     devices_observed: 1
@@ -2105,7 +2653,7 @@ devices:
     contributor:
       display_name: community contributor
       public_credit: false
-  - id: community validation
+  - id: community-validation-2
     source_component: UniFi2MQTT 2.0.47
     source_discovery_version: 2.1.37
     devices_observed: 1
@@ -2126,8 +2674,8 @@ devices:
     and does not invent legacy passive-24V state that was not present in the contribution.
   - Port detail is available while per-port RX/TX traffic is unavailable through the
     contributed UniFi API path.
-  - The bundled owner-calibrated 16-RJ45 + 2-SFP UniFi faceplate replaces the oversized stock canvas
-    while preserving the authoritative 16+2 physical contract.
+  - The bundled owner-calibrated 16-RJ45 + 2-SFP UniFi faceplate replaces the oversized
+    stock canvas while preserving the authoritative 16+2 physical contract.
   validation:
     exact_model_detection: live_api_confirmed_two_corroborating_captures
     rj45_mapping: live_api_confirmed_ports_1_16
@@ -2143,20 +2691,13 @@ devices:
     canvas:
       width: 2048
       height: 448
-- status: experimental
+- vendor: Ubiquiti
+  family: UniFi Switch Pro Max 24
+  model: USW Pro Max 24
+  status: experimental
   confirmed_since: 2.4.10
   last_validated_version: 2.4.10
   evidence: multiple_real_hardware_unifi_api_contributions
-  stack_support: false
-  discovery_support: true
-  optional_faceplates: []
-  tested_firmware: []
-  contributor:
-    display_name: community contributor
-    public_credit: false
-  vendor: Ubiquiti
-  family: UniFi Switch Pro Max 24
-  model: USW Pro Max 24
   ports:
     rj45: 24
     poe: false
@@ -2164,12 +2705,19 @@ devices:
     uplink_type: 2x 10G SFP+
     gigabit_sfp: 0
     ten_gigabit_sfp_plus: 2
+  stack_support: false
+  discovery_support: true
   dashboard_support: true
   mapping_profile: ubiquiti-usw-pro-max-24-api
   calibration_profile: unifi_24p_rj45_2sfp
   default_faceplate: faceplates/unifi-24p-rj45-2sfp.png
+  optional_faceplates: []
+  tested_firmware: []
+  contributor:
+    display_name: community contributor
+    public_credit: false
   contributions:
-  - id: community validation
+  - id: community-validation-1
     source_component: UniFi2MQTT 2.0.47
     source_discovery_version: 2.1.37
     devices_observed: 1
@@ -2181,7 +2729,7 @@ devices:
     contributor:
       display_name: community contributor
       public_credit: false
-  - id: community validation
+  - id: community-validation-2
     source_component: UniFi2MQTT 2.0.47
     source_discovery_version: 2.1.37
     devices_observed: 1
@@ -2221,20 +2769,13 @@ devices:
     canvas:
       width: 2048
       height: 448
-- status: experimental
+- vendor: Ubiquiti
+  family: UniFi Switch Ultra
+  model: USW Ultra
+  status: experimental
   confirmed_since: 2.4.10
   last_validated_version: 2.4.10
   evidence: multiple_real_hardware_unifi_api_contributions
-  stack_support: false
-  discovery_support: true
-  optional_faceplates: []
-  tested_firmware: []
-  contributor:
-    display_name: community contributor
-    public_credit: false
-  vendor: Ubiquiti
-  family: UniFi Switch Ultra
-  model: USW Ultra
   ports:
     rj45: 8
     poe: true
@@ -2242,12 +2783,19 @@ devices:
     uplink_type: none
     gigabit_sfp: 0
     ten_gigabit_sfp_plus: 0
+  stack_support: false
+  discovery_support: true
   dashboard_support: true
   mapping_profile: ubiquiti-usw-ultra-api
   calibration_profile: default_unifi_8_rj45
   default_faceplate: faceplates/unifi-8rj45.png
+  optional_faceplates: []
+  tested_firmware: []
+  contributor:
+    display_name: community contributor
+    public_credit: false
   contributions:
-  - id: community validation
+  - id: community-validation-1
     source_component: UniFi2MQTT 2.0.47
     source_discovery_version: 2.1.37
     devices_observed: 1
@@ -2259,7 +2807,7 @@ devices:
     contributor:
       display_name: community contributor
       public_credit: false
-  - id: community validation
+  - id: community-validation-2
     source_component: UniFi2MQTT 2.0.47
     source_discovery_version: 2.1.37
     devices_observed: 1
@@ -2319,7 +2867,7 @@ devices:
   optional_faceplates: []
   tested_firmware: []
   contributor:
-    display_name: community contributor
+    display_name: Community contributor
     public_credit: false
   notes:
   - A sanitized real-hardware contribution reports the exact SNMP model string WS-C3750-48P.
@@ -2364,20 +2912,6 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: ubiquiti-udm-pro-max-api
-  unifi_api_port_map:
-    rj45:
-    - 1
-    - 2
-    - 3
-    - 4
-    - 5
-    - 6
-    - 7
-    - 8
-    - 9
-    sfp:
-    - 10
-    - 11
   calibration_profile: unifi_9_rj45_2sfp
   default_faceplate: faceplates/unifi-9rj45-2sfp.png
   optional_faceplates: []
@@ -2399,8 +2933,8 @@ devices:
     UniFi API path; Switch Vision must not synthesize per-port traffic.
   - Support remains Experimental until rendered physical alignment and live dashboard
     behaviour are validated on the contributor hardware.
-  - The bundled owner-calibrated 9-RJ45 + 2-SFP UniFi faceplate replaces the temporary oversized
-    visual while preserving the exact nine-copper + two-optical API contract.
+  - The bundled owner-calibrated 9-RJ45 + 2-SFP UniFi faceplate replaces the temporary
+    oversized visual while preserving the exact nine-copper + two-optical API contract.
   validation:
     exact_model_detection: community_real_hardware_api_confirmed
     rj45_mapping: community_api_ports_1_9_confirmed_pending_rendered_validation
@@ -2416,6 +2950,20 @@ devices:
     canvas:
       width: 2048
       height: 448
+  unifi_api_port_map:
+    rj45:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    sfp:
+    - 10
+    - 11
 - vendor: Ubiquiti
   family: UniFi Switch Pro XG
   model: USW Pro XG 24 PoE
@@ -2435,35 +2983,6 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: ubiquiti-usw-pro-xg-24-poe-api
-  unifi_api_port_map:
-    rj45:
-    - 1
-    - 2
-    - 3
-    - 4
-    - 5
-    - 6
-    - 7
-    - 8
-    - 9
-    - 10
-    - 11
-    - 12
-    - 13
-    - 14
-    - 15
-    - 16
-    - 17
-    - 18
-    - 19
-    - 20
-    - 21
-    - 22
-    - 23
-    - 24
-    sfp:
-    - 25
-    - 26
   calibration_profile: unifi_24_rj45_2sfp_inline
   default_faceplate: faceplates/unifi-24-rj45-2sfp-inline.png
   optional_faceplates: []
@@ -2503,339 +3022,90 @@ devices:
     canvas:
       width: 2048
       height: 448
-- vendor: HP
-  family: '1810'
-  model: HP 1810-24G
+  unifi_api_port_map:
+    rj45:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+    - 11
+    - 12
+    - 13
+    - 14
+    - 15
+    - 16
+    - 17
+    - 18
+    - 19
+    - 20
+    - 21
+    - 22
+    - 23
+    - 24
+    sfp:
+    - 25
+    - 26
+- vendor: MikroTik
+  family: CRS328
+  model: CRS328-24P-4S+RM
   status: experimental
-  confirmed_since: 2.3.36
-  last_validated_version: 2.3.36
+  confirmed_since: 2.3.22
+  last_validated_version: 2.3.21
   evidence: privacy_processed_real_hardware_snmp_contribution
   ports:
     rj45: 24
-    poe: false
-    uplinks: 2
-    uplink_type: 2x 1G SFP
-    gigabit_sfp: 2
-    ten_gigabit_sfp_plus: 0
-  stack_support: false
-  discovery_support: true
-  dashboard_support: true
-  mapping_profile: hp-1810-24g-24p-2sfp
-  calibration_profile: stock_24rj45_2sfp
-  default_faceplate: faceplates/24rj45-2sfp.png
-  optional_faceplates: []
-  tested_firmware: []
-  contributor:
-    display_name: community contributor
-    public_credit: false
-  notes:
-  - A privacy-processed real-hardware SNMP contribution confirms 24 fixed 1G copper interfaces plus two 1G SFP cages.
-  - Logical IP and link-aggregation interfaces are excluded from the front panel.
-  - The neutral 24+2 faceplate is an Experimental geometry fallback pending rendered confirmation.
-  validation:
-    exact_model_detection: contribution_confirmed
-    rj45_mapping: real_hardware_indexes_1_24_confirmed
-    poe: not_applicable
-    system_sensors: pending
-    uplinks: real_hardware_indexes_25_26_confirmed
-    stack: not_applicable
-  visuals:
-    status: experimental
-    recommended_faceplate: faceplates/24rj45-2sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_24rj45_2sfp
-    canvas:
-      width: 2048
-      height: 448
-- vendor: HP
-  family: '2530'
-  model: HP J9774A 2530-8G-PoEP
-  status: experimental
-  confirmed_since: 3.0.9
-  last_validated_version: 3.0.9
-  evidence: privacy_processed_real_hardware_snmp_capture_with_hpe_platform_corroboration
-  ports:
-    rj45: 8
     poe: true
-    uplinks: 2
-    uplink_type: 2 dual-personality 1G RJ45/SFP
-    gigabit_sfp: 2
-    ten_gigabit_sfp_plus: 0
-    combo_ports: 2
-    combo_logical_ports:
-    - 9
-    - 10
-  stack_support: false
-  discovery_support: true
-  dashboard_support: true
-  mapping_profile: hp-2530-8g-poep-8p-2dual
-  calibration_profile: stock_24rj45_2sfp
-  default_faceplate: faceplates/24rj45-2sfp.png
-  optional_faceplates: []
-  tested_firmware:
-  - YA.16.11.0031
-  contributor:
-    display_name: community contributor
-    public_credit: false
-  notes:
-  - Privacy-processed real-hardware SNMP evidence confirms exact HP J9774A 2530-8G-PoEP identity on sysObjectID 1.3.6.1.4.1.11.2.3.7.11.138 and numeric IF-MIB logical interfaces 1-10.
-  - Interfaces 1-8 are fixed 1G PoE+ copper positions; POWER-ETHERNET-MIB exposes PSE rows for those eight positions and a 67 W aggregate PoE budget.
-  - Interfaces 9-10 are dual-personality 1G RJ45/SFP positions and remain one logical port each across both media presentations.
-  - The stock 24 RJ45 + 2 SFP visual is a safe fallback container. Only ten RJ45 positions and two SFP cages are active, with the SFP cages mapped to logical ports 9 and 10; unused stock positions never create entities or physical ports.
-  validation:
-    exact_model_detection: real_hardware_sysobjectid_and_local_identity_confirmed
-    rj45_mapping: real_hardware_numeric_interfaces_1_8_fixed_copper_confirmed
-    poe: standard_power_ethernet_mib_ports_1_8_and_67w_budget_observed
-    system_sensors: pending
-    uplinks: real_hardware_dual_personality_logical_ports_9_10_confirmed
-    stack: not_applicable
-  visuals:
-    status: experimental
-    recommended_faceplate: faceplates/24rj45-2sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_24rj45_2sfp
-    canvas:
-      width: 2048
-      height: 448
-- vendor: HP
-  family: '1810'
-  model: HP ProCurve 1810G-24
-  status: experimental
-  confirmed_since: 2.4.47
-  last_validated_version: 2.4.47
-  evidence: support_my_switch_real_hardware_plus_hpe_manufacturer_contract
-  ports:
-    rj45: 22
-    poe: false
-    uplinks: 2
-    uplink_type: 2 dual-personality 1G RJ45/SFP
-    gigabit_sfp: 2
-    ten_gigabit_sfp_plus: 0
-    combo_ports: 2
-    combo_logical_ports:
-    - 23
-    - 24
-  stack_support: false
-  discovery_support: true
-  dashboard_support: true
-  mapping_profile: hp-procurve-1810g-24-22p-2dual
-  calibration_profile: hp_1810_24g
-  default_faceplate: faceplates/hp-1810-24g.png
-  optional_faceplates:
-  - faceplates/24rj45-2sfp.png
-  tested_firmware:
-  - P.2.24
-  contributor:
-    display_name: community contributor
-    public_credit: false
-  notes:
-  - A sanitized real-hardware Support My Switch contribution identifies HP ProCurve 1810G-24 on sysObjectID 1.3.6.1.4.1.11.2.3.7.11.104 with firmware P.2.24.
-  - The contributed IF-MIB exposes logical Ethernet interfaces 1-24 plus a non-physical CPU interface; HPE manufacturer documentation identifies this J9450A generation as 22 fixed copper ports plus two dual-personality RJ45/mini-GBIC positions.
-  - Ports 23-24 remain neutral uplink/combo positions because the contributed targeted walk contains no DOT3-MAU rows proving which medium was active.
-  - The exact HP ProCurve 1810G-24 faceplate and calibrated geometry are the default visual; shared combo positions must not be treated as independent duplicate logical ports.
-  validation:
-    exact_model_detection: contribution_confirmed_sysdescr_and_sysobjectid
-    rj45_mapping: real_hardware_indexes_1_22_fixed_copper_confirmed
-    poe: not_applicable
-    system_sensors: not_exposed_in_contributed_targeted_capture
-    uplinks: manufacturer_confirmed_dual_personality_indexes_23_24_medium_pending
-    stack: not_applicable
-  visuals:
-    status: experimental
-    recommended_faceplate: faceplates/hp-1810-24g.png
-    optional_faceplates:
-    - faceplates/24rj45-2sfp.png
-    calibration_profile: hp_1810_24g
-    canvas:
-      width: 2048
-      height: 448
-  contributions:
-  - id: evidence-hp-procurve-1810g-24-a
-    source_component: Discovery SNMP
-    source_discovery_version: 2.4.46
-    devices_observed: 1
-    validation_scope: exact_identity_22_fixed_plus_2_dual_personality_ports
-    api_capabilities: {}
-    dashboard_validation: pending_post_admission_user_validation
-    contributor:
-      display_name: community contributor
-      public_credit: false
-- vendor: Zyxel
-  family: GS1900
-  model: GS1900-8
-  status: experimental
-  confirmed_since: 2.3.36
-  last_validated_version: 2.3.36
-  evidence: privacy_processed_real_hardware_snmp_contribution
-  ports:
-    rj45: 8
-    poe: false
-    uplinks: 0
-    uplink_type: none
-    gigabit_sfp: 0
-    ten_gigabit_sfp_plus: 0
-  stack_support: false
-  discovery_support: true
-  dashboard_support: true
-  mapping_profile: zyxel-gs1900-8
-  calibration_profile: stock_24rj45_2sfp
-  default_faceplate: faceplates/24rj45-2sfp.png
-  optional_faceplates: []
-  tested_firmware: []
-  contributor:
-    display_name: community contributor
-    public_credit: false
-  notes:
-  - Privacy-processed real-hardware evidence confirms eight physical 1G copper interfaces.
-  - LAG interfaces are logical and excluded from the front panel.
-  - Exact local GS1900-8 identity prevents the shared Zyxel enterprise branch from being mistaken for XS1930-10.
-  validation:
-    exact_model_detection: contribution_confirmed
-    rj45_mapping: real_hardware_eight_ports_confirmed
-    poe: not_applicable
-    system_sensors: pending
-    uplinks: not_applicable
-    stack: not_applicable
-  visuals:
-    status: experimental
-    recommended_faceplate: faceplates/24rj45-2sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_24rj45_2sfp
-    canvas:
-      width: 2048
-      height: 448
-- vendor: Sirivision
-  family: SR-S25G
-  model: SR-S25G3420F
-  status: experimental
-  confirmed_since: 2.3.36
-  last_validated_version: 2.3.36
-  evidence: privacy_processed_real_hardware_snmp_contribution
-  ports:
-    rj45: 16
-    poe: false
     uplinks: 4
-    uplink_type: 4x 10G optical
+    uplink_type: 4x 10G SFP+
     gigabit_sfp: 0
     ten_gigabit_sfp_plus: 4
   stack_support: false
   discovery_support: true
   dashboard_support: true
-  mapping_profile: sirivision-sr-s25g3420f
+  mapping_profile: mikrotik-crs328-24p-4splus
   calibration_profile: stock_24rj45_4sfp
   default_faceplate: faceplates/24rj45-4sfp.png
   optional_faceplates: []
-  tested_firmware: []
+  tested_firmware:
+  - RouterOS 7.21.5
   contributor:
     display_name: community contributor
     public_credit: false
   notes:
-  - Privacy-processed real-hardware evidence confirms 16 2.5G-capable copper interfaces plus four 10G optical positions.
-  - The device reports under Realtek enterprise 1.3.6.1.4.1.27282; Switch Vision assigns Sirivision only when the exact local model SR-S25G3420F is present.
-  - Connector capability remains separate from live negotiated speed because down-port IF-MIB speed values are not reliable capability truth.
+  - Multiple privacy-processed real-hardware captures confirm the local RouterOS model
+    string CRS328-24P-4S+; the registry retains the marketed CRS328-24P-4S+RM SKU
+    as lookup normalization.
+  - ifIndex 1-24 map to ether1-ether24 and 25-28 map to sfp-sfpplus1-sfp-sfpplus4;
+    bridge and lo remain excluded as non-physical interfaces.
+  - HOST-RESOURCES-MIB CPU plus MikroTik health-gauge temperature, fan, PSU and aggregate
+    PoE consumption rows are contribution-confirmed; the generated SNMP2MQTT telemetry
+    mapping remains pending post-release field validation.
+  - MikroTik per-port PoE status, voltage, current and power rows are contribution-confirmed
+    for the copper interfaces and are emitted only when present in the current walk.
+  - The four SFP+ cage positions are contribution-confirmed but were empty in the
+    supplied captures, so live optical link and negotiated-speed validation remains
+    pending.
+  - The neutral 24 RJ45 plus 4 SFP faceplate remains a temporary geometry fallback;
+    exact MikroTik rendered alignment remains pending field confirmation before Community
+    Validated promotion.
   validation:
-    exact_model_detection: contribution_confirmed
-    rj45_mapping: real_hardware_indexes_1_16_confirmed
-    poe: not_applicable
-    system_sensors: pending
-    uplinks: real_hardware_indexes_17_20_confirmed
+    exact_model_detection: contribution_confirmed_local_routeros_identity
+    rj45_mapping: contribution_confirmed_ether1_through_ether24_pending_rendered_validation
+    poe: exact_hardware_capability_confirmed_snmp_values_pending
+    system_sensors: pending_supplemental_snmp_validation
+    uplinks: contribution_confirmed_four_sfp_plus_positions_live_link_pending
     stack: not_applicable
   visuals:
     status: experimental
     recommended_faceplate: faceplates/24rj45-4sfp.png
     optional_faceplates: []
     calibration_profile: stock_24rj45_4sfp
-    canvas:
-      width: 2048
-      height: 448
-- vendor: Ubiquiti
-  family: UniFi Switch 8 150W
-  model: US-8-150W
-  status: experimental
-  confirmed_since: 2.3.32
-  last_validated_version: 2.7.6
-  evidence: privacy_processed_real_hardware_snmp_contribution
-  ports:
-    rj45: 8
-    poe: true
-    uplinks: 2
-    uplink_type: 2x 1G SFP
-    gigabit_sfp: 2
-    ten_gigabit_sfp_plus: 0
-  stack_support: false
-  discovery_support: true
-  dashboard_support: true
-  mapping_profile: ubiquiti-us-8-150w-snmp
-  calibration_profile: unifi_8_rj45_2sfp
-  default_faceplate: faceplates/unifi-8-rj45-2sfp.png
-  optional_faceplates: []
-  tested_firmware:
-  - 7.5.15.17146
-  contributor:
-    display_name: community contributor
-    public_credit: false
-  notes:
-  - Privacy-processed real-hardware SNMP evidence confirms exact US-8-150W identity and interfaces 0/1 through 0/10.
-  - Ports 0/1 through 0/8 are RJ45 and 0/9 through 0/10 are 1G SFP positions.
-  - PoE hardware capability is retained as Experimental; detailed Switch Vision PoE presentation remains pending a focused current-build confirmation.
-  - Core 2.7.6 maps this exact 8-RJ45 + 2-SFP contract to the existing owner-calibrated UniFi 8+2 faceplate/profile; model-specific live rendered alignment remains pending.
-  validation:
-    exact_model_detection: real_hardware_snmp_confirmed
-    rj45_mapping: real_hardware_snmp_ports_0_1_0_8_confirmed
-    poe: platform_capability_confirmed_telemetry_pending
-    system_sensors: pending
-    uplinks: real_hardware_snmp_ports_0_9_0_10_1g_sfp_confirmed
-    stack: not_applicable
-  visuals:
-    status: experimental
-    recommended_faceplate: faceplates/unifi-8-rj45-2sfp.png
-    optional_faceplates: []
-    calibration_profile: unifi_8_rj45_2sfp
-    canvas:
-      width: 2048
-      height: 448
-- vendor: Ubiquiti
-  family: UniFi Switch 24 250W
-  model: US-24-250W
-  status: experimental
-  confirmed_since: 2.3.32
-  last_validated_version: 2.3.31
-  evidence: privacy_processed_real_hardware_snmp_contribution
-  ports:
-    rj45: 24
-    poe: true
-    uplinks: 2
-    uplink_type: 2x 1G SFP
-    gigabit_sfp: 2
-    ten_gigabit_sfp_plus: 0
-  stack_support: false
-  discovery_support: true
-  dashboard_support: true
-  mapping_profile: ubiquiti-us-24-250w-snmp
-  calibration_profile: unifi_24p_rj45_2sfp
-  default_faceplate: faceplates/unifi-24p-rj45-2sfp.png
-  optional_faceplates: []
-  tested_firmware:
-  - 7.5.15.17146
-  contributor:
-    display_name: community contributor
-    public_credit: false
-  notes:
-  - Privacy-processed real-hardware SNMP evidence confirms exact US-24-250W identity and interfaces 0/1 through 0/26.
-  - Ports 0/1 through 0/24 are RJ45 and 0/25 through 0/26 are 1G SFP positions.
-  - PoE hardware capability is retained as Experimental; detailed Switch Vision PoE presentation remains pending a focused current-build confirmation.
-  validation:
-    exact_model_detection: real_hardware_snmp_confirmed
-    rj45_mapping: real_hardware_snmp_ports_0_1_0_24_confirmed
-    poe: platform_capability_confirmed_telemetry_pending
-    system_sensors: pending
-    uplinks: real_hardware_snmp_ports_0_25_0_26_1g_sfp_confirmed
-    stack: not_applicable
-  visuals:
-    status: experimental
-    recommended_faceplate: faceplates/unifi-24p-rj45-2sfp.png
-    optional_faceplates: []
-    calibration_profile: unifi_24p_rj45_2sfp
     canvas:
       width: 2048
       height: 448
@@ -2864,10 +3134,24 @@ devices:
   contributor:
     display_name: community contributor
     public_credit: false
+  contributions:
+  - id: evidence-dell-powerconnect-5548p-a
+    source_component: Discovery SNMP
+    source_discovery_version: 2.3.21
+    devices_observed: 1
+    validation_scope: exact_model_and_physical_interface_mapping
+    api_capabilities: {}
+    dashboard_validation: pending_post_fix_user_validation
+    contributor:
+      display_name: community contributor
+      public_credit: false
   notes:
-  - A sanitized real-hardware contribution exposes lowercase gi1/0/1..48 access interfaces and te1/0/1..2 uplinks.
-  - The exact-model classifier is intentionally narrow so lowercase Gi/Te names on unrelated devices remain excluded.
-  - Physical mapping is evidence-backed; PoE and environmental/system telemetry remain incomplete and therefore Experimental.
+  - A sanitized real-hardware contribution exposes lowercase gi1/0/1..48 access interfaces
+    and te1/0/1..2 uplinks.
+  - The exact-model classifier is intentionally narrow so lowercase Gi/Te names on
+    unrelated devices remain excluded.
+  - Physical mapping is evidence-backed; PoE and environmental/system telemetry remain
+    incomplete and therefore Experimental.
   validation:
     exact_model_detection: contribution_confirmed
     rj45_mapping: real_hardware_interface_map_confirmed
@@ -2883,17 +3167,6 @@ devices:
     canvas:
       width: 2048
       height: 448
-  contributions:
-  - id: evidence-dell-powerconnect-5548p-a
-    source_component: Discovery SNMP
-    source_discovery_version: 2.3.21
-    devices_observed: 1
-    validation_scope: exact_model_and_physical_interface_mapping
-    api_capabilities: {}
-    dashboard_validation: pending_post_fix_user_validation
-    contributor:
-      display_name: community contributor
-      public_credit: false
 - vendor: Zyxel
   family: GS1900
   model: GS1900-24E
@@ -2920,10 +3193,24 @@ devices:
   contributor:
     display_name: community contributor
     public_credit: false
+  contributions:
+  - id: evidence-zyxel-gs1900-24e-a
+    source_component: Discovery SNMP
+    source_discovery_version: 2.3.21
+    devices_observed: 1
+    validation_scope: exact_model_and_existing_24_port_mapping
+    api_capabilities: {}
+    dashboard_validation: pending_post_fix_user_validation
+    contributor:
+      display_name: community contributor
+      public_credit: false
   notes:
-  - The contributed real-hardware walk already classifies all 24 RJ45 ports correctly with the generic interface parser.
-  - This entry adds exact identity/registry support without broadening the working interface classifier.
-  - Discovery uses the stock 24+2 faceplate as an oversized visual canvas while the authoritative topology remains 24 RJ45 and zero uplinks.
+  - The contributed real-hardware walk already classifies all 24 RJ45 ports correctly
+    with the generic interface parser.
+  - This entry adds exact identity/registry support without broadening the working
+    interface classifier.
+  - Discovery uses the stock 24+2 faceplate as an oversized visual canvas while the
+    authoritative topology remains 24 RJ45 and zero uplinks.
   validation:
     exact_model_detection: contribution_confirmed
     rj45_mapping: real_hardware_24_ports_confirmed
@@ -2939,17 +3226,6 @@ devices:
     canvas:
       width: 2048
       height: 448
-  contributions:
-  - id: evidence-zyxel-gs1900-24e-a
-    source_component: Discovery SNMP
-    source_discovery_version: 2.3.21
-    devices_observed: 1
-    validation_scope: exact_model_and_existing_24_port_mapping
-    api_capabilities: {}
-    dashboard_validation: pending_post_fix_user_validation
-    contributor:
-      display_name: community contributor
-      public_credit: false
 - vendor: Cisco
   family: Catalyst 3750X
   model: WS-C3750X-48P
@@ -2975,10 +3251,25 @@ devices:
   contributor:
     display_name: community contributor
     public_credit: false
+  contributions:
+  - id: evidence-cisco-c3750x-48p-a
+    source_component: Discovery SNMP
+    source_discovery_version: 2.3.22
+    devices_observed: 1
+    validation_scope: two_member_stack_interface_alias_dedup
+    api_capabilities: {}
+    dashboard_validation: pending_post_fix_user_validation
+    contributor:
+      display_name: community contributor
+      public_credit: false
   notes:
-  - A two-member sanitized real-hardware stack contribution proves 48 Gi access ports per member.
-  - C3KX network-module Gi aliases are de-duplicated when the same physical cages are also represented by Te interfaces; this prevents the previous 104-RJ45 overcount.
-  - The contributed module exposure corresponds to two 1G SFP plus two 10G SFP+ logical cage roles per member; other C3KX module variants remain outside this exact mapping until contributed.
+  - A two-member sanitized real-hardware stack contribution proves 48 Gi access ports
+    per member.
+  - C3KX network-module Gi aliases are de-duplicated when the same physical cages
+    are also represented by Te interfaces; this prevents the previous 104-RJ45 overcount.
+  - The contributed module exposure corresponds to two 1G SFP plus two 10G SFP+ logical
+    cage roles per member; other C3KX module variants remain outside this exact mapping
+    until contributed.
   validation:
     exact_model_detection: contribution_confirmed_two_member_stack
     rj45_mapping: real_hardware_48_per_member_confirmed
@@ -2994,17 +3285,6 @@ devices:
     canvas:
       width: 2048
       height: 448
-  contributions:
-  - id: evidence-cisco-c3750x-48p-a
-    source_component: Discovery SNMP
-    source_discovery_version: 2.3.22
-    devices_observed: 1
-    validation_scope: two_member_stack_interface_alias_dedup
-    api_capabilities: {}
-    dashboard_validation: pending_post_fix_user_validation
-    contributor:
-      display_name: community contributor
-      public_credit: false
 - vendor: Cisco
   family: Catalyst 3750X
   model: WS-C3750X-48P-S
@@ -3031,11 +3311,28 @@ devices:
   contributor:
     display_name: community contributor
     public_credit: false
+  contributions:
+  - id: evidence-cisco-c3750x-48p-s-a
+    source_component: Discovery SNMP
+    source_discovery_version: 2.4.46
+    devices_observed: 1
+    validation_scope: exact_sku_single_member_c3kx_alias_dedup_and_aggregate_telemetry
+    api_capabilities: {}
+    dashboard_validation: pending_post_admission_user_validation
+    contributor:
+      display_name: community contributor
+      public_credit: false
   notes:
-  - A sanitized real-hardware contribution proves exact SKU WS-C3750X-48P-S on hardware revision V06 and IOS 15.2(4)E10.
-  - ENTITY-MIB reports the -S SKU while chassis/stack evidence reports base physical model WS-C3750X-48P; the observed interface set matches the reviewed C3KX family contract.
-  - C3KX network-module Gi aliases are de-duplicated against Te aliases, yielding 48 RJ45 plus two 1G SFP and two 10G SFP+ cages for the contributed module exposure.
-  - Aggregate PoE, CPU and temperature telemetry are contribution-confirmed; fan/PSU state and detailed per-port PoE remain pending because the targeted collector did not capture those state tables.
+  - A sanitized real-hardware contribution proves exact SKU WS-C3750X-48P-S on hardware
+    revision V06 and IOS 15.2(4)E10.
+  - ENTITY-MIB reports the -S SKU while chassis/stack evidence reports base physical
+    model WS-C3750X-48P; the observed interface set matches the reviewed C3KX family
+    contract.
+  - C3KX network-module Gi aliases are de-duplicated against Te aliases, yielding
+    48 RJ45 plus two 1G SFP and two 10G SFP+ cages for the contributed module exposure.
+  - Aggregate PoE, CPU and temperature telemetry are contribution-confirmed; fan/PSU
+    state and detailed per-port PoE remain pending because the current targeted collector
+    did not capture those state tables.
   validation:
     exact_model_detection: contribution_confirmed_entity_mib_exact_sku
     rj45_mapping: real_hardware_48_confirmed_family_contract_reproduced
@@ -3051,17 +3348,6 @@ devices:
     canvas:
       width: 2048
       height: 448
-  contributions:
-  - id: evidence-cisco-c3750x-48p-s-a
-    source_component: Discovery SNMP
-    source_discovery_version: 2.4.46
-    devices_observed: 1
-    validation_scope: exact_sku_single_member_c3kx_alias_dedup_and_aggregate_telemetry
-    api_capabilities: {}
-    dashboard_validation: pending_post_admission_user_validation
-    contributor:
-      display_name: community contributor
-      public_credit: false
 - vendor: Cisco
   family: Cisco Small Business SG350
   model: SG350-20
@@ -3091,10 +3377,24 @@ devices:
   contributor:
     display_name: community contributor
     public_credit: false
+  contributions:
+  - id: evidence-cisco-sg350-20-a
+    source_component: Discovery SNMP
+    source_discovery_version: 2.3.21
+    devices_observed: 1
+    validation_scope: exact_model_front_panel_mapping
+    api_capabilities: {}
+    dashboard_validation: pending_post_fix_user_validation
+    contributor:
+      display_name: community contributor
+      public_credit: false
   notes:
-  - The real-hardware IF-MIB exposes gi1..gi20 for the twenty front-panel logical positions.
-  - Ports 17-18 are kept as neutral uplink/combo positions because ifName alone cannot prove whether copper or SFP is populated.
-  - Ports 19-20 are SFP-only; the stock 24+4 faceplate is an oversized visual canvas while ports 17-18 remain neutral dual-personality positions.
+  - The real-hardware IF-MIB exposes gi1..gi20 for the twenty front-panel logical
+    positions.
+  - Ports 17-18 are kept as neutral uplink/combo positions because ifName alone cannot
+    prove whether copper or SFP is populated.
+  - Ports 19-20 are SFP-only; the stock 24+4 faceplate is an oversized visual canvas
+    while ports 17-18 remain neutral dual-personality positions.
   validation:
     exact_model_detection: contribution_confirmed
     rj45_mapping: real_hardware_fixed_ports_1_16_confirmed
@@ -3110,17 +3410,6 @@ devices:
     canvas:
       width: 2048
       height: 448
-  contributions:
-  - id: evidence-cisco-sg350-20-a
-    source_component: Discovery SNMP
-    source_discovery_version: 2.3.21
-    devices_observed: 1
-    validation_scope: exact_model_front_panel_mapping
-    api_capabilities: {}
-    dashboard_validation: pending_post_fix_user_validation
-    contributor:
-      display_name: community contributor
-      public_credit: false
 - vendor: HP
   family: 3500yl
   model: HP J8693A Switch 3500yl-48G
@@ -3152,12 +3441,30 @@ devices:
   contributor:
     display_name: community contributor
     public_credit: false
+  contributions:
+  - id: evidence-hp-j8693a-a
+    source_component: Discovery SNMP
+    source_discovery_version: 2.3.23
+    devices_observed: 1
+    validation_scope: generated_card_uplink_entity_binding
+    api_capabilities: {}
+    dashboard_validation: pending_post_fix_user_validation
+    contributor:
+      display_name: community contributor
+      public_credit: false
   notes:
-  - The existing exact-model numeric-interface classifier maps ports 1-44 as RJ45 and 45-48 as neutral uplink positions.
-  - A community contribution confirmed that generated entities use uplink_1..uplink_4 names; Discovery 2.3.24 binds generated cards to those entities instead of incorrectly forcing sfp_10g names.
-  - Fresh real-hardware evidence confirms an optional rear high-speed module exposes A1-A4 as four 10G interfaces; Discovery keeps those interfaces telemetry-only and does not add them to the current card geometry.
-  - The current 48-RJ45/4-SFP faceplate remains intentional until rear-module presentation is designed; no rear connector geometry is invented.
-  - The four front-panel positions are dual-personality RJ45/mini-GBIC; exact medium-specific rendered validation remains pending.
+  - The existing exact-model numeric-interface classifier maps ports 1-44 as RJ45
+    and 45-48 as neutral uplink positions.
+  - A community contribution confirmed that generated entities use uplink_1..uplink_4
+    names; Discovery 2.3.24 binds generated cards to those entities instead of incorrectly
+    forcing sfp_10g names.
+  - Fresh real-hardware evidence confirms an optional rear module exposes A1-A4 as
+    four 10G interfaces. Discovery publishes them as observed telemetry-only rear
+    ports and does not add them to the current card geometry.
+  - The current 48-RJ45/4-SFP faceplate remains intentional until rear-module presentation
+    is designed; no rear connector geometry is invented.
+  - The four front-panel positions are dual-personality RJ45/mini-GBIC; exact medium-specific
+    rendered validation remains pending.
   validation:
     exact_model_detection: contribution_confirmed
     rj45_mapping: real_hardware_numeric_ports_1_44_confirmed
@@ -3173,17 +3480,18 @@ devices:
     canvas:
       width: 2048
       height: 448
-  contributions:
-  - id: evidence-hp-j8693a-a
-    source_component: Discovery SNMP
-    source_discovery_version: 2.3.23
-    devices_observed: 1
-    validation_scope: generated_card_uplink_entity_binding
-    api_capabilities: {}
-    dashboard_validation: pending_post_fix_user_validation
-    contributor:
-      display_name: community contributor
-      public_credit: false
+  discovery_optional_interfaces:
+  - id: rear_10g_module
+    location: rear
+    media: uplink
+    speed_mbps: 10000
+    interface_names:
+    - A1
+    - A2
+    - A3
+    - A4
+    telemetry_only: true
+    observed_when_present: true
 - vendor: Ubiquiti
   family: UniFi Switch Pro HD
   model: USW Pro HD 24 PoE
@@ -3209,10 +3517,24 @@ devices:
   contributor:
     display_name: community contributor
     public_credit: false
+  contributions:
+  - id: evidence-unifi-pro-hd24-snmp-a
+    source_component: Discovery SNMP
+    source_discovery_version: 2.3.21
+    devices_observed: 1
+    validation_scope: exact_compact_sysdescr_and_physical_ifname_mapping
+    api_capabilities: {}
+    dashboard_validation: pending_post_fix_user_validation
+    contributor:
+      display_name: community contributor
+      public_credit: false
   notes:
-  - An anonymous sanitized real-hardware SNMP contribution exposes compact sysDescr USWProHD24PoE and ifName 0/1..0/28.
-  - Ports 0/1..0/24 are RJ45 and 0/25..0/28 are 10G SFP+; live link-state/speed evidence included active 10G optical links.
-  - PoE and environmental/system sensor telemetry were not validated by this SNMP contribution and remain pending.
+  - An anonymous sanitized real-hardware SNMP contribution exposes compact sysDescr
+    USWProHD24PoE and ifName 0/1..0/28.
+  - Ports 0/1..0/24 are RJ45 and 0/25..0/28 are 10G SFP+; live link-state/speed evidence
+    included active 10G optical links.
+  - PoE and environmental/system sensor telemetry were not validated by this SNMP
+    contribution and remain pending.
   validation:
     exact_model_detection: real_hardware_snmp_confirmed
     rj45_mapping: real_hardware_snmp_ports_0_1_0_24_confirmed
@@ -3228,17 +3550,6 @@ devices:
     canvas:
       width: 2048
       height: 448
-  contributions:
-  - id: evidence-unifi-pro-hd24-snmp-a
-    source_component: Discovery SNMP
-    source_discovery_version: 2.3.21
-    devices_observed: 1
-    validation_scope: exact_compact_sysdescr_and_physical_ifname_mapping
-    api_capabilities: {}
-    dashboard_validation: pending_post_fix_user_validation
-    contributor:
-      display_name: community contributor
-      public_credit: false
 - vendor: Ubiquiti
   family: UniFi Switch Aggregation
   model: USW Aggregation
@@ -3265,10 +3576,26 @@ devices:
   contributor:
     display_name: community contributor
     public_credit: false
+  contributions:
+  - id: evidence-unifi-aggregation-api-a
+    source_component: UniFi2MQTT 2.0.50
+    source_discovery_version: 2.3.21
+    devices_observed: 1
+    validation_scope: real_hardware_api_topology_and_live_links
+    api_capabilities:
+      port_detail: true
+      per_port_traffic: false
+    dashboard_validation: pending_post_fix_user_validation
+    contributor:
+      display_name: community contributor
+      public_credit: false
   notes:
-  - An anonymous UniFi2MQTT 2.0.50 real-hardware snapshot confirms eight 10G SFP+ API ports with live link-state/speed detail.
-  - The contributed snapshot observed five active 10G optical links; per-port traffic counters were not available through this normalized API path.
-  - Core 2.6.32 supplies the approved 32-position optical canvas; this eight-port model binds only API ports 1-8 and positions 9-32 remain inert.
+  - An anonymous UniFi2MQTT 2.0.50 real-hardware snapshot confirms eight 10G SFP+
+    API ports with live link-state/speed detail.
+  - The contributed snapshot observed five active 10G optical links; per-port traffic
+    counters were not available through this normalized API path.
+  - Core 2.6.32 supplies the approved 32-position optical canvas; this eight-port
+    model binds only API ports 1-8 and positions 9-32 remain inert.
   validation:
     exact_model_detection: live_api_confirmed
     rj45_mapping: not_applicable
@@ -3295,19 +3622,6 @@ devices:
     - 6
     - 7
     - 8
-  contributions:
-  - id: evidence-unifi-aggregation-api-a
-    source_component: UniFi2MQTT 2.0.50
-    source_discovery_version: 2.3.21
-    devices_observed: 1
-    validation_scope: real_hardware_api_topology_and_live_links
-    api_capabilities:
-      port_detail: true
-      per_port_traffic: false
-    dashboard_validation: pending_post_fix_user_validation
-    contributor:
-      display_name: community contributor
-      public_credit: false
 - vendor: Ubiquiti
   family: UniFi Switch Enterprise
   model: USW Enterprise 24 PoE
@@ -3334,10 +3648,26 @@ devices:
   contributor:
     display_name: community contributor
     public_credit: false
+  contributions:
+  - id: evidence-unifi-enterprise24-api-a
+    source_component: UniFi2MQTT 2.0.50
+    source_discovery_version: 2.3.21
+    devices_observed: 1
+    validation_scope: real_hardware_api_topology_and_live_links
+    api_capabilities:
+      port_detail: true
+      per_port_traffic: false
+    dashboard_validation: pending_post_fix_user_validation
+    contributor:
+      display_name: community contributor
+      public_credit: false
   notes:
-  - An anonymous UniFi2MQTT 2.0.50 real-hardware snapshot confirms 24 RJ45 plus two 10G SFP+ ports.
-  - API ports 1-12 are 1G-capable RJ45, ports 13-24 are 2.5G-capable RJ45, and ports 25-26 are 10G SFP+; live negotiated speeds included 2.5G and 10G links.
-  - Per-port traffic counters were not available through the normalized API path; Switch Vision must not synthesize them.
+  - An anonymous UniFi2MQTT 2.0.50 real-hardware snapshot confirms 24 RJ45 plus two
+    10G SFP+ ports.
+  - API ports 1-12 are 1G-capable RJ45, ports 13-24 are 2.5G-capable RJ45, and ports
+    25-26 are 10G SFP+; live negotiated speeds included 2.5G and 10G links.
+  - Per-port traffic counters were not available through the normalized API path;
+    Switch Vision must not synthesize them.
   validation:
     exact_model_detection: live_api_confirmed
     rj45_mapping: live_api_confirmed_ports_1_24
@@ -3382,19 +3712,6 @@ devices:
     sfp:
     - 25
     - 26
-  contributions:
-  - id: evidence-unifi-enterprise24-api-a
-    source_component: UniFi2MQTT 2.0.50
-    source_discovery_version: 2.3.21
-    devices_observed: 1
-    validation_scope: real_hardware_api_topology_and_live_links
-    api_capabilities:
-      port_detail: true
-      per_port_traffic: false
-    dashboard_validation: pending_post_fix_user_validation
-    contributor:
-      display_name: community contributor
-      public_credit: false
 - vendor: Ubiquiti
   family: UniFi Switch Flex
   model: USW Flex 2.5G 5
@@ -3421,10 +3738,26 @@ devices:
   contributor:
     display_name: community contributor
     public_credit: false
+  contributions:
+  - id: evidence-unifi-flex-2p5g-5-api-a
+    source_component: UniFi2MQTT 2.0.50
+    source_discovery_version: 2.3.21
+    devices_observed: 1
+    validation_scope: real_hardware_api_topology_and_live_links
+    api_capabilities:
+      port_detail: true
+      per_port_traffic: false
+    dashboard_validation: pending_post_fix_user_validation
+    contributor:
+      display_name: community contributor
+      public_credit: false
   notes:
-  - An anonymous UniFi2MQTT 2.0.50 real-hardware snapshot confirms five 2.5G-capable RJ45 API ports.
-  - The contributed snapshot observed live 1G and 2.5G negotiated links; the device does not expose PoE output capability.
-  - The exact five-port UniFi faceplate is assigned while preserving the authoritative five-port 2.5G-capable RJ45 topology.
+  - An anonymous UniFi2MQTT 2.0.50 real-hardware snapshot confirms five 2.5G-capable
+    RJ45 API ports.
+  - The contributed snapshot observed live 1G and 2.5G negotiated links; the device
+    does not expose PoE output capability.
+  - The exact five-port UniFi faceplate is assigned while preserving the authoritative
+    five-port 2.5G-capable RJ45 topology.
   validation:
     exact_model_detection: live_api_confirmed
     rj45_mapping: live_api_confirmed_ports_1_5_2p5g_capable
@@ -3448,19 +3781,6 @@ devices:
     - 4
     - 5
     sfp: []
-  contributions:
-  - id: evidence-unifi-flex-2p5g-5-api-a
-    source_component: UniFi2MQTT 2.0.50
-    source_discovery_version: 2.3.21
-    devices_observed: 1
-    validation_scope: real_hardware_api_topology_and_live_links
-    api_capabilities:
-      port_detail: true
-      per_port_traffic: false
-    dashboard_validation: pending_post_fix_user_validation
-    contributor:
-      display_name: community contributor
-      public_credit: false
 - vendor: Ubiquiti
   family: UniFi WAN Switch
   model: USW WAN
@@ -3487,12 +3807,27 @@ devices:
   contributor:
     display_name: community contributor
     public_credit: false
+  contributions:
+  - id: evidence-unifi-wan-api-a
+    source_component: UniFi2MQTT 2.0.50
+    source_discovery_version: 2.3.21
+    devices_observed: 1
+    validation_scope: real_hardware_api_topology_and_live_links
+    api_capabilities:
+      port_detail: true
+      per_port_traffic: false
+    dashboard_validation: pending_post_fix_user_validation
+    contributor:
+      display_name: community contributor
+      public_credit: false
   notes:
-  - An anonymous UniFi2MQTT 2.0.50 real-hardware snapshot reports three 10G SFP+ ports followed by one 1G RJ45 port, all live in the contributed capture.
-  - That observed connector topology exactly matches the Ubiquiti USW-WAN product and distinguishes it from the separate USW-WAN-RJ45 variant.
-  - The bundled front-panel faceplate renders only the three 10G SFP+ cages. The real rear RJ45
-    remains API port 4 in the registry/API map and is intentionally not represented by front-panel
-    geometry.
+  - An anonymous UniFi2MQTT 2.0.50 real-hardware snapshot reports three 10G SFP+ ports
+    followed by one 1G RJ45 port, all live in the contributed capture.
+  - That observed connector topology exactly matches the Ubiquiti USW-WAN product
+    and distinguishes it from the separate USW-WAN-RJ45 variant.
+  - The bundled front-panel faceplate renders only the three 10G SFP+ cages. The real
+    rear RJ45 remains API port 4 in the registry/API map and is intentionally not
+    represented by front-panel geometry.
   validation:
     exact_model_detection: live_api_plus_official_topology_confirmed
     rj45_mapping: live_api_confirmed_api_port_4
@@ -3515,83 +3850,6 @@ devices:
     - 1
     - 2
     - 3
-  contributions:
-  - id: evidence-unifi-wan-api-a
-    source_component: UniFi2MQTT 2.0.50
-    source_discovery_version: 2.3.21
-    devices_observed: 1
-    validation_scope: real_hardware_api_topology_and_live_links
-    api_capabilities:
-      port_detail: true
-      per_port_traffic: false
-    dashboard_validation: pending_post_fix_user_validation
-    contributor:
-      display_name: community contributor
-      public_credit: false
-- vendor: Avaya
-  family: Ethernet Routing Switch 3500
-  model: 3524GT-PWR+
-  status: experimental
-  confirmed_since: 3.0.3
-  last_validated_version: 3.0.4
-  evidence: support_my_switch_real_hardware_contribution
-  ports:
-    rj45: 20
-    poe: true
-    uplinks: 4
-    uplink_type: 4 shared front 1G RJ45/SFP combo positions; 2 rear SFP positions documented but telemetry binding pending
-    gigabit_sfp: 4
-    ten_gigabit_sfp_plus: 0
-    combo_ports: 4
-    combo_logical_ports:
-    - 21
-    - 22
-    - 23
-    - 24
-  stack_support: false
-  discovery_support: true
-  dashboard_support: true
-  mapping_profile: avaya-ers3524gt-pwrplus-20p-4dual
-  calibration_profile: stock_24rj45_4sfp
-  default_faceplate: faceplates/24rj45-4sfp.png
-  optional_faceplates: []
-  tested_firmware:
-  - v5.1.0.007
-  contributor:
-    display_name: community contributor
-    public_credit: false
-  notes:
-  - Real-hardware SNMP evidence confirms exact sysObjectID 1.3.6.1.4.1.45.3.80.4 and IF-MIB logical ports 1-24 at 1 Gbps.
-  - Ports 1-20 are fixed copper; logical ports 21-24 are dual-personality front copper/SFP positions and use shared logical-port mapping rather than duplicate entities.
-  - Standard POWER-ETHERNET-MIB exposes all 24 PSE rows, a 370 W budget, and active PoE delivery in the captured contribution.
-  - The chassis also has two rear SFP positions, but this contribution does not provide a trustworthy independent IF-MIB binding for them; they remain documented capability only and are not fabricated into the current dashboard contract.
-  - The stock 24-RJ45/4-SFP faceplate is the conservative initial visual; exact Avaya artwork and optional environment telemetry are non-blocking follow-up.
-  validation:
-    exact_model_detection: real_hardware_sysobjectid_and_sysdescr_confirmed
-    rj45_mapping: real_hardware_numeric_ifname_ports_1_20_confirmed
-    poe: real_hardware_standard_power_ethernet_mib_24_pse_370w_confirmed
-    system_sensors: vendor_enterprise_candidates_present_optional_followup
-    uplinks: real_hardware_front_combo_ports_21_24_confirmed_rear_two_pending_binding
-    stack: not_observed_not_required_for_initial_dashboard
-  visuals:
-    status: experimental
-    recommended_faceplate: faceplates/24rj45-4sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_24rj45_4sfp
-    canvas:
-      width: 2048
-      height: 448
-  contributions:
-  - id: evidence-avaya-ers3524gt-pwrplus-a
-    source_component: Discovery SNMP
-    source_discovery_version: 3.0.2
-    devices_observed: 1
-    validation_scope: exact_model_20_fixed_copper_4_front_combo_standard_poe
-    api_capabilities: {}
-    dashboard_validation: pending_post_admission_user_validation
-    contributor:
-      display_name: community contributor
-      public_credit: false
 - vendor: Zyxel
   family: GS1915
   model: GS1915-24EP
@@ -3617,11 +3875,27 @@ devices:
   contributor:
     display_name: community contributor
     public_credit: false
+  contributions:
+  - id: evidence-zyxel-gs1915-24ep-a
+    source_component: Discovery SNMP
+    source_discovery_version: 2.4.1
+    devices_observed: 1
+    validation_scope: exact_model_24_port_if_mib_and_standard_poe_capability
+    api_capabilities: {}
+    dashboard_validation: pending_specific_visual_alignment
+    contributor:
+      display_name: community contributor
+      public_credit: false
   notes:
-  - Privacy-processed real-hardware walk evidence confirms the exact GS1915-24EP identity and the swp00 through swp23 IF-MIB front-panel interface set.
-  - The authoritative physical topology is 24 copper ports and zero optical uplinks; standard POWER-ETHERNET-MIB evidence confirms PoE capability without inventing unsupported per-port presentation details.
-  - The stock 24+2 faceplate is an oversized temporary visual canvas; the authoritative zero-uplink contract keeps both artwork SFP positions inert.
-  - Specific rendered alignment and live PoE presentation remain Experimental; visual confirmation does not block exact-model registry support.
+  - Privacy-processed real-hardware walk evidence confirms the exact GS1915-24EP identity
+    and the swp00 through swp23 IF-MIB front-panel interface set.
+  - The authoritative physical topology is 24 copper ports and zero optical uplinks;
+    standard POWER-ETHERNET-MIB evidence confirms PoE capability without inventing
+    unsupported per-port presentation details.
+  - The stock 24+2 faceplate is an oversized temporary visual canvas; the authoritative
+    zero-uplink contract keeps both artwork SFP positions inert.
+  - Specific rendered alignment and live PoE presentation remain Experimental; visual
+    confirmation does not block exact-model registry support.
   validation:
     exact_model_detection: real_hardware_walk_confirmed
     rj45_mapping: real_hardware_swp00_swp23_confirmed
@@ -3637,130 +3911,74 @@ devices:
     canvas:
       width: 2048
       height: 448
-  contributions:
-  - id: evidence-zyxel-gs1915-24ep-a
-    source_component: Discovery SNMP
-    source_discovery_version: 2.4.1
-    devices_observed: 1
-    validation_scope: exact_model_24_port_if_mib_and_standard_poe_capability
-    api_capabilities: {}
-    dashboard_validation: pending_specific_visual_alignment
-    contributor:
-      display_name: community contributor
-      public_credit: false
-
-- vendor: Cisco
-  family: Catalyst 2960X
-  model: WS-C2960XR-48LPS-I
+- vendor: Avaya
+  family: Ethernet Routing Switch 3500
+  model: 3524GT-PWR+
   status: experimental
-  confirmed_since: 2.4.42
-  last_validated_version: 2.4.42
-  evidence: privacy_processed_real_hardware_snmp_contribution_with_catalyst_2960_family_corroboration
+  confirmed_since: 3.0.3
+  last_validated_version: 3.0.4
+  evidence: support_my_switch_real_hardware_contribution
   ports:
-    rj45: 48
+    rj45: 20
     poe: true
     uplinks: 4
-    uplink_type: 4x 1G SFP
+    uplink_type: 4 shared front 1G RJ45/SFP combo positions; 2 rear SFP positions
+      documented but telemetry binding pending
     gigabit_sfp: 4
     ten_gigabit_sfp_plus: 0
-  stack_support: true
-  discovery_support: true
-  dashboard_support: true
-  mapping_profile: cisco-2960xr-48lps-48p-4sfp
-  calibration_profile: default_cisco_48_port
-  default_faceplate: faceplates/48rj45-4sfp.png
-  optional_faceplates: []
-  tested_firmware:
-  - 15.2(7)E14
-  contributor:
-    display_name: community contributor
-    public_credit: false
-  notes:
-  - A provenance-backed real-hardware SNMP walk confirms the exact WS-C2960XR-48LPS-I identity and all 52 front-panel interfaces.
-  - Gi1/0/1 through Gi1/0/48 are the 48 RJ45 access ports; Gi1/0/49 through Gi1/0/52 are four physical 1G SFP uplinks.
-  - The current capture materially agrees with reviewed Catalyst 2960X/Cisco IF-MIB, CPU, ENVMON and PoE telemetry behavior, so family/manufacturer evidence is reused where the exact walk agrees.
-  - Cisco PoE aggregate, CPU and temperature telemetry are present in the contribution. Per-port PoE behavior, fan/PSU status and real multi-member stack behavior remain pending rather than blocking the dashboard.
-  - The existing stock 48 RJ45 + 4 SFP faceplate is used until dedicated exact artwork exists; physical topology is not altered by the visual fallback.
-  validation:
-    exact_model_detection: contribution_confirmed_exact_model
-    rj45_mapping: contribution_confirmed_gi1_0_1_48
-    poe: aggregate_telemetry_observed_per_port_behavior_pending
-    system_sensors: cpu_and_temperature_observed_family_correlated
-    uplinks: contribution_confirmed_gi1_0_49_52_1g_sfp
-    stack: stack_capability_observed_multi_member_behavior_pending
-  visuals:
-    status: experimental
-    recommended_faceplate: faceplates/48rj45-4sfp.png
-    optional_faceplates: []
-    calibration_profile: default_cisco_48_port
-    canvas:
-      width: 2048
-      height: 448
-- vendor: Ubiquiti
-  family: UniFi Cloud Gateway Fiber
-  model: UCG Fiber
-  status: experimental
-  confirmed_since: 2.4.42
-  last_validated_version: 2.4.42
-  evidence: real_hardware_unifi_api_contribution_with_unifi_platform_corroboration
-  ports:
-    rj45: 5
-    poe: true
-    uplinks: 2
-    uplink_type: 2x 10G SFP+
-    gigabit_sfp: 0
-    ten_gigabit_sfp_plus: 2
+    combo_ports: 4
+    combo_logical_ports:
+    - 21
+    - 22
+    - 23
+    - 24
   stack_support: false
   discovery_support: true
   dashboard_support: true
-  mapping_profile: ubiquiti-ucg-fiber-api
-  unifi_api_port_map:
-    rj45:
-    - 1
-    - 2
-    - 3
-    - 4
-    - 5
-    sfp:
-    - 6
-    - 7
-  calibration_profile: unifi_8_rj45_2sfp
-  default_faceplate: faceplates/unifi-8-rj45-2sfp.png
+  mapping_profile: avaya-ers3524gt-pwrplus-20p-4dual
+  calibration_profile: stock_24rj45_4sfp
+  default_faceplate: faceplates/24rj45-4sfp.png
   optional_faceplates: []
-  tested_firmware: []
+  tested_firmware:
+  - v5.1.0.007
   contributor:
     display_name: community contributor
     public_credit: false
   contributions:
-  - id: community-validation-1
-    source_component: UniFi2MQTT
+  - id: evidence-avaya-ers3524gt-pwrplus-a
+    source_component: Discovery SNMP
+    source_discovery_version: 3.0.2
     devices_observed: 1
-    validation_scope: physical_api_contract
-    api_capabilities:
-      port_detail: true
-      per_port_traffic: false
-    dashboard_validation: safe_family_visual_generated
+    validation_scope: exact_model_20_fixed_copper_4_front_combo_standard_poe
+    api_capabilities: {}
+    dashboard_validation: pending_post_admission_user_validation
     contributor:
       display_name: community contributor
       public_credit: false
   notes:
-  - Real-hardware UniFi API evidence exposes seven physical switching ports and UniFi2MQTT deliberately accepts this gateway/switch hybrid as a Switch Vision switching device.
-  - API ports 1-4 are RJ45 with 2.5G maximum capability; port 4 exposes PoE output capability with 802.3at evidence.
-  - API port 5 is a 10G-capable RJ45 port; API ports 6-7 are 10G SFP+ cages.
-  - The exact topology is bound by API port index. Controller-reported role/state remains authoritative; WAN/LAN role is not inferred from physical position.
-  - The existing 8 RJ45 + 2 SFP UniFi visual is a safe same-manufacturer container for the proven 5 RJ45 + 2 SFP+ contract; unused visual positions do not create entities or physical ports. Dedicated UCG Fiber artwork remains a later fidelity task.
+  - Real-hardware SNMP evidence confirms exact sysObjectID 1.3.6.1.4.1.45.3.80.4 and
+    IF-MIB logical ports 1-24 at 1 Gbps.
+  - Ports 1-20 are fixed copper; logical ports 21-24 are dual-personality front copper/SFP
+    positions and use shared logical-port mapping rather than duplicate entities.
+  - Standard POWER-ETHERNET-MIB exposes all 24 PSE rows, a 370 W budget, and active
+    PoE delivery in the captured contribution.
+  - The chassis also has two rear SFP positions, but this contribution does not provide
+    a trustworthy independent IF-MIB binding for them; they remain documented capability
+    only and are not fabricated into the current dashboard contract.
+  - The stock 24-RJ45/4-SFP faceplate is the conservative initial visual; exact Avaya
+    artwork and optional environment telemetry are non-blocking follow-up.
   validation:
-    exact_model_detection: live_api_confirmed
-    rj45_mapping: live_api_confirmed_ports_1_5_with_multigig_capabilities
-    poe: live_api_confirmed_port_4_802_3at_capable
-    system_sensors: live_api_platform_telemetry_available
-    uplinks: live_api_confirmed_ports_6_7_10g_sfp_plus
-    stack: not_applicable
+    exact_model_detection: real_hardware_sysobjectid_and_sysdescr_confirmed
+    rj45_mapping: real_hardware_numeric_ifname_ports_1_20_confirmed
+    poe: real_hardware_standard_power_ethernet_mib_24_pse_370w_confirmed
+    system_sensors: vendor_enterprise_candidates_present_optional_followup
+    uplinks: real_hardware_front_combo_ports_21_24_confirmed_rear_two_pending_binding
+    stack: not_observed_not_required_for_initial_dashboard
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/unifi-8-rj45-2sfp.png
+    recommended_faceplate: faceplates/24rj45-4sfp.png
     optional_faceplates: []
-    calibration_profile: unifi_8_rj45_2sfp
+    calibration_profile: stock_24rj45_4sfp
     canvas:
       width: 2048
       height: 448

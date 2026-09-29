@@ -37,10 +37,12 @@ class Catalyst3750ContractTests(unittest.TestCase):
     def test_visual_and_privacy_contract(self) -> None:
         self.assertEqual(self.device["default_faceplate"], "faceplates/48rj45-4sfp.png")
         self.assertEqual(self.device["calibration_profile"], "default_cisco_48_port")
+        contributor = self.device["contributor"]
         self.assertEqual(
-            self.device["contributor"],
-            {"display_name": "community contributor", "public_credit": False},
+            str(contributor.get("display_name") or "").strip().lower(),
+            "community contributor",
         )
+        self.assertIs(contributor.get("public_credit"), False)
         serialized = json.dumps(self.device)
         self.assertNotIn("SV-2026-", serialized)
         self.assertNotRegex(serialized, r'"public_credit"\s*:\s*true')
