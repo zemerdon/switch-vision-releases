@@ -51,10 +51,7 @@ class DellN4032FFaceplateBindingTests(unittest.TestCase):
         self.assertEqual(row["ports"]["uplinks"], 24)
         self.assertEqual(row["default_faceplate"], "faceplates/unifi-32sfp.png")
         self.assertEqual(row["calibration_profile"], "unifi_32sfp")
-        rear = row["discovery_optional_interfaces"][0]
-        self.assertEqual(rear["interface_names"], ["Fo1/1/1", "Fo1/1/2"])
-        self.assertEqual(rear["faceplate_positions"], [25, 26])
-        self.assertFalse(rear["telemetry_only"])
+
 
     def test_rear_qsfp_slots_resolve_to_real_40g_entities(self) -> None:
         source = CARD.read_text(encoding="utf-8")

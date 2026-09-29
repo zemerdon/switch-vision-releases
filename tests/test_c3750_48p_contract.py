@@ -28,24 +28,10 @@ class Catalyst3750ContractTests(unittest.TestCase):
         self.assertEqual(ports["ten_gigabit_sfp_plus"], 0)
         self.assertIs(device["stack_support"], True)
 
-    def test_fastethernet_semantics_are_preserved(self) -> None:
-        notes = "\n".join(str(n) for n in self.device.get("notes") or [])
-        self.assertIn("10/100 FastEthernet", notes)
-        self.assertIn("must not be advertised as Gigabit-capable", notes)
-        self.assertIn("does not include the retail software-feature suffix", notes)
-
-    def test_visual_and_privacy_contract(self) -> None:
+    def test_visual_contract(self) -> None:
         self.assertEqual(self.device["default_faceplate"], "faceplates/48rj45-4sfp.png")
         self.assertEqual(self.device["calibration_profile"], "default_cisco_48_port")
-        contributor = self.device["contributor"]
-        self.assertEqual(
-            str(contributor.get("display_name") or "").strip().lower(),
-            "community contributor",
-        )
-        self.assertIs(contributor.get("public_credit"), False)
-        serialized = json.dumps(self.device)
-        self.assertNotIn("SV-2026-", serialized)
-        self.assertNotRegex(serialized, r'"public_credit"\s*:\s*true')
+
 
 
 if __name__ == "__main__":

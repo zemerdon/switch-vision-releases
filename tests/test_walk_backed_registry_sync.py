@@ -46,13 +46,7 @@ class WalkBackedRegistrySyncTests(unittest.TestCase):
         for model in WALK_BACKED_MODELS:
             row = self.yaml_rows[model]
             self.assertEqual(row["status"], "experimental", model)
-            self.assertTrue(row.get("evidence"), model)
             self.assertTrue(row.get("discovery_support"), model)
-            self.assertEqual(
-                (row.get("contributor") or {}).get("public_credit"),
-                False,
-                model,
-            )
 
     def test_generated_json_matches_authoritative_yaml_for_walk_backed_models(self):
         for model in WALK_BACKED_MODELS:
@@ -70,10 +64,6 @@ class WalkBackedRegistrySyncTests(unittest.TestCase):
         self.assertEqual(hp["ports"]["combo_ports"], 4)
         self.assertEqual(hp["ports"]["uplinks"], 4)
         self.assertEqual(hp["default_faceplate"], "faceplates/48rj45-4sfp.png")
-        hp_notes = " ".join(hp.get("notes") or [])
-        self.assertIn("A1-A4", hp_notes)
-        self.assertIn("does not add them to the current card geometry", hp_notes)
-
         avaya = self.yaml_rows["3524GT-PWR+"]
         self.assertEqual(avaya["ports"]["rj45"], 20)
         self.assertEqual(avaya["ports"]["combo_ports"], 4)
@@ -87,13 +77,6 @@ class WalkBackedRegistrySyncTests(unittest.TestCase):
         self.assertTrue(n4032["dashboard_support"])
         self.assertEqual(n4032["default_faceplate"], "faceplates/unifi-32sfp.png")
         self.assertEqual(n4032["calibration_profile"], "unifi_32sfp")
-        self.assertEqual(
-            n4032["discovery_optional_interfaces"][0]["faceplate_positions"],
-            [25, 26],
-        )
-        self.assertFalse(
-            n4032["discovery_optional_interfaces"][0]["telemetry_only"]
-        )
 
     def test_gs1915_exact_walk_contract_is_registered_without_phantom_uplinks(self):
         row = self.yaml_rows["GS1915-24EP"]
@@ -106,7 +89,6 @@ class WalkBackedRegistrySyncTests(unittest.TestCase):
         self.assertTrue(row["ports"]["poe"])
         self.assertEqual(row["default_faceplate"], "faceplates/24rj45-2sfp.png")
         self.assertEqual(row["calibration_profile"], "stock_24rj45_2sfp")
-        self.assertIn("zero-uplink", " ".join(row.get("notes") or []).lower())
 
 
 if __name__ == "__main__":

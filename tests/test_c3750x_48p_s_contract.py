@@ -19,7 +19,6 @@ class Catalyst3750x48pSContractTests(unittest.TestCase):
         self.assertEqual(row["ports"]["ten_gigabit_sfp_plus"], 2)
         self.assertEqual(row["mapping_profile"], "cisco-3750x-48p-c3kx")
         self.assertEqual(row["default_faceplate"], "faceplates/48rj45-4sfp.png")
-        self.assertIn("15.2(4)E10", row["tested_firmware"])
 
 
 if __name__ == "__main__":

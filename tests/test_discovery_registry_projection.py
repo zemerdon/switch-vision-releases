@@ -35,7 +35,19 @@ class DiscoveryRegistryProjectionTests(unittest.TestCase):
         self.assertIn("model", allowlist)
         self.assertIn("ports", allowlist)
         self.assertIn("visuals", allowlist)
-        self.assertNotIn("last_validated_component", allowlist)
+        excluded_fields = (
+            "evidence",
+            "tested_firmware",
+            "contributor",
+            "contributions",
+            "notes",
+            "discovery_optional_interfaces",
+            "last_validated_component",
+        )
+        for field in excluded_fields:
+            self.assertNotIn(field, allowlist)
+            for device in self.json_doc["devices"]:
+                self.assertNotIn(field, device, f"{device.get('model')}: {field}")
 
     def test_yaml_is_generated_compatibility_output_of_json_projection(self) -> None:
         self.assertEqual(self.yaml_doc, self.json_doc)

@@ -69,10 +69,6 @@ class DeviceRegistryContractTests(unittest.TestCase):
             self.assertEqual(validation.get("uplinks"), contract["uplink_validation"], model)
             self.assertEqual(validation.get("stack"), contract["stack_validation"], model)
             self.assertEqual((device.get("visuals") or {}).get("status"), "community_validated", model)
-            notes = "\n".join(str(note) for note in device.get("notes") or [])
-            self.assertIn("link/activity", notes, model)
-            self.assertIn("rendered alignment", notes, model)
-
         payload = json.loads(REGISTRY.read_text(encoding="utf-8"))
         community_definition = str((payload.get("support_statuses") or {}).get("community_validated") or "")
         self.assertIn("rendered alignment", community_definition)
@@ -95,10 +91,6 @@ class DeviceRegistryContractTests(unittest.TestCase):
         self.assertEqual(ports.get("gigabit_sfp"), 0)
         self.assertEqual(ports.get("ten_gigabit_sfp_plus"), 4)
 
-        contributor = device.get("contributor") or {}
-        self.assertEqual(contributor.get("display_name"), "community contributor")
-        self.assertIs(contributor.get("public_credit"), False)
-
         validation = device.get("validation") or {}
         self.assertEqual(
             validation.get("exact_model_detection"),
@@ -119,20 +111,13 @@ class DeviceRegistryContractTests(unittest.TestCase):
         self.assertEqual(visuals.get("recommended_faceplate"), "faceplates/24rj45-4sfp.png")
         self.assertEqual(visuals.get("calibration_profile"), "stock_24rj45_4sfp")
 
-        notes = "\n".join(str(note) for note in device.get("notes") or [])
-        self.assertIn("local RouterOS model string", notes)
-        self.assertIn("four SFP+ cage positions", notes)
-        self.assertIn("rendered alignment", notes)
-
-    def test_3560cg_combo_port_semantics_are_documented(self) -> None:
+    def test_3560cg_combo_port_semantics_are_projected(self) -> None:
         device = self.models["WS-C3560CG-8PC-S"]
         ports = device.get("ports") or {}
         self.assertEqual(ports.get("rj45"), 8)
         self.assertEqual(ports.get("uplinks"), 2)
-        notes = "\n".join(str(note) for note in device.get("notes") or [])
-        self.assertIn("Gi0/9", notes)
-        self.assertIn("Gi0/10", notes)
-        self.assertIn("dual-purpose", notes.lower())
+        self.assertEqual(device.get("mapping_profile"), "cisco-3560cg-8pc-8p-2dual")
+        self.assertIn("dual-purpose", str(ports.get("uplink_type") or "").lower())
 
     def test_s5720_physical_layout_is_8_plus_4_one_gig_sfp(self) -> None:
         device = self.models["S5720-12TP-LI-AC"]
@@ -162,33 +147,14 @@ class DeviceRegistryContractTests(unittest.TestCase):
             self.assertEqual(visuals.get("calibration_profile"), profile, model)
             self.assertEqual(visuals.get("recommended_faceplate"), faceplate, model)
 
-    def test_existing_models_keep_reviewed_community_evidence_and_status(self) -> None:
+    def test_existing_models_keep_reviewed_support_status(self) -> None:
         expected = {
-            "US 8 60W": (1, "experimental"),
-            "USW Flex Mini": (2, "community_validated"),
-            "US 48 PoE 500W": (2, "experimental"),
+            "US 8 60W": "experimental",
+            "USW Flex Mini": "community_validated",
+            "US 48 PoE 500W": "experimental",
         }
-        for model, (units, status) in expected.items():
-            device = self.models[model]
-            self.assertEqual(device.get("status"), status, model)
-            rows = [
-                row
-                for row in device.get("contributions") or []
-                if isinstance(row, dict)
-                and row.get("source_component") == "UniFi2MQTT 2.0.47"
-                and row.get("devices_observed") == units
-            ]
-            self.assertEqual(len(rows), 1, model)
-            row = rows[0]
-            self.assertEqual(row.get("dashboard_validation"), "pending", model)
-            self.assertEqual(
-                row.get("api_capabilities"),
-                {"port_detail": True, "per_port_traffic": False},
-                model,
-            )
-            contributor = row.get("contributor") or {}
-            self.assertEqual(str(contributor.get("display_name") or "").casefold(), "community contributor", model)
-            self.assertIs(contributor.get("public_credit"), False, model)
+        for model, status in expected.items():
+            self.assertEqual(self.models[model].get("status"), status, model)
 
     def test_us_48_reuses_verified_geometry_and_legacy_sequential_mapping(self) -> None:
         device = self.models["US 48"]
@@ -253,11 +219,5 @@ class DeviceRegistryContractTests(unittest.TestCase):
         visuals = device.get("visuals") or {}
         self.assertEqual(visuals.get("recommended_faceplate"), "faceplates/unifi-32sfp.png")
         self.assertEqual(visuals.get("calibration_profile"), "unifi_32sfp")
-        notes = "\n".join(str(note) for note in device.get("notes") or [])
-        self.assertIn("Ports 29 and 30", notes)
-        self.assertIn("negotiating at 10G", notes)
-        self.assertIn("25G", notes)
-
-
 if __name__ == "__main__":
     unittest.main()

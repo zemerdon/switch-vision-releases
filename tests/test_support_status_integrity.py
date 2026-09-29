@@ -20,8 +20,6 @@ class SupportStatusIntegrityRegression(unittest.TestCase):
             with self.subTest(model=model):
                 self.assertEqual(self.yaml_devices[model]["status"], "experimental")
                 self.assertEqual(self.json_devices[model]["status"], "experimental")
-                notes = " ".join(self.yaml_devices[model].get("notes", []))
-                self.assertIn("Remains Experimental", notes)
 
     def test_pending_validation_evidence_is_preserved_not_faked_green(self):
         d2960 = self.yaml_devices["WS-C2960X-24TS-L"]["validation"]

@@ -36,21 +36,12 @@ for model, (rj45, uplinks, poe, dashboard, profile) in expected.items():
     assert item["ports"]["poe"] is poe, model
     assert item["dashboard_support"] is dashboard, model
     assert item["mapping_profile"] == profile, model
-    assert item["evidence"] == "multiple_real_hardware_unifi_api_contributions", model
-    contributions = item.get("contributions") or []
-    assert len(contributions) >= 1, model
-    for contribution in contributions:
-        contributor = contribution.get("contributor") or {}
-        assert str(contributor.get("display_name") or "").casefold() == "community contributor", model
-        assert contributor.get("public_credit") is False, model
-        assert contribution["api_capabilities"]["per_port_traffic"] is False, model
 
 promax = source_models["USW Pro Max 24"]
 # Preserve the original 2.4.10 visual contract. The later inline
 # reassignment was registry drift, not new hardware evidence.
 assert promax["default_faceplate"] == "faceplates/unifi-24p-rj45-2sfp.png"
 assert promax["calibration_profile"] == "unifi_24p_rj45_2sfp"
-assert "ports 17-24 are 2.5G-capable RJ45" in " ".join(promax["notes"])
 assert "ports_25_26_10g_sfp_plus" in promax["validation"]["uplinks"]
 
 us16 = source_models["US 16 PoE 150W"]
