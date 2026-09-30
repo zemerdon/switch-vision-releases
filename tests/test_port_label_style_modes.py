@@ -27,22 +27,24 @@ class PortLabelStyleModeTests(unittest.TestCase):
         self.assertIn('function normalisePortNumberMode(value)', self.source)
         self.assertIn('["activity", "link_speed"].includes(mode) ? mode : "static"', self.source)
 
-    def test_port_label_style_control_precedes_port_label_visibility(self) -> None:
-        block_start = self.source.index('const numberLabelVisibilityControls = numberLabelCount ?')
-        block_end = self.source.index('const isPortLedSize', block_start)
-        block = self.source[block_start:block_end]
-        style_at = block.index('Port Label Style')
-        label_at = block.index('>Port Label</span>')
-        show_at = block.index('data-cv-action="show-number-label"')
-        hide_at = block.index('data-cv-action="hide-number-label"')
-        self.assertLess(style_at, label_at)
-        self.assertLess(label_at, show_at)
-        self.assertLess(show_at, hide_at)
-        self.assertIn('value="static"', block)
-        self.assertIn('value="activity"', block)
-        self.assertIn('value="link_speed"', block)
-        self.assertNotIn('SFP label"', block)
-        self.assertNotIn('Port number"', block)
+    def test_port_label_style_and_visibility_live_in_labels_leds_section(self) -> None:
+        selection_start = self.source.index('data-cv-section="selection"')
+        selection_end = self.source.index('data-cv-section="position-size"', selection_start)
+        selection = self.source[selection_start:selection_end]
+        labels_start = self.source.index('data-cv-section="labels-leds"')
+        labels_end = self.source.index('data-cv-section="status-boxes"', labels_start)
+        labels = self.source[labels_start:labels_end]
+
+        self.assertNotIn('Port Label Style', selection)
+        self.assertIn('${portLabelStyleControl}', labels)
+        self.assertIn('${selectedNumberLabelVisibilityControls}', labels)
+        self.assertIn('Port Label Style', self.source)
+        self.assertIn('data-cv-field="port-number-mode"', self.source)
+        self.assertIn('value="static"', self.source)
+        self.assertIn('value="activity"', self.source)
+        self.assertIn('value="link_speed"', self.source)
+        self.assertIn('data-cv-action="show-number-label"', self.source)
+        self.assertIn('data-cv-action="hide-number-label"', self.source)
 
     def test_user_facing_port_label_wording_is_port_type_agnostic(self) -> None:
         required = (
@@ -60,7 +62,7 @@ class PortLabelStyleModeTests(unittest.TestCase):
         self.assertNotIn('"SFP label"', self.source)
 
     def test_selected_port_controls_remain_visible_for_every_port_part(self) -> None:
-        block_start = self.source.index('const portNumberKeys = editable?.type === "number_labels"')
+        block_start = self.source.index('const portNumberKeys = ["number_labels", "port_leds"].includes(editable?.type)')
         block_end = self.source.index('const isPortLedSize', block_start)
         block = self.source[block_start:block_end]
 
@@ -69,7 +71,10 @@ class PortLabelStyleModeTests(unittest.TestCase):
             'editable?.type === "ports"',
             'editable?.type === "sfp"',
             'editable?.type === "sfps"',
+            '"port_leds"',
             'data-cv-field="port-number-mode"',
+            'data-cv-field="link-led-shape"',
+            'data-cv-field="activity-led-shape"',
             'data-cv-action="show-number-label"',
             'data-cv-action="hide-number-label"',
             'data-cv-action="show-activity-led"',
@@ -82,15 +87,10 @@ class PortLabelStyleModeTests(unittest.TestCase):
         self.assertNotIn('editable?.part === "number" && editable?.type === "port"', block)
         self.assertNotIn('editable?.part === "label" && editable?.type === "sfp"', block)
 
-        template_start = block.index('const numberLabelVisibilityControls')
-        template = block[template_start:]
-        self.assertLess(template.index('Port Label Style'), template.index('>Port Label</span>'))
-        self.assertLess(template.index('>Port Label</span>'), template.index('${selectedPortLedVisibilityControls}'))
-
-        led_controls_start = block.index('const selectedPortLedVisibilityControls')
-        led_controls_end = block.index('const numberLabelVisibilityControls', led_controls_start)
-        led_controls = block[led_controls_start:led_controls_end]
-        self.assertLess(led_controls.index('>Activity LED</span>'), led_controls.index('>Link LED</span>'))
+        led_controls_start = block.index('const selectedPortLedControls')
+        label_visibility_start = block.index('const portLabelStyleControl')
+        led_controls = block[led_controls_start:label_visibility_start]
+        self.assertLess(led_controls.index('>Link LED</span>'), led_controls.index('>Activity LED</span>'))
 
     def test_selected_port_led_visibility_is_persisted_and_render_gated(self) -> None:
         required = (
@@ -123,8 +123,8 @@ class PortLabelStyleModeTests(unittest.TestCase):
         required = (
             'title="Choose how port labels are drawn:',
             'title="Show or hide the selected port label without changing its saved position, text, colour, or style."',
-            'title="Show or hide the selected port Activity LED without changing its telemetry mapping, position, size, or saved timing.',
-            'title="Show or hide the selected port Link LED without changing its link/speed telemetry mapping, position, size, or colour.',
+            'title="Hide the selected port Activity LED while preserving its saved calibration and telemetry mapping."',
+            'title="Hide the selected port Link LED while preserving its saved calibration and link/speed mapping."',
         )
         for marker in required:
             self.assertIn(marker, self.source)

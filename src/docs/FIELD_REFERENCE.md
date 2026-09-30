@@ -237,11 +237,15 @@ Each RJ45 port can contain:
 | `number_show` | Shows or hides that individual RJ45 port number. Missing values default to shown. |
 | `hitbox` | RJ45 clickable width and height. |
 | `led_left` | Link/Speed LED position. |
-| `led_left_size` | Independent Link/Speed rectangle width and height. |
+| `led_left_size` | Independent Link/Speed LED width and height envelope used by rectangle and triangle shapes. |
+| `led_left_shape` | Link/Speed LED shape for this port: `circle`, `rectangle`, `triangle_up`, or `triangle_down`. |
 | `led_right` | Activity LED position. |
-| `led_right_size` | Independent Activity rectangle width and height. |
+| `led_right_size` | Independent Activity LED width and height envelope used by rectangle and triangle shapes. |
+| `led_right_shape` | Activity LED shape for this port: `circle`, `rectangle`, `triangle_up`, or `triangle_down`. |
 
-`ui.port_led_shape` is `circle` or `rectangle`. Circle mode retains the normal radius. Rectangle mode uses the independent LED size fields and never resizes the RJ45 hitbox.
+Link and Activity shapes are selected independently for each RJ45 or SFP/uplink entry. The triangle variants use a tall, narrow arrowhead-style geometry; `triangle_up` points upward and `triangle_down` points downward. Circle mode retains the normal radius, while rectangle and triangle modes use the independent LED size fields and never resize the port hitbox.
+
+`ui.port_led_shape` remains supported only as the backward-compatible fallback for older profiles that do not yet contain per-interface `led_left_shape` / `led_right_shape` values.
 
 Profile-wide LED colour overrides are optional:
 
@@ -266,7 +270,7 @@ Calibration font-size inputs always use effective **2048×448 render-space pixel
 
 Calibration custom-colour controls use an inline picker with draggable saturation/value, hue, brightness, live preview, HEX entry, Reset, and Done. The same picker is used for Link LEDs, Activity LEDs, Status LED labels, RJ45 numbers, uplink labels, and Status Box custom colours.
 
-Each SFP/uplink entry can also contain optional `led_left`, `led_right`, `led_left_size`, and `led_right_size` fields. Profiles that omit them retain the legacy fixed LED offsets from the SFP centre. Selecting or moving an SFP LED in Calibration materialises the optional coordinates for that profile. `label_show` controls the visibility of an individual SFP/uplink label and defaults to shown when omitted. The **Port Numbers** quick selection includes both RJ45 port numbers and SFP/uplink labels.
+Each SFP/uplink entry can also contain optional `led_left`, `led_right`, `led_left_size`, `led_right_size`, `led_left_shape`, and `led_right_shape` fields. Profiles that omit explicit LED coordinates retain the legacy fixed LED offsets from the SFP centre, while omitted shape fields fall back to the legacy profile-wide shape. Selecting or moving an SFP LED in Calibration materialises the optional coordinates for that profile. `label_show` controls the visibility of an individual SFP/uplink label and defaults to shown when omitted. The **Port Labels** quick selection includes both RJ45 port numbers and SFP/uplink labels; **All Link LEDs** and **All Activity LEDs** span both RJ45 and SFP/uplink interfaces.
 
 ### Calibration actions
 
