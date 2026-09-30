@@ -1,4 +1,4 @@
-const PANEL_VERSION = "2.7.33";
+const PANEL_VERSION = "2.7.34";
 const CARD_MODULE_URL = `/api/switch_vision/switch-vision-card.js?v=${PANEL_VERSION}`;
 const NATIVE_CARD_TYPE = `switch-vision-3650-v${PANEL_VERSION.replace(/[^0-9a-z]+/gi, "-").toLowerCase()}`;
 

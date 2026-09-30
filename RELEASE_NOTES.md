@@ -1,3 +1,13 @@
+# Switch Vision Core v2.7.34
+
+Core 2.7.34 extends Calibration with independent per-interface Link and Activity LED shapes. Each RJ45 and SFP/uplink entry can now save Circle, Rectangle, Triangle Up, or Triangle Down independently for its Link and Activity LEDs.
+
+The new triangle shapes use a tall, narrow arrowhead-style presentation, with matching upward and downward variants. **All Link LEDs** and **All Activity LEDs** quick selections span both RJ45 and SFP/uplink interfaces so a shape, position, size, or visibility change can be applied across the whole faceplate at once.
+
+Port presentation controls are consolidated under **Port Labels and LEDs**: Port Label Style, selected Port Label visibility, Link LED shape/visibility, Activity LED shape/visibility, and their quick selectors now live together there instead of being mixed into Selection. Older calibration profiles remain compatible through the existing profile-wide `ui.port_led_shape` fallback until a per-interface shape is explicitly saved.
+
+Permanent regression coverage verifies the new shapes, independent Link/Activity persistence, geometry-transfer/import behavior, cross-RJ45/SFP quick selections, section ownership, JavaScript mirror parity, and existing Port Label behavior.
+
 # Switch Vision Core v2.7.33
 
 Core 2.7.33 repairs shared RJ45/SFP telemetry selection for combo-port switches. When Discovery provides dedicated SFP entities for a shared cage, Core now uses those optical entities first instead of prematurely resolving the cage through the shared logical copper-port telemetry.

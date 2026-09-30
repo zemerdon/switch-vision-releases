@@ -1,3 +1,14 @@
+## v2.7.34 — Per-port Link/Activity LED shapes and calibration layout
+
+- Add independent per-interface `led_left_shape` and `led_right_shape` calibration fields for Link and Activity LEDs on RJ45 and SFP/uplink entries.
+- Support Circle, Rectangle, Triangle Up, and Triangle Down, with the triangle variants rendered as tall, narrow arrowhead-style indicators.
+- Keep legacy `ui.port_led_shape` only as a backward-compatible fallback for profiles that do not yet contain per-interface shape values.
+- Add **All Link LEDs** and **All Activity LEDs** quick targets spanning both RJ45 and SFP/uplink ports, while preserving RJ45-only and SFP-only Link/Activity targets.
+- Move Port Label Style, selected Port Label visibility, selected Link/Activity shape and visibility controls, and presentation quick targets into **Port Labels and LEDs**.
+- Keep Selection focused on interface/geometry targeting rather than presentation styling.
+- Persist the new shape fields through profile save/import and geometry transfer, with fail-closed validation for unsupported values.
+- Add permanent regression coverage for shape rendering, persistence, cross-port targeting, UI section placement, source mirror parity, and existing label/LED behavior.
+
 ## v2.7.33 — Shared SFP telemetry preference repair
 
 - Fix shared RJ45/SFP cage resolution so dedicated SFP telemetry is preferred when Discovery provides it, instead of stopping at the shared logical copper-port entities.

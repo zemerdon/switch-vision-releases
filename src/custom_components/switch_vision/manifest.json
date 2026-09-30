@@ -7,7 +7,7 @@
   "config_flow": true,
   "documentation": "https://switch-vision.zemerdon.com",
   "iot_class": "local_push",
-  "version": "2.7.33",
+  "version": "2.7.34",
   "dependencies": [
     "frontend",
     "lovelace",
