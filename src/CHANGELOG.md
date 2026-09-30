@@ -1,3 +1,12 @@
+## v2.7.36 — Shared named custom management themes
+
+- Add Core-owned `management_theme_selected` and `custom_themes` settings for the Switch Vision management UI.
+- Validate up to 20 named custom themes with unique bounded ids/names and a complete 45-role `#rrggbb` colour palette.
+- Project the selected theme and sanitized custom-theme library into shared UI preferences schema version 2 for Discovery / Hub and Installer.
+- Preserve the four built-in theme identifiers while allowing `custom:<id>` selections only when the referenced saved theme exists.
+- Keep management themes strictly separate from Native/Lovelace/Custom switch dashboards, faceplates, LEDs, port rendering, and Calibration.
+- Add permanent validation for valid themes, malformed ids/names/colours, unknown roles, and invalid custom selections.
+
 ## v2.7.35 — Consolidate all Calibration Quick Select actions
 
 - Move Port Labels, All Link LEDs, All Activity LEDs, RJ45 Link/Activity, and SFP Link/Activity quick targets back into **Selection** with the rest of Calibration's target shortcuts.

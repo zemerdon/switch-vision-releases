@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.36
+
+Core 2.7.36 adds the authoritative shared management-theme contract used by Switch Vision Discovery / Hub and Installer.
+
+Core now stores the selected built-in or named custom management theme plus a bounded library of custom palettes. Custom themes are validated fail-closed: names and identifiers are bounded, duplicate names/identifiers are rejected, unknown colour roles are rejected, and every required role must contain a valid `#rrggbb` colour.
+
+The shared `/share/switch_vision/ui-preferences.json` projection advances to schema version 2 and includes the selected theme and sanitized custom-theme library. This gives Discovery and Installer one source of truth for management UI colour presentation without affecting switch dashboards, cards, faceplates, LEDs, port rendering, or Calibration visuals.
+
 # Switch Vision Core v2.7.35
 
 Core 2.7.35 keeps every Calibration Quick Select action together under **Selection**. Port Labels, All Link LEDs, All Activity LEDs, RJ45 Link/Activity, and SFP Link/Activity have moved back alongside the existing Status LEDs, all-port, status-box, parity, asset, and custom-port target shortcuts.
