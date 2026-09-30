@@ -1,3 +1,11 @@
+## v2.7.35 — Consolidate all Calibration Quick Select actions
+
+- Move Port Labels, All Link LEDs, All Activity LEDs, RJ45 Link/Activity, and SFP Link/Activity quick targets back into **Selection** with the rest of Calibration's target shortcuts.
+- Remove the duplicate Quick Select row from **Port Labels and LEDs** so that section contains presentation settings only.
+- Preserve Port Label Style plus selected Port Label, Link LED, and Activity LED style/shape/visibility controls under **Port Labels and LEDs**.
+- Add a permanent contract requiring every `data-cv-action="select-target"` control to live inside the Selection section.
+- No calibration-data, telemetry, rendering, or per-interface LED-shape behavior changes.
+
 ## v2.7.34 — Per-port Link/Activity LED shapes and calibration layout
 
 - Add independent per-interface `led_left_shape` and `led_right_shape` calibration fields for Link and Activity LEDs on RJ45 and SFP/uplink entries.

@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.35
+
+Core 2.7.35 keeps every Calibration Quick Select action together under **Selection**. Port Labels, All Link LEDs, All Activity LEDs, RJ45 Link/Activity, and SFP Link/Activity have moved back alongside the existing Status LEDs, all-port, status-box, parity, asset, and custom-port target shortcuts.
+
+The **Port Labels and LEDs** section now contains presentation settings only: Port Label Style, selected Port Label visibility, independent Link LED shape/visibility, independent Activity LED shape/visibility, status-LED styling, label styling, and LED/label colours. No target-selection shortcuts remain outside Selection.
+
+This is a layout-only refinement of the 2.7.34 Calibration LED-shape work; saved calibration data, per-interface Link/Activity shape behavior, telemetry, and rendering contracts are unchanged.
+
 # Switch Vision Core v2.7.34
 
 Core 2.7.34 extends Calibration with independent per-interface Link and Activity LED shapes. Each RJ45 and SFP/uplink entry can now save Circle, Rectangle, Triangle Up, or Triangle Down independently for its Link and Activity LEDs.

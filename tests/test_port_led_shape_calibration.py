@@ -49,7 +49,7 @@ class PortLedShapeCalibrationTests(unittest.TestCase):
         self.assertIn('normalisePortLedShape(uiFromCalibration(activeCalibration)?.port_led_shape || "circle")', self.source)
         self.assertNotIn('data-cv-field="port-led-shape"', self.source)
 
-    def test_labels_leds_section_owns_presentation_controls_and_quick_targets(self) -> None:
+    def test_selection_owns_all_quick_select_actions(self) -> None:
         selection_start = self.source.index('data-cv-section="selection"')
         selection_end = self.source.index('data-cv-section="position-size"', selection_start)
         selection = self.source[selection_start:selection_end]
@@ -74,8 +74,13 @@ class PortLedShapeCalibrationTests(unittest.TestCase):
             'data-target="sfps_led_left" data-part="led_left">SFP Link</button>',
             'data-target="sfps_led_right" data-part="led_right">SFP Activity</button>',
         ):
-            self.assertIn(marker, labels)
-            self.assertNotIn(marker, selection)
+            self.assertIn(marker, selection)
+            self.assertNotIn(marker, labels)
+
+        self.assertEqual(
+            self.source.count('data-cv-action="select-target"'),
+            selection.count('data-cv-action="select-target"'),
+        )
 
     def test_all_link_and_activity_targets_span_rj45_and_sfp(self) -> None:
         required = (
