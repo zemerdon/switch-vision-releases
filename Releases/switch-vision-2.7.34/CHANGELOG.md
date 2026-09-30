@@ -1,0 +1,758 @@
+## v2.7.34 — Per-port Link/Activity LED shapes and calibration layout
+
+- Add independent per-interface `led_left_shape` and `led_right_shape` calibration fields for Link and Activity LEDs on RJ45 and SFP/uplink entries.
+- Support Circle, Rectangle, Triangle Up, and Triangle Down, with the triangle variants rendered as tall, narrow arrowhead-style indicators.
+- Keep legacy `ui.port_led_shape` only as a backward-compatible fallback for profiles that do not yet contain per-interface shape values.
+- Add **All Link LEDs** and **All Activity LEDs** quick targets spanning both RJ45 and SFP/uplink ports, while preserving RJ45-only and SFP-only Link/Activity targets.
+- Move Port Label Style, selected Port Label visibility, selected Link/Activity shape and visibility controls, and presentation quick targets into **Port Labels and LEDs**.
+- Keep Selection focused on interface/geometry targeting rather than presentation styling.
+- Persist the new shape fields through profile save/import and geometry transfer, with fail-closed validation for unsupported values.
+- Add permanent regression coverage for shape rendering, persistence, cross-port targeting, UI section placement, source mirror parity, and existing label/LED behavior.
+
+## v2.7.33 — Shared SFP telemetry preference repair
+
+- Fix shared RJ45/SFP cage resolution so dedicated SFP telemetry is preferred when Discovery provides it, instead of stopping at the shared logical copper-port entities.
+- Restore Avaya ERS 3524GT-PWR+ SFP link/status, speed, traffic, activity and selected-port telemetry for its four shared logical ports 21–24 while preserving one logical interface per combo position.
+- Keep logical-port fallback unchanged for combo-port models that expose only the shared access-port telemetry, including the HP J9774A contract.
+- Add permanent shared-SFP regressions covering dedicated 1G SFP telemetry, fallback behavior, activity and speed/detail resolution.
+- No physical topology, model-support status, faceplate geometry or Calibration contract changes.
+
+## v2.7.32 — Exact registry alignment and HP 2530-8G-PoEP contract
+
+- Align Core's exact-model registry one-for-one with Discovery for all previously registered switches, including UCG Fiber and WS-C2960XR-48LPS-I, and remove stale support-confidence drift.
+- Add the exact HP J9774A 2530-8G-PoEP Experimental contract from reviewed real-hardware evidence: eight fixed 1G PoE+ copper ports plus two dual-personality 1G RJ45/SFP logical ports.
+- Use the existing stock 24-RJ45/2-SFP faceplate as the safe presentation fallback while limiting the generated card to ten active RJ45 positions and two SFP cages.
+- Bind the two SFP cages back to logical ports 9 and 10 through the existing shared-cage mapping contract so link state, speed, traffic, activity and selected-port details remain one logical interface per combo position.
+- Add permanent exact-model faceplate/logical-port regression coverage.
+
+## v2.7.31 — Contributed Dell/Avaya operational bindings
+
+- Add the exact Avaya ERS 3524GT-PWR+ Core registry/visual contract using the stock 24-RJ45/4-SFP faceplate, preserving 20 fixed copper ports plus four shared front combo positions.
+- Add the exact Dell N4032F Experimental visual contract using the reviewed 32-position optical fallback: 24 front SFP+ positions plus two observed rear QSFP parent connectors at positions 25-26 when the expansion is present.
+- Keep N4032F breakout lanes as logical child interfaces rather than inventing eight extra physical sockets; a base chassis without the rear module renders only 24 optical positions.
+- Extend N4032F status/speed/traffic entity resolution so faceplate positions 25-26 consume the real 40G rear-QSFP entities.
+- Add Dell N2128PX-ON selected-SFP optical diagnostics for the proven DDMI/transceiver entities while retaining its dedicated Dell 28-RJ45/2-SFP+ faceplate.
+- Keep the HP 3500yl current front-panel visual unchanged; its separately observed rear A1-A4 module remains outside current faceplate geometry until dedicated presentation exists.
+- Add permanent registry, faceplate-binding and optical-status regressions for these contracts.
+
+## v2.7.30 — HP ProCurve 1810G-24 exact faceplate and factory calibration
+
+- Add the exact HP ProCurve 1810G-24 faceplate as the default visual for the existing exact model contract.
+- Add its owner-calibrated 24 × RJ45 + 2 × SFP factory geometry in the standard 2048 × 448 render coordinate space.
+- Keep the stock 24RJ45+2SFP faceplate available as an optional fallback without changing the established physical/telemetry contract.
+
+## v2.7.29 — Unified Port Label styles, per-port LED visibility and hardware-style activity flicker
+
+- Supersede the unreleased 2.7.28 same-version local candidate so standard update detection installs the finalized source rather than treating an older 2.7.28 build as Latest.
+
+- Add **Port Label Style** with Static, Activity, and Link speed modes for RJ45 and SFP/uplink labels.
+- Keep Static as the backward-compatible default and preserve existing RJ45/SFP static label colours.
+- Make Activity-style labels consume the same per-port activity decision as the Activity LED so both remain synchronized.
+- Reuse the existing link-speed palette and custom link-LED colour override for Link speed mode.
+- Normalize selected-port Calibration wording to **Port Label Style** followed by **Port Label** Show/Hide regardless of port type.
+- Preserve existing type-specific visibility persistence internally for saved-profile compatibility.
+- Keep **Port Label Style** and **Port Label** controls visible whenever an RJ45 or SFP/uplink port target is selected, regardless of the currently selected editable part.
+- Add per-selected-port **Activity LED** Show/Hide and **Link LED** Show/Hide immediately after Port Label; persist those choices per port while retaining the existing profile-wide LED switches as master controls.
+- Add explanatory tooltips for the selected-port Port Label Style, Port Label, Activity LED and Link LED controls without changing saved geometry or telemetry mappings.
+- Cache visible activity targets after redraw and stop the activity timer completely when no Activity LED or Activity-style label is visible.
+- Update LED-only and Activity-label-only modes only at their visible target; when both are visible, reuse one per-port activity decision.
+- Tune heavy/Fast activity at the existing 120 ms factory setting to approximately **125–140 ms ON / 29–40 ms OFF**, about **6 flashes/sec** and roughly **80% ON duty**.
+- Use a 25 ms internal activity render sample only while visible activity targets are active so the short Fast drop-outs remain perceptible.
+- Add permanent regressions for persistence, RJ45/SFP parity, activity synchronization, Fast timing, hidden-work suppression, JavaScript mirror parity, and render stability.
+
+## v2.7.27 — Public attribution privacy hardening
+
+- Remove unapproved contributor/tester identities from current and carried public release history.
+- Remove identity-specific names from public-source regression filenames, comments, output strings, and variable labels.
+- Keep technical validation facts while using neutral community attribution unless zemerdon explicitly approves exact public credit.
+- Strengthen release/publication privacy gates so carried historical release content is scanned fail-closed before publication.
+- No telemetry, device mapping, faceplate, calibration, or runtime behaviour changes.
+
+## v2.7.26 — Exact-model, combo-port and Cisco telemetry release
+
+- Publish the exact WS-C3750X-48P-S Experimental contract and HP ProCurve 1810G-24 dual-personality contract already validated on local main.
+- Preserve shared logical-port state/details between RJ45 and SFP hitboxes for dual-personality ports while keeping Calibration geometry independent.
+- Complete 1G SFP VLAN/trunk/alias/description/name binding through the explicit entity-prefix contract.
+- Aggregate real Cisco ENVMON fan/PSU state entities without inventing health when rows are absent.
+- Show selected-port Cisco PoE state, class and power only when Discovery has an exact physical-port join; hide missing telemetry.
+- Add permanent regression coverage for Cisco telemetry binding and fail-closed presentation.
+
+## v2.7.25 — Dell visual-state metadata reconciliation
+
+- Reconcile the Dell N2128PX-ON registry notes with the already-shipped dedicated 28 RJ45 + 2 SFP+ faceplate and owner-calibrated factory geometry.
+- Record current-build field confirmation for Dell faceplate alignment and port-description presentation without changing its Experimental support status.
+- Keep only the evidence-backed remaining promotion blockers: detailed per-port PoE presentation, system-sensor applicability, and VLAN/trunk semantics.
+- Add a permanent regression that rejects stale generic-fallback or pending-Dell-calibration wording.
+
+## v2.7.24 — Dedicated USW Flex Mini faceplate
+
+- Add the owner-calibrated USW Flex Mini factory faceplate and dedicated usw_flex_mini calibration profile.
+- Move only USW Flex Mini from the generic five-RJ45 UniFi presentation to the dedicated artwork while preserving the proven 5 × 1G RJ45 / no-uplink functional contract.
+- Preserve the supplied five RJ45 hitboxes, LEDs, port numbers, status-box selection and UI geometry as presentation data; exact model capabilities remain registry-owned.
+- Add permanent regression coverage for the supplied geometry round-trip and Flex Mini-only assignment.
+
+## v2.7.23 — Compact UniFi exact-model faceplates
+
+- Add owner-calibrated UniFi **16 RJ45 + 2 SFP**, **9 RJ45 + 2 SFP**, and **3 SFP+** factory faceplates.
+- Replace oversized generic visuals for USW-16-PoE, US 16 PoE 150W, UDM Pro, UniFi Dream Machine PRO SE, UDM Pro Max, and USW WAN.
+- Keep shared faceplate geometry role-neutral so exact-model WAN/LAN and speed semantics remain registry/runtime-owned; the existing UDM Pro RJ45 port 9 WAN default is preserved.
+- Preserve the USW WAN rear RJ45 as real API port 4 while rendering only its three front 10G SFP+ cages.
+- Add permanent geometry/model regressions for native-canvas integrity, exact assignments, role neutrality, and the USW WAN rear-port/front-panel split.
+
+## v2.7.22 — Rendered calibration control target alignment
+
+- Keep the on-card **Calibrate/Done** and **TEST MODE** controls exactly where they render today.
+- Make Calibration target boxes derive from the controls' real rendered browser bounds through the SVG screen transform, so the blue targets stay directly over the controls on unusually wide or non-2048:448 faceplates.
+- Preserve the TEST MODE target geometry even while the badge is inactive by retaining a hidden rendered marker at its real position.
+- Add a permanent regression contract proving rendered-control synchronization occurs before the Calibration overlay is drawn.
+## v2.7.21 — Calibrated port roles
+
+- Add a persistent per-port **Port Role** selector beside **Supported Speed** in Calibration with Auto / Model default, LAN, WAN and Uplink choices.
+- Preserve per-device role overrides in calibration metadata while Auto inherits exact-model registry role metadata.
+- Expose known effective port roles in selected-port status details without treating UniFi uplink markers as implicit WAN classification.
+- Add validated exact-model `port_roles` metadata and record UDM Pro physical RJ45 port 9 as WAN from owner calibration.
+- Add permanent regression coverage for Calibration placement/persistence and embedded exact-model role metadata.
+## v2.7.20 — Calibration font-size pixel controls
+
+- Fix native-canvas Calibration font-size fields showing scaled storage values such as `38.0859375`, `39.55078125`, `46.875`, and `48.33984375` instead of their effective rendered pixel sizes.
+- Show and edit font sizes consistently in the 2048×448 render space: stock native profiles now display familiar values such as RJ45 **13 px**, SFP/uplink **13.5 px**, Status LEDs **16.5 px**, and Status Boxes **16 px**.
+- Convert edited render-space pixel values back into native-image storage units internally, preserving existing 6000×1325 calibration geometry without exposing that conversion to users.
+- Scale native-profile font validation bounds with the faceplate coordinate ratio so valid rendered sizes above ~17 px are no longer accidentally clamped by the old raw-storage 50-unit ceiling.
+- Fix Status Box 2 font-size editing so its profile value and temporary render override use the correct respective coordinate spaces.
+- Add maintained Chromium coverage that verifies native stored values display as 13 / 13.5 / 16.5 / 16, edits round-trip through native storage, and render back at the exact requested pixel sizes.
+
+## v2.7.19 — Card-height viewport sizing
+
+- Rework Calibration **Card Height** so presets control the card viewport rather than resizing or vertically distorting the faceplate artwork.
+- Keep the faceplate at its normal width and natural aspect ratio, keep the SVG overlay on the standard 2048×448 mapping, and center the full faceplate canvas behind the shorter/taller viewport.
+- Use the existing stage overflow mask to crop only excess top/bottom content when the selected viewport is shorter than the natural faceplate render height.
+- Keep the on-card Calibrate / Done control reachable in fixed-height mode with a viewport-relative placement, while Auto continues to use its saved calibrated position.
+- Preserve the existing per-switch persistence contract, YAML isolation, 80–1024 px Custom bounds, and Compact 115 / Medium 150 / Large 200 presets.
+- Extend maintained Chromium coverage to prove card width and faceplate image height stay unchanged while only the stage viewport height changes and the 150 px value still survives save/reload.
+
+## v2.7.18 — Exact-height faceplate sizing
+
+- Change Calibration **Faceplate Height** so it changes only the rendered height; the card keeps its normal width instead of shrinking proportionally.
+- Vertically map the faceplate image and SVG overlay to the selected height so ports, LEDs, labels and calibration controls remain aligned at Compact 115 px, Medium 150 px, Large 200 px or Custom 80–1024 px.
+- Keep **Auto** unchanged and preserve the existing global width behavior when no per-switch height is selected.
+- Retain the 2.7.17 save/reload persistence repair so the selected height survives Save Profile / Done and later Home Assistant profile reloads.
+- Add maintained Chromium checks proving every preset leaves card width unchanged, applies the exact requested image height, switches SVG mapping only for fixed-height mode, and persists 150 px end to end.
+
+## v2.7.17 — Per-switch faceplate height calibration
+
+- Add a Calibration-only **Faceplate Height** control saved with each switch/card profile; existing cards remain unchanged because **Auto** is the default.
+- Add **Compact (115 px)**, **Medium (150 px)**, **Large (200 px)** and **Custom** presets, with Custom clamped to a hard 80–1024 px range.
+- Preserve faceplate aspect ratio by translating the selected height limit into an effective maximum card width after the image dimensions are known, rather than stretching or squashing the artwork.
+- Keep the setting out of Lovelace/YAML card configuration and out of transferable faceplate geometry/import payloads so it remains presentation state owned by the destination switch/card.
+- Fix the pre-release save/reload path so the selected height does not revert to Auto after **Save Profile** or **Done**; normal stored calibration validation preserves `ui.faceplate.max_height`, while transferable faceplate/geometry imports continue to exclude it.
+- Extend maintained browser regression coverage for Auto, every preset, Custom, the 80 px minimum clamp, ignored YAML attempts, and an end-to-end 150 px save/reload through mocked Home Assistant storage.
+
+## v2.7.16 — Stock 48-port faceplate presentation repair
+
+- Promote zemerdon's supplied calibrated `48rj45-4sfp` geometry to the stock factory default, including corrected RJ45 placement, explicit SFP label anchors, and the `G1`, `G2`, `G3/TE3`, `G4/TE4` visible uplink labels.
+- Restore the standard 13 px RJ45 numbers, 13.5 px SFP labels, and 16.5 px status labels on both stock 48-port faceplates instead of allowing missing native-canvas presentation metadata to collapse those labels to the 8 px renderer minimum.
+- Keep the stock `48rj45-2sfp` port geometry unchanged while adding only the missing explicit presentation metadata and label visibility contract.
+- Add a permanent factory-geometry regression that proves the stock 48-port/4-SFP render-space geometry exactly matches the accepted owner-supplied geometry snapshot and both stock 48-port plates retain the standard label sizes.
+
+## v2.7.15 — Calibration profile deletion bridge
+
+- Add an admin-only Home Assistant WebSocket command for deleting one unused calibration profile so the Switch Vision Hub can use the same authenticated control path as its existing calibration reads.
+- Reuse the existing protected deletion implementation for both the service and WebSocket contracts, preserving factory-profile and active-profile deletion safeguards.
+- Return explicit deletion results to Hub callers so bulk profile cleanup can fail visibly instead of reporting success after an inaccessible service call.
+
+## v2.7.14 — Faceplate geometry integrity and upgrade repair
+
+- Make each shipped faceplate the primary authority for its factory/default geometry instead of allowing broad port-count/profile fallbacks to substitute another layout.
+- Restore the USW Pro Max 24 to its original standard `unifi-24p-rj45-2sfp.png` / `unifi_24p_rj45_2sfp` visual contract.
+- Add the missing `unifi_8_rj45_2sfp` and `unifi_32sfp` factory bindings and route legacy Cisco profile aliases to their current faceplate-native geometry.
+- Automatically repair saved profiles only when their complete persisted presentation fingerprint exactly matches a reviewed obsolete factory default; preserve any genuinely user-adjusted calibration.
+- Give the Native dashboard summary/version/menu header a fixed high-contrast foreground/background pair independent of custom Home Assistant theme token combinations.
+- Add permanent all-faceplate/model geometry integrity coverage across the 17 shipped faceplates and dashboard-supported exact-model recommendations.
+
+## v2.7.13 — Natural independent Activity LED flicker
+
+- Replace the fixed repeating Activity LED metronome with deterministic irregular per-port flicker driven only by real RX + TX counter movement.
+- Preserve Slow / Medium / Fast utilisation classification, sensitivity presets, custom thresholds, hysteresis and saved period settings; the three period values now control average flicker cadence rather than an exact repeating cycle.
+- Keep light traffic as occasional short flashes, medium traffic as frequent irregular flicker, and heavy traffic as a dense mostly-on shimmer with short uneven drop-outs.
+- Keep the link LED solid and authoritative, retain the existing poll cadence, and use Activity Hold only to keep the last real activity sample valid between slower telemetry updates.
+- Add permanent browser/runtime regression coverage for irregular timing, independent per-port patterns, traffic-density ordering, retained-LED updates and clean expiry.
+
+## v2.7.12 — Custom asset backup classification
+
+- Package an exact SHA-256 manifest of release-owned logo and faceplate assets so Core can distinguish stock visuals from user data at runtime.
+- Extend the narrow asset-list backup contract to advertise only truly custom logo/faceplate files to complete backups, avoiding repeated export of the full stock visual library.
+- Treat a stock-named file whose content differs from the packaged stock SHA-256 as custom user data so local overrides are preserved.
+- Fail the complete-backup capability back to the older API level if the stock manifest is missing or invalid; normal asset listing remains fail-soft.
+- Preserve rendering, Calibration geometry, device support and credential handling unchanged.
+
+## v2.7.11 — Portable backup asset bridge
+
+- Add a narrow admin-only Home Assistant WebSocket bridge for exporting and restoring Switch Vision-owned custom logo and faceplate files used by complete configuration backups.
+- Keep the bridge confined to `/config/www/switch-vision/{logos,faceplates}` with basename/extension validation, a 16 MiB per-file limit, SHA-256 integrity checks and atomic replacement.
+- Advertise backup API capability through the existing asset-list contract so Discovery can fail closed rather than silently create or restore an incomplete whole-stack backup against an older Core.
+- Preserve the existing renderer, faceplate geometry, Calibration presentation and dashboard behavior; no credential storage or broad `/config` filesystem access is introduced.
+
+## v2.7.10 — Renderer and Calibration stability
+
+- Gate Home Assistant updates by the entities each card actually consumes and coalesce relevant bursts to one visual commit per affected card/frame.
+- Replace whole-SVG activity animation redraws with retained LED updates; idle and detached cards no longer run continuous activity redraw work.
+- Pause telemetry rendering while Calibration is open, then resynchronize once from the newest Home Assistant state when Calibration closes.
+- Single-flight UI-settings/profile subscriptions and profile loads, reject stale profile responses from overwriting dirty editor state, and clean timer/subscription lifecycle across disconnect/reconnect.
+- Keep delayed status/copy housekeeping and continuous colour previews from rebuilding the complete Calibration editor or replacing active controls.
+- Add permanent browser/runtime coverage for ten-card relevance/burst behavior, activity start/expiry, Calibration control identity, stale-load protection, detached staging and subscription cleanup.
+- Preserve visible Live and Calibration SVG presentation; the accepted HAOS candidate showed the same visible output while eliminating the previous main-thread redraw storm.
+
+## v2.7.9 — Exact-model faceplate mapping integrity
+
+- Replace stale oversized visual fallbacks with already-shipped exact UniFi faceplates for `USW Flex`, `USW Flex Mini`, `USW-Lite-8-PoE`, `USW-Enterprise-8-PoE`, `USW Pro XG 8 PoE`, and `USW Pro HD 24 PoE`.
+- Enable the existing owner-calibrated 32-position optical faceplate/profile for `USW Pro Aggregation`, preserving its authoritative 28 × SFP+ + 4 × SFP28 topology and API-port map.
+- Enable the approved stock 24+2 canvas for `US 16 PoE 150W` while preserving its authoritative 16 RJ45 + 2 SFP physical counts; no nonexistent 16-port artwork is invented.
+- Add permanent exact-model regressions that lock faceplate/profile pairs, preserve known-good compact UniFi mappings, and keep non-exact fallback models' physical counts authoritative.
+- Keep support-confidence states unchanged; this release corrects presentation assignments only and does not promote hardware validation status.
+
+## v2.7.8 — Hybrid UniFi telemetry and presentation integrity
+
+- Add hybrid UniFi runtime binding so an SNMP-backed card can consume fresh UniFi API metadata without replacing SNMP link/activity/counter behavior.
+- Reject stale retained UniFi telemetry using producer freshness metadata and show a bounded stale/unavailable warning instead of presenting old API values as live.
+- Keep runtime entity/API mappings separate from presentation: stock faceplate/profile labels remain unchanged by telemetry mapping, with calibration remaining the supported presentation override.
+- Preserve the existing full-width rendering contract and existing closest-fit faceplate assignments; no new faceplates or calibration workflow changes are introduced.
+
+## v2.7.7 — Native Auto full-width correction
+
+- Remove the native Switch Vision panel's fixed 1280 px page ceiling so **Auto** can use the full Home Assistant content width while the card itself retains its existing 2048 px native maximum.
+- Preserve the explicit 800 px, 1024 px and Custom faceplate-width caps, centred card rendering, proportional calibration geometry and mobile responsiveness.
+- Repair stale Core UI/UX regressions so they resolve the current release dynamically and assert the current Config Flow implementation instead of 2.6.34-era source formatting.
+- Add permanent coverage preventing the native panel wrapper from reintroducing a fixed maximum width around Auto mode.
+
+## v2.7.6 — UniFi 8-port visual mapping corrections
+
+- Map exact `US-8-150W` to the already shipped owner-calibrated `unifi-8-rj45-2sfp.png` / `unifi_8_rj45_2sfp` visual, matching its proven 8 × RJ45 + 2 × 1G SFP physical contract without changing Experimental support confidence.
+- Map exact `US 8 60W` to the already shipped `unifi-8rj45.png` / `default_unifi_8_rj45` visual, matching its proven eight-RJ45/no-uplink physical contract and preserving its ports 5-8 PoE evidence.
+- Keep model-specific live rendered alignment pending for both mappings; the release removes oversized stock fallback visuals but does not claim Community Validated visual confidence.
+- Add a permanent exact-model regression so these two models cannot fall back to a 24-port stock faceplate again.
+
+## v2.7.5 — Shared management width and density scales
+
+- Expand the shared Discovery/Installer **UI density** contract from three values to five: Spacious, Comfortable, Compact, Dense, and Ultra Dense.
+- Expand the shared Discovery/Installer **content width** contract from Standard/Wide/Full to ten ordered positions from Standard through Full, preserving the existing `standard`, `wide`, and `full` values for upgrade compatibility.
+- Keep the same values valid through Home Assistant options, Hub settings read/write, the shared preference file, and the `set_ui_density` service so Discovery and Installer consume one authoritative presentation contract.
+- Add permanent Core regression coverage for both expanded scales without changing dashboard-card geometry, model metadata, calibration data, or device support state.
+
+## v2.7.4 — Catalyst 3850 12XS Community Validated
+
+- Promote `WS-C3850-12XS-E` from Experimental to **Community Validated** after three materially independent real-hardware capture sessions agree on the exact 12 × 10G SFP+ factory/no-module topology and current live rendered field confirmation passes.
+- Record repeatable Cisco ENVMON temperature, fan and power-supply state evidence, while keeping RJ45, PoE and stack capabilities explicitly not applicable for this exact model.
+- Mark the existing `cisco-3850-12xs.png` / `cisco_3850_12xs` visual recommendation as Community Validated without changing its owner-supplied 2048 × 448 geometry or physical-port contract.
+- Extend the exact-model regression so the 3850 support and visual confidence cannot regress independently.
+
+## v2.7.3 — US XG 16 Experimental evidence promotion
+
+- Promote `US XG 16` from Detected to **Experimental** after corroborating independent real-hardware UniFi API evidence confirms its exact optical-first 12 × 10G SFP+ + 4 × 10G-capable RJ45 contract.
+- Preserve the authoritative UniFi API map (ports 1-12 optical, 13-16 RJ45), no-PoE contract, owner-calibrated faceplate/profile, and all existing port/speed semantics.
+- Keep the model's visual confidence **Detected** until model-specific live rendered alignment/behavior is confirmed; this support-status promotion does not claim Community Validated.
+- Extend Core registry/faceplate regressions so support confidence and visual confidence cannot be accidentally collapsed into one status.
+
+## v2.7.2 — Walk-backed model registry sync and 3850 Status Box 1 correction
+
+- Restore the owner-supplied Cisco Catalyst 3850 12XS Status Box 1 horizontal geometry: render-space X returns from the accidental clamped `0` to `-337` while Y/width/height, all 12 SFP positions, LEDs, buttons and faceplate artwork remain unchanged.
+- Add every exact real-hardware walk/API-backed model already present in the current Discovery registry but missing from Core, keeping those entries Experimental and preserving their existing topology/evidence/visual metadata.
+- Add the walk-backed Zyxel GS1915-24EP exact model contract with 24 copper ports, zero optical uplinks and PoE capability; visual alignment remains Experimental and the oversized stock canvas cannot create phantom uplinks.
+- Add permanent regressions for the 3850 Status Box 1 owner coordinate and Core retention of the walk-backed registry set.
+
+## v2.7.1 — Field follow-up: live Test Mode and exact 3850 default
+
+- Fix the live TEST MODE badge to render from the current working calibration instead of a nested calibration-button object, so its real position follows Calibration immediately.
+- Add the exact Experimental `WS-C3850-12XS-E` Core visual recommendation: 0 RJ45 + 12 SFP, existing `cisco-3850-12xs.png` faceplate, and `cisco_3850_12xs` profile.
+- Replace the incorrect 3850 factory geometry with the owner-supplied 2048 x 448 render geometry while preserving native-PNG storage, factory bounds and physical-topology authority.
+- Strengthen permanent regressions so the 3850 cannot fall back to a generic 48-port visual and the live Test Mode path cannot regress to nested UI state.
+
+## v2.7.0 — Test Mode position persistence and 3850 12XS coordination
+
+- Make the Calibration Test Mode button a position-only target with both Direct X/Y and arrow/nudge movement while keeping resize and pointer-drag disabled.
+- Render the live TEST MODE badge from the current working calibration so position changes apply immediately before save.
+- Preserve Test Mode button position through calibration export, save/reload, reset and persisted fingerprints with permanent regressions.
+- Carry the reviewed Cisco Catalyst 3850 12XS factory-geometry binding while preserving physical topology as the authority and coordinating exact device support with Discovery 2.4.0.
+
+## v2.6.35 — Calibration state, target stability and 3850 12XS faceplate
+
+- Make Save Profile reflect the actual persisted profile difference from the last loaded/saved baseline, including returning to clean when every change is reverted.
+- Keep rapid Target/Part/Step and related editor selection stable across Home Assistant setConfig refreshes so the latest Calibration target remains selected.
+- Make the Test Mode button visibly selectable as an arrow/nudge-only Calibration target, with no drag or direct coordinate/size editing.
+- Add the calibrated Cisco Catalyst 3850 12XS faceplate and supplied 12-SFP / 7-status-LED factory geometry without inferring device support or live topology.
+- Extend native-canvas normalization to Test Mode button geometry and the canonical faceplate catalog to the new 3850 12XS identity.
+- Add permanent regressions for dirty-state change/revert semantics, target stability, Test Mode selection/nudge-only behavior, catalog identity, geometry and the no-phantom-topology boundary.
+
+## v2.6.34 — Auto faceplate scaling
+
+- Restored the original responsive card-sizing behaviour as the new Auto faceplate-width default.
+- Preserved explicit 800 px, 1024 px and Custom maximum-width choices.
+- Auto fills available Home Assistant width while never upscaling beyond the native 2048 px faceplate canvas.
+- Clarified card header rendered sizing versus native artwork dimensions.
+
+## v2.6.33 — Core UI/UX consistency batch
+
+- Added persistent transparent Status Box background toggles without discarding selected colours.
+- Added independent per-profile Link LED and Activity LED visibility controls.
+- Added global 800 px / 1024 px / custom faceplate width settings with responsive proportional rendering.
+- Normalized Calibration faceplate display names to explicit RJ45/SFP media counts.
+- Fixed Test Mode button Target Entity arrow/nudge movement parity with the Calibration button.
+- Allowed zero-port calibration profiles to save with a visible non-blocking warning.
+
+## v2.6.32 — UniFi 32-port optical identity
+
+- Correct the owner-calibrated UniFi optical faceplate identity from `unifi-28sfp` to canonical `unifi-32sfp`; its existing geometry already contains 28 × SFP+ plus four SFP28/TWE positions.
+- Preserve the exact 32-position calibration geometry and `TWE1`–`TWE4` display mapping at optical positions 29–32.
+- Keep one canonical physical faceplate/profile copy while resolving legacy `unifi-28sfp.png` and `unifi_28sfp` references to the new identity.
+- Migrate legacy saved faceplate-specific calibration storage tokens to the canonical 32-port identity without discarding the legacy stored record.
+- Extend permanent faceplate/catalog/legacy-compatibility regressions.
+
+## v2.6.31 — Canonical faceplate catalog
+
+- Add canonical machine-readable `src/faceplates/catalog.json` covering every shipped faceplate and its approved human-readable Calibration label.
+- Render shipped Calibration faceplate labels from the catalog-backed mapping while preserving exact faceplate filenames as the runtime/profile identity.
+- Make the Core build validate catalog schema/coverage and synchronize the catalog mapping into packaged runtime assets.
+- Add product-owned deterministic release-check tooling with exactly pinned release-check dependencies.
+
+## v2.6.30
+
+- Added an independent persisted Calibration target for the TEST MODE status indicator.
+- Compacted Calibration editor utility controls while preserving 24px form controls and faceplate geometry.
+
+## v2.6.29 — UniFi faceplate factory defaults
+
+- Bundle owner-calibrated `unifi-8-rj45-2sfp.png` and `unifi-28sfp.png` faceplates.
+- Add exact faceplate-specific factory defaults for the 8-RJ45 + 2-SFP and 28-SFP + 4-TWE optical layouts.
+- Preserve `TWE1`–`TWE4` display names for optical positions 29–32 on the 28SFP faceplate.
+- Keep these defaults scoped to the exact faceplate filename; do not reassign existing exact-model recommendations.
+
+## v2.6.28 — Supported speed selector persistence
+
+- Fix the Calibration Supported speed change handler referencing an undefined `editable` variable.
+- Resolve the current RJ45/SFP editable target at change time before writing `supported_speed`.
+- Preserve the existing profile save/reload format, duplicate-port metadata inheritance and Unknown / Not specified backward-compatible default.
+- Keep static supported-speed capability separate from live negotiated-speed telemetry and entity mapping.
+- Add permanent regression coverage that requires the editable lookup before the speed metadata write.
+
+## v2.6.27 — Calibration Port Manager workflow and port metadata
+
+- Merge Assets into Selection and remove the standalone Assets Calibration section.
+- Put Quick select before the Status Box quick-selection controls.
+- Rename Labels & LEDs to Port Labels and LEDs, Interface Status Box to Port Status Box, and Switch & Stack to Switch and Stack Manual Override.
+- Add 100 px and 200 px movement steps.
+- Add Remove All RJ45 Ports and Remove All SFP Ports while preserving the central no-total-ports save/import validation contract.
+- Add persistent per-RJ45/SFP Supported speed metadata with Unknown / Not specified as the backward-compatible default; new ports start unknown and duplicates retain source metadata.
+- Add a per-profile Port Status Output selector for Status Box 1 or Status Box 2, defaulting existing profiles to Status Box 1.
+- Make port-status row ordering/visibility edit the currently selected output box and route selected-port details only to that box.
+- Preserve canonical/Home Assistant JavaScript parity and extend permanent Calibration regression coverage.
+
+## v2.6.26 — RJ45 entire-port label movement
+
+- Treat the RJ45 number label as part of `Entire port` in the Calibration selection overlay.
+- Move the RJ45 number label with the port centre and LEDs for individual, grouped, nudge and Direct X/Y whole-port operations.
+- Preserve the existing duplicate-port geometry contract: newly duplicated RJ45 labels start centred on the new port box.
+- Leave SFP/uplink whole-port behaviour unchanged because its label movement path was already complete.
+- Add permanent regression coverage for RJ45 label membership and whole-port movement.
+
+## v2.6.25 — Calibrated UniFi faceplates
+
+- Bundle three owner-calibrated UniFi faceplates for 24 RJ45 + 2 optical, 24 RJ45 + 4 optical, and 4 RJ45 + 12 SFP+ layouts.
+- Move the five exact registered UniFi 24+2 models from the older 24+2 artwork to the new inline calibrated default.
+- Enable the exact US XG 16 4-RJ45 + 12-SFP+ dashboard visual while preserving its optical-first UniFi API port map and Detected support status.
+- Keep the new UniFi 24+4 faceplate bundled and resolvable but unassigned until an exact matching UniFi topology is registered and validated.
+- Preserve the historical UniFi 24+2 profile so existing stored selections continue to resolve.
+- Add a permanent topology guard so the new faceplates cannot be assigned to mismatched device layouts.
+
+## v2.6.24 — UniFi faceplate profile isolation
+
+- Scope native UniFi calibration/faceplate profiles to the individual device as well as the controller namespace.
+- Prevent two different UniFi devices on one controller from sharing the same active faceplate pointer.
+- Derive only an opaque deterministic device token for calibration storage; never place the raw UniFi device ID in profile names.
+- Preserve existing SNMP/custom-card switch-scoped calibration behaviour and leave UniFi telemetry/controller routing unchanged.
+- Keep ambiguous legacy controller-wide faceplate selections out of automatic migration so a previous shared pointer cannot be assigned to the wrong device.
+- Add permanent regression coverage using two synthetic UniFi devices on one controller.
+
+## v2.6.23 — Custom SFP/uplink label suffix
+
+- Add a Calibration SFP/uplink suffix field beside the existing port-label controls.
+- Apply a custom suffix to default SFP/uplink display labels, or leave the suffix blank to show only the logical uplink number.
+- Preserve explicit per-port display names and keep logical SFP keys, telemetry mappings, entities, numbering and geometry unchanged.
+- Make newly added or duplicated SFP/uplink ports inherit the profile-level display suffix automatically.
+- Preserve legacy/factory label behaviour until a suffix setting is explicitly applied to the calibration profile.
+- Add permanent regression coverage for the display-only suffix contract.
+
+## v2.6.22 — Render-space Geometry Transfer and absolute label Y
+
+- Export Geometry schema v2 from the dashboard's fixed 2048 × 448 render-space so native/high-resolution faceplate coordinates do not leak into another switch profile.
+- Transfer the complete calibrated visual presentation with Geometry v2 — ports/uplinks, labels, LED geometry, logo selection/placement, status boxes, fonts, colours and visibility — while preserving only destination faceplate/background artwork and switch/runtime identity.
+- Keep Geometry schema v1 import compatibility and normalize the destination to render-space before merge; retain compatible differing RJ45/SFP visual counts.
+- Make RJ45 number-label Direct Y use the actual visible coordinate while preserving the legacy odd/even render compensation for existing saved profiles.
+- Report RJ45 number-label coordinates in rendered space so grouped labels aligned to one Y retain a common Direct Y readout.
+- Add permanent regression coverage for Geometry v2/render-space and absolute label-Y behavior.
+
+## v2.6.21 — Calibration selection consistency
+
+- Preserve `Entire port` when Custom Ports resolves to SFP/uplink targets instead of translating it to SFP center.
+- Select `Entire port` after Add RJ45, Add SFP or Duplicate selected, and immediately populate the matching Custom Ports value.
+- Reset newly added/duplicated RJ45 number labels and SFP labels to the centre of the new port box.
+- Start Assets collapsed for each new Calibration session while keeping manual section state session-local.
+- Extend Odd/Even Quick Selection to SFP/uplinks for whole ports, link LEDs, activity LEDs and labels, using the logical SFP/uplink number for aliases such as `G3/TE3`.
+- Keep Target and Custom Ports synchronized for individual, grouped and quick RJ45/SFP selections.
+- Add permanent regression coverage for the v2.6.21 Calibration selection contract.
+
+## v2.6.20 — Calibration SFP grouping and portable geometry import
+
+- Add `Entire port` to individual and grouped SFP/uplink Calibration targets.
+- Move an SFP/uplink port box, link/speed LED, activity LED and label by one shared delta when `Entire port` is selected, including nudge and Direct X/Y controls.
+- Keep SFP/uplink subparts independently editable and keep Direct W/H / resize behavior scoped to the selected SFP hitbox, matching the existing RJ45 whole-port size contract.
+- Make the All SFP quick-selection target use the same whole-port movement semantics.
+- Allow Geometry Import to merge RJ45 and SFP/uplink geometry across profiles with different visual port counts: matching keys update, imported extras are added, and current entries omitted by the import are retained for explicit Port Manager cleanup.
+- Keep status LED topology matching strict and preserve final profile validation, including SFP logical-key collision checks and rejection of completely portless profiles.
+- Preserve Geometry Import's geometry-only boundary: artwork, asset identity, profile destination, styling and switch configuration remain owned by the current target profile.
+- Add permanent regression coverage for SFP whole-port movement and cross-count geometry import.
+
+## v2.6.19 — Calibration zero-RJ45 / optical-only profiles
+
+- Allow Calibration Port Manager to remove the final visual RJ45 port instead of forcing one fake copper position to remain.
+- Permit saved calibration profiles with zero RJ45 positions when one or more SFP/uplink positions exist, enabling genuine optical-only layouts.
+- After deleting the final RJ45 port, move the editor selection to the first remaining SFP/uplink; if no visual ports remain temporarily, fall back safely to the all-elements target instead of `port:undefined`.
+- Apply the same safe empty-selection fallback when the final SFP/uplink is removed.
+- Preserve the guard against saving a completely portless profile: at least one RJ45 or SFP/uplink position must exist at save/import validation time.
+- Keep Add RJ45 recovery from an empty copper set: numbering restarts at 1 and the existing default starter geometry is used.
+- Add permanent regression coverage for final-RJ45 deletion, SFP-only profile validation and empty-selection safety.
+
+## v2.6.18 — Calibration duplicated-port rendering
+
+- Fix Calibration Port Manager duplicates whose logical RJ45/SFP number exceeds the live card's configured physical port count.
+- While Calibration is active, render the complete editable calibration geometry so duplicated RJ45/SFP ports include the port box, link LED, activity LED and label.
+- Keep normal/live dashboard rendering strictly capped by the configured/registry physical port counts; calibration-only visual capacity does not create fake live hardware.
+- Preserve the current Port labels controls, per-port/SFP display-name editing, SFP key management, polling, telemetry and hardware topology contracts.
+- Add permanent regression coverage locking the calibration-only count bypass for both RJ45 and SFP rendering.
+
+## v2.6.17 — Dell and Zyxel bundled logos
+
+- Add four bundled Dell logo PNGs: Black, Blue, Modern and White.
+- Add five bundled Zyxel logo PNGs: 2019, Black, Networks, Pre 2016 and White.
+- Reuse Calibration's existing folder-driven logo discovery and automatic readable filename labels; no new logo-picker code path is introduced.
+- Keep custom logo files, logo placement/calibration behavior and existing default-logo handling unchanged.
+- Keep switch detection, hardware mapping, geometry, polling, telemetry, PoE and support-status contracts unchanged.
+
+## v2.6.16 — Geometry Import Faceplate Profile v2 compatibility
+
+- Keep native `switch-vision-geometry-profile-v1` / schema 1 Geometry Import behavior unchanged.
+- Accept only the explicitly recognised legacy/full `switch-vision-faceplate-profile-v2` / schema 2 format as the additional source type.
+- Validate Faceplate Profile v2 input first, reduce it through the existing geometry exporter allow-list, then feed the resulting native geometry transfer through the existing validator/applicator.
+- Import only image coordinate dimensions, permitted RJ45/SFP geometry, status LED positions, logo geometry, status-panel geometry/fields and calibration-button geometry/anchor.
+- Preserve target management, stack/member settings, profile identity, selected faceplate/artwork source, fit/opacity, colours, fonts, visibility flags, status-panel styling and all other non-geometry configuration.
+- Keep unknown transfer types, unsupported Faceplate Profile schema versions and malformed v2 profiles fail-closed.
+- Add permanent Node-backed regression coverage for v2.6.8-style Faceplate Profile import, native-v1 compatibility and non-geometry isolation.
+
+## v2.6.15 — UniFi 24-port factory geometry
+
+- Update both bundled UniFi 24-RJ45 + 2-SFP factory profiles from the newly calibrated RJ45 port geometry.
+- Correct left-LED placement on RJ45 ports 5, 6 and 7.
+- Normalize all 24 RJ45 left/right LED sizes to exact 4 x 3 geometry.
+- Leave SFP geometry, status LEDs, UI/status-panel settings, topology, polling, telemetry and support status unchanged.
+
+## v2.6.14 — Multi-uplink activity binding
+
+- Extend the clean generic `sensor.<member>_uplink_<n>_{rx,tx}_bytes` fallback from uplinks 1–2 to every logical SFP/uplink number.
+- Preserve `sfp_10g` and `sfp_1g` as the preferred clean candidates and preserve existing legacy Cisco-style fallbacks.
+- Restore traffic-rate and activity-LED binding for four-uplink hardware such as the HP J8693A when Discovery emits generic `uplink_3` / `uplink_4` byte counters.
+- Keep negotiated-speed binding unchanged; `sfpSpeedMbps()` already accepts generic `uplink_<n>_speed_mbps/bps` telemetry for arbitrary uplink numbers.
+- Add permanent Core regressions across uplinks 1–4, RX/TX directions, the shared activity/rate call chain, and the existing UniFi per-port-traffic guard.
+- No physical topology, STATUS binding, polling cadence, activity timing/sensitivity/hold, PoE, support-status or factory-geometry contracts change.
+
+## v2.6.13 — Calibration SFP port manager
+
+- Add separate **Add RJ45** and **Add SFP** actions to Calibration's Port Manager.
+- Make **Duplicate selected** preserve the selected object type, including exact-geometry SFP duplication.
+- Add editable SFP/uplink keys while preserving existing legacy aliases such as `G1` and `G3/TE3`.
+- Allocate newly created SFP objects with canonical `SFP<n>` keys using the next logical uplink number.
+- Reject exact SFP-key duplicates and logical-number collisions such as `SFP1` + `TE1`, including profile import/save validation.
+- Add permanent regression coverage for Port Manager controls, source parity, legacy key parsing and bundled calibration SFP identity uniqueness.
+- No switch detection, physical mapping, polling, telemetry, PoE, support-status or factory-geometry contracts change.
+
+## v2.6.12 — Attribution privacy and release-integrity supersession
+
+- Supersede Core 2.6.11 as the current installable build without changing the MikroTik Experimental hardware contract.
+- Keep all public contributor attribution anonymous; private evidence provenance remains separate and authoritative.
+- Preserve the same Discovery 2.3.21 field-evidence baseline and pending validation boundaries.
+- No hardware mapping, polling, telemetry, geometry or support-status behavior changes.
+
+## v2.6.11 — MikroTik CRS328 Experimental registry promotion
+
+- Add exact-model **MikroTik CRS328-24P-4S+RM** to the stable Core supported-device registry as Experimental.
+- Preserve the observed RouterOS identity `CRS328-24P-4S+` while treating `CRS328-24P-4S+RM` as the marketed exact registry SKU only.
+- Record the contribution-confirmed physical contract: 24 `ether` RJ45 ports plus four `sfp-sfpplus` 10G SFP+ cages; `bridge` and `lo` remain non-physical.
+- Record the actual field-tested component baseline as Discovery 2.3.21; Core 2.6.11 is registry promotion, not a new hardware-validation claim.
+- Preserve pending boundaries for live SFP+ behaviour, Switch Vision PoE/environment presentation and rendered alignment.
+- Use the existing neutral 24-RJ45 + 4-SFP fallback visual pending MikroTik-specific alignment confirmation.
+- Keep contributor attribution anonymous in public release metadata.
+- Add permanent Core registry regression coverage; no new Core mapper, polling or telemetry implementation is introduced.
+
+## v2.6.10 — Calibration faceplate selector cleanup
+
+- Replace filename-derived Calibration faceplate dropdown text with concise, human-readable names for every bundled stock, Cisco, Dell, submarine and UniFi faceplate.
+- Keep each option value and saved calibration/profile filename unchanged, so existing configurations and custom profiles remain backward compatible.
+- Preserve automatic readable fallback labels for user-supplied/custom faceplate files that are not part of the bundled catalogue.
+- Add permanent regression coverage for shipped labels, source-mirror parity, filename-valued options and custom-file fallback behavior.
+- No switch detection, device mapping, calibration geometry, polling, telemetry, support-status or privacy contracts change.
+
+## v2.6.9 — Community validation evidence completion
+
+- Promote Cisco SG500X-24, Huawei S5720-12TP-LI-AC, and Huawei S5735-L8P4X-A1 from Experimental to Community Validated after the remaining applicable real-hardware checklist items were confirmed.
+- Preserve all existing exact-model port counts, connector types, mapping profiles, uplink ordering, speed semantics and fallback-faceplate geometry.
+- Record the field-validation baseline accurately as Core 2.6.7; Core 2.6.8 changed support metadata/contracts only and did not alter these models' runtime mapping or polling behaviour.
+- Keep SG500X stack-specific operation, VLAN presentation and sustained-traffic testing separately unvalidated rather than expanding the Community Validated scope beyond the evidence.
+- Add a permanent registry regression locking the three promotions while also protecting their existing physical mapping and connector contracts.
+- No polling, Discovery selection, port ordering, telemetry synthesis or runtime hardware mapping behavior changes.
+
+## v2.6.8 — Support-status evidence alignment
+
+- Correct SG500X-24, Huawei S5720-12TP-LI-AC, and Huawei S5735-L8P4X-A1 from Community Validated back to Experimental because their complete Community Validated checklists are not yet recorded.
+- Preserve the real-hardware mapping, optical-position and link/speed validation already confirmed for those exact models; unresolved sensor, PoE, stack and/or rendered-alignment checks remain pending as applicable.
+- Clarify the canonical Community Validated definition so physical mapping, port selection, LEDs, link/speed, PoE, optical positions, sensors and rendered alignment must all be validated where applicable.
+- Correct stale Huawei fallback-faceplate wording and record the S5735-L8P4X-A1 uplinks as four confirmed 10G SFP+ physical positions.
+- Add a permanent registry regression preventing partial hardware validation from overstating support status.
+- No polling, discovery selection, port ordering, telemetry synthesis or runtime hardware mapping behavior changes.
+
+## v2.6.7 — Functional integrity fixes
+
+- Fix the status panel so absent, unknown or unavailable fan and PSU telemetry displays `—` instead of a synthesized healthy `OK` state.
+- Preserve real fan/PSU entity values and existing candidate resolution unchanged.
+- Correct WS-C2960X-24TS-L and WS-C3560CG-8PC-S from Community Validated back to Experimental because their own live-validation records still contain pending/candidate checks.
+- Preserve both models' existing hardware mapping, geometry, dual-personality semantics and polling behavior.
+- Add permanent regressions for missing-telemetry truthfulness and these support-status evidence boundaries.
+
+## v2.6.6 — Faceplate native-canvas normalization
+
+- Audit every bundled factory faceplate against the PNG's real native dimensions and the legacy 2048 × 448 overlay coordinate space.
+- Normalize affected factory profiles and rendering so native artwork, interactive geometry and text preserve their existing on-screen appearance without negative/out-of-canvas compensation coordinates.
+- Keep legacy/custom saved calibration profiles on the existing 2048 × 448 compatibility path unless they explicitly opt into the normalized native-image coordinate space.
+- Add permanent coordinate-space regressions before merge; no hardware mapping, connector, PoE, polling, telemetry or support-status contracts change.
+
+## v2.6.5 — Dell faceplate and Cisco 3560CG factory geometry
+
+- Add the dedicated `dell-28-rj45-2sfp.png` faceplate and owner-calibrated factory profile for the Dell N2128PX-ON while keeping the model **Experimental**.
+- Keep the Dell artwork vendor-scoped: it may only be assigned to Dell models with **28 or fewer RJ45 ports** and **2 or fewer uplinks**; it is not a generic Switch Vision fallback.
+- Replace legacy Dell submission-identifying evidence text with neutral community-hardware wording; no private contribution identifier is published.
+- Preserve the owner-approved Dell status-panel geometry exactly. Factory validation now requires an explicit profile-level opt-in when rows are intentionally suppressed by the runtime bounds safety rule, so all other factory profiles remain strict.
+- Correct the bundled `c3560cg-8pc-s.png` Port 3 factory calibration to the owner-supplied center **[786, 329]** and hitbox **[84, 76]**.
+- Add permanent regressions for the Dell faceplate/vendor/topology boundary, the Dell-only status-panel opt-in, and corrected 3560CG Port 3 geometry.
+- No connector, PoE, polling, telemetry, support-status, privacy or unrelated model contract changes.
+
+## v2.6.4 — Hub presentation factory defaults
+
+- Make the owner-approved Hub presentation values the Core factory/reset defaults: Discovery **Dense / 12 px / Full** and Installer **Comfortable / 12 px / Wide**.
+- Keep Core as the single authoritative owner of these preferences so Discovery and Installer consume the same persisted `ui-preferences.json` values instead of inventing local defaults.
+- Preserve the full 10–20 px selectable range, legacy text-size migration, existing saved user choices and all unrelated Core settings.
+- Add permanent regression coverage for all six factory presentation defaults.
+- No hardware mapping, port geometry, connector, PoE, polling, telemetry, support-status or privacy contract changes.
+
+## v2.6.3 — Explicit 10–20 px app text sizing
+
+- Replace the legacy Discovery/Installer **Normal / Small** text-size options with explicit **10–20 px** choices in 1 px steps.
+- Preserve upgrades without invalid saved state: legacy `normal` resolves to **16 px** and legacy `small` resolves to **14 px** until the setting is next saved.
+- Publish only normalized numeric font sizes to the shared `ui-preferences.json` contract consumed by Discovery and Installer.
+- Validate Hub writes and the native Home Assistant Configure fallback against the same 10–20 px range.
+- Add behavioral regression coverage for the complete range, legacy migration and invalid-value fallback.
+- No hardware mapping, port geometry, connector, PoE, polling, telemetry, support-status or privacy contract changes.
+
+## v2.6.2 — Geometry export strict-mode fix
+
+- Fix **Export Geometry** in the calibration tool. The geometry-only serializer was incorrectly using the full calibration normalizer to clone primitive canvas dimensions, coordinate arrays and field maps; Home Assistant loads the card as an ES module, so strict-mode assignment to primitive values could throw before the JSON download was created.
+- Use plain-data cloning for geometry-only substructures while keeping full calibration normalization only for complete calibration objects.
+- Prevent geometry export/import from polluting status-panel field maps, status-LED coordinate arrays or the preserved faceplate presentation object with unrelated calibration `ui`, `stack` or `management` properties.
+- Strengthen the permanent geometry-transfer regression to execute under strict-mode semantics, verify canvas/status geometry export, reject substructure pollution and prove same-profile export/import round-trip behaviour.
+- No hardware mapping, port geometry values, connector, PoE, polling, telemetry, maximum-capability, support-status, Hub/Discovery/SNMP2MQTT runtime or privacy contract changes.
+
+## v2.6.1 — Hub-managed Core settings
+
+- Add authenticated admin WebSocket contracts for the Switch Vision Hub to read and save every normal Core option while preserving the existing Home Assistant config-entry options as the single source of truth.
+- Cover sidebar/navigation, Native header visibility and shortcut order, dashboard presentation, Activity LED controls, Discovery appearance and Installer appearance in one grouped browser-safe contract.
+- Validate Hub writes against the same enums/ranges and Activity LED ordering rules used by the native Configure workflow; reject unknown groups/keys and preserve unrelated saved options.
+- Keep Home Assistant **Integrations → Switch Vision → Configure** available and synchronized as a fallback/recovery surface.
+- Add a permanent regression covering the complete Hub/Core settings contract.
+- No hardware mapping, connector, PoE, polling, telemetry, maximum-capability, support-status, Discovery/SNMP2MQTT runtime or privacy contract changes.
+
+## v2.6.0 — Geometry-only calibration profiles
+
+- Add separate **Export Geometry** and **Import Geometry** actions alongside the existing full faceplate-profile workflow.
+- Geometry transfers copy only canvas dimensions, port/uplink/status-LED coordinates and hitbox/size data, plus positional geometry for the logo, status panels/fields and calibration button.
+- Apply imported geometry onto the current destination calibration while preserving faceplate/background artwork, logo asset/source, styles, visibility, labels, stack, management and destination profile identity.
+- Require exact RJ45, SFP/uplink and status-LED key-set parity before geometry can be applied, preventing geometry transfer from becoming a topology or hardware-mapping transplant.
+- Add an executable permanent regression proving hand-edited foreign artwork/source identifiers cannot cross the geometry-only import boundary.
+- No hardware mapping, connector, PoE, telemetry, polling, maximum-capability, support-status, Discovery/UniFi2MQTT or privacy contract changes.
+
+## v2.5.1 — Exact-model factory UI defaults
+
+- Fix first-load exact-model calibration resolution so cards with no persisted user profile keep the exact model factory UI defaults instead of overlaying the baked generic logo/status/button layout after factory geometry is selected.
+- Preserve user-saved logo/status-panel/button placement, stack, management and faceplate choices when a real persisted calibration profile exists and exact-model geometry reconciliation is required.
+- Add permanent regression coverage for the UCG Ultra and USW Ultra factory UI defaults and the persisted-profile preservation gate.
+- Preserve switch mapping, port geometry, connector type, PoE, polling, telemetry, maximum-capability, support-status, Discovery/UniFi2MQTT handoff and privacy contracts.
+
+## v2.5.0 — Maintenance Hub
+
+- Add a first-class **Maintenance** shortcut to the Native Switch Vision dashboard header.
+- Open Discovery 2.2.0's Maintenance Hub directly with `?view=maintenance`, keeping MQTT repair logic and destructive safeguards in Discovery rather than duplicating them in Core.
+- Make the Maintenance shortcut installation-aware, configurable and reorderable alongside the existing Native dashboard shortcuts.
+- Add a permanent Core regression covering the shortcut ID, settings option, translation parity and exact Maintenance destination.
+- No switch mapping, geometry, polling, telemetry, PoE, connector, hardware capability, support-status or privacy contract changes.
+
+## v2.4.20 — HAOS dashboard startup and calibration-v2 compatibility
+
+- Fix the small UniFi factory calibration contract by adding explicit empty `status_leds` objects without inventing device LEDs.
+- Accept calibration schema version 2 in the authenticated Core calibration validator.
+- Bound Community-dashboard runtime-version lookup to one second and fall back to the versioned frontend resource when Home Assistant's WebSocket is congested during startup.
+- Add permanent regressions for the v2 factory-profile contract and bounded dashboard bootstrap.
+- Preserve the authoritative 2.4.19 UniFi PNG payloads/hashes, hardware mappings, PoE semantics, telemetry, privacy metadata, geometry and Experimental support status.
+
+## v2.4.19 — Correct UniFi small-switch faceplate payloads
+
+- Replace the incorrectly shipped small UniFi faceplate PNG payloads with the authoritative `unifi-5rj45.png` and `unifi-8rj45.png` artwork.
+- Preserve the existing canonical filenames, UCG Ultra / USW Ultra model mappings, factory calibration geometry, hardware contracts and Experimental support status.
+- Add permanent exact byte-size, PNG-signature and SHA-256 regressions for both authoritative faceplates.
+- No polling, telemetry, API ordering, connector, PoE, maximum-speed, privacy, geometry or support-status change.
+
+## v2.4.18 — UniFi small-device faceplates
+
+- Add dedicated five-RJ45 and eight-RJ45 UniFi faceplates with factory calibration geometry.
+- Map `UCG Ultra` to `faceplates/unifi-5rj45.png` / `default_unifi_5_rj45` and `USW Ultra` to `faceplates/unifi-8rj45.png` / `default_unifi_8_rj45`.
+- Preserve the existing Experimental support status and verified UniFi API hardware contracts; rendered alignment remains pending community confirmation.
+- Add permanent regression coverage for the new visual defaults, geometry, privacy-clean factory profiles and generated-registry parity.
+
+## v2.4.17 — Default faceplate profile restoration
+
+- Fix Calibration → Faceplate → Default / recommended so an explicit Default selection loads the independent switch base profile instead of following the currently active custom-faceplate pointer back into that faceplate.
+- Add an exact-profile option to the authenticated `switch_vision/get_calibration` websocket command; normal card/profile loads keep the existing active-faceplate behaviour.
+- Add a permanent regression covering the backend pointer bypass and frontend Default-selection contract.
+- No switch mapping, port geometry, SNMP/UniFi polling, telemetry, LED sensitivity, support status, or device capability changes.
+
+## v2.4.16 — UniFi support-status and privacy synchronization
+
+- Promote `UCG Ultra`, `US 16 PoE 150W`, and `USW Ultra` from Detected to Experimental after corroborating real-hardware UniFi API evidence; keep `USW Pro Max 24` Experimental.
+- Synchronize Core public support evidence with Discovery using neutral community-hardware wording and no private Support My Switch submission identifiers.
+- Activate the permanent public-attribution privacy regression under the repository's direct-test CI runner and extend sanitization/regression coverage to structured public metadata keys.
+- Preserve every existing port count, connector type, PoE mask, API/interface ordering, mapping profile, faceplate/calibration contract, validation field, and maximum-speed contract.
+- No dashboard telemetry, port-selection, LED, SNMP, UniFi API, or other runtime behaviour changes.
+
+## v2.4.15 — UniFi-native status telemetry
+
+- Make the primary status panel data-source aware for UniFi API cards so it presents telemetry the Integration API actually exposes instead of defaulting to SNMP-only blank rows.
+- Surface normalized management IP, memory utilization and aggregate uplink RX/TX rate in the UniFi switch summary when available.
+- Derive switch-level PoE availability/activity from real UniFi port metadata and show connector type, maximum physical speed, PoE state and PoE standard in selected-port details.
+- Keep temperature, VLAN/description and per-port RX/TX absent when the current UniFi API path does not expose them; no synthetic telemetry is introduced.
+- Preserve existing SNMP status-panel behavior and explicit field configuration; `unifi_native_status_fields: false` restores the generic UniFi row-selection path.
+- Add permanent regressions for the UniFi-native field contract, management-IP fallback, PoE presentation and preserved per-port-traffic boundary.
+
+## v2.4.14 — UDM Pro Max and USW Pro XG 24 PoE exact contracts
+
+- Add Experimental exact-model UniFi API support for `UDM Pro Max` using the community-validated 8 × 1G RJ45 + 1 × 2.5G RJ45 + 2 × 10G SFP+ physical contract with no PoE output.
+- Add Experimental exact-model support for `USW Pro XG 24 PoE` as 8 × 2.5G RJ45 + 16 × 10G RJ45 + 2 × 25G SFP28, with 802.3bt Type 4 PoE capability reported on all 24 copper ports.
+- Preserve maximum connector capability separately from negotiated link speed, including observed 10G-capable copper links at 100M/1G and 25G SFP28 links at 10G.
+- Preserve the UniFi API boundary where port detail is available but per-port traffic is not; no synthetic per-port traffic is introduced.
+- Reuse truthful generic socket geometry while keeping dedicated model artwork/rendered alignment validation pending.
+- Keep both models Experimental until real-hardware dashboard alignment, port selection, PoE presentation and optical-position validation are completed.
+- Public release metadata remains anonymous and contains no private contribution identifiers, package names, filenames or contributor identities.
+- Add permanent regression coverage for exact port ordering, SFP28 capability, PoE semantics, firmware evidence, generated-registry parity and public attribution privacy.
+
+## v2.4.13 — Port selection and native diagnostics theme fixes
+
+- Keep rendered ports clickable when a saved/custom calibration has a port `center` but no explicit `hitbox`; derive the normal visual hitbox instead of allowing the click to fall through to switch summary.
+- Preserve blank interface descriptions as a selected-port state (`DESC —`) rather than confusing missing description data with selection failure.
+- Give the native dashboard Advanced diagnostics block an explicit light foreground on its fixed dark background so it remains readable under dark-text Home Assistant themes.
+- Add permanent regression coverage for calibration hitbox fallback and native diagnostics contrast.
+- No device mapping, telemetry, faceplate geometry, Discovery, SNMP2MQTT, or UniFi2MQTT behaviour changes.
+
+
+## v2.4.12 — Catalyst 3750 48-port hardware contract
+
+- Add Experimental exact-model handling for the community-observed `WS-C3750-48P` platform string.
+- Preserve the non-G Catalyst 3750 physical contract as 48 × 10/100 FastEthernet PoE access ports plus 4 × 1G SFP uplinks; do not mislabel the copper ports as Gigabit-capable.
+- Reuse the truthful 48-RJ45 + 4-SFP socket geometry while keeping live overlay/uplink/stack validation pending.
+- Keep the public registry anonymous and omit private submission identifiers and filenames.
+- Add permanent regression coverage for model identity, port counts, FastEthernet semantics, visual defaults, and attribution privacy.
+
+## v2.4.11 — Public attribution privacy policy
+
+- Remove contributor and tester identities from public changelog and release-note history unless explicitly approved by the project owner.
+- Remove submission identifiers, contribution package names, and submission filenames from public release/history text and structured public contributor metadata.
+- Use neutral **Community contributor** wording while preserving technical validation facts.
+- Add permanent privacy regression coverage preventing non-approved public attribution from returning.
+- No telemetry, device mapping, faceplate, calibration, or runtime behaviour changes.
+
+## v2.4.10 — UniFi exact-model hardware contracts
+
+- Add exact-model UniFi API contracts for `UCG Ultra`, `US 16 PoE 150W`, `USW Pro Max 24`, and `USW Ultra` from community-provided real-hardware validation.
+- Validate `USW Pro Max 24` as 16 × 1G RJ45 + 8 × 2.5G-capable RJ45 + 2 × 10G SFP+ with no PoE, using the existing truthful UniFi 24+2 visual geometry.
+- Validate `US 16 PoE 150W` as 16 × 1G PoE-capable RJ45 + 2 × 1G SFP and `USW Ultra` as eight 1G RJ45 with PoE output capability on ports 1–7 only.
+- Validate `UCG Ultra` as four 1G RJ45 + one 2.5G-capable RJ45 integrated-switch ports with no PoE output, without hard-coding WAN/LAN role by physical position.
+- Keep UCG Ultra, US 16 PoE 150W and USW Ultra exact visuals pending rather than claiming inaccurate small-device artwork.
+- Preserve the UniFi API capability boundary: port detail is available but per-port traffic is not, so no synthetic per-port traffic data is introduced.
+- Public release history intentionally omits contributor/tester identities, submission identifiers, contribution package names, and submission filenames.
+
+## v2.4.9 — UniFi exact-model API mapping
+
+- Add a backward-compatible explicit UniFi visual-port → API-port mapping contract while preserving the legacy sequential/offset path when no explicit map is present.
+- Add exact-model support for `US 48` using the verified 48 × 1G RJ45 + 2 × 10G SFP+ + 2 × 1G SFP geometry and existing truthful 48+4 visual.
+- Add detected hardware contracts for `US XG 16` (12 × 10G SFP+ followed by 4 × 10G RJ45) and `USW Pro Aggregation` (28 × 10G SFP+ + 4 × 25G SFP28) without inventing unverified dashboard faceplates.
+- Keep maximum port capability separate from current negotiated speed, including 10G-capable RJ45 links negotiating at 1G and 25G-capable SFP28 links negotiating at 10G.
+- Preserve community-provided validation for related UniFi and Zyxel models without publishing contributor identities or submission references.
+- Add permanent regressions for explicit/legacy UniFi mappings, optical-only calibration, speed presentation, exact-model registry contracts, and preserved Zyxel defaults.
+
+## v2.4.8 — SFP negotiated-speed status labels
+
+- Replace the generic SFP status-panel 10G fallback with the existing live SFP speed resolver.
+- Huawei S5720 1G SFP uplinks now display 1G instead of 10G when negotiated/current speed telemetry reports 1000 Mbps.
+- Preserve UniFi, 10G SFP+, link-down, traffic, Activity LED, calibration, Discovery handoff, and device-mapping behaviour.
+- Add permanent regression coverage preventing a hard-coded 10G SFP status fallback from returning.
+
+## v2.4.7 — Audit hardening
+
+- Register calibration and Switch Vision UI mutation services with Home Assistant's admin-only service helper.
+- Add permanent regression coverage proving those mutation services cannot regress to ordinary service registration.
+- Align Zyxel XS1930-10 visual defaults with its validated physical 8-RJ45 + 2-SFP+ layout using the compact 8+2 calibration/faceplate fallback.
+- Keep exact-model visual ownership explicit and preserve device telemetry/mapping behaviour.
+
+## v2.4.6 — UniFi dark alternative faceplate
+
+- Add `unifi-24-rj45-2sfp-dark.png` as a manually selectable alternative UniFi faceplate.
+- Use the factory calibration geometry/defaults of `unifi-24p-rj45-2sfp.png`.
+- Keep the dark artwork manual-only with no exact-model mapping or default replacement.
+
+## v2.4.5 — Native dashboard shortcut editor hotfix
+
+- Fix Native dashboard shortcut navigation using Home Assistant's current navigation contract.
+- Resolve repository-prefixed Supervisor app slugs so installed Switch Vision apps are not incorrectly shown as **Not installed**.
+- Replace drag-and-drop shortcut ordering with explicit show/hide and Up/Down controls.
+
+## v2.4.4 — Central sidebar and Native dashboard shortcuts
+
+- Add centralized sidebar controls for the Native panel, Community dashboard, Switch Vision Hub, and Switch Vision Installer.
+- Add configurable Native-dashboard shortcuts for Switch Vision management surfaces.
+- Preserve telemetry, calibration geometry, Discovery generation, Activity LED behaviour, and device mappings.
+
+## v2.4.3 — Huawei faceplate reset hotfix
+
+- Restore Huawei S5720/S5735 neutral 24 RJ45 / 4 SFP factory visual assignments.
+- Ensure reset operations return those models to the neutral stock visual instead of Cisco geometry.
+
+## v2.4.2 — Hardware validation safeguards
+
+- Promote real-hardware-tested exact models while preserving model-specific physical semantics.
+- Align Ubiquiti exact-model visual/profile metadata with Discovery's verified API geometry assignments.
+- Preserve Huawei S5720 8 RJ45 + 4 physical 1G SFP layout metadata and 1G physical-cage speed capping.
+- Add permanent 2.5G display and HAOS/manual resource-version regressions.
+
+## v2.4.1 — Registry synchronization
+
+- Promote additional Discovery exact-model entries into the Core supported-device index without changing their support status.
+- Preserve exact-model evidence, geometry, mapping profiles and visual recommendations.
+
+## v2.4.0 — UniFi visual family
+
+- Add the dedicated `unifi-24p-rj45-2sfp.png` UniFi / Ubiquiti faceplate and authoritative factory calibration.
+- Make UniFi / Ubiquiti an explicit visual family instead of a generic stock fallback.
+- Preserve existing saved/custom calibrations while refreshed defaults apply on reset.
+
+## Earlier relea
