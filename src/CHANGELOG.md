@@ -1,3 +1,11 @@
+## v2.7.40 — Calibration-only Status LED default correction
+
+- Restore factory calibration Status LED visibility and the stock faceplate presentation contract to their pre-2.7.37 behavior.
+- Start Status LED checkboxes unticked only for a genuinely new Calibration editor working copy.
+- Preserve every existing saved `ui.status_leds.hidden` list exactly, including an explicit empty list.
+- Leave normal dashboard/runtime Status LED visibility, stock faceplate geometry/presentation, and the 2.7.37 layout unchanged.
+- Add focused regression coverage for new-session defaults, saved-state authority, factory profile visibility, source mirror parity, and the stock presentation hash.
+
 ## v2.7.39 — Release-contract synchronization
 
 - Carry forward Core 2.7.38 shared-SFP selected-status behavior and the 2.7.37 Calibration layout/default changes unchanged.

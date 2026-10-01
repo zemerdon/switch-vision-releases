@@ -10,6 +10,15 @@ CARD = ROOT / "src" / "custom_components" / "switch_vision" / "switch-vision-car
 MIRROR = ROOT / "src" / "js" / "switch-vision.js"
 CALIBRATION = ROOT / "src" / "calibration"
 
+FACTORY_PROFILES_REVERTED_FROM_2737 = (
+    "faceplate-c3560cg-8pc-s.json",
+    "faceplate-stock-24rj45-2sfp.json",
+    "faceplate-stock-24rj45-4sfp.json",
+    "faceplate-stock-48rj45-2sfp.json",
+    "faceplate-stock-48rj45-4sfp.json",
+    "faceplate-submarine-48rj45-4sfp.json",
+)
+
 
 class CalibrationStatusLedLayoutTests(unittest.TestCase):
     @classmethod
@@ -66,38 +75,76 @@ class CalibrationStatusLedLayoutTests(unittest.TestCase):
             block,
         )
 
-    def test_missing_status_led_visibility_defaults_to_hide_all(self) -> None:
-        for marker in (
+    def test_factory_and_generic_defaults_do_not_hide_status_leds(self) -> None:
+        self.assertIn(
+            'status_leds: { hidden: [], text_color: "#eef7ff"',
+            self.source,
+        )
+        self.assertNotIn(
             'statusLedVisibilityExplicit = Array.isArray(cal.ui?.status_leds?.hidden);',
-            'statusLedVisibilityExplicit ? explicitStatusLedHidden : Object.keys(cal.status_leds || {})',
-            'status_leds: { hidden: ["STAT", "SYST", "DUPLX", "ACTV", "SPEED", "STACK", "PoE"]',
-        ):
-            self.assertIn(marker, self.source)
+            self.source,
+        )
+        self.assertIn(
+            'cal.ui.status_leds.hidden = [...new Set((Array.isArray(cal.ui.status_leds.hidden) ? cal.ui.status_leds.hidden : []).map((name) => String(name)))];',
+            self.source,
+        )
 
-    def test_factory_profiles_never_explicitly_default_status_leds_visible(self) -> None:
-        checked = 0
-        for path in sorted(CALIBRATION.glob("*.json")):
-            try:
-                profile = json.loads(path.read_text(encoding="utf-8"))
-            except json.JSONDecodeError:
-                continue
-            status = profile.get("status_leds")
-            if not isinstance(status, dict) or not status:
-                continue
-            ui = profile.get("ui")
-            if not isinstance(ui, dict):
-                continue
-            status_ui = ui.get("status_leds")
-            if not isinstance(status_ui, dict) or "hidden" not in status_ui:
-                continue
-            hidden = {str(value).upper() for value in status_ui["hidden"]}
-            expected = {str(name).upper() for name in status}
-            self.assertTrue(
-                expected.issubset(hidden),
-                f"{path.name} explicitly defaults one or more Status LEDs visible",
+        for name in FACTORY_PROFILES_REVERTED_FROM_2737:
+            profile = json.loads((CALIBRATION / name).read_text(encoding="utf-8"))
+            self.assertEqual(
+                profile["ui"]["status_leds"]["hidden"],
+                [],
+                f"{name} must retain its factory Status LED presentation",
             )
-            checked += 1
-        self.assertGreater(checked, 0)
+
+    def test_new_calibration_session_starts_status_led_checkboxes_unticked(self) -> None:
+        helper_start = self.source.index("function applyNewCalibrationStatusLedDefaults")
+        helper_end = self.source.index("let activeCalibrationUiRenderPass", helper_start)
+        helper = self.source[helper_start:helper_end]
+        self.assertIn(
+            "next.ui.status_leds.hidden = Object.keys(next.status_leds || {})",
+            helper,
+        )
+        self.assertIn(
+            '.filter((name) => String(name).toUpperCase() !== "MODE");',
+            helper,
+        )
+
+        open_start = self.source.index("attachCalibrationButtonHandler()")
+        open_end = self.source.index("      this.config = {", open_start)
+        opening = self.source[open_start:open_end]
+        self.assertIn("info.exists !== true", opening)
+        self.assertIn("info.invalid !== true", opening)
+        self.assertIn("!this._profileLoadError", opening)
+        self.assertIn(
+            "if (openingNewCalibration) applyNewCalibrationStatusLedDefaults(this._calibrationWorking);",
+            opening,
+        )
+
+        checkbox_start = self.source.index("const hiddenStatusLeds = new Set")
+        checkbox_end = self.source.index("const customFontValue", checkbox_start)
+        checkbox = self.source[checkbox_start:checkbox_end]
+        self.assertIn('hidden ? "" : "checked"', checkbox)
+
+    def test_existing_saved_status_led_visibility_remains_authoritative(self) -> None:
+        open_start = self.source.index("attachCalibrationButtonHandler()")
+        open_end = self.source.index("      this.config = {", open_start)
+        opening = self.source[open_start:open_end]
+        self.assertIn("const openingNewCalibration = Boolean(", opening)
+        self.assertIn("info.exists !== true", opening)
+        self.assertNotIn(
+            "applyNewCalibrationStatusLedDefaults(this._profileCalibration)",
+            opening,
+        )
+
+        ensure_start = self.source.index("function ensureCalibrationUi(cal)")
+        ensure_end = self.source.index("function applyNewCalibrationStatusLedDefaults", ensure_start)
+        ensure = self.source[ensure_start:ensure_end]
+        self.assertIn(
+            "Array.isArray(cal.ui.status_leds.hidden) ? cal.ui.status_leds.hidden : []",
+            ensure,
+        )
+        self.assertNotIn("Object.keys(cal.status_leds || {})", ensure)
 
 
 if __name__ == "__main__":

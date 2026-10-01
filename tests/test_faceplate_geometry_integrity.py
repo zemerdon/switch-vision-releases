@@ -199,7 +199,7 @@ def test_stock_48_port_factory_presentation_contract() -> None:
         separators=(",", ":"),
     ).encode("utf-8")
     assert hashlib.sha256(canonical).hexdigest() == (
-        "f1f8a82264faf98a80d05c521936c6d95314f7082f8c439f8212d55a954369fc"
+        "3069b582f48b4a8906907d37ef0b617fe7fdbdfb4bd4aeecc09a43e3f9a59b03"
     )
 
 

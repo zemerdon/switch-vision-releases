@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.40
+
+Core 2.7.40 corrects the Calibration Status LED default without changing factory faceplates or normal runtime presentation.
+
+When a genuinely new Calibration session opens, every available chassis Status LED checkbox starts unticked in the editor working copy. Existing saved `ui.status_leds.hidden` state remains authoritative. Factory calibration JSON, stock faceplate presentation, and normal dashboard/runtime Status LED visibility stay unchanged.
+
+The 2.7.37 Port Labels and LEDs layout and the later shared-SFP selection fixes are preserved.
+
 # Switch Vision Core v2.7.39
 
 Core 2.7.39 is the release-ready build of the current Core line. It keeps the 2.7.38 shared-SFP selection fix and 2.7.37 Calibration UI/default behavior unchanged, while synchronizing the stock 48-port presentation-integrity contract with the intentional Status LED default.
