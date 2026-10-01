@@ -142,12 +142,13 @@ if (!sfpIsUp(hass, config, 1)) throw new Error('shared logical-port status must 
         self.assertIn("!sfpHasDedicatedTelemetry(hass, config, n)", details)
         self.assertIn("return selectedPortDetails(hass, config, logicalPort);", details)
 
-    def test_shared_cage_click_selects_logical_access_port_outside_calibration(self) -> None:
+    def test_shared_cage_click_keeps_dedicated_sfp_and_falls_back_to_logical_port(self) -> None:
         source = CARD.read_text(encoding="utf-8")
         method_start = source.find("  attachSelectionHandlers(svg, activeCalibration = calibration) {")
         self.assertGreaterEqual(method_start, 0)
         fragment = source[method_start : method_start + 4200]
         self.assertIn('type === "sfp"', fragment)
+        self.assertIn("!sfpHasDedicatedTelemetry(this._hass, this.config, id)", fragment)
         self.assertIn("sfpLogicalPort(this.config, id)", fragment)
         self.assertIn('const selectedType = sharedLogicalPort ? "port" : type;', fragment)
         self.assertIn('selected_port: selectedType === "port" ? selectedId : null', fragment)

@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.38
+
+Core 2.7.38 fixes selected-interface status for shared RJ45/SFP combo ports when dedicated SFP telemetry is available.
+
+A shared SFP cage now stays on the SFP detail path when Switch Vision has dedicated SFP status/traffic telemetry, so clicking the port reports the same live link state that drives its Link and Activity LEDs. This specifically closes the Avaya ERS 3524GT-PWR+ case where an active SFP could light correctly while the selected status panel showed Down from the inactive copper-side logical-port entity.
+
+Combo-port models without dedicated SFP telemetry still fall back to the shared logical RJ45 port exactly as before.
+
 # Switch Vision Core v2.7.37
 
 Core 2.7.37 refines **Calibration → Port Labels and LEDs** for a more compact workflow.

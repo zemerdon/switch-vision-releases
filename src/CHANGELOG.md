@@ -1,3 +1,10 @@
+## v2.7.38 — Shared SFP selection telemetry consistency
+
+- Keep a shared SFP/uplink selected as an SFP when dedicated SFP telemetry exists, so the selected-interface status panel uses the same authoritative telemetry as the rendered Link/Activity LEDs.
+- Restore correct selected-port link state on the Avaya ERS 3524GT-PWR+ shared uplinks when dedicated `sfp_1g_*` entities disagree with the inactive copper-side logical-port entity.
+- Preserve logical RJ45-port selection as the compatibility fallback for combo-port models that expose only shared access-port telemetry, including HP J9774A.
+- Add permanent regression coverage for the dedicated-SFP click path and logical-port fallback.
+
 ## v2.7.37 — Calibration Port Labels/LED layout and Status LED defaults
 
 - Put **Status LEDs** at the top of **Port Labels and LEDs**.
