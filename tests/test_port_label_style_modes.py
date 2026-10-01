@@ -36,8 +36,8 @@ class PortLabelStyleModeTests(unittest.TestCase):
         labels = self.source[labels_start:labels_end]
 
         self.assertNotIn('Port Label Style', selection)
-        self.assertIn('${portLabelStyleControl}', labels)
-        self.assertIn('${selectedNumberLabelVisibilityControls}', labels)
+        self.assertIn('${portPresentationControls}', labels)
+        self.assertIn('cv-cal-port-presentation-row', self.source)
         self.assertIn('Port Label Style', self.source)
         self.assertIn('data-cv-field="port-number-mode"', self.source)
         self.assertIn('value="static"', self.source)

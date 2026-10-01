@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.37
+
+Core 2.7.37 refines **Calibration → Port Labels and LEDs** for a more compact workflow.
+
+**Status LEDs** now appear first. **Port LEDs** are directly underneath, followed by one responsive row containing **Port Label Style**, selected **Port Label** visibility, and the selected **Link / Activity LED shape + visibility** controls. On normal desktop widths these controls remain on one line; narrower layouts wrap naturally.
+
+New/default calibration state now starts with all chassis Status LED options unticked/hidden. Factory profiles that explicitly defaulted them visible have been corrected. Existing saved profiles remain authoritative whenever they contain an explicit `ui.status_leds.hidden` list, including an explicit empty list meaning “show all.”
+
 # Switch Vision Core v2.7.36
 
 Core 2.7.36 adds the authoritative shared management-theme contract used by Switch Vision Discovery / Hub and Installer.

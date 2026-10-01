@@ -1,3 +1,13 @@
+## v2.7.37 — Calibration Port Labels/LED layout and Status LED defaults
+
+- Put **Status LEDs** at the top of **Port Labels and LEDs**.
+- Put **Port LEDs** directly below Status LEDs.
+- Combine **Port Label Style**, selected **Port Label** Show/Hide, and selected Link/Activity LED shape + Show/Hide controls into one responsive Calibration row.
+- Keep remaining port-label font size, bold, suffix, and colour controls below the compact presentation row.
+- Make missing/default Status LED visibility hide every available chassis Status LED by default, while preserving any explicit saved `ui.status_leds.hidden` list.
+- Update factory profiles that explicitly defaulted Status LEDs visible so their default checkbox state is fully unticked.
+- Add regression coverage for section ordering, the single responsive presentation row, saved-visibility preservation, and factory Status LED defaults.
+
 ## v2.7.36 — Shared named custom management themes
 
 - Add Core-owned `management_theme_selected` and `custom_themes` settings for the Switch Vision management UI.
