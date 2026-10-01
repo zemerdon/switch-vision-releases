@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.39
+
+Core 2.7.39 is the release-ready build of the current Core line. It keeps the 2.7.38 shared-SFP selection fix and 2.7.37 Calibration UI/default behavior unchanged, while synchronizing the stock 48-port presentation-integrity contract with the intentional Status LED default.
+
 # Switch Vision Core v2.7.38
 
 Core 2.7.38 fixes selected-interface status for shared RJ45/SFP combo ports when dedicated SFP telemetry is available.

@@ -1,3 +1,9 @@
+## v2.7.39 — Release-contract synchronization
+
+- Carry forward Core 2.7.38 shared-SFP selected-status behavior and the 2.7.37 Calibration layout/default changes unchanged.
+- Synchronize the stock 48-port factory presentation integrity lock with the intentional all-Status-LEDs-hidden default.
+- No additional faceplate geometry, telemetry mapping, Calibration behavior, or management-theme behavior changes.
+
 ## v2.7.38 — Shared SFP selection telemetry consistency
 
 - Keep a shared SFP/uplink selected as an SFP when dedicated SFP telemetry exists, so the selected-interface status panel uses the same authoritative telemetry as the rendered Link/Activity LEDs.
