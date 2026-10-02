@@ -1,6 +1,8 @@
-# Switch Vision Core v2.7.40
+# Switch Vision Core v2.7.41
 
-Core 2.7.40 corrects the Calibration Status LED default without changing factory faceplates or normal runtime presentation.
+Core 2.7.41 coordinates the generated exact-model registry with Discovery 3.0.18 for the reviewed SG200-26 and UniFi Standard 24 / USW-24-G2 hardware contracts. It reuses existing safe faceplates and does not change factory faceplate geometry or Calibration behavior.
+
+# Switch Vision Core v2.7.40
 
 When a genuinely new Calibration session opens, every available chassis Status LED checkbox starts unticked in the editor working copy. Existing saved `ui.status_leds.hidden` state remains authoritative. Factory calibration JSON, stock faceplate presentation, and normal dashboard/runtime Status LED visibility stay unchanged.
 

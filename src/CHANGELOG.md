@@ -1,3 +1,10 @@
+## v2.7.41 — Hardware contribution registry coordination
+
+- Project Discovery's reviewed SG200-26 and UniFi Standard 24 / `USW-24-G2` exact-model contracts into Core's generated support registry.
+- Add Core visual recommendations for SG200-26 using the safe oversized stock 48-RJ45 + 2-SFP canvas and for USW-24-G2 using the existing calibrated UniFi 24-RJ45 + 2-SFP inline faceplate.
+- Carry refreshed USW-16-PoE, US 8 60W and USW Flex Mini support metadata from Discovery without changing their support states.
+- Preserve all existing faceplate geometry, Calibration behavior and runtime telemetry resolution; this patch changes only generated exact-model registry/visual metadata and release versioning.
+
 ## v2.7.40 — Calibration-only Status LED default correction
 
 - Restore factory calibration Status LED visibility and the stock faceplate presentation contract to their pre-2.7.37 behavior.
