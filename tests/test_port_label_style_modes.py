@@ -123,6 +123,8 @@ class PortLabelStyleModeTests(unittest.TestCase):
         required = (
             'title="Choose how port labels are drawn:',
             'title="Show or hide the selected port label without changing its saved position, text, colour, or style."',
+            'title="Show or hide the selected port Link LED without changing its saved shape, calibration, or link/speed mapping."',
+            'title="Show or hide the selected port Activity LED without changing its saved shape, calibration, or telemetry mapping."',
             'title="Hide the selected port Activity LED while preserving its saved calibration and telemetry mapping."',
             'title="Hide the selected port Link LED while preserving its saved calibration and link/speed mapping."',
         )

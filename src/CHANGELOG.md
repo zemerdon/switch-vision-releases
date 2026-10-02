@@ -1,3 +1,9 @@
+## v2.7.42 — Calibration quick-label tooltip restoration
+
+- Restore the explanatory hover text on the selected-port **Link LED** and **Activity LED** quick labels after the consolidated Calibration port-presentation-row refactor.
+- Keep the existing Port Label → Link LED → Activity LED layout, visibility mutations, LED shape controls, saved calibration state and telemetry mappings unchanged.
+- Add permanent regression coverage requiring all selected-port Port Label Style / Port Label / Link LED / Activity LED explanatory tooltips to remain present.
+
 ## v2.7.41 — Hardware contribution registry coordination
 
 - Project Discovery's reviewed SG200-26 and UniFi Standard 24 / `USW-24-G2` exact-model contracts into Core's generated support registry.

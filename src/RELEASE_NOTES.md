@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.42
+
+Core 2.7.42 restores the missing explanatory tooltips on the selected-port Link LED and Activity LED quick labels. The consolidated Calibration layout, show/hide behavior, LED shape controls, saved calibration state, telemetry mappings and the 2.7.41 hardware registry additions remain unchanged.
+
 # Switch Vision Core v2.7.41
 
 Core 2.7.41 coordinates the generated exact-model registry with Discovery 3.0.18 for the reviewed SG200-26 and UniFi Standard 24 / USW-24-G2 hardware contracts. It reuses existing safe faceplates and does not change factory faceplate geometry or Calibration behavior.
