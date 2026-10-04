@@ -432,6 +432,124 @@ async function scenarioFaceplateHeight() {
 
   return result;
 }
+async function scenarioCalibrationBehaviorContracts() {
+  const conn = immediateConnection();
+  const card = document.createElement('switch-vision-3650');
+  card.setConfig({
+    member:'SWCALFIX',
+    selected_switch:'SWCALFIX',
+    calibration_profile_load:false,
+    calibration_profile_auto_load:false,
+    calibration_mode:true,
+    calibration_controls:true,
+    calibration_target:'port:1',
+    calibration_part:'led_left',
+    demo:true,
+    port_count:48,
+    sfp_port_count:4
+  });
+  document.body.appendChild(card);
+  card.hass = makeHass({}, conn);
+  await sleep(40);
+
+  const circleFor = (point) => [...card.shadowRoot.querySelectorAll('circle')].find((element) => {
+    return Math.abs(Number(element.getAttribute('cx')) - Number(point[0])) < 0.01
+      && Math.abs(Number(element.getAttribute('cy')) - Number(point[1])) < 0.01;
+  });
+
+  let renderCal = calibrationRenderSpaceData(card.calibrationData());
+  const linkPoint = renderCal.ports['1'].led_left;
+  const beforeCircle = circleFor(linkPoint);
+  const beforeRadius = Number(beforeCircle?.getAttribute('r') || 0);
+  const widthInput = card.shadowRoot.querySelector('[data-cv-field="size-width"]');
+  const heightInput = card.shadowRoot.querySelector('[data-cv-field="size-height"]');
+  widthInput.value = '20';
+  heightInput.value = '20';
+  card.shadowRoot.querySelector('[data-cv-action="apply-coordinates"]').click();
+  await sleep(30);
+  renderCal = calibrationRenderSpaceData(card.calibrationData());
+  const afterCircle = circleFor(renderCal.ports['1'].led_left);
+  const circle = {
+    beforeRadius,
+    afterRadius:Number(afterCircle?.getAttribute('r') || 0),
+    stored:[...(card.calibrationData().ports['1'].led_left_size || [])],
+  };
+
+  card._calibrationWorking.ports['1'].supported_speed = '1G';
+  card._calibrationWorking.ports['3'].supported_speed = '10G';
+  card._calibrationWorking.ports['1'].port_role = 'lan';
+  card._calibrationWorking.ports['3'].port_role = 'uplink';
+  card.config = {
+    ...card.config,
+    calibration_target:'ports_custom',
+    calibration_part:'entire',
+    calibration_port_selection:'1,3',
+  };
+  card.render();
+  await sleep(20);
+  let speedSelect = card.shadowRoot.querySelector('[data-cv-field="port-supported-speed"]');
+  let roleSelect = card.shadowRoot.querySelector('[data-cv-field="port-role"]');
+  const mixed = {
+    speed:speedSelect?.selectedOptions?.[0]?.textContent?.trim() || '',
+    role:roleSelect?.selectedOptions?.[0]?.textContent?.trim() || '',
+    disabled:Boolean(speedSelect?.disabled || roleSelect?.disabled),
+  };
+  speedSelect.value = '25G';
+  speedSelect.dispatchEvent(new Event('change', {bubbles:true}));
+  await sleep(20);
+  roleSelect = card.shadowRoot.querySelector('[data-cv-field="port-role"]');
+  roleSelect.value = 'wan';
+  roleSelect.dispatchEvent(new Event('change', {bubbles:true}));
+  await sleep(20);
+  const metadata = {
+    one:[card.calibrationData().ports['1'].supported_speed, card.calibrationData().ports['1'].port_role],
+    three:[card.calibrationData().ports['3'].supported_speed, card.calibrationData().ports['3'].port_role],
+    two:[card.calibrationData().ports['2'].supported_speed, card.calibrationData().ports['2'].port_role],
+  };
+
+  card._calibrationDirty = false;
+  card.config = {...card.config, calibration_test_mode:true};
+  card.render();
+  await sleep(20);
+  renderCal = calibrationRenderSpaceData(card.calibrationData());
+  const duringLed = circleFor(renderCal.ports['1'].led_left);
+  const duringTest = {
+    enabled:card.config.calibration_test_mode === true,
+    ledClass:duringLed?.getAttribute('class') || '',
+  };
+
+  card.shadowRoot.querySelector('[data-cv-action="toggle-calibration"]').click();
+  await sleep(80);
+  renderCal = calibrationRenderSpaceData(card.calibrationData());
+  const afterDoneLed = circleFor(renderCal.ports['1'].led_left);
+  const afterDone = {
+    enabled:card.config.calibration_test_mode === true,
+    controls:card.config.calibration_controls === true,
+    mode:card.config.calibration_mode === true,
+    ledClass:afterDoneLed?.getAttribute('class') || '',
+    badgeActive:Boolean(card.shadowRoot.querySelector('.cv-cal-test-mode-badge.is-active')),
+  };
+
+  card.shadowRoot.querySelector('[data-cv-action="toggle-calibration"]').click();
+  await sleep(80);
+  const reopened = {
+    enabled:card.config.calibration_test_mode === true,
+    controls:card.config.calibration_controls === true,
+    mode:card.config.calibration_mode === true,
+  };
+  card.shadowRoot.querySelector('[data-cv-action="cancel-calibration"]').click();
+  await sleep(40);
+  const afterCancel = {
+    enabled:card.config.calibration_test_mode === true,
+    controls:card.config.calibration_controls === true,
+    mode:card.config.calibration_mode === true,
+  };
+  const testMode = {duringTest, afterDone, reopened, afterCancel};
+
+  card.remove();
+  return {circle, mixed, metadata, testMode};
+}
+
 async function scenarioNativeFontControls() {
   const conn = immediateConnection();
   const card = document.createElement('switch-vision-3650');
@@ -497,7 +615,7 @@ async function scenarioNativeFontControls() {
   card.remove();
   return {initial, after, stored, rendered};
 }
-(async () => { try { const result = {live:await scenarioLiveGate(), subscriptions:await scenarioSubscriptions(), profile:await scenarioProfileRace(), calibration:await scenarioCalibrationStability(), activity:await scenarioActivity(), activityTargets:scenarioActivityTargetScheduling(), naturalActivity:scenarioNaturalActivityPattern(), colour:await scenarioColour(), faceplateHeight:await scenarioFaceplateHeight(), nativeFonts:await scenarioNativeFontControls()}; document.getElementById('result').textContent = JSON.stringify(result); } catch (err) { document.getElementById('result').textContent = JSON.stringify({error:String(err), stack:err?.stack||''}); } })();
+(async () => { try { const result = {live:await scenarioLiveGate(), subscriptions:await scenarioSubscriptions(), profile:await scenarioProfileRace(), calibration:await scenarioCalibrationStability(), activity:await scenarioActivity(), activityTargets:scenarioActivityTargetScheduling(), naturalActivity:scenarioNaturalActivityPattern(), colour:await scenarioColour(), faceplateHeight:await scenarioFaceplateHeight(), calibrationBehavior:await scenarioCalibrationBehaviorContracts(), nativeFonts:await scenarioNativeFontControls()}; document.getElementById('result').textContent = JSON.stringify(result); } catch (err) { document.getElementById('result').textContent = JSON.stringify({error:String(err), stack:err?.stack||''}); } })();
 """
         document = '<!doctype html><html><body><pre id="result">pending</pre><script>' + source + '</script><script>' + harness + '</script></body></html>'
         with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False, encoding="utf-8") as handle:
@@ -529,6 +647,17 @@ async function scenarioNativeFontControls() {
         self.assertEqual(payload["calibration"]["telemetry"], {"renders": 0, "redraws": 0})
         self.assertTrue(payload["calibration"]["same"])
         self.assertTrue(payload["calibration"]["statusHidden"])
+        self.assertAlmostEqual(payload["calibrationBehavior"]["circle"]["beforeRadius"], 3.1, places=1)
+        self.assertGreater(payload["calibrationBehavior"]["circle"]["afterRadius"], payload["calibrationBehavior"]["circle"]["beforeRadius"])
+        self.assertEqual(payload["calibrationBehavior"]["circle"]["stored"], [20, 20])
+        self.assertEqual(payload["calibrationBehavior"]["mixed"], {"speed":"Mixed", "role":"Mixed", "disabled":False})
+        self.assertEqual(payload["calibrationBehavior"]["metadata"]["one"], ["25G", "wan"])
+        self.assertEqual(payload["calibrationBehavior"]["metadata"]["three"], ["25G", "wan"])
+        self.assertNotEqual(payload["calibrationBehavior"]["metadata"]["two"], ["25G", "wan"])
+        self.assertEqual(payload["calibrationBehavior"]["testMode"]["duringTest"], {"enabled":True, "ledClass":"cv-led-green"})
+        self.assertEqual(payload["calibrationBehavior"]["testMode"]["afterDone"], {"enabled":True, "controls":False, "mode":False, "ledClass":"cv-led-green", "badgeActive":True})
+        self.assertEqual(payload["calibrationBehavior"]["testMode"]["reopened"], {"enabled":True, "controls":True, "mode":True})
+        self.assertEqual(payload["calibrationBehavior"]["testMode"]["afterCancel"], {"enabled":False, "controls":False, "mode":False})
         self.assertEqual(payload["activity"]["active"]["redraws"], 1)
         self.assertTrue(payload["activity"]["active"]["timer"])
         self.assertGreaterEqual(payload["activity"]["active"]["ticks"], 1)

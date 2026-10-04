@@ -21,7 +21,7 @@ def main() -> int:
         'const SV_PORT_ROLES = Object.freeze(["", "lan", "wan", "uplink"]);',
         'function registryPortRoleForGroup(config, group, port)',
         'function effectivePortRole(config, cal, group, port)',
-        'editable.item.port_role = normalisePortRole(event.target.value);',
+        'for (const item of targets.items) item.port_role = value;',
         '"supported_speed", "port_role"',
         'role: formatPortRole(effectivePortRole(config, cal, "rj45", selected.id))',
         'role: formatPortRole(effectivePortRole(config, cal, "sfp", selected.id))',

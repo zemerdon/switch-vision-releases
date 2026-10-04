@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import subprocess
 import unittest
 from pathlib import Path
 
@@ -115,6 +116,59 @@ class PortLedShapeCalibrationTests(unittest.TestCase):
             'expected circle, rectangle, triangle_up, or triangle_down.',
             self.source,
         )
+
+    def test_circle_shape_consumes_saved_led_size(self) -> None:
+        self.assertIn("function portLedCircleRadius(value, radius = layout.ports?.r)", self.source)
+        self.assertIn("portLedCircleRadius(rectangleSize, r)", self.source)
+
+        def extract(signature: str) -> str:
+            start = self.source.index(signature)
+            brace = self.source.index("{", start)
+            depth = 0
+            quote = None
+            escape = False
+            for pos in range(brace, len(self.source)):
+                char = self.source[pos]
+                if quote is not None:
+                    if escape:
+                        escape = False
+                    elif char == "\\":
+                        escape = True
+                    elif char == quote:
+                        quote = None
+                    continue
+                if char in {"'", '"', "`"}:
+                    quote = char
+                    continue
+                if char == "{":
+                    depth += 1
+                elif char == "}":
+                    depth -= 1
+                    if depth == 0:
+                        return self.source[start : pos + 1]
+            raise AssertionError(f"unterminated function: {signature}")
+
+        helpers = "\n".join(
+            [
+                extract("function defaultPortLedRectangleSize(radius = layout.ports?.r)"),
+                extract("function normalisePortLedRectangleSize(value, radius = layout.ports?.r)"),
+                extract("function portLedCircleRadius(value, radius = layout.ports?.r)"),
+            ]
+        )
+        harness = f"""
+const layout = {{ports: {{r: 3.1}}}};
+{helpers}
+const base = portLedCircleRadius(defaultPortLedRectangleSize(3.1), 3.1);
+const wider = portLedCircleRadius([20, defaultPortLedRectangleSize(3.1)[1]], 3.1);
+const taller = portLedCircleRadius([defaultPortLedRectangleSize(3.1)[0], 20], 3.1);
+const square = portLedCircleRadius([20, 20], 3.1);
+if (Math.abs(base - 3.1) > 0.1) throw new Error("default circle radius drifted");
+if (!(wider > base)) throw new Error("circle width resize did not affect radius");
+if (!(taller > base)) throw new Error("circle height resize did not affect radius");
+if (!(square > wider && square > taller)) throw new Error("larger saved circle size did not render larger");
+"""
+        result = subprocess.run(["node", "-e", harness], cwd=ROOT, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
 
 if __name__ == "__main__":

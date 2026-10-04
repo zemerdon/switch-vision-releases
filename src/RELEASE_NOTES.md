@@ -1,3 +1,9 @@
+# Switch Vision Core v2.7.43
+
+Core 2.7.43 fixes two Calibration behavior gaps found during local backend validation while preserving the established persistent Test Mode workflow. Circle Link/Activity LEDs now consume their saved W/H size envelope instead of always drawing at the stock radius. Supported Speed and Port Role can now be applied to grouped RJ45 or SFP/uplink selections, with Mixed shown when the selected set does not share one value.
+
+Test Mode keeps its existing contract: **Done** saves and closes Calibration while Test Mode remains active for unobstructed faceplate inspection, reopening Calibration preserves it, and **Cancel** explicitly turns it off. The maintained Chromium regression now verifies the forced LED state and TEST MODE badge remain active after Done as well as the final Cancel reset.
+
 # Switch Vision Core v2.7.42
 
 Core 2.7.42 restores the missing explanatory tooltips on the selected-port Link LED and Activity LED quick labels. The consolidated Calibration layout, show/hide behavior, LED shape controls, saved calibration state, telemetry mappings and the 2.7.41 hardware registry additions remain unchanged.

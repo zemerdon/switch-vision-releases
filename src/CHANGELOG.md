@@ -1,3 +1,10 @@
+## v2.7.43 — Calibration rendered-geometry and multi-port metadata corrections
+
+- Make saved Link/Activity LED W/H calibration values affect Circle rendering as well as rectangle/triangle shapes, while preserving the stock default circle size when no custom size is saved.
+- Allow **Supported speed** and **Port Role** to be edited for grouped RJ45/SFP selections, including all/odd/even/custom selections, with a **Mixed** state when selected ports differ.
+- Preserve persistent Calibration Test Mode semantics: **Done** saves/closes while Test Mode stays active for unobstructed faceplate inspection, reopening Calibration keeps it active, and **Cancel** explicitly turns it off.
+- Add source-level and maintained Chromium regressions that exercise resize -> rendered SVG geometry, grouped metadata mutation boundaries, and the complete Test Mode Done/reopen/Cancel lifecycle through the real Calibration UI.
+
 ## v2.7.42 — Calibration quick-label tooltip restoration
 
 - Restore the explanatory hover text on the selected-port **Link LED** and **Activity LED** quick labels after the consolidated Calibration port-presentation-row refactor.

@@ -1,4 +1,4 @@
-const SV_VERSION = "2.7.42";
+const SV_VERSION = "2.7.43";
 const calibration = {"schema_version":1,"schema":"switch-vision-interactive-calibration-v1","model":"cisco-3650-48p-4-uplink","generated_by":`Switch Vision v${SV_VERSION}`,"image":{"file":"faceplates/48rj45-4sfp.png","width":2048,"height":448,"master":"switch-master-v4.0","alpha_min":0,"alpha_max":255},"ports":{"1":{"center":[176,245],"number":[176,181],"led_left":[154,221],"led_right":[199,221],"hitbox":[34,56]},"2":{"center":[177,338],"number":[176,409],"led_left":[153,365],"led_right":[200,365],"hitbox":[34,56]},"3":{"center":[236,245],"number":[237,181],"led_left":[213,221],"led_right":[259,221],"hitbox":[34,56]},"4":{"center":[237,337],"number":[237,409],"led_left":[213,365],"led_right":[259,365],"hitbox":[34,56]},"5":{"center":[294,245],"number":[296,181],"led_left":[273,221],"led_right":[319,221],"hitbox":[34,56]},"6":{"center":[297,337],"number":[297,409],"led_left":[273,365],"led_right":[319,365],"hitbox":[34,56]},"7":{"center":[355,245],"number":[356,181],"led_left":[333,221],"led_right":[379,221],"hitbox":[34,56]},"8":{"center":[357,337],"number":[357,409],"led_left":[333,365],"led_right":[379,365],"hitbox":[34,56]},"9":{"center":[414,245],"number":[415,181],"led_left":[393,221],"led_right":[440,221],"hitbox":[34,56]},"10":{"center":[416,337],"number":[415,409],"led_left":[393,365],"led_right":[439,365],"hitbox":[34,56]},"11":{"center":[474,245],"number":[475,181],"led_left":[453,221],"led_right":[499,221],"hitbox":[34,56]},"12":{"center":[476,336],"number":[476,409],"led_left":[453,365],"led_right":[499,365],"hitbox":[34,56]},"13":{"center":[550,245],"number":[551,181],"led_left":[524,221],"led_right":[570,221],"hitbox":[34,56]},"14":{"center":[549,337],"number":[551,409],"led_left":[524,365],"led_right":[571,365],"hitbox":[34,56]},"15":{"center":[610,245],"number":[611,181],"led_left":[584,221],"led_right":[631,221],"hitbox":[34,56]},"16":{"center":[608,336],"number":[612,409],"led_left":[584,365],"led_right":[631,365],"hitbox":[34,56]},"17":{"center":[669,245],"number":[670,181],"led_left":[644,221],"led_right":[690,221],"hitbox":[34,56]},"18":{"center":[668,337],"number":[670,409],"led_left":[644,365],"led_right":[690,365],"hitbox":[34,56]},"19":{"center":[729,245],"number":[729,181],"led_left":[704,221],"led_right":[750,221],"hitbox":[34,56]},"20":{"center":[728,337],"number":[729,409],"led_left":[704,365],"led_right":[750,365],"hitbox":[34,56]},"21":{"center":[788,245],"number":[790,181],"led_left":[764,221],"led_right":[810,221],"hitbox":[34,56]},"22":{"center":[788,337],"number":[790,409],"led_left":[764,365],"led_right":[810,365],"hitbox":[34,56]},"23":{"center":[848,245],"number":[849,181],"led_left":[824,221],"led_right":[870,221],"hitbox":[34,56]},"24":{"center":[850,337],"number":[849,409],"led_left":[824,365],"led_right":[870,365],"hitbox":[34,56]},"25":{"center":[923,245],"number":[925,181],"led_left":[904,221],"led_right":[949,221],"hitbox":[34,56]},"26":{"center":[925,336],"number":[925,409],"led_left":[903,365],"led_right":[950,365],"hitbox":[34,56]},"27":{"center":[983,245],"number":[985,181],"led_left":[963,221],"led_right":[1009,221],"hitbox":[34,56]},"28":{"center":[984,336],"number":[985,409],"led_left":[963,365],"led_right":[1009,365],"hitbox":[34,56]},"29":{"center":[1043,245],"number":[1043,181],"led_left":[1023,221],"led_right":[1069,221],"hitbox":[34,56]},"30":{"center":[1045,337],"number":[1043,409],"led_left":[1023,365],"led_right":[1069,365],"hitbox":[34,56]},"31":{"center":[1105,245],"number":[1104,181],"led_left":[1083,221],"led_right":[1129,221],"hitbox":[34,56]},"32":{"center":[1104,337],"number":[1104,409],"led_left":[1083,365],"led_right":[1129,365],"hitbox":[34,56]},"33":{"center":[1162,245],"number":[1163,181],"led_left":[1143,221],"led_right":[1189,221],"hitbox":[34,56]},"34":{"center":[1164,337],"number":[1163,409],"led_left":[1143,365],"led_right":[1189,365],"hitbox":[34,56]},"35":{"center":[1225,245],"number":[1221,181],"led_left":[1203,221],"led_right":[1249,221],"hitbox":[34,56]},"36":{"center":[1223,337],"number":[1221,409],"led_left":[1203,365],"led_right":[1249,365],"hitbox":[34,56]},"37":{"center":[1297,245],"number":[1298,181],"led_left":[1273,221],"led_right":[1319,221],"hitbox":[34,56]},"38":{"center":[1298,337],"number":[1298,409],"led_left":[1273,365],"led_right":[1318,365],"hitbox":[34,56]},"39":{"center":[1355,245],"number":[1357,181],"led_left":[1333,221],"led_right":[1379,221],"hitbox":[34,56]},"40":{"center":[1358,337],"number":[1357,409],"led_left":[1332,365],"led_right":[1379,365],"hitbox":[34,56]},"41":{"center":[1416,245],"number":[1418,181],"led_left":[1393,221],"led_right":[1439,221],"hitbox":[34,56]},"42":{"center":[1417,337],"number":[1418,409],"led_left":[1393,365],"led_right":[1438,365],"hitbox":[34,56]},"43":{"center":[1475,245],"number":[1476,181],"led_left":[1453,221],"led_right":[1499,221],"hitbox":[34,56]},"44":{"center":[1477,336],"number":[1476,409],"led_left":[1453,365],"led_right":[1499,365],"hitbox":[34,56]},"45":{"center":[1534,245],"number":[1535,181],"led_left":[1513,221],"led_right":[1559,221],"hitbox":[34,56]},"46":{"center":[1537,337],"number":[1535,409],"led_left":[1513,365],"led_right":[1559,365],"hitbox":[34,56]},"47":{"center":[1594,245],"number":[1595,181],"led_left":[1573,221],"led_right":[1618,221],"hitbox":[34,56]},"48":{"center":[1596,337],"number":[1595,409],"led_left":[1572,365],"led_right":[1618,365],"hitbox":[34,56]}},"sfp":{"G1":{"center":[1710,246],"hitbox":[94,48]},"G2":{"center":[1835,246],"hitbox":[94,48]},"G3/TE3":{"center":[1711,341],"hitbox":[94,48]},"G4/TE4":{"center":[1836,341],"hitbox":[94,48]}},"status_leds":{"STAT":[674,84],"SYST":[674,149],"DUPLX":[852,84],"ACTV":[852,149],"SPEED":[1026,84],"STACK":[1204,84],"PoE":[1369,84]},"ui":{"logo":{"show":true,"file":"sv-logo.png","source":"default","x":143,"y":-1,"width":187,"height":188},"status_panel":{"show":true,"x":338,"y":30,"width":313,"height":132,"font_family":"SwitchVisionCustom, Arial, Helvetica, sans-serif","font_size":16,"title_font_size":16,"font_weight":"bold","text_color":"#ffffff","label_color":"#eef2f4","title_color":"#f4f6f7","background_color":"rgba(0,0,0,.06)","border_color":"rgba(245,248,250,.75)","border_show":true,"field_order":{"switch":["model","ip","cpu","temp","poe","uptime","vendor","os","firmware","serial","stack","fans","psu"],"port":["vlan","desc","link","rx","tx"],"sfp":["vlan","desc","link","rx","tx"]},"hidden_fields":{"switch":["vendor","os","firmware","serial","stack","fans","psu"],"port":[],"sfp":[]},"fields":{"title":[152.5,18],"row1_key":[19,39],"row1_value":[107,39],"row2_key":[19,58],"row2_value":[107,58],"row3_key":[19,78],"row3_value":[107,78],"row4_key":[19,97],"row4_value":[107,97],"row5_key":[19,116],"row5_value":[107,116],"row6_key":[19,135],"row6_value":[107,135]}},"faceplate":{"show":true,"file":"__default__","fit":"fill","opacity":1},"calibration_button":{"show":true,"x":1888,"y":14,"width":138,"height":34,"anchor":"top_right"},"status_panel_2":{"show":true,"x":1605,"y":25,"width":278,"height":55,"font_family":"SwitchVisionCustom, Arial, Helvetica, sans-serif","font_size":16,"title_font_size":16,"font_weight":"bold","text_color":"#ffffff","label_color":"#eef2f4","title_color":"#f4f6f7","background_color":"rgba(0,0,0,.06)","border_color":"rgba(245,248,250,.75)","border_show":true,"title_mode":"custom","title_field":"model","custom_title":"","field_order":{"switch":["vendor","uptime","model","ip","cpu","temp","poe","os","firmware","serial","stack","fans","psu"],"port":["vlan","desc","link","rx","tx"],"sfp":["vlan","desc","link","rx","tx"]},"hidden_fields":{"switch":["model","ip","cpu","temp","poe","os","firmware","serial","stack","fans","psu"],"port":[],"sfp":[]},"fields":{"title":[152.5,23],"row1_key":[24,55],"row1_value":[112,55],"row2_key":[24,72],"row2_value":[112,72],"row3_key":[24,89],"row3_value":[112,89],"row4_key":[24,106],"row4_value":[112,106],"row5_key":[24,123],"row5_value":[112,123],"row6_key":[24,140],"row6_value":[112,140]}}},"stack":{"enabled":false,"stack_id":"","uptime_source":"","members":{}},"management":{"switch_ip":""},"profile":"default_cisco_48_port"};
 const calibration2960X24 = {"schema":"switch-vision-interactive-calibration-v1","model":"cisco-2960x-24p-4-uplink","generated_by":"Switch Vision v1.8.9","image":{"file":"faceplates/24rj45-4sfp.png","width":2048,"height":448,"master":"switch-master-v4.0","alpha_min":0,"alpha_max":255},"ports":{"1":{"center":[926,245],"number":[926,181],"led_left":[907,221],"led_right":[942,221],"hitbox":[34,56]},"2":{"center":[927,338],"number":[926,409],"led_left":[906,365],"led_right":[943,365],"hitbox":[34,56]},"3":{"center":[986,245],"number":[987,181],"led_left":[966,221],"led_right":[1002,221],"hitbox":[34,56]},"4":{"center":[987,337],"number":[987,409],"led_left":[966,365],"led_right":[1002,365],"hitbox":[34,56]},"5":{"center":[1044,245],"number":[1046,181],"led_left":[1026,221],"led_right":[1062,221],"hitbox":[34,56]},"6":{"center":[1047,337],"number":[1047,409],"led_left":[1026,365],"led_right":[1062,365],"hitbox":[34,56]},"7":{"center":[1105,245],"number":[1106,181],"led_left":[1086,221],"led_right":[1122,221],"hitbox":[34,56]},"8":{"center":[1107,337],"number":[1107,409],"led_left":[1086,365],"led_right":[1122,365],"hitbox":[34,56]},"9":{"center":[1164,245],"number":[1165,181],"led_left":[1146,221],"led_right":[1183,221],"hitbox":[34,56]},"10":{"center":[1166,337],"number":[1165,409],"led_left":[1146,365],"led_right":[1182,365],"hitbox":[34,56]},"11":{"center":[1224,245],"number":[1225,181],"led_left":[1206,221],"led_right":[1242,221],"hitbox":[34,56]},"12":{"center":[1226,336],"number":[1226,409],"led_left":[1206,365],"led_right":[1242,365],"hitbox":[34,56]},"13":{"center":[1300,245],"number":[1301,181],"led_left":[1277,221],"led_right":[1313,221],"hitbox":[34,56]},"14":{"center":[1299,337],"number":[1301,409],"led_left":[1277,365],"led_right":[1314,365],"hitbox":[34,56]},"15":{"center":[1360,245],"number":[1361,181],"led_left":[1337,221],"led_right":[1374,221],"hitbox":[34,56]},"16":{"center":[1358,336],"number":[1362,409],"led_left":[1337,365],"led_right":[1374,365],"hitbox":[34,56]},"17":{"center":[1419,245],"number":[1420,181],"led_left":[1397,221],"led_right":[1433,221],"hitbox":[34,56]},"18":{"center":[1418,337],"number":[1420,409],"led_left":[1397,365],"led_right":[1433,365],"hitbox":[34,56]},"19":{"center":[1479,245],"number":[1479,181],"led_left":[1457,221],"led_right":[1493,221],"hitbox":[34,56]},"20":{"center":[1478,337],"number":[1479,409],"led_left":[1457,365],"led_right":[1493,365],"hitbox":[34,56]},"21":{"center":[1538,245],"number":[1540,181],"led_left":[1517,221],"led_right":[1553,221],"hitbox":[34,56]},"22":{"center":[1538,337],"number":[1540,409],"led_left":[1517,365],"led_right":[1553,365],"hitbox":[34,56]},"23":{"center":[1598,245],"number":[1599,181],"led_left":[1577,221],"led_right":[1613,221],"hitbox":[34,56]},"24":{"center":[1600,337],"number":[1599,409],"led_left":[1577,365],"led_right":[1613,365],"hitbox":[34,56]}},"sfp":{"G1":{"center":[1710,246],"hitbox":[94,48],"label":[1709,188]},"G2":{"center":[1835,246],"hitbox":[94,48],"label":[1838,188]},"G3":{"center":[1711,341],"hitbox":[94,48],"label":[1710,402]},"G4":{"center":[1836,341],"hitbox":[94,48],"label":[1839,402]}},"status_leds":{"STAT":[674,84],"SYST":[674,149],"DUPLX":[852,84],"ACTV":[852,149],"SPEED":[1026,84],"STACK":[1204,84],"PoE":[1369,84]},"ui":{"logo":{"show":true,"file":"sv-logo.png","source":"default","x":143,"y":-1,"width":187,"height":188},"status_panel":{"show":true,"x":338,"y":30,"width":313,"height":132,"font_family":"SwitchVisionCustom, Arial, Helvetica, sans-serif","font_size":16,"title_font_size":16,"font_weight":"bold","text_color":"#ffffff","label_color":"#eef2f4","title_color":"#f4f6f7","background_color":"rgba(0,0,0,.06)","border_color":"rgba(245,248,250,.75)","border_show":true,"field_order":{"switch":["model","ip","cpu","temp","poe","uptime","vendor","os","firmware","serial","stack","fans","psu"],"port":["vlan","desc","link","rx","tx"],"sfp":["vlan","desc","link","rx","tx"]},"hidden_fields":{"switch":["vendor","os","firmware","serial","stack","fans","psu"],"port":[],"sfp":[]},"fields":{"row1_key":[19,39],"row1_value":[107,39],"row2_key":[19,58],"row2_value":[107,58],"row3_key":[19,78],"row3_value":[107,78],"row4_key":[19,97],"row4_value":[107,97],"row5_key":[19,116],"row5_value":[107,116],"row6_key":[19,135],"row6_value":[107,135]}},"faceplate":{"show":true,"file":"24rj45-4sfp.png","fit":"fill","opacity":1},"calibration_button":{"show":true,"x":1888,"y":14,"width":138,"height":34,"anchor":"top_right"},"status_panel_2":{"show":true,"x":1605,"y":25,"width":278,"height":55,"font_family":"SwitchVisionCustom, Arial, Helvetica, sans-serif","font_size":16,"title_font_size":16,"font_weight":"bold","text_color":"#ffffff","label_color":"#eef2f4","title_color":"#f4f6f7","background_color":"rgba(0,0,0,.06)","border_color":"rgba(245,248,250,.75)","border_show":true,"title_mode":"custom","title_field":"model","custom_title":"","field_order":{"switch":["vendor","uptime","model","ip","cpu","temp","poe","os","firmware","serial","stack","fans","psu"],"port":["vlan","desc","link","rx","tx"],"sfp":["vlan","desc","link","rx","tx"]},"hidden_fields":{"switch":["model","ip","cpu","temp","poe","os","firmware","serial","stack","fans","psu"],"port":[],"sfp":[]},"fields":{"row1_key":[24,55],"row1_value":[112,55],"row2_key":[24,72],"row2_value":[112,72],"row3_key":[24,89],"row3_value":[112,89],"row4_key":[24,106],"row4_value":[112,106],"row5_key":[24,123],"row5_value":[112,123],"row6_key":[24,140],"row6_value":[112,140]}}},"stack":{"enabled":false,"stack_id":"","uptime_source":"","members":{}},"management":{"switch_ip":""},"profile":"cisco_2960x_24p"};
 const calibration2960S48 = {"schema_version":1,"schema":"switch-vision-interactive-calibration-v1","model":"cisco-2960s-48p-2x10g","generated_by":"Switch Vision v1.8.9","image":{"file":"faceplates/48rj45-2sfp.png","width":2048,"height":448,"master":"switch-master-v4.0","alpha_min":0,"alpha_max":255},"ports":{"1":{"center":[176,245],"number":[176,181],"led_left":[154,221],"led_right":[199,221],"hitbox":[34,56]},"2":{"center":[177,338],"number":[176,409],"led_left":[153,365],"led_right":[200,365],"hitbox":[34,56]},"3":{"center":[236,245],"number":[237,181],"led_left":[213,221],"led_right":[259,221],"hitbox":[34,56]},"4":{"center":[237,337],"number":[237,409],"led_left":[213,365],"led_right":[259,365],"hitbox":[34,56]},"5":{"center":[294,245],"number":[296,181],"led_left":[273,221],"led_right":[319,221],"hitbox":[34,56]},"6":{"center":[297,337],"number":[297,409],"led_left":[273,365],"led_right":[319,365],"hitbox":[34,56]},"7":{"center":[355,245],"number":[356,181],"led_left":[333,221],"led_right":[379,221],"hitbox":[34,56]},"8":{"center":[357,337],"number":[357,409],"led_left":[333,365],"led_right":[379,365],"hitbox":[34,56]},"9":{"center":[414,245],"number":[415,181],"led_left":[393,221],"led_right":[440,221],"hitbox":[34,56]},"10":{"center":[416,337],"number":[415,409],"led_left":[393,365],"led_right":[439,365],"hitbox":[34,56]},"11":{"center":[474,245],"number":[475,181],"led_left":[453,221],"led_right":[499,221],"hitbox":[34,56]},"12":{"center":[476,336],"number":[476,409],"led_left":[453,365],"led_right":[499,365],"hitbox":[34,56]},"13":{"center":[550,245],"number":[551,181],"led_left":[524,221],"led_right":[570,221],"hitbox":[34,56]},"14":{"center":[549,337],"number":[551,409],"led_left":[524,365],"led_right":[571,365],"hitbox":[34,56]},"15":{"center":[610,245],"number":[611,181],"led_left":[584,221],"led_right":[631,221],"hitbox":[34,56]},"16":{"center":[608,336],"number":[612,409],"led_left":[584,365],"led_right":[631,365],"hitbox":[34,56]},"17":{"center":[669,245],"number":[670,181],"led_left":[644,221],"led_right":[690,221],"hitbox":[34,56]},"18":{"center":[668,337],"number":[670,409],"led_left":[644,365],"led_right":[690,365],"hitbox":[34,56]},"19":{"center":[729,245],"number":[729,181],"led_left":[704,221],"led_right":[750,221],"hitbox":[34,56]},"20":{"center":[728,337],"number":[729,409],"led_left":[704,365],"led_right":[750,365],"hitbox":[34,56]},"21":{"center":[788,245],"number":[790,181],"led_left":[764,221],"led_right":[810,221],"hitbox":[34,56]},"22":{"center":[788,337],"number":[790,409],"led_left":[764,365],"led_right":[810,365],"hitbox":[34,56]},"23":{"center":[848,245],"number":[849,181],"led_left":[824,221],"led_right":[870,221],"hitbox":[34,56]},"24":{"center":[850,337],"number":[849,409],"led_left":[824,365],"led_right":[870,365],"hitbox":[34,56]},"25":{"center":[923,245],"number":[925,181],"led_left":[904,221],"led_right":[949,221],"hitbox":[34,56]},"26":{"center":[925,336],"number":[925,409],"led_left":[903,365],"led_right":[950,365],"hitbox":[34,56]},"27":{"center":[983,245],"number":[985,181],"led_left":[963,221],"led_right":[1009,221],"hitbox":[34,56]},"28":{"center":[984,336],"number":[985,409],"led_left":[963,365],"led_right":[1009,365],"hitbox":[34,56]},"29":{"center":[1043,245],"number":[1043,181],"led_left":[1023,221],"led_right":[1069,221],"hitbox":[34,56]},"30":{"center":[1045,337],"number":[1043,409],"led_left":[1023,365],"led_right":[1069,365],"hitbox":[34,56]},"31":{"center":[1105,245],"number":[1104,181],"led_left":[1083,221],"led_right":[1129,221],"hitbox":[34,56]},"32":{"center":[1104,337],"number":[1104,409],"led_left":[1083,365],"led_right":[1129,365],"hitbox":[34,56]},"33":{"center":[1162,245],"number":[1163,181],"led_left":[1143,221],"led_right":[1189,221],"hitbox":[34,56]},"34":{"center":[1164,337],"number":[1163,409],"led_left":[1143,365],"led_right":[1189,365],"hitbox":[34,56]},"35":{"center":[1225,245],"number":[1221,181],"led_left":[1203,221],"led_right":[1249,221],"hitbox":[34,56]},"36":{"center":[1223,337],"number":[1221,409],"led_left":[1203,365],"led_right":[1249,365],"hitbox":[34,56]},"37":{"center":[1297,245],"number":[1298,181],"led_left":[1273,221],"led_right":[1319,221],"hitbox":[34,56]},"38":{"center":[1298,337],"number":[1298,409],"led_left":[1273,365],"led_right":[1318,365],"hitbox":[34,56]},"39":{"center":[1355,245],"number":[1357,181],"led_left":[1333,221],"led_right":[1379,221],"hitbox":[34,56]},"40":{"center":[1358,337],"number":[1357,409],"led_left":[1332,365],"led_right":[1379,365],"hitbox":[34,56]},"41":{"center":[1416,245],"number":[1418,181],"led_left":[1393,221],"led_right":[1439,221],"hitbox":[34,56]},"42":{"center":[1417,337],"number":[1418,409],"led_left":[1393,365],"led_right":[1438,365],"hitbox":[34,56]},"43":{"center":[1475,245],"number":[1476,181],"led_left":[1453,221],"led_right":[1499,221],"hitbox":[34,56]},"44":{"center":[1477,336],"number":[1476,409],"led_left":[1453,365],"led_right":[1499,365],"hitbox":[34,56]},"45":{"center":[1534,245],"number":[1535,181],"led_left":[1513,221],"led_right":[1559,221],"hitbox":[34,56]},"46":{"center":[1537,337],"number":[1535,409],"led_left":[1513,365],"led_right":[1559,365],"hitbox":[34,56]},"47":{"center":[1594,245],"number":[1595,181],"led_left":[1573,221],"led_right":[1618,221],"hitbox":[34,56]},"48":{"center":[1596,337],"number":[1595,409],"led_left":[1572,365],"led_right":[1618,365],"hitbox":[34,56]}},"sfp":{"TE1":{"center":[1712,285],"hitbox":[94,48],"label":[1709,228]},"TE2":{"center":[1837,285],"hitbox":[94,48],"label":[1838,228]}},"status_leds":{"STAT":[674,84],"SYST":[674,149],"DUPLX":[852,84],"ACTV":[852,149],"SPEED":[1026,84],"STACK":[1204,84],"PoE":[1369,84]},"ui":{"logo":{"show":true,"file":"sv-logo.png","source":"default","x":143,"y":-1,"width":187,"height":188},"status_panel":{"show":true,"x":338,"y":30,"width":313,"height":132,"font_family":"SwitchVisionCustom, Arial, Helvetica, sans-serif","font_size":16,"title_font_size":16,"font_weight":"bold","text_color":"#ffffff","label_color":"#eef2f4","title_color":"#f4f6f7","background_color":"rgba(0,0,0,.06)","border_color":"rgba(245,248,250,.75)","border_show":true,"field_order":{"switch":["model","ip","cpu","temp","poe","uptime","vendor","os","firmware","serial","stack","fans","psu"],"port":["vlan","desc","link","rx","tx"],"sfp":["vlan","desc","link","rx","tx"]},"hidden_fields":{"switch":["vendor","os","firmware","serial","stack","fans","psu"],"port":[],"sfp":[]},"fields":{"row1_key":[19,39],"row1_value":[107,39],"row2_key":[19,58],"row2_value":[107,58],"row3_key":[19,78],"row3_value":[107,78],"row4_key":[19,97],"row4_value":[107,97],"row5_key":[19,116],"row5_value":[107,116],"row6_key":[19,135],"row6_value":[107,135]}},"faceplate":{"show":true,"file":"48rj45-2sfp.png","fit":"fill","opacity":1},"calibration_button":{"show":true,"x":1888,"y":14,"width":138,"height":34,"anchor":"top_right"},"status_panel_2":{"show":true,"x":1605,"y":25,"width":278,"height":55,"font_family":"SwitchVisionCustom, Arial, Helvetica, sans-serif","font_size":16,"title_font_size":16,"font_weight":"bold","text_color":"#ffffff","label_color":"#eef2f4","title_color":"#f4f6f7","background_color":"rgba(0,0,0,.06)","border_color":"rgba(245,248,250,.75)","border_show":true,"title_mode":"custom","title_field":"model","custom_title":"","field_order":{"switch":["vendor","uptime","model","ip","cpu","temp","poe","os","firmware","serial","stack","fans","psu"],"port":["vlan","desc","link","rx","tx"],"sfp":["vlan","desc","link","rx","tx"]},"hidden_fields":{"switch":["model","ip","cpu","temp","poe","os","firmware","serial","stack","fans","psu"],"port":[],"sfp":[]},"fields":{"row1_key":[24,55],"row1_value":[112,55],"row2_key":[24,72],"row2_value":[112,72],"row3_key":[24,89],"row3_value":[112,89],"row4_key":[24,106],"row4_value":[112,106],"row5_key":[24,123],"row5_value":[112,123],"row6_key":[24,140],"row6_value":[112,140]}}},"stack":{"enabled":false,"stack_id":"","uptime_source":"","members":{}},"management":{"switch_ip":""},"profile":"cisco_2960s_48p"};
@@ -260,6 +260,13 @@ function normalisePortLedRectangleSize(value, radius = layout.ports?.r) {
   ];
 }
 
+function portLedCircleRadius(value, radius = layout.ports?.r) {
+  const fallbackRadius = Number.isFinite(Number(radius)) ? Math.max(1, Number(radius)) : 3.1;
+  if (!Array.isArray(value) || value.length !== 2) return fallbackRadius;
+  const [width, height] = normalisePortLedRectangleSize(value, fallbackRadius);
+  return Math.max(1, Math.round((Math.sqrt(width * height) / 2) * 10) / 10);
+}
+
 function portLedSizeKey(part) {
   if (part === "led_left") return "led_left_size";
   if (part === "led_right") return "led_right_size";
@@ -350,7 +357,7 @@ function portLed(svg, x, y, r, cls, activeCalibration, rectangleSize = null, par
       : [[x, y - halfHeight], [x + halfWidth, y + halfHeight], [x - halfWidth, y + halfHeight]];
     element = polygon(svg, points, cls);
   } else {
-    element = circle(svg, x, y, r, cls);
+    element = circle(svg, x, y, portLedCircleRadius(rectangleSize, r), cls);
   }
   return applyPortLedColourOverride(element, activeCalibration, part, cls);
 }
@@ -5011,16 +5018,17 @@ function normalisePortRole(value) {
   return SV_PORT_ROLES.includes(text) ? text : "";
 }
 
-function portRoleOptionsHtml(value, inheritedRole = "") {
-  const selected = normalisePortRole(value);
+function portRoleOptionsHtml(value, inheritedRole = "", { mixed = false } = {}) {
+  const selected = mixed ? "" : normalisePortRole(value);
   const inherited = normalisePortRole(inheritedRole);
   const autoLabel = inherited
     ? `Auto / Model default (${formatPortRole(inherited)})`
     : "Auto / Model default";
   const labels = { "": autoLabel, lan: "LAN", wan: "WAN", uplink: "Uplink" };
-  return SV_PORT_ROLES.map((role) => {
-    return `<option value="${htmlEscape(role)}" ${role === selected ? "selected" : ""}>${htmlEscape(labels[role])}</option>`;
+  const options = SV_PORT_ROLES.map((role) => {
+    return `<option value="${htmlEscape(role)}" ${!mixed && role === selected ? "selected" : ""}>${htmlEscape(labels[role])}</option>`;
   }).join("");
+  return `${mixed ? '<option value="" selected disabled>Mixed</option>' : ""}${options}`;
 }
 
 function normalisePortSupportedSpeed(value) {
@@ -5028,12 +5036,13 @@ function normalisePortSupportedSpeed(value) {
   return SV_PORT_SUPPORTED_SPEEDS.includes(text) ? text : "";
 }
 
-function portSupportedSpeedOptionsHtml(value) {
-  const selected = normalisePortSupportedSpeed(value);
-  return SV_PORT_SUPPORTED_SPEEDS.map((speed) => {
+function portSupportedSpeedOptionsHtml(value, { mixed = false } = {}) {
+  const selected = mixed ? "" : normalisePortSupportedSpeed(value);
+  const options = SV_PORT_SUPPORTED_SPEEDS.map((speed) => {
     const label = speed || "Unknown / Not specified";
-    return `<option value="${htmlEscape(speed)}" ${speed === selected ? "selected" : ""}>${htmlEscape(label)}</option>`;
+    return `<option value="${htmlEscape(speed)}" ${!mixed && speed === selected ? "selected" : ""}>${htmlEscape(label)}</option>`;
   }).join("");
+  return `${mixed ? '<option value="" selected disabled>Mixed</option>' : ""}${options}`;
 }
 
 function profileNameValidationMessage(value) {
@@ -5885,6 +5894,27 @@ function calibrationSfpKeysByParity(cal, parity = "all") {
 function calibrationSfpKeysForEditable(cal, editable) {
   if (Array.isArray(editable?.keys)) return editable.keys;
   return calibrationSfpKeysByParity(cal, editable?.parity || "all");
+}
+
+function calibrationPortMetadataTargets(cal, editable) {
+  let portKeys = [];
+  let sfpKeys = [];
+  if (editable?.type === "port") portKeys = [editable.key];
+  else if (editable?.type === "ports") portKeys = calibrationPortKeysForEditable(cal, editable);
+  else if (editable?.type === "sfp") sfpKeys = [editable.key];
+  else if (editable?.type === "sfps") sfpKeys = calibrationSfpKeysForEditable(cal, editable);
+  const items = [
+    ...portKeys.map((key) => cal.ports?.[key]),
+    ...sfpKeys.map((key) => cal.sfp?.[key]),
+  ].filter(Boolean);
+  return { portKeys, sfpKeys, items };
+}
+
+function commonCalibrationMetadataValue(items, field, normalise) {
+  if (!Array.isArray(items) || !items.length) return { value: "", mixed: false };
+  const values = items.map((item) => normalise(item?.[field]));
+  const value = values[0] || "";
+  return { value, mixed: values.some((candidate) => candidate !== value) };
 }
 
 function calibrationCoordinatePoints(cal, editable, createMissing = false) {
@@ -8824,17 +8854,17 @@ const testModeBadge = testModeUi.show !== false
         : String(this.config.calibration_port_selection_summary || "Enter RJ45 numbers/ranges or SFP/uplink names"));
     const displayNameEditable = ["port", "sfp"].includes(editable?.type);
     const displayNameValue = displayNameEditable ? String(editable?.item?.display_name || "") : "";
-    const supportedSpeedValue = ["port", "sfp"].includes(editable?.type)
-      ? normalisePortSupportedSpeed(editable?.item?.supported_speed)
+    const metadataTargets = calibrationPortMetadataTargets(cal, editable);
+    const metadataEditable = metadataTargets.items.length > 0;
+    const supportedSpeedState = commonCalibrationMetadataValue(metadataTargets.items, "supported_speed", normalisePortSupportedSpeed);
+    const portRoleState = commonCalibrationMetadataValue(metadataTargets.items, "port_role", normalisePortRole);
+    const inheritedRoles = [
+      ...metadataTargets.portKeys.map((key) => registryPortRoleForGroup(this.config, "rj45", Number(key))),
+      ...metadataTargets.sfpKeys.map((key) => registryPortRoleForGroup(this.config, "sfp", sfpPortNumber(key))),
+    ].map(normalisePortRole);
+    const inheritedPortRole = inheritedRoles.length && inheritedRoles.every((role) => role === inheritedRoles[0])
+      ? inheritedRoles[0]
       : "";
-    const portRoleValue = ["port", "sfp"].includes(editable?.type)
-      ? normalisePortRole(editable?.item?.port_role)
-      : "";
-    const inheritedPortRole = editable?.type === "port"
-      ? registryPortRoleForGroup(this.config, "rj45", Number(editable.key))
-      : (editable?.type === "sfp"
-        ? registryPortRoleForGroup(this.config, "sfp", sfpPortNumber(editable.key))
-        : "");
     const coordinatePoints = calibrationCoordinatePoints(cal, editable, false);
     const commonX = commonCalibrationCoordinate(coordinatePoints, 0);
     const commonY = commonCalibrationCoordinate(coordinatePoints, 1);
@@ -8908,10 +8938,10 @@ const testModeBadge = testModeUi.show !== false
         <button type="button" data-cv-action="set-port-display-name" ${displayNameEditable ? "" : "disabled"}>Set name</button>
         <button type="button" data-cv-action="reset-port-display-name" ${displayNameEditable && displayNameValue ? "" : "disabled"}>Reset name</button>
         <label>Supported speed
-          <select class="cv-cal-select" data-cv-field="port-supported-speed" ${["port", "sfp"].includes(editable?.type) ? "" : "disabled"}>${portSupportedSpeedOptionsHtml(supportedSpeedValue)}</select>
+          <select class="cv-cal-select" data-cv-field="port-supported-speed" ${metadataEditable ? "" : "disabled"}>${portSupportedSpeedOptionsHtml(supportedSpeedState.value, { mixed: supportedSpeedState.mixed })}</select>
         </label>
         <label>Port Role
-          <select class="cv-cal-select" data-cv-field="port-role" ${["port", "sfp"].includes(editable?.type) ? "" : "disabled"}>${portRoleOptionsHtml(portRoleValue, inheritedPortRole)}</select>
+          <select class="cv-cal-select" data-cv-field="port-role" ${metadataEditable ? "" : "disabled"}>${portRoleOptionsHtml(portRoleState.value, inheritedPortRole, { mixed: portRoleState.mixed })}</select>
         </label>
       </div>
       <div class="cv-cal-subsection-divider"><span>Quick selection</span></div>
@@ -9848,8 +9878,10 @@ ${portPresentationControls}
     if (portSupportedSpeedSelect) {
       portSupportedSpeedSelect.addEventListener("change", (event) => {
         const editable = getEditableCalibrationTarget(cal, this.config);
-        if (!["port", "sfp"].includes(editable?.type)) return;
-        editable.item.supported_speed = normalisePortSupportedSpeed(event.target.value);
+        const targets = calibrationPortMetadataTargets(cal, editable);
+        if (!targets.items.length) return;
+        const value = normalisePortSupportedSpeed(event.target.value);
+        for (const item of targets.items) item.supported_speed = value;
         this.markCalibrationDirty();
         this.render();
       });
@@ -9859,8 +9891,10 @@ ${portPresentationControls}
     if (portRoleSelect) {
       portRoleSelect.addEventListener("change", (event) => {
         const editable = getEditableCalibrationTarget(cal, this.config);
-        if (!["port", "sfp"].includes(editable?.type)) return;
-        editable.item.port_role = normalisePortRole(event.target.value);
+        const targets = calibrationPortMetadataTargets(cal, editable);
+        if (!targets.items.length) return;
+        const value = normalisePortRole(event.target.value);
+        for (const item of targets.items) item.port_role = value;
         this.markCalibrationDirty();
         this.render();
       });

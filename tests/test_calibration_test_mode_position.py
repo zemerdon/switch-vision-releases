@@ -32,6 +32,18 @@ def main() -> int:
     assert 'calibration.ui?.test_mode_button' not in source
     assert 'const workingUi = uiFromCalibration(calibrationRenderSpaceData(this.calibrationData()));' in source
 
+    # Test Mode persists after Done for unobstructed faceplate inspection.
+    # Cancel remains the explicit path that turns it off.
+    handler_start = source.index("  attachCalibrationButtonHandler() {")
+    handler_end = source.index("\n  baseCalibrationData() {", handler_start)
+    handler = source[handler_start:handler_end]
+    assert "calibration_test_mode: this.config?.calibration_test_mode === true" in handler
+    assert "return config?.calibration_test_mode === true;" in source
+    cancel_start = source.index('if (action === "cancel-calibration")')
+    cancel_end = source.index('if (action === "refresh-assets")', cancel_start)
+    cancel_block = source[cancel_start:cancel_end]
+    assert "calibration_test_mode: false" in cancel_block
+
     # Position-only means no W/H sizing and no pointer hitbox/drag target.
     size_block = source[source.index("function calibrationSizePairs"):source.index("function nextCalibrationPortNumber")]
     assert '"test_mode_button"' not in size_block

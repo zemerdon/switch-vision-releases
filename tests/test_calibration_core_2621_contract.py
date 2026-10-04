@@ -75,10 +75,14 @@ def main() -> int:
     )
     speed_handler = source[speed_handler_start:speed_handler_end]
     editable_lookup = 'const editable = getEditableCalibrationTarget(cal, this.config);'
-    speed_write = 'editable.item.supported_speed = normalisePortSupportedSpeed(event.target.value);'
+    metadata_lookup = 'const targets = calibrationPortMetadataTargets(cal, editable);'
+    speed_write = 'for (const item of targets.items) item.supported_speed = value;'
+    role_write = 'for (const item of targets.items) item.port_role = value;'
     assert editable_lookup in speed_handler, "Supported speed handler must resolve the current editable target"
-    assert speed_write in speed_handler, "Supported speed handler must write metadata to the resolved RJ45/SFP target"
-    assert speed_handler.index(editable_lookup) < speed_handler.index(speed_write), "Supported speed handler must resolve editable before writing metadata"
+    assert metadata_lookup in speed_handler, "Supported speed/role handlers must resolve the bounded RJ45/SFP selection"
+    assert speed_write in speed_handler, "Supported speed handler must write metadata to every selected RJ45/SFP target"
+    assert role_write in speed_handler, "Port role handler must write metadata to every selected RJ45/SFP target"
+    assert speed_handler.index(editable_lookup) < speed_handler.index(metadata_lookup) < speed_handler.index(speed_write), "Grouped metadata handler must resolve editable and bounded targets before writing"
 
     forbidden = [
         'const SV_VERSION = "2.6.20";',
