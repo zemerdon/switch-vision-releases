@@ -1,3 +1,9 @@
+# Switch Vision Core v2.7.45
+
+Core 2.7.45 preserves the existing persistent Calibration Test Mode workflow while fixing Activity LED flicker after **Done**. Test Mode still stays ON after Calibration closes, but it now fully owns the Activity LED presentation: the live activity animation/repaint loop is suppressed while Test Mode is active, so Activity LEDs remain solid instead of flickering individually or flashing together during telemetry refreshes.
+
+Normal live Activity LED animation resumes automatically when Test Mode is explicitly turned off.
+
 # Switch Vision Core v2.7.44
 
 Core 2.7.44 fixes persistent Calibration Test Mode after **Done** for custom faceplates whose saved visual topology is larger than the live switch contract. While Test Mode is active, every saved RJ45/SFP calibration position remains rendered so the full faceplate can be inspected; when Test Mode is off, normal live mode continues to enforce the real configured physical port counts.

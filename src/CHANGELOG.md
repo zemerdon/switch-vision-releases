@@ -1,3 +1,10 @@
+## v2.7.45 — Persistent Test Mode activity isolation
+
+- Keep persistent **Test Mode** active after **Done** exactly as before, so the saved faceplate remains available for unobstructed calibration inspection.
+- While persistent Test Mode is active, suppress the independent live Activity LED animation/repaint loop so telemetry cannot flicker individual Activity LEDs or briefly repaint the whole Activity LED set.
+- Resume normal live Activity LED animation automatically when Test Mode is explicitly turned off.
+- Add source and maintained Chromium regression coverage that seeds live activity after **Done** and proves the Activity LED remains solid with no animation timer running.
+
 ## v2.7.44 — Persistent Test Mode full-topology rendering
 
 - Keep every saved Calibration RJ45/SFP visual position rendered while persistent **Test Mode** is active after **Done**, even when the live switch's configured physical port counts are smaller than the custom faceplate topology.
