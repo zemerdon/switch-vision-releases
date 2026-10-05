@@ -1,3 +1,9 @@
+## v2.7.44 — Persistent Test Mode full-topology rendering
+
+- Keep every saved Calibration RJ45/SFP visual position rendered while persistent **Test Mode** is active after **Done**, even when the live switch's configured physical port counts are smaller than the custom faceplate topology.
+- Preserve the normal live/runtime topology guard when Test Mode is off, so Switch Vision still never invents operational ports or telemetry outside the real configured switch contract.
+- Add permanent source and Chromium coverage for the exact 4-SFP live-device / expanded saved-faceplate case that previously dropped extra Test Mode LEDs after Done.
+
 ## v2.7.43 — Calibration rendered-geometry and multi-port metadata corrections
 
 - Make saved Link/Activity LED W/H calibration values affect Circle rendering as well as rectangle/triangle shapes, while preserving the stock default circle size when no custom size is saved.

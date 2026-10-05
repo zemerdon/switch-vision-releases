@@ -1,3 +1,9 @@
+# Switch Vision Core v2.7.44
+
+Core 2.7.44 fixes persistent Calibration Test Mode after **Done** for custom faceplates whose saved visual topology is larger than the live switch contract. While Test Mode is active, every saved RJ45/SFP calibration position remains rendered so the full faceplate can be inspected; when Test Mode is off, normal live mode continues to enforce the real configured physical port counts.
+
+This specifically closes the case where a saved 24-SFP custom faceplate on a switch with four live uplinks showed all calibration LEDs while the editor was open, then dropped SFP5–SFP24 immediately after **Done** even though the TEST MODE badge remained active.
+
 # Switch Vision Core v2.7.43
 
 Core 2.7.43 fixes two Calibration behavior gaps found during local backend validation while preserving the established persistent Test Mode workflow. Circle Link/Activity LEDs now consume their saved W/H size envelope instead of always drawing at the stock radius. Supported Speed and Port Role can now be applied to grouped RJ45 or SFP/uplink selections, with Mixed shown when the selected set does not share one value.

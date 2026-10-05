@@ -507,6 +507,13 @@ async function scenarioCalibrationBehaviorContracts() {
     two:[card.calibrationData().ports['2'].supported_speed, card.calibrationData().ports['2'].port_role],
   };
 
+  // Reproduce a saved custom faceplate whose visual SFP topology is larger
+  // than the live switch contract. Calibration and persistent Test Mode must
+  // render those saved positions; ordinary live mode remains physically capped.
+  card._calibrationWorking.sfp.G5 = {center:[1870,220], hitbox:[70,44], label:[1870,180]};
+  card._calibrationWorking.sfp.G6 = {center:[1960,220], hitbox:[70,44], label:[1960,180]};
+  const extraSfpPoints = ['G5','G6'].map((key) => sfpLedFallbackPoint(card._calibrationWorking.sfp[key], 'led_left'));
+
   card._calibrationDirty = false;
   card.config = {...card.config, calibration_test_mode:true};
   card.render();
@@ -528,6 +535,7 @@ async function scenarioCalibrationBehaviorContracts() {
     mode:card.config.calibration_mode === true,
     ledClass:afterDoneLed?.getAttribute('class') || '',
     badgeActive:Boolean(card.shadowRoot.querySelector('.cv-cal-test-mode-badge.is-active')),
+    extraSfpVisible:extraSfpPoints.filter((point) => Boolean(circleFor(point))).length,
   };
 
   card.shadowRoot.querySelector('[data-cv-action="toggle-calibration"]').click();
@@ -655,7 +663,7 @@ async function scenarioNativeFontControls() {
         self.assertEqual(payload["calibrationBehavior"]["metadata"]["three"], ["25G", "wan"])
         self.assertNotEqual(payload["calibrationBehavior"]["metadata"]["two"], ["25G", "wan"])
         self.assertEqual(payload["calibrationBehavior"]["testMode"]["duringTest"], {"enabled":True, "ledClass":"cv-led-green"})
-        self.assertEqual(payload["calibrationBehavior"]["testMode"]["afterDone"], {"enabled":True, "controls":False, "mode":False, "ledClass":"cv-led-green", "badgeActive":True})
+        self.assertEqual(payload["calibrationBehavior"]["testMode"]["afterDone"], {"enabled":True, "controls":False, "mode":False, "ledClass":"cv-led-green", "badgeActive":True, "extraSfpVisible":2})
         self.assertEqual(payload["calibrationBehavior"]["testMode"]["reopened"], {"enabled":True, "controls":True, "mode":True})
         self.assertEqual(payload["calibrationBehavior"]["testMode"]["afterCancel"], {"enabled":False, "controls":False, "mode":False})
         self.assertEqual(payload["activity"]["active"]["redraws"], 1)
