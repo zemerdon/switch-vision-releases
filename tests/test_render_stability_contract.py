@@ -529,11 +529,34 @@ async function scenarioCalibrationBehaviorContracts() {
   await sleep(80);
   renderCal = calibrationRenderSpaceData(card.calibrationData());
   const afterDoneLed = circleFor(renderCal.ports['1'].led_left);
+  const afterDoneActivityPoint = renderCal.ports['1'].led_right;
+  const afterDoneActivityLed = circleFor(afterDoneActivityPoint);
+
+  // A live activity burst must never override persistent Test Mode after Done.
+  // Seed active telemetry state so the normal activity scheduler would start,
+  // then prove Test Mode keeps the independent timer stopped and the Activity
+  // LED solid ON.
+  const now = Date.now();
+  card._activityStateMaps.portActivity.set(1, {
+    activeUntil:now + 5000,
+    level:1,
+    lastDetectedAt:now,
+    lastSampleUpdated:now,
+    flickerSeed:1,
+    flickerOn:true,
+    nextFlickerAt:now + 100,
+  });
+  card.scheduleActivityAnimationIfNeeded();
+  await sleep(80);
+  const afterActivityTickLed = circleFor(afterDoneActivityPoint);
   const afterDone = {
     enabled:card.config.calibration_test_mode === true,
     controls:card.config.calibration_controls === true,
     mode:card.config.calibration_mode === true,
     ledClass:afterDoneLed?.getAttribute('class') || '',
+    activityLedClass:afterDoneActivityLed?.getAttribute('class') || '',
+    activityAfterTickClass:afterActivityTickLed?.getAttribute('class') || '',
+    activityTimer:card._activityRenderTimer != null,
     badgeActive:Boolean(card.shadowRoot.querySelector('.cv-cal-test-mode-badge.is-active')),
     extraSfpVisible:extraSfpPoints.filter((point) => Boolean(circleFor(point))).length,
   };
@@ -663,7 +686,7 @@ async function scenarioNativeFontControls() {
         self.assertEqual(payload["calibrationBehavior"]["metadata"]["three"], ["25G", "wan"])
         self.assertNotEqual(payload["calibrationBehavior"]["metadata"]["two"], ["25G", "wan"])
         self.assertEqual(payload["calibrationBehavior"]["testMode"]["duringTest"], {"enabled":True, "ledClass":"cv-led-green"})
-        self.assertEqual(payload["calibrationBehavior"]["testMode"]["afterDone"], {"enabled":True, "controls":False, "mode":False, "ledClass":"cv-led-green", "badgeActive":True, "extraSfpVisible":2})
+        self.assertEqual(payload["calibrationBehavior"]["testMode"]["afterDone"], {"enabled":True, "controls":False, "mode":False, "ledClass":"cv-led-green", "activityLedClass":"cv-led-amber", "activityAfterTickClass":"cv-led-amber", "activityTimer":False, "badgeActive":True, "extraSfpVisible":2})
         self.assertEqual(payload["calibrationBehavior"]["testMode"]["reopened"], {"enabled":True, "controls":True, "mode":True})
         self.assertEqual(payload["calibrationBehavior"]["testMode"]["afterCancel"], {"enabled":False, "controls":False, "mode":False})
         self.assertEqual(payload["activity"]["active"]["redraws"], 1)

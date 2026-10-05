@@ -44,6 +44,18 @@ def main() -> int:
     cancel_block = source[cancel_start:cancel_end]
     assert "calibration_test_mode: false" in cancel_block
 
+    # Persistent Test Mode owns the activity LEDs after Done. Live telemetry
+    # may still trigger normal card redraws, but the independent activity
+    # animation loop must neither start nor repaint while Test Mode is active.
+    refresh_start = source.index("  refreshActivityLeds() {")
+    refresh_end = source.index("\n  stopActivityAnimation() {", refresh_start)
+    refresh_block = source[refresh_start:refresh_end]
+    assert "calibrationTestModeEnabled(this.config)" in refresh_block
+    scheduler_start = source.index("  scheduleActivityAnimationIfNeeded() {")
+    scheduler_end = source.index("\n  set hass(hass) {", scheduler_start)
+    scheduler_block = source[scheduler_start:scheduler_end]
+    assert scheduler_block.count("calibrationTestModeEnabled(this.config)") >= 2
+
     # Position-only means no W/H sizing and no pointer hitbox/drag target.
     size_block = source[source.index("function calibrationSizePairs"):source.index("function nextCalibrationPortNumber")]
     assert '"test_mode_button"' not in size_block

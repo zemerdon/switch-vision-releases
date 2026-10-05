@@ -6964,7 +6964,7 @@ class SwitchVision3650 extends HTMLElement {
   }
 
   refreshActivityLeds() {
-    if (!this.isConnected || calibrationControlsEnabled(this.config)) return;
+    if (!this.isConnected || calibrationControlsEnabled(this.config) || calibrationTestModeEnabled(this.config)) return;
     const activeCalibration = this._activityRenderCalibration;
     const cachedTargets = this._activityAnimationTargets;
     if (!activeCalibration || !cachedTargets) return;
@@ -7014,7 +7014,7 @@ class SwitchVision3650 extends HTMLElement {
   }
 
   scheduleActivityAnimationIfNeeded() {
-    if (!this.isConnected || calibrationControlsEnabled(this.config) || !this.hasActivityAnimationTargets()) {
+    if (!this.isConnected || calibrationControlsEnabled(this.config) || calibrationTestModeEnabled(this.config) || !this.hasActivityAnimationTargets()) {
       this.stopActivityAnimation();
       return;
     }
@@ -7026,7 +7026,7 @@ class SwitchVision3650 extends HTMLElement {
 
     const refreshMs = Math.max(20, Number(this.config?.activity_animation_refresh_ms ?? 25));
     this._activityRenderTimer = setInterval(() => {
-      if (!this.isConnected || calibrationControlsEnabled(this.config) || !this.hasActivityAnimationTargets()) {
+      if (!this.isConnected || calibrationControlsEnabled(this.config) || calibrationTestModeEnabled(this.config) || !this.hasActivityAnimationTargets()) {
         this.stopActivityAnimation();
         return;
       }
