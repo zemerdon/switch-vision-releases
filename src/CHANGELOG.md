@@ -1,3 +1,10 @@
+## v2.7.46 — Generic VLAN membership presentation
+
+- Render a discovered `allowed_vlans` / `vlans` membership list for any switch vendor when that trusted derived telemetry exists, instead of restricting multi-VLAN presentation to Juniper.
+- Bind copper-port `native_vlan` and `vlan_mode` entities alongside the legacy VLAN/mode names so standards-based Q-BRIDGE native VLAN and ACCESS/TRUNK state are consumed consistently with existing SFP behavior.
+- Preserve the established single native/access VLAN display when no membership list exists, and preserve Juniper's existing fallback behavior.
+- Add a permanent behavioral regression covering a non-Juniper port with native VLAN 1 plus VLAN memberships 1,10,20 and a normal single-VLAN compatibility case.
+
 ## v2.7.45 — Persistent Test Mode activity isolation
 
 - Keep persistent **Test Mode** active after **Done** exactly as before, so the saved faceplate remains available for unobstructed calibration inspection.

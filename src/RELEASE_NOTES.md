@@ -1,3 +1,9 @@
+# Switch Vision Core v2.7.46
+
+Core 2.7.46 generalizes the existing multi-VLAN status presentation so standards-based Q-BRIDGE telemetry can show complete VLAN membership on non-Juniper switches. When a trusted `allowed_vlans` / `vlans` entity is available, the port status panel renders the full sorted membership list and labels multiple memberships as **VLANS**. Ports without a membership list retain the established single native/access VLAN behavior.
+
+Copper-port status resolution now also consumes the derived `native_vlan` and `vlan_mode` entity names used by generated VLAN telemetry, while preserving the legacy VLAN/mode fallbacks and all existing Juniper behavior.
+
 # Switch Vision Core v2.7.45
 
 Core 2.7.45 preserves the existing persistent Calibration Test Mode workflow while fixing Activity LED flicker after **Done**. Test Mode still stays ON after Calibration closes, but it now fully owns the Activity LED presentation: the live activity animation/repaint loop is suppressed while Test Mode is active, so Activity LEDs remain solid instead of flickering individually or flashing together during telemetry refreshes.
