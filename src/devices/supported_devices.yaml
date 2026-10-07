@@ -12,7 +12,7 @@ support_statuses:
 projection:
   schema: 1
   source_component: discovery
-  source_registry_sha256: 515025d6f7d1bb1ef44492e673c45137fadb3492edee4a338b3cfe64e903050d
+  source_registry_sha256: cde9c58fa1a7d6ae4ba18e74022b6e9d7fb1a9ca8ffb12f5f2cf1eb5d1abb498
   device_field_allowlist:
   - vendor
   - family
@@ -2131,7 +2131,7 @@ devices:
   model: SG200-26
   status: experimental
   confirmed_since: 3.0.18
-  last_validated_version: 3.0.23
+  last_validated_version: 3.0.24
   ports:
     rj45: 24
     poe: false

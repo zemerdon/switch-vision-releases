@@ -93,9 +93,19 @@ def test_all_shipped_faceplates_own_valid_native_geometry() -> None:
         calibration = calibrations[filename]
         image = calibration.get("image") or {}
         width, height = png_size(FACEPLATES / filename)
-        assert image.get("width") == width, filename
-        assert image.get("height") == height, filename
-        assert image.get("coordinate_space") == "image-native-v1", filename
+        coordinate_space = image.get("coordinate_space")
+        if coordinate_space == "image-native-v1":
+            geometry_width, geometry_height = width, height
+            assert image.get("width") == width, filename
+            assert image.get("height") == height, filename
+        elif coordinate_space == "switch-vision-render-2048x448-v1":
+            geometry_width, geometry_height = 2048, 448
+            assert image.get("width") == geometry_width, filename
+            assert image.get("height") == geometry_height, filename
+            assert image.get("native_width") == width, filename
+            assert image.get("native_height") == height, filename
+        else:
+            raise AssertionError((filename, coordinate_space))
         assert Path(str(image.get("file") or "")).name == filename, filename
 
         for section in ("ports", "sfp", "status_leds", "ui"):
@@ -117,25 +127,25 @@ def test_all_shipped_faceplates_own_valid_native_geometry() -> None:
                     and point_path.startswith("ui.")
                 )
                 if extended_sfp:
-                    assert 0 <= x <= width * 2 and 0 <= y <= height, (
+                    assert 0 <= x <= geometry_width * 2 and 0 <= y <= geometry_height, (
                         filename,
                         point_path,
                         point,
-                        (width * 2, height),
+                        (geometry_width * 2, geometry_height),
                     )
                 elif extended_ui:
-                    assert -width <= x <= width * 2 and -height <= y <= height * 2, (
+                    assert -geometry_width <= x <= geometry_width * 2 and -geometry_height <= y <= geometry_height * 2, (
                         filename,
                         point_path,
                         point,
-                        (width, height),
+                        (geometry_width, geometry_height),
                     )
                 else:
-                    assert 0 <= x <= width and 0 <= y <= height, (
+                    assert 0 <= x <= geometry_width and 0 <= y <= geometry_height, (
                         filename,
                         point_path,
                         point,
-                        (width, height),
+                        (geometry_width, geometry_height),
                     )
 
 
