@@ -1,3 +1,9 @@
+## v2.7.48 — Cisco SG200-26 stock 24+2 visual correction
+
+- Project Discovery 3.0.23's corrected Cisco SG200-26 visual contract into Core's generated exact-model registry.
+- Replace the SG200-26 oversized 48-RJ45 fallback with the existing `24rj45-2sfp.png` / `stock_24rj45_2sfp` stock presentation while preserving logical interfaces 25–26 through the existing SFP logical-port map.
+- Add permanent regression coverage proving that the selected stock profile contains exactly 24 RJ45 geometry positions and two SFP cages for the SG200-26 presentation.
+
 ## v2.7.47 — Dell N4032F dedicated faceplate
 
 - Add the dedicated Dell N4032F faceplate and owner-supplied 26-position optical geometry: SFP+ positions 1–24 plus optional 40G QSFP+ module positions 25–26.

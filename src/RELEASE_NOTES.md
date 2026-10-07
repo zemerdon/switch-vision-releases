@@ -1,3 +1,9 @@
+# Switch Vision Core v2.7.48
+
+Core 2.7.48 corrects the Cisco SG200-26 front-panel presentation. The exact model now uses the existing stock 24-RJ45 + 2-SFP faceplate/profile rather than the oversized 48-port fallback.
+
+The underlying hardware contract is unchanged: Discovery still tracks the proven gi1–gi26 interface set, and the two SFP cages remain bound to logical interfaces 25 and 26. The presentation change simply ensures the dashboard renders the intended 24 RJ45 geometry positions plus two shared uplink cages.
+
 # Switch Vision Core v2.7.47
 
 Core 2.7.47 adds the dedicated Dell N4032F visual. The owner-supplied faceplate is 2172 × 724 pixels and its complete 26-position calibration is preserved exactly in Switch Vision's 2048 × 448 render coordinate space: positions 1–24 are the front 10G SFP+ ports and positions 25–26 are the optional front-panel 40G QSFP+ expansion-module sockets.
