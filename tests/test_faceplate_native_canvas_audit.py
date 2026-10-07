@@ -68,16 +68,8 @@ class FaceplateNativeCanvasContract(unittest.TestCase):
             filename = Path(str((ui.get("faceplate") or {}).get("file") or image["file"])).name
             width, height = png_size(FACEPLATES / filename)
 
-            coordinate_space = image.get("coordinate_space")
-            if coordinate_space == "image-native-v1":
-                geometry_width, geometry_height = width, height
-                self.assertEqual((image.get("width"), image.get("height")), (width, height), path.name)
-            elif coordinate_space == "switch-vision-render-2048x448-v1":
-                geometry_width, geometry_height = 2048, 448
-                self.assertEqual((image.get("width"), image.get("height")), (2048, 448), path.name)
-                self.assertEqual((image.get("native_width"), image.get("native_height")), (width, height), path.name)
-            else:
-                self.fail(f"{path.name}: unsupported coordinate space {coordinate_space!r}")
+            self.assertEqual(image.get("coordinate_space"), "image-native-v1", path.name)
+            self.assertEqual((image.get("width"), image.get("height")), (width, height), path.name)
 
             extended_sfp = data.get("allow_out_of_bounds_sfp_geometry") is True
             if extended_sfp:
@@ -88,17 +80,17 @@ class FaceplateNativeCanvasContract(unittest.TestCase):
                 )
 
             for collection_name in ("ports", "sfp"):
-                collection_width = geometry_width * 2 if collection_name == "sfp" and extended_sfp else geometry_width
+                collection_width = width * 2 if collection_name == "sfp" and extended_sfp else width
                 for key, item in (data.get(collection_name) or {}).items():
                     prefix = f"{path.name}:{collection_name}:{key}"
                     for field in ("center", "number", "label", "led_left", "led_right"):
-                        assert_point(self, item.get(field), collection_width, geometry_height, f"{prefix}:{field}")
-                    assert_centered_box(self, item.get("center"), item.get("hitbox"), collection_width, geometry_height, f"{prefix}:hitbox")
-                    assert_centered_box(self, item.get("led_left"), item.get("led_left_size"), collection_width, geometry_height, f"{prefix}:led_left")
-                    assert_centered_box(self, item.get("led_right"), item.get("led_right_size"), collection_width, geometry_height, f"{prefix}:led_right")
+                        assert_point(self, item.get(field), collection_width, height, f"{prefix}:{field}")
+                    assert_centered_box(self, item.get("center"), item.get("hitbox"), collection_width, height, f"{prefix}:hitbox")
+                    assert_centered_box(self, item.get("led_left"), item.get("led_left_size"), collection_width, height, f"{prefix}:led_left")
+                    assert_centered_box(self, item.get("led_right"), item.get("led_right_size"), collection_width, height, f"{prefix}:led_right")
 
             for name, point in (data.get("status_leds") or {}).items():
-                assert_point(self, point, geometry_width, geometry_height, f"{path.name}:status:{name}")
+                assert_point(self, point, width, height, f"{path.name}:status:{name}")
 
             extended_ui = data.get("allow_out_of_bounds_ui_geometry") is True
             if extended_ui:
@@ -114,14 +106,14 @@ class FaceplateNativeCanvasContract(unittest.TestCase):
                     y = float(box.get("y") or 0)
                     box_w = float(box.get("width") or 0)
                     box_h = float(box.get("height") or 0)
-                    self.assertGreaterEqual(x, -geometry_width, f"{path.name}:{name}: x below safe range")
-                    self.assertGreaterEqual(y, -geometry_height, f"{path.name}:{name}: y below safe range")
-                    self.assertLessEqual(x, geometry_width * 2, f"{path.name}:{name}: x above safe range")
-                    self.assertLessEqual(y, geometry_height * 2, f"{path.name}:{name}: y above safe range")
+                    self.assertGreaterEqual(x, -width, f"{path.name}:{name}: x below safe range")
+                    self.assertGreaterEqual(y, -height, f"{path.name}:{name}: y below safe range")
+                    self.assertLessEqual(x, width * 2, f"{path.name}:{name}: x above safe range")
+                    self.assertLessEqual(y, height * 2, f"{path.name}:{name}: y above safe range")
                     self.assertGreater(box_w, 0.0, f"{path.name}:{name}: width must be positive")
                     self.assertGreater(box_h, 0.0, f"{path.name}:{name}: height must be positive")
                 else:
-                    assert_top_left_box(self, box, geometry_width, geometry_height, f"{path.name}:{name}")
+                    assert_top_left_box(self, box, width, height, f"{path.name}:{name}")
 
     def test_renderer_has_native_to_legacy_compatibility_transform(self) -> None:
         text = FRONTEND.read_text(encoding="utf-8")
@@ -130,7 +122,7 @@ class FaceplateNativeCanvasContract(unittest.TestCase):
             "function calibrationRenderSpaceData(source)",
             "const renderCal = calibrationRenderSpaceData(cal);",
             "uiFromCalibration(calibrationRenderSpaceData(this.calibrationData()))",
-            'viewBox="0 0 2048 448" preserveAspectRatio="none"',
+            'viewBox="0 0 2048 448" preserveAspectRatio="xMidYMid meet"',
         ):
             self.assertIn(needle, text)
 

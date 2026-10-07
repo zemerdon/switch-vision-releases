@@ -66,9 +66,8 @@ class DellN4032FFaceplateBindingTests(unittest.TestCase):
         self.assertEqual(profile["model"], "dell-n4032f")
         self.assertEqual(profile["profile"], "dell_n4032f")
         self.assertEqual(profile["image"]["file"], "faceplates/dell-4032f.png")
-        self.assertEqual(profile["image"]["coordinate_space"], "switch-vision-render-2048x448-v1")
-        self.assertEqual((profile["image"]["width"], profile["image"]["height"]), (2048, 448))
-        self.assertEqual((profile["image"]["native_width"], profile["image"]["native_height"]), (1935, 262))
+        self.assertEqual(profile["image"]["coordinate_space"], "image-native-v1")
+        self.assertEqual((profile["image"]["width"], profile["image"]["height"]), (1935, 262))
         render = render_space_calibration(profile)
         expected = json.loads(json.dumps(oracle))
         expected["image"].pop("coordinate_space", None)
@@ -79,8 +78,16 @@ class DellN4032FFaceplateBindingTests(unittest.TestCase):
                 for key, value in wanted.items():
                     self.assertIn(key, actual, where)
                     assert_subset(actual[key], value, f"{where}.{key}")
+            elif isinstance(wanted, list):
+                self.assertIsInstance(actual, list, where)
+                self.assertEqual(len(actual), len(wanted), where)
+                for index, value in enumerate(wanted):
+                    assert_subset(actual[index], value, f"{where}[{index}]")
             else:
-                self.assertEqual(actual, wanted, where)
+                if isinstance(wanted, (int, float)) and isinstance(actual, (int, float)):
+                    self.assertAlmostEqual(float(actual), float(wanted), places=8, msg=where)
+                else:
+                    self.assertEqual(actual, wanted, where)
 
         assert_subset(render, expected)
         self.assertEqual(list(render["sfp"]), [f"SFP{n}" for n in range(1, 27)])
@@ -98,6 +105,38 @@ class DellN4032FFaceplateBindingTests(unittest.TestCase):
         self.assertIn("faceplateImage.naturalWidth", source)
         self.assertIn("native ${w} × ${h}", source)
         self.assertNotIn("native 2048 × 448", source)
+
+    def test_native_projection_matches_legacy_runtime_mapping(self) -> None:
+        profile = json.loads(PROFILE.read_text(encoding="utf-8"))
+        render = render_space_calibration(profile)
+        native_width = float(profile["image"]["width"])
+        native_height = float(profile["image"]["height"])
+        viewport_width = 1360.0
+        viewport_height = viewport_width * native_height / native_width
+        svg_scale = min(viewport_width / 2048.0, viewport_height / 448.0)
+        svg_offset_x = (viewport_width - (2048.0 * svg_scale)) / 2.0
+        svg_offset_y = (viewport_height - (448.0 * svg_scale)) / 2.0
+        image_scale = viewport_width / native_width
+
+        for key in ("SFP1", "SFP2", "SFP12", "SFP13", "SFP24", "SFP25", "SFP26"):
+            native = profile["sfp"][key]["center"]
+            logical = render["sfp"][key]["center"]
+            svg_screen = (
+                svg_offset_x + float(logical[0]) * svg_scale,
+                svg_offset_y + float(logical[1]) * svg_scale,
+            )
+            image_screen = (
+                float(native[0]) * image_scale,
+                float(native[1]) * image_scale,
+            )
+            self.assertAlmostEqual(svg_screen[0], image_screen[0], places=7, msg=key)
+            self.assertAlmostEqual(svg_screen[1], image_screen[1], places=7, msg=key)
+
+        source = CARD.read_text(encoding="utf-8")
+        css = (ROOT / "src" / "css" / "switch-vision.css").read_text(encoding="utf-8")
+        self.assertIn('preserveAspectRatio="xMidYMid meet"', source)
+        self.assertIn(".cv-image{position:relative;z-index:1;display:block;width:100%;height:auto", css)
+        self.assertNotIn("aspect-ratio:2048/448", css)
 
     def test_qsfp_module_slots_resolve_to_real_40g_entities(self) -> None:
         source = CARD.read_text(encoding="utf-8")

@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.50
+
+Core 2.7.50 restores the long-standing native-image calibration renderer after local testing exposed a regression in the 2.7.49 fixed-canvas experiment. Factory faceplates again render with the established image-defined canvas and SVG `xMidYMid meet` mapping, so the native-image conversion and browser transform remain inverse halves of the same calibration contract.
+
+The latest Dell N4032F 1935 × 262 artwork is retained. Its factory profile is projected from the owner-supplied 2048 × 448 calibration into the PNG's real native pixel canvas, preserving the supplied SFP1–24 and QSFP25–26 geometry without asking for recalibration. The card header continues to report the active image's real native resolution.
+
+This release also retains the Cisco SG200-26 24-RJ45 + 2-SFP presentation correction and its unchanged 26-interface logical/SNMP contract.
+
 # Switch Vision Core v2.7.49
 
 Core 2.7.49 fixes the faceplate image/overlay renderer so the physical artwork and all SVG calibration geometry share one stable 2048 × 448 display plane. Native PNG resolution is now presentation metadata only: changing artwork aspect ratio cannot resize, letterbox or otherwise apply a second transform to the geometry overlay.

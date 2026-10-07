@@ -1,0 +1,2946 @@
+{
+  "schema_version": 1,
+  "generated_documents": {
+    "markdown": "docs/SUPPORTED_DEVICES.md",
+    "forum_bbcode": "docs/SUPPORTED_DEVICES_FORUM.bbcode"
+  },
+  "support_statuses": {
+    "detected": "Model identification works, but telemetry and layout are not validated.",
+    "experimental": "A profile exists, but real-hardware validation is incomplete.",
+    "community_validated": "A real user has validated the applicable physical mapping, port selection, LEDs, link/speed behaviour, PoE, optical positions, sensors and rendered alignment.",
+    "confirmed": "Repeatably tested and treated as officially supported."
+  },
+  "projection": {
+    "schema": 1,
+    "source_component": "discovery",
+    "source_registry_sha256": "cde9c58fa1a7d6ae4ba18e74022b6e9d7fb1a9ca8ffb12f5f2cf1eb5d1abb498",
+    "device_field_allowlist": [
+      "vendor",
+      "family",
+      "model",
+      "status",
+      "confirmed_since",
+      "last_validated_version",
+      "ports",
+      "stack_support",
+      "discovery_support",
+      "dashboard_support",
+      "mapping_profile",
+      "calibration_profile",
+      "default_faceplate",
+      "optional_faceplates",
+      "validation",
+      "visuals",
+      "unifi_api_port_map",
+      "port_roles"
+    ]
+  },
+  "devices": [
+    {
+      "vendor": "HP",
+      "family": "1810",
+      "model": "HP 1810-24G",
+      "status": "experimental",
+      "confirmed_since": "2.3.36",
+      "last_validated_version": "2.3.36",
+      "ports": {
+        "rj45": 24,
+        "poe": false,
+        "uplinks": 2,
+        "uplink_type": "2x 1G SFP",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "hp-1810-24g-24p-2sfp",
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed",
+        "rj45_mapping": "real_hardware_indexes_1_24_confirmed",
+        "poe": "not_applicable",
+        "system_sensors": "pending",
+        "uplinks": "real_hardware_indexes_25_26_confirmed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "HP",
+      "family": "2530",
+      "model": "HP J9774A 2530-8G-PoEP",
+      "status": "experimental",
+      "confirmed_since": "3.0.9",
+      "last_validated_version": "3.0.9",
+      "ports": {
+        "rj45": 8,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "2 dual-personality 1G RJ45/SFP",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 0,
+        "combo_ports": 2,
+        "combo_logical_ports": [
+          9,
+          10
+        ]
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "hp-2530-8g-poep-8p-2dual",
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "real_hardware_sysobjectid_and_local_identity_confirmed",
+        "rj45_mapping": "real_hardware_numeric_interfaces_1_8_fixed_copper_confirmed",
+        "poe": "standard_power_ethernet_mib_ports_1_8_and_67w_budget_observed",
+        "system_sensors": "pending",
+        "uplinks": "real_hardware_dual_personality_logical_ports_9_10_confirmed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "HP",
+      "family": "1810",
+      "model": "HP ProCurve 1810G-24",
+      "status": "experimental",
+      "confirmed_since": "2.4.47",
+      "last_validated_version": "2.4.47",
+      "ports": {
+        "rj45": 22,
+        "poe": false,
+        "uplinks": 2,
+        "uplink_type": "2 dual-personality 1G RJ45/SFP",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 0,
+        "combo_ports": 2,
+        "combo_logical_ports": [
+          23,
+          24
+        ]
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "hp-procurve-1810g-24-22p-2dual",
+      "calibration_profile": "hp_1810_24g",
+      "default_faceplate": "faceplates/hp-1810-24g.png",
+      "optional_faceplates": [
+        "faceplates/24rj45-2sfp.png"
+      ],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed_sysdescr_and_sysobjectid",
+        "rj45_mapping": "real_hardware_indexes_1_22_fixed_copper_confirmed",
+        "poe": "not_applicable",
+        "system_sensors": "not_exposed_in_contributed_targeted_capture",
+        "uplinks": "manufacturer_confirmed_dual_personality_indexes_23_24_medium_pending",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/hp-1810-24g.png",
+        "optional_faceplates": [
+          "faceplates/24rj45-2sfp.png"
+        ],
+        "calibration_profile": "hp_1810_24g",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Zyxel",
+      "family": "GS1900",
+      "model": "GS1900-8",
+      "status": "experimental",
+      "confirmed_since": "2.3.36",
+      "last_validated_version": "2.3.36",
+      "ports": {
+        "rj45": 8,
+        "poe": false,
+        "uplinks": 0,
+        "uplink_type": "none",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "zyxel-gs1900-8",
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed",
+        "rj45_mapping": "real_hardware_eight_ports_confirmed",
+        "poe": "not_applicable",
+        "system_sensors": "pending",
+        "uplinks": "not_applicable",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Sirivision",
+      "family": "SR-S25G",
+      "model": "SR-S25G3420F",
+      "status": "experimental",
+      "confirmed_since": "2.3.36",
+      "last_validated_version": "2.3.36",
+      "ports": {
+        "rj45": 16,
+        "poe": false,
+        "uplinks": 4,
+        "uplink_type": "4x 10G optical",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 4
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "sirivision-sr-s25g3420f",
+      "calibration_profile": "stock_24rj45_4sfp",
+      "default_faceplate": "faceplates/24rj45-4sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed",
+        "rj45_mapping": "real_hardware_indexes_1_16_confirmed",
+        "poe": "not_applicable",
+        "system_sensors": "pending",
+        "uplinks": "real_hardware_indexes_17_20_confirmed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_4sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Catalyst 3650",
+      "model": "WS-C3650-48PD-E",
+      "status": "confirmed",
+      "confirmed_since": "1.2.26",
+      "last_validated_version": "1.8.0",
+      "ports": {
+        "rj45": 48,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "SFP/SFP+",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": true,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-3650-48p-2x10g",
+      "calibration_profile": "default_cisco_48_port",
+      "default_faceplate": "faceplates/48rj45-4sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "confirmed",
+        "rj45_mapping": "confirmed",
+        "poe": "confirmed",
+        "system_sensors": "confirmed",
+        "uplinks": "confirmed",
+        "stack": "confirmed"
+      },
+      "visuals": {
+        "status": "confirmed",
+        "recommended_faceplate": "faceplates/48rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "default_cisco_48_port",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Catalyst 3650",
+      "model": "WS-C3650-48PD-L",
+      "status": "confirmed",
+      "confirmed_since": "1.2.26",
+      "last_validated_version": "1.8.0",
+      "ports": {
+        "rj45": 48,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "SFP/SFP+",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": true,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-3650-48p-2x10g",
+      "calibration_profile": "default_cisco_48_port",
+      "default_faceplate": "faceplates/48rj45-4sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "confirmed",
+        "rj45_mapping": "confirmed",
+        "poe": "confirmed",
+        "system_sensors": "confirmed",
+        "uplinks": "confirmed",
+        "stack": "confirmed"
+      },
+      "visuals": {
+        "status": "confirmed",
+        "recommended_faceplate": "faceplates/48rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "default_cisco_48_port",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Catalyst 2960X",
+      "model": "WS-C2960X-48FPD-L",
+      "status": "confirmed",
+      "confirmed_since": "1.8.26",
+      "last_validated_version": "1.8.26",
+      "ports": {
+        "rj45": 48,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-2960x-48fpd-48p-2x10g",
+      "calibration_profile": "cisco_2960s_48p",
+      "default_faceplate": "faceplates/48rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "confirmed",
+        "rj45_mapping": "confirmed",
+        "poe": "confirmed",
+        "system_sensors": "confirmed",
+        "uplinks": "confirmed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "confirmed",
+        "recommended_faceplate": "faceplates/48rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "cisco_2960s_48p",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Catalyst 2960X",
+      "model": "WS-C2960X-24PS-L",
+      "status": "community_validated",
+      "confirmed_since": "1.4.2",
+      "last_validated_version": "3.0.0",
+      "ports": {
+        "rj45": 24,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "Gigabit SFP",
+        "gigabit_sfp": 4,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-2960x-24ps-24p-4sfp",
+      "calibration_profile": "cisco_2960x_24p",
+      "default_faceplate": "faceplates/24rj45-4sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "confirmed",
+        "rj45_mapping": "confirmed",
+        "poe": "confirmed",
+        "system_sensors": "confirmed",
+        "uplinks": "confirmed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "community_validated",
+        "recommended_faceplate": "faceplates/24rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "cisco_2960x_24p",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Catalyst 2960X",
+      "model": "WS-C2960X-24TS-L",
+      "status": "experimental",
+      "confirmed_since": "1.8.25",
+      "last_validated_version": "1.8.25",
+      "ports": {
+        "rj45": 24,
+        "poe": false,
+        "uplinks": 4,
+        "uplink_type": "Gigabit SFP",
+        "gigabit_sfp": 4,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": true,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-2960x-24ts-24p-4sfp",
+      "calibration_profile": "cisco_2960x_24p",
+      "default_faceplate": "faceplates/24rj45-4sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed",
+        "rj45_mapping": "contribution_pending_live_validation",
+        "poe": "not_applicable",
+        "system_sensors": "pending",
+        "uplinks": "pending",
+        "stack": "contribution_detected_pending_live_validation"
+      },
+      "visuals": {
+        "status": "confirmed",
+        "recommended_faceplate": "faceplates/24rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "cisco_2960x_24p",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Catalyst 2960X",
+      "model": "WS-C2960XR-48LPS-I",
+      "status": "experimental",
+      "confirmed_since": "2.4.42",
+      "last_validated_version": "2.4.42",
+      "ports": {
+        "rj45": 48,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "4x 1G SFP",
+        "gigabit_sfp": 4,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": true,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-2960xr-48lps-48p-4sfp",
+      "calibration_profile": "default_cisco_48_port",
+      "default_faceplate": "faceplates/48rj45-4sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed_exact_model",
+        "rj45_mapping": "contribution_confirmed_gi1_0_1_48",
+        "poe": "aggregate_telemetry_observed_per_port_behavior_pending",
+        "system_sensors": "cpu_and_temperature_observed_family_correlated",
+        "uplinks": "contribution_confirmed_gi1_0_49_52_1g_sfp",
+        "stack": "stack_capability_observed_multi_member_behavior_pending"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/48rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "default_cisco_48_port",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Catalyst 2960S",
+      "model": "WS-C2960S-48FPD-L",
+      "status": "confirmed",
+      "confirmed_since": "1.8.26",
+      "last_validated_version": "1.8.26",
+      "ports": {
+        "rj45": 48,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-2960s-48fpd-48p-2x10g",
+      "calibration_profile": "cisco_2960s_48p",
+      "default_faceplate": "faceplates/48rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "confirmed",
+        "rj45_mapping": "confirmed",
+        "poe": "confirmed",
+        "system_sensors": "confirmed",
+        "uplinks": "confirmed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "confirmed",
+        "recommended_faceplate": "faceplates/48rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "cisco_2960s_48p",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Catalyst 3560-C",
+      "model": "WS-C3560CG-8PC-S",
+      "status": "experimental",
+      "confirmed_since": "1.8.24",
+      "last_validated_version": "1.8.24",
+      "ports": {
+        "rj45": 8,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "dual-purpose Gigabit copper/SFP",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-3560cg-8pc-8p-2dual",
+      "calibration_profile": "cisco_3560cg_8pc",
+      "default_faceplate": "faceplates/c3560cg-8pc-s.png",
+      "optional_faceplates": [
+        "faceplates/24rj45-2sfp.png"
+      ],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed",
+        "rj45_mapping": "candidate",
+        "poe": "candidate",
+        "system_sensors": "pending",
+        "uplinks": "pending",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "confirmed",
+        "recommended_faceplate": "faceplates/c3560cg-8pc-s.png",
+        "optional_faceplates": [
+          "faceplates/24rj45-2sfp.png"
+        ],
+        "calibration_profile": "cisco_3560cg_8pc",
+        "canvas": {
+          "width": 2048,
+          "height": 329
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Catalyst 3850",
+      "model": "WS-C3850-12XS-E",
+      "status": "community_validated",
+      "confirmed_since": "2.3.46",
+      "last_validated_version": "2.4.5",
+      "ports": {
+        "rj45": 0,
+        "poe": false,
+        "uplinks": 12,
+        "uplink_type": "12x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 12
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-3850-12xs-12x10g",
+      "calibration_profile": "cisco_3850_12xs",
+      "default_faceplate": "faceplates/cisco-3850-12xs.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "community_confirmed_three_capture_sessions",
+        "rj45_mapping": "not_applicable",
+        "poe": "not_applicable",
+        "system_sensors": "community_confirmed_cisco_envmon_temperature_fan_psu",
+        "uplinks": "community_confirmed_te_member_0_1_12_link_speed_activity",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "community_validated",
+        "recommended_faceplate": "faceplates/cisco-3850-12xs.png",
+        "optional_faceplates": [],
+        "calibration_profile": "cisco_3850_12xs",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Juniper",
+      "family": "EX3300",
+      "model": "EX3300-48P",
+      "status": "confirmed",
+      "confirmed_since": "1.8.26",
+      "last_validated_version": "1.8.26",
+      "ports": {
+        "rj45": 48,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "4 dual-speed 1G/10G SFP+ cages",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 4
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "juniper-ex3300-48p",
+      "calibration_profile": "default_cisco_48_port",
+      "default_faceplate": "faceplates/48rj45-4sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "confirmed",
+        "rj45_mapping": "confirmed",
+        "poe": "confirmed",
+        "system_sensors": "confirmed",
+        "uplinks": "confirmed",
+        "stack": "not_validated"
+      },
+      "visuals": {
+        "status": "confirmed",
+        "recommended_faceplate": "faceplates/48rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "default_cisco_48_port",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Small Business SG500X",
+      "model": "SG500X-24",
+      "status": "community_validated",
+      "confirmed_since": "2.0.18",
+      "last_validated_version": "2.6.7",
+      "ports": {
+        "rj45": 24,
+        "poe": false,
+        "uplinks": 4,
+        "uplink_type": "10G",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 4
+      },
+      "stack_support": true,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-sg500x-24-24p-4x10g",
+      "calibration_profile": "cisco_2960x_24p",
+      "default_faceplate": "faceplates/24rj45-4sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed",
+        "rj45_mapping": "community_confirmed_ports_1_24",
+        "poe": "not_applicable",
+        "system_sensors": "community_confirmed",
+        "uplinks": "community_confirmed_four_uplink_positions",
+        "stack": "pending"
+      },
+      "visuals": {
+        "status": "community_validated",
+        "recommended_faceplate": "faceplates/24rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "cisco_2960x_24p",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Huawei",
+      "family": "S5720",
+      "model": "S5720-12TP-LI-AC",
+      "status": "community_validated",
+      "confirmed_since": "2.0.18",
+      "last_validated_version": "2.6.7",
+      "ports": {
+        "rj45": 8,
+        "poe": false,
+        "uplinks": 4,
+        "uplink_type": "1G SFP",
+        "gigabit_sfp": 4,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "huawei-s5720-12tp-li-ac",
+      "calibration_profile": "stock_24rj45_4sfp",
+      "default_faceplate": "faceplates/24rj45-4sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed_sysobjectid_and_model",
+        "rj45_mapping": "community_confirmed_ports_1_8",
+        "poe": "not_applicable_not_exposed",
+        "system_sensors": "community_confirmed",
+        "uplinks": "community_confirmed_ports_9_12_1g_sfp_link_and_speed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "community_validated",
+        "recommended_faceplate": "faceplates/24rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_4sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Zyxel",
+      "family": "XS1930",
+      "model": "XS1930-10",
+      "status": "experimental",
+      "confirmed_since": "2.1.7",
+      "last_validated_version": "2.1.7",
+      "ports": {
+        "rj45": 8,
+        "poe": false,
+        "uplinks": 2,
+        "uplink_type": "10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "zyxel-xs1930-10",
+      "calibration_profile": "cisco_3560cg_8pc",
+      "default_faceplate": "faceplates/c3560cg-8pc-s.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed_sysobjectid_model_and_firmware",
+        "rj45_mapping": "contribution_confirmed_ifindex_1_8_swp00_swp07",
+        "poe": "not_applicable_not_proven_by_contribution",
+        "system_sensors": "contribution_confirmed_vendor_oids_pending_contributor_runtime_validation",
+        "uplinks": "contribution_confirmed_ifindex_9_10_swp08_swp09",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/c3560cg-8pc-s.png",
+        "optional_faceplates": [],
+        "calibration_profile": "cisco_3560cg_8pc",
+        "canvas": {
+          "width": 2048,
+          "height": 329
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Enterprise",
+      "model": "USW-Enterprise-8-PoE",
+      "status": "experimental",
+      "confirmed_since": "2.0.19",
+      "last_validated_version": "2.0.32",
+      "ports": {
+        "rj45": 8,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "10G SFP+ candidate",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-enterprise-8-poe",
+      "calibration_profile": "unifi_8_rj45_2sfp",
+      "default_faceplate": "faceplates/unifi-8-rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed_multiple_devices",
+        "rj45_mapping": "candidate_repeated_evidence",
+        "poe": "pending_live_validation",
+        "system_sensors": "pending",
+        "uplinks": "candidate_repeated_evidence",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-8-rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_8_rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Pro",
+      "model": "USW-Pro-24-PoE",
+      "status": "experimental",
+      "confirmed_since": "2.0.19",
+      "last_validated_version": "2.0.32",
+      "ports": {
+        "rj45": 24,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "uplink media pending validation",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-pro-24-poe",
+      "calibration_profile": "unifi_24_rj45_2sfp_inline",
+      "default_faceplate": "faceplates/unifi-24-rj45-2sfp-inline.png",
+      "optional_faceplates": [
+        "faceplates/24rj45-4sfp.png"
+      ],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed",
+        "rj45_mapping": "candidate",
+        "poe": "pending_live_validation",
+        "system_sensors": "pending",
+        "uplinks": "candidate_media_pending_validation",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-24-rj45-2sfp-inline.png",
+        "optional_faceplates": [
+          "faceplates/24rj45-4sfp.png"
+        ],
+        "calibration_profile": "unifi_24_rj45_2sfp_inline",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Lite",
+      "model": "USW Lite 16 PoE",
+      "status": "experimental",
+      "confirmed_since": "2.0.20",
+      "last_validated_version": "2.0.32",
+      "ports": {
+        "rj45": 16,
+        "poe": true,
+        "uplinks": 0,
+        "uplink_type": "none",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "",
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "api_confirmed",
+        "rj45_mapping": "api_confirmed_port_indices",
+        "poe": "api_confirmed_metadata",
+        "system_sensors": "api_confirmed_cpu_memory",
+        "uplinks": "not_applicable",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Pro XG",
+      "model": "USW Pro XG 8 PoE",
+      "status": "experimental",
+      "confirmed_since": "2.0.20",
+      "last_validated_version": "2.0.32",
+      "ports": {
+        "rj45": 8,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-pro-xg-8-poe-api",
+      "calibration_profile": "unifi_8_rj45_2sfp",
+      "default_faceplate": "faceplates/unifi-8-rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "api_confirmed",
+        "rj45_mapping": "api_confirmed_port_indices",
+        "poe": "api_confirmed_metadata",
+        "system_sensors": "api_confirmed_cpu_memory",
+        "uplinks": "api_confirmed_connector_and_speed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-8-rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_8_rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Huawei",
+      "family": "S5735-L",
+      "model": "S5735-L8P4X-A1",
+      "status": "community_validated",
+      "confirmed_since": "2.0.21",
+      "last_validated_version": "2.6.7",
+      "ports": {
+        "rj45": 8,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 4
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "huawei-s5735-l8p4x-a1",
+      "calibration_profile": "stock_24rj45_4sfp",
+      "default_faceplate": "faceplates/24rj45-4sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed_two_devices",
+        "rj45_mapping": "community_confirmed_two_devices_ports_1_8",
+        "poe": "community_confirmed",
+        "system_sensors": "community_confirmed",
+        "uplinks": "community_confirmed_two_devices_four_10g_sfp_plus_positions_and_link_speed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "community_validated",
+        "recommended_faceplate": "faceplates/24rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_4sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Dream Machine Pro",
+      "model": "UDM Pro",
+      "status": "experimental",
+      "confirmed_since": "2.0.28",
+      "last_validated_version": "2.0.32",
+      "ports": {
+        "rj45": 9,
+        "poe": false,
+        "uplinks": 2,
+        "uplink_type": "10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-udm-pro-api",
+      "calibration_profile": "unifi_9_rj45_2sfp",
+      "default_faceplate": "faceplates/unifi-9rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_port_indices",
+        "poe": "live_api_confirmed_not_available",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_connector_and_speed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-9rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_9_rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      },
+      "port_roles": {
+        "rj45": {
+          "9": "wan"
+        }
+      }
+    },
+    {
+      "vendor": "Dell",
+      "family": "Dell EMC Networking N2000",
+      "model": "N2128PX-ON",
+      "status": "experimental",
+      "confirmed_since": "2.1.20",
+      "last_validated_version": "2.1.20",
+      "ports": {
+        "rj45": 28,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "2x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": true,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "dell-n2128px-on",
+      "calibration_profile": "dell_28rj45_2sfp",
+      "default_faceplate": "faceplates/dell-28-rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed_sysobjectid_model_and_two_firmware_versions",
+        "rj45_mapping": "contribution_confirmed_standalone_and_two_member_stack",
+        "poe": "standard_power_ethernet_mib_candidates_confirmed_pending_card_validation",
+        "system_sensors": "pending",
+        "uplinks": "contribution_confirmed_te_member_0_1_2_as_10g_sfp_plus",
+        "stack": "contribution_confirmed_two_member_interface_numbering"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/dell-28-rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "dell_28rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Dell",
+      "family": "Dell Networking N4000",
+      "model": "N4032F",
+      "status": "experimental",
+      "confirmed_since": "3.0.8",
+      "last_validated_version": "3.0.22",
+      "ports": {
+        "rj45": 0,
+        "poe": false,
+        "uplinks": 24,
+        "uplink_type": "24x 10G SFP+ front-panel ports; optional front 2x 40G QSFP+ expansion module binds dynamically when present",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 24,
+        "forty_gigabit_qsfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "dell-n4032f-24sfp2qsfp",
+      "calibration_profile": "dell_n4032f",
+      "default_faceplate": "faceplates/dell-4032f.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "real_hardware_sysobjectid_model_and_two_firmware_versions_confirmed",
+        "rj45_mapping": "not_applicable",
+        "poe": "not_applicable",
+        "system_sensors": "pending",
+        "uplinks": "real_hardware_24_front_10g_sfp_plus_confirmed_optional_front_2x40g_qsfp_bound_when_observed",
+        "stack": "not_observed_not_required"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/dell-4032f.png",
+        "optional_faceplates": [],
+        "calibration_profile": "dell_n4032f",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch",
+      "model": "US 48 PoE 500W",
+      "status": "experimental",
+      "confirmed_since": "2.1.16",
+      "last_validated_version": "2.1.15",
+      "ports": {
+        "rj45": 48,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "2x 1G SFP + 2x 10G SFP+",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-us-48-poe-500w-api",
+      "calibration_profile": "stock_48rj45_4sfp",
+      "default_faceplate": "faceplates/48rj45-4sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_port_indices",
+        "poe": "live_api_confirmed_metadata",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_connector_and_speed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/48rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_48rj45_4sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch",
+      "model": "US 48",
+      "status": "experimental",
+      "confirmed_since": "2.4.9",
+      "last_validated_version": "2.4.9",
+      "ports": {
+        "rj45": 48,
+        "poe": false,
+        "uplinks": 4,
+        "uplink_type": "2x 1G SFP + 2x 10G SFP+",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-us-48-api",
+      "calibration_profile": "stock_48rj45_4sfp",
+      "default_faceplate": "faceplates/48rj45-4sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_port_indices_1_48",
+        "poe": "live_api_confirmed_no_poe_output_capability",
+        "system_sensors": "pending",
+        "uplinks": "live_api_confirmed_ports_49_50_10g_sfp_plus_51_52_1g_sfp",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/48rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_48rj45_4sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch XG",
+      "model": "US XG 16",
+      "status": "experimental",
+      "confirmed_since": "2.4.9",
+      "last_validated_version": "2.4.9",
+      "ports": {
+        "rj45": 4,
+        "poe": false,
+        "uplinks": 12,
+        "uplink_type": "12x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 12
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-us-xg-16-api",
+      "calibration_profile": "unifi_4_rj45_12sfp",
+      "default_faceplate": "faceplates/unifi-4-rj45-12sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed_two_units",
+        "rj45_mapping": "live_api_confirmed_api_ports_13_16",
+        "poe": "live_api_confirmed_no_poe_output_capability",
+        "system_sensors": "pending",
+        "uplinks": "live_api_confirmed_api_ports_1_12_10g_sfp_plus",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "detected",
+        "recommended_faceplate": "faceplates/unifi-4-rj45-12sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_4_rj45_12sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      },
+      "unifi_api_port_map": {
+        "rj45": [
+          13,
+          14,
+          15,
+          16
+        ],
+        "sfp": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ]
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Pro Aggregation",
+      "model": "USW Pro Aggregation",
+      "status": "experimental",
+      "confirmed_since": "2.4.9",
+      "last_validated_version": "2.4.42",
+      "ports": {
+        "rj45": 0,
+        "poe": false,
+        "uplinks": 32,
+        "uplink_type": "28x 10G SFP+ + 4x 25G SFP28",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 28,
+        "twenty_five_gigabit_sfp28": 4
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-pro-aggregation-api",
+      "calibration_profile": "unifi_32sfp",
+      "default_faceplate": "faceplates/unifi-32sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "not_applicable",
+        "poe": "not_applicable",
+        "system_sensors": "pending",
+        "uplinks": "live_api_confirmed_28x10g_sfp_plus_4x25g_sfp28",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-32sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_32sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      },
+      "unifi_api_port_map": {
+        "rj45": [],
+        "sfp": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32
+        ]
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch 8 150W",
+      "model": "US-8-150W",
+      "status": "experimental",
+      "confirmed_since": "2.3.32",
+      "last_validated_version": "2.4.11",
+      "ports": {
+        "rj45": 8,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "2x 1G SFP",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-us-8-150w-snmp",
+      "calibration_profile": "unifi_8_rj45_2sfp",
+      "default_faceplate": "faceplates/unifi-8-rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "real_hardware_snmp_confirmed",
+        "rj45_mapping": "real_hardware_snmp_ports_0_1_0_8_confirmed",
+        "poe": "platform_capability_confirmed_telemetry_pending",
+        "system_sensors": "pending",
+        "uplinks": "real_hardware_snmp_ports_0_9_0_10_1g_sfp_confirmed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-8-rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_8_rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch 24 250W",
+      "model": "US-24-250W",
+      "status": "experimental",
+      "confirmed_since": "2.3.32",
+      "last_validated_version": "2.3.31",
+      "ports": {
+        "rj45": 24,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "2x 1G SFP",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-us-24-250w-snmp",
+      "calibration_profile": "unifi_24p_rj45_2sfp",
+      "default_faceplate": "faceplates/unifi-24p-rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "real_hardware_snmp_confirmed",
+        "rj45_mapping": "real_hardware_snmp_ports_0_1_0_24_confirmed",
+        "poe": "platform_capability_confirmed_telemetry_pending",
+        "system_sensors": "pending",
+        "uplinks": "real_hardware_snmp_ports_0_25_0_26_1g_sfp_confirmed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-24p-rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_24p_rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch 8 60W",
+      "model": "US 8 60W",
+      "status": "experimental",
+      "confirmed_since": "2.1.19",
+      "last_validated_version": "3.0.18",
+      "ports": {
+        "rj45": 8,
+        "poe": true,
+        "uplinks": 0,
+        "uplink_type": "none",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-us-8-60w-api",
+      "calibration_profile": "default_unifi_8_rj45",
+      "default_faceplate": "faceplates/unifi-8rj45.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_port_indices",
+        "poe": "live_api_confirmed_ports_5_8_802_3af",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "not_applicable",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-8rj45.png",
+        "optional_faceplates": [],
+        "calibration_profile": "default_unifi_8_rj45",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Flex",
+      "model": "USW Flex",
+      "status": "experimental",
+      "confirmed_since": "2.1.18",
+      "last_validated_version": "2.1.16",
+      "ports": {
+        "rj45": 5,
+        "poe": true,
+        "uplinks": 0,
+        "uplink_type": "none",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-flex-api",
+      "calibration_profile": "default_unifi_5_rj45",
+      "default_faceplate": "faceplates/unifi-5rj45.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_port_indices",
+        "poe": "live_api_confirmed_metadata",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_connector_and_speed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-5rj45.png",
+        "optional_faceplates": [],
+        "calibration_profile": "default_unifi_5_rj45",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Flex 2.5G 8 PoE",
+      "model": "USW Flex 2.5G 8 PoE",
+      "status": "experimental",
+      "confirmed_since": "2.1.18",
+      "last_validated_version": "2.1.16",
+      "ports": {
+        "rj45": 9,
+        "poe": true,
+        "uplinks": 1,
+        "uplink_type": "1x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 1
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-flex-2p5g-8-poe-api",
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_port_indices",
+        "poe": "live_api_confirmed_metadata",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_connector_and_speed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Flex Mini",
+      "model": "USW Flex Mini",
+      "status": "community_validated",
+      "confirmed_since": "2.1.19",
+      "last_validated_version": "3.0.18",
+      "ports": {
+        "rj45": 5,
+        "poe": false,
+        "uplinks": 0,
+        "uplink_type": "none",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-flex-mini-api",
+      "calibration_profile": "usw_flex_mini",
+      "default_faceplate": "faceplates/usw-flex-mini.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed_multiple_devices",
+        "rj45_mapping": "live_api_confirmed_repeated_port_indices",
+        "poe": "live_api_confirmed_no_poe_output_metadata",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "not_applicable",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "community_validated",
+        "recommended_faceplate": "faceplates/usw-flex-mini.png",
+        "optional_faceplates": [],
+        "calibration_profile": "usw_flex_mini",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Pro 24",
+      "model": "USW Pro 24",
+      "status": "experimental",
+      "confirmed_since": "2.1.19",
+      "last_validated_version": "2.1.19",
+      "ports": {
+        "rj45": 24,
+        "poe": false,
+        "uplinks": 2,
+        "uplink_type": "2x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-pro-24-api",
+      "calibration_profile": "unifi_24_rj45_2sfp_inline",
+      "default_faceplate": "faceplates/unifi-24-rj45-2sfp-inline.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_port_indices",
+        "poe": "live_api_confirmed_not_available",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_two_10g_sfp_plus",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-24-rj45-2sfp-inline.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_24_rj45_2sfp_inline",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch 16 PoE",
+      "model": "USW-16-PoE",
+      "status": "experimental",
+      "confirmed_since": "2.1.18",
+      "last_validated_version": "3.0.18",
+      "ports": {
+        "rj45": 16,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "2x 1G SFP",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-16-poe-api",
+      "calibration_profile": "unifi_16_rj45_2sfp",
+      "default_faceplate": "faceplates/unifi-16rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_port_indices",
+        "poe": "live_api_confirmed_metadata",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_connector_and_speed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-16rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_16_rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch 24 PoE",
+      "model": "USW-24-PoE",
+      "status": "experimental",
+      "confirmed_since": "2.1.18",
+      "last_validated_version": "2.1.19",
+      "ports": {
+        "rj45": 24,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "2x 1G SFP",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-24-poe-api",
+      "calibration_profile": "unifi_24_rj45_2sfp_inline",
+      "default_faceplate": "faceplates/unifi-24-rj45-2sfp-inline.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_port_indices",
+        "poe": "live_api_confirmed_metadata",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_connector_and_speed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-24-rj45-2sfp-inline.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_24_rj45_2sfp_inline",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Standard 24",
+      "model": "USW-24-G2",
+      "status": "experimental",
+      "confirmed_since": "3.0.18",
+      "last_validated_version": "3.0.18",
+      "ports": {
+        "rj45": 24,
+        "poe": false,
+        "uplinks": 2,
+        "uplink_type": "2x 1G SFP",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-24-g2-api",
+      "calibration_profile": "unifi_24_rj45_2sfp_inline",
+      "default_faceplate": "faceplates/unifi-24-rj45-2sfp-inline.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_ports_1_24",
+        "poe": "live_api_confirmed_no_poe_output_metadata",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_ports_25_26_1g_sfp",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-24-rj45-2sfp-inline.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_24_rj45_2sfp_inline",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Lite 8 PoE",
+      "model": "USW-Lite-8-PoE",
+      "status": "experimental",
+      "confirmed_since": "2.1.18",
+      "last_validated_version": "2.1.16",
+      "ports": {
+        "rj45": 8,
+        "poe": true,
+        "uplinks": 0,
+        "uplink_type": "none",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-lite-8-poe-api",
+      "calibration_profile": "default_unifi_8_rj45",
+      "default_faceplate": "faceplates/unifi-8rj45.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_port_indices",
+        "poe": "live_api_confirmed_metadata",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_connector_and_speed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-8rj45.png",
+        "optional_faceplates": [],
+        "calibration_profile": "default_unifi_8_rj45",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Dream Machine Pro SE",
+      "model": "UniFi Dream Machine PRO SE",
+      "status": "experimental",
+      "confirmed_since": "2.1.19",
+      "last_validated_version": "2.1.19",
+      "ports": {
+        "rj45": 9,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "2x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-udm-pro-se-api",
+      "calibration_profile": "unifi_9_rj45_2sfp",
+      "default_faceplate": "faceplates/unifi-9rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_ports_1_9",
+        "poe": "live_api_confirmed_ports_1_8",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_ports_10_11_10g_sfp_plus",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-9rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_9_rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Cloud Gateway Ultra",
+      "model": "UCG Ultra",
+      "status": "experimental",
+      "confirmed_since": "2.4.10",
+      "last_validated_version": "2.4.10",
+      "ports": {
+        "rj45": 5,
+        "poe": false,
+        "uplinks": 0,
+        "uplink_type": "none",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-ucg-ultra-api",
+      "calibration_profile": "default_unifi_5_rj45",
+      "default_faceplate": "faceplates/unifi-5rj45.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed_two_corroborating_captures",
+        "rj45_mapping": "live_api_confirmed_five_physical_ports",
+        "poe": "live_api_confirmed_no_poe_output_capability",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "not_applicable",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-5rj45.png",
+        "optional_faceplates": [],
+        "calibration_profile": "default_unifi_5_rj45",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Cloud Gateway Fiber",
+      "model": "UCG Fiber",
+      "status": "experimental",
+      "confirmed_since": "2.4.42",
+      "last_validated_version": "2.4.42",
+      "ports": {
+        "rj45": 5,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "2x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-ucg-fiber-api",
+      "calibration_profile": "unifi_8_rj45_2sfp",
+      "default_faceplate": "faceplates/unifi-8-rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_ports_1_5_with_multigig_capabilities",
+        "poe": "live_api_confirmed_port_4_802_3at_capable",
+        "system_sensors": "live_api_platform_telemetry_available",
+        "uplinks": "live_api_confirmed_ports_6_7_10g_sfp_plus",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-8-rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_8_rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      },
+      "unifi_api_port_map": {
+        "rj45": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sfp": [
+          6,
+          7
+        ]
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch 16 PoE 150W",
+      "model": "US 16 PoE 150W",
+      "status": "experimental",
+      "confirmed_since": "2.4.10",
+      "last_validated_version": "2.4.10",
+      "ports": {
+        "rj45": 16,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "2x 1G SFP",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-us-16-poe-150w-api",
+      "calibration_profile": "unifi_16_rj45_2sfp",
+      "default_faceplate": "faceplates/unifi-16rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed_two_corroborating_captures",
+        "rj45_mapping": "live_api_confirmed_ports_1_16",
+        "poe": "live_api_confirmed_output_capability_ports_1_16",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_ports_17_18_1g_sfp",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-16rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_16_rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Pro Max 24",
+      "model": "USW Pro Max 24",
+      "status": "experimental",
+      "confirmed_since": "2.4.10",
+      "last_validated_version": "2.4.10",
+      "ports": {
+        "rj45": 24,
+        "poe": false,
+        "uplinks": 2,
+        "uplink_type": "2x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-pro-max-24-api",
+      "calibration_profile": "unifi_24p_rj45_2sfp",
+      "default_faceplate": "faceplates/unifi-24p-rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed_two_corroborating_captures",
+        "rj45_mapping": "live_api_confirmed_ports_1_24_with_ports_17_24_2p5g_capable",
+        "poe": "live_api_confirmed_no_poe_output_capability",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_ports_25_26_10g_sfp_plus",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-24p-rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_24p_rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Ultra",
+      "model": "USW Ultra",
+      "status": "experimental",
+      "confirmed_since": "2.4.10",
+      "last_validated_version": "2.4.10",
+      "ports": {
+        "rj45": 8,
+        "poe": true,
+        "uplinks": 0,
+        "uplink_type": "none",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-ultra-api",
+      "calibration_profile": "default_unifi_8_rj45",
+      "default_faceplate": "faceplates/unifi-8rj45.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed_two_corroborating_captures",
+        "rj45_mapping": "live_api_confirmed_ports_1_8",
+        "poe": "live_api_confirmed_output_capability_ports_1_7_only",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "not_applicable",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-8rj45.png",
+        "optional_faceplates": [],
+        "calibration_profile": "default_unifi_8_rj45",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Catalyst 3750",
+      "model": "WS-C3750-48P",
+      "status": "experimental",
+      "confirmed_since": "2.4.12",
+      "last_validated_version": "2.4.12",
+      "ports": {
+        "rj45": 48,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "4x 1G SFP",
+        "gigabit_sfp": 4,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": true,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-3750-48p-48fe-4sfp",
+      "calibration_profile": "default_cisco_48_port",
+      "default_faceplate": "faceplates/48rj45-4sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed",
+        "rj45_mapping": "candidate_48_fastethernet_ports_pending_live_dashboard_validation",
+        "poe": "candidate_platform_contract_pending_live_dashboard_validation",
+        "system_sensors": "pending",
+        "uplinks": "candidate_four_1g_sfp_pending_live_validation",
+        "stack": "capable_pending_live_validation"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/48rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "default_cisco_48_port",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Dream Machine Pro Max",
+      "model": "UDM Pro Max",
+      "status": "experimental",
+      "confirmed_since": "2.4.14",
+      "last_validated_version": "2.4.14",
+      "ports": {
+        "rj45": 9,
+        "poe": false,
+        "uplinks": 2,
+        "uplink_type": "2x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-udm-pro-max-api",
+      "calibration_profile": "unifi_9_rj45_2sfp",
+      "default_faceplate": "faceplates/unifi-9rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "community_real_hardware_api_confirmed",
+        "rj45_mapping": "community_api_ports_1_9_confirmed_pending_rendered_validation",
+        "poe": "community_confirmed_no_poe_output",
+        "system_sensors": "api_available_pending_dashboard_validation",
+        "uplinks": "community_api_ports_10_11_10g_sfp_plus_confirmed_pending_rendered_validation",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-9rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_9_rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      },
+      "unifi_api_port_map": {
+        "rj45": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "sfp": [
+          10,
+          11
+        ]
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Pro XG",
+      "model": "USW Pro XG 24 PoE",
+      "status": "experimental",
+      "confirmed_since": "2.4.14",
+      "last_validated_version": "2.4.14",
+      "ports": {
+        "rj45": 24,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "2x 25G SFP28",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 0,
+        "twenty_five_gigabit_sfp28": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-pro-xg-24-poe-api",
+      "calibration_profile": "unifi_24_rj45_2sfp_inline",
+      "default_faceplate": "faceplates/unifi-24-rj45-2sfp-inline.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "community_real_hardware_api_confirmed",
+        "rj45_mapping": "community_api_ports_1_24_confirmed_pending_rendered_validation",
+        "poe": "community_all_24_rj45_802_3bt_type4_confirmed_pending_dashboard_validation",
+        "system_sensors": "api_available_pending_dashboard_validation",
+        "uplinks": "community_api_ports_25_26_25g_sfp28_confirmed_pending_rendered_validation",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-24-rj45-2sfp-inline.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_24_rj45_2sfp_inline",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      },
+      "unifi_api_port_map": {
+        "rj45": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24
+        ],
+        "sfp": [
+          25,
+          26
+        ]
+      }
+    },
+    {
+      "vendor": "MikroTik",
+      "family": "CRS328",
+      "model": "CRS328-24P-4S+RM",
+      "status": "experimental",
+      "confirmed_since": "2.3.22",
+      "last_validated_version": "2.3.21",
+      "ports": {
+        "rj45": 24,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "4x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 4
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "mikrotik-crs328-24p-4splus",
+      "calibration_profile": "stock_24rj45_4sfp",
+      "default_faceplate": "faceplates/24rj45-4sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed_local_routeros_identity",
+        "rj45_mapping": "contribution_confirmed_ether1_through_ether24_pending_rendered_validation",
+        "poe": "exact_hardware_capability_confirmed_snmp_values_pending",
+        "system_sensors": "pending_supplemental_snmp_validation",
+        "uplinks": "contribution_confirmed_four_sfp_plus_positions_live_link_pending",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_4sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Dell",
+      "family": "PowerConnect 5500",
+      "model": "PowerConnect 5548P",
+      "status": "experimental",
+      "confirmed_since": "2.3.24",
+      "last_validated_version": "2.3.24",
+      "ports": {
+        "rj45": 48,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "2x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "dell-powerconnect-5548p-48p-2x10g",
+      "calibration_profile": "stock_48rj45_2sfp",
+      "default_faceplate": "faceplates/48rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed",
+        "rj45_mapping": "real_hardware_interface_map_confirmed",
+        "poe": "pending_live_validation",
+        "system_sensors": "pending",
+        "uplinks": "real_hardware_interface_map_confirmed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/48rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_48rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Zyxel",
+      "family": "GS1900",
+      "model": "GS1900-24E",
+      "status": "experimental",
+      "confirmed_since": "2.3.24",
+      "last_validated_version": "2.4.47",
+      "ports": {
+        "rj45": 24,
+        "poe": false,
+        "uplinks": 0,
+        "uplink_type": "none",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 0,
+        "combo_ports": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "zyxel-gs1900-24e",
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed",
+        "rj45_mapping": "real_hardware_24_ports_confirmed",
+        "poe": "not_applicable",
+        "system_sensors": "pending",
+        "uplinks": "not_applicable",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Catalyst 3750X",
+      "model": "WS-C3750X-48P",
+      "status": "experimental",
+      "confirmed_since": "2.3.24",
+      "last_validated_version": "2.3.24",
+      "ports": {
+        "rj45": 48,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "C3KX network-module SFP/SFP+",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": true,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-3750x-48p-c3kx",
+      "calibration_profile": "default_cisco_48_port",
+      "default_faceplate": "faceplates/48rj45-4sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed_two_member_stack",
+        "rj45_mapping": "real_hardware_48_per_member_confirmed",
+        "poe": "pending_live_dashboard_validation",
+        "system_sensors": "pending",
+        "uplinks": "real_hardware_alias_dedup_mapping_confirmed",
+        "stack": "real_hardware_two_member_topology_confirmed"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/48rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "default_cisco_48_port",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Catalyst 3750X",
+      "model": "WS-C3750X-48P-S",
+      "status": "experimental",
+      "confirmed_since": "2.4.47",
+      "last_validated_version": "2.4.47",
+      "ports": {
+        "rj45": 48,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "C3KX network-module SFP/SFP+",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": true,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-3750x-48p-c3kx",
+      "calibration_profile": "default_cisco_48_port",
+      "default_faceplate": "faceplates/48rj45-4sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed_entity_mib_exact_sku",
+        "rj45_mapping": "real_hardware_48_confirmed_family_contract_reproduced",
+        "poe": "aggregate_real_hardware_confirmed_per_port_pending",
+        "system_sensors": "cpu_temperature_confirmed_fan_psu_state_pending",
+        "uplinks": "real_hardware_c3kx_alias_dedup_mapping_confirmed",
+        "stack": "single_member_observed_family_stack_support_inherited"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/48rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "default_cisco_48_port",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Cisco Small Business SG350",
+      "model": "SG350-20",
+      "status": "experimental",
+      "confirmed_since": "2.3.24",
+      "last_validated_version": "2.4.47",
+      "ports": {
+        "rj45": 16,
+        "poe": false,
+        "uplinks": 4,
+        "uplink_type": "2 dual-personality copper/SFP + 2 SFP",
+        "gigabit_sfp": 4,
+        "ten_gigabit_sfp_plus": 0,
+        "combo_ports": 2,
+        "combo_logical_ports": [
+          17,
+          18
+        ]
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-sg350-20-16p-2dual-2sfp",
+      "calibration_profile": "stock_24rj45_4sfp",
+      "default_faceplate": "faceplates/24rj45-4sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed",
+        "rj45_mapping": "real_hardware_fixed_ports_1_16_confirmed",
+        "poe": "not_applicable",
+        "system_sensors": "pending",
+        "uplinks": "combo_semantics_conservative_pending_medium_validation",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_4sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Cisco",
+      "family": "Cisco Small Business SG200",
+      "model": "SG200-26",
+      "status": "experimental",
+      "confirmed_since": "3.0.18",
+      "last_validated_version": "3.0.24",
+      "ports": {
+        "rj45": 24,
+        "poe": false,
+        "uplinks": 2,
+        "uplink_type": "2 dual-personality 1G RJ45/SFP",
+        "gigabit_sfp": 2,
+        "ten_gigabit_sfp_plus": 0,
+        "combo_ports": 2,
+        "combo_logical_ports": [
+          25,
+          26
+        ]
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "cisco-sg200-26-24p-2dual",
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "real_hardware_sysobjectid_confirmed",
+        "rj45_mapping": "real_hardware_fixed_ports_1_24_confirmed",
+        "poe": "not_applicable",
+        "system_sensors": "not_observed",
+        "uplinks": "real_hardware_combo_logical_ports_25_26_confirmed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "HP",
+      "family": "3500yl",
+      "model": "HP J8693A Switch 3500yl-48G",
+      "status": "experimental",
+      "confirmed_since": "2.3.24",
+      "last_validated_version": "2.4.47",
+      "ports": {
+        "rj45": 44,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "4 dual-personality 1G RJ45/SFP",
+        "gigabit_sfp": 4,
+        "ten_gigabit_sfp_plus": 0,
+        "combo_ports": 4,
+        "combo_logical_ports": [
+          45,
+          46,
+          47,
+          48
+        ]
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "hp-3500yl-48g-44p-4dual",
+      "calibration_profile": "stock_48rj45_4sfp",
+      "default_faceplate": "faceplates/48rj45-4sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "contribution_confirmed",
+        "rj45_mapping": "real_hardware_numeric_ports_1_44_confirmed",
+        "poe": "platform_capability_confirmed_telemetry_pending",
+        "system_sensors": "pending",
+        "uplinks": "entity_binding_confirmed_medium_pending",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/48rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_48rj45_4sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Pro HD",
+      "model": "USW Pro HD 24 PoE",
+      "status": "experimental",
+      "confirmed_since": "2.3.24",
+      "last_validated_version": "2.3.24",
+      "ports": {
+        "rj45": 24,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "4x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 4
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-pro-hd-24-poe-snmp",
+      "calibration_profile": "unifi_24_rj45_4sfp_inline",
+      "default_faceplate": "faceplates/unifi-24-rj45-4sfp-inline.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "real_hardware_snmp_confirmed",
+        "rj45_mapping": "real_hardware_snmp_ports_0_1_0_24_confirmed",
+        "poe": "pending",
+        "system_sensors": "pending",
+        "uplinks": "real_hardware_snmp_ports_0_25_0_28_confirmed",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-24-rj45-4sfp-inline.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_24_rj45_4sfp_inline",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Aggregation",
+      "model": "USW Aggregation",
+      "status": "experimental",
+      "confirmed_since": "2.3.24",
+      "last_validated_version": "2.3.24",
+      "ports": {
+        "rj45": 0,
+        "poe": false,
+        "uplinks": 8,
+        "uplink_type": "8x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 8
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-aggregation-api",
+      "calibration_profile": "unifi_32sfp",
+      "default_faceplate": "faceplates/unifi-32sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "not_applicable",
+        "poe": "not_applicable",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_ports_1_8_10g_sfp_plus",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-32sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_32sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      },
+      "unifi_api_port_map": {
+        "rj45": [],
+        "sfp": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Enterprise",
+      "model": "USW Enterprise 24 PoE",
+      "status": "experimental",
+      "confirmed_since": "2.3.24",
+      "last_validated_version": "2.3.24",
+      "ports": {
+        "rj45": 24,
+        "poe": true,
+        "uplinks": 2,
+        "uplink_type": "2x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-enterprise-24-poe-api",
+      "calibration_profile": "unifi_24p_rj45_2sfp",
+      "default_faceplate": "faceplates/unifi-24p-rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_ports_1_24",
+        "poe": "live_api_output_capability_confirmed",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_ports_25_26_10g_sfp_plus",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-24p-rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_24p_rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      },
+      "unifi_api_port_map": {
+        "rj45": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24
+        ],
+        "sfp": [
+          25,
+          26
+        ]
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi Switch Flex",
+      "model": "USW Flex 2.5G 5",
+      "status": "experimental",
+      "confirmed_since": "2.3.24",
+      "last_validated_version": "2.3.24",
+      "ports": {
+        "rj45": 5,
+        "poe": false,
+        "uplinks": 0,
+        "uplink_type": "none",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-flex-2p5g-5-api",
+      "calibration_profile": "default_unifi_5_rj45",
+      "default_faceplate": "faceplates/unifi-5rj45.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_confirmed",
+        "rj45_mapping": "live_api_confirmed_ports_1_5_2p5g_capable",
+        "poe": "live_api_confirmed_no_poe_output",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "not_applicable",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-5rj45.png",
+        "optional_faceplates": [],
+        "calibration_profile": "default_unifi_5_rj45",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      },
+      "unifi_api_port_map": {
+        "rj45": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sfp": []
+      }
+    },
+    {
+      "vendor": "Ubiquiti",
+      "family": "UniFi WAN Switch",
+      "model": "USW WAN",
+      "status": "experimental",
+      "confirmed_since": "2.3.24",
+      "last_validated_version": "2.3.24",
+      "ports": {
+        "rj45": 1,
+        "poe": false,
+        "uplinks": 3,
+        "uplink_type": "3x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 3
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "ubiquiti-usw-wan-api",
+      "calibration_profile": "unifi_3sfp",
+      "default_faceplate": "faceplates/unifi-3sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "live_api_plus_official_topology_confirmed",
+        "rj45_mapping": "live_api_confirmed_api_port_4",
+        "poe": "not_applicable",
+        "system_sensors": "live_api_confirmed_cpu_memory_uptime",
+        "uplinks": "live_api_confirmed_api_ports_1_3_10g_sfp_plus",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/unifi-3sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "unifi_3sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      },
+      "unifi_api_port_map": {
+        "rj45": [
+          4
+        ],
+        "sfp": [
+          1,
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "vendor": "Zyxel",
+      "family": "GS1915",
+      "model": "GS1915-24EP",
+      "status": "experimental",
+      "confirmed_since": "2.4.1",
+      "last_validated_version": "2.4.1",
+      "ports": {
+        "rj45": 24,
+        "poe": true,
+        "uplinks": 0,
+        "uplink_type": "none",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 0
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "zyxel-gs1915-24ep",
+      "calibration_profile": "stock_24rj45_2sfp",
+      "default_faceplate": "faceplates/24rj45-2sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "real_hardware_walk_confirmed",
+        "rj45_mapping": "real_hardware_swp00_swp23_confirmed",
+        "poe": "real_hardware_standard_power_ethernet_mib_confirmed",
+        "system_sensors": "pending",
+        "uplinks": "not_applicable",
+        "stack": "not_applicable"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-2sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_2sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Avaya",
+      "family": "Ethernet Routing Switch 3500",
+      "model": "3524GT-PWR+",
+      "status": "experimental",
+      "confirmed_since": "3.0.3",
+      "last_validated_version": "3.0.4",
+      "ports": {
+        "rj45": 20,
+        "poe": true,
+        "uplinks": 4,
+        "uplink_type": "4 shared front 1G RJ45/SFP combo positions; 2 rear SFP positions documented but telemetry binding pending",
+        "gigabit_sfp": 4,
+        "ten_gigabit_sfp_plus": 0,
+        "combo_ports": 4,
+        "combo_logical_ports": [
+          21,
+          22,
+          23,
+          24
+        ]
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "avaya-ers3524gt-pwrplus-20p-4dual",
+      "calibration_profile": "stock_24rj45_4sfp",
+      "default_faceplate": "faceplates/24rj45-4sfp.png",
+      "optional_faceplates": [],
+      "validation": {
+        "exact_model_detection": "real_hardware_sysobjectid_and_sysdescr_confirmed",
+        "rj45_mapping": "real_hardware_numeric_ifname_ports_1_20_confirmed",
+        "poe": "real_hardware_standard_power_ethernet_mib_24_pse_370w_confirmed",
+        "system_sensors": "vendor_enterprise_candidates_present_optional_followup",
+        "uplinks": "real_hardware_front_combo_ports_21_24_confirmed_rear_two_pending_binding",
+        "stack": "not_observed_not_required_for_initial_dashboard"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/24rj45-4sfp.png",
+        "optional_faceplates": [],
+        "calibration_profile": "stock_24rj45_4sfp",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    }
+  ]
+}

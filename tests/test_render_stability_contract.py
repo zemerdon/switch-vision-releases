@@ -58,9 +58,7 @@ class RenderStabilityContractTests(unittest.TestCase):
         self.assertIn('const faceplateRenderMaxWidth = globalFaceplateMaxWidth;', self.source)
         self.assertIn('const stageClass = fixedCardHeight ? "cv-stage cv-stage-fixed" : "cv-stage";', self.source)
         self.assertIn('<div class="cv-faceplate-canvas">', self.source)
-        self.assertIn('preserveAspectRatio="none"', self.source)
-        self.assertIn(".cv-faceplate-canvas{position:relative;width:100%;aspect-ratio:2048/448", self.css)
-        self.assertIn(".cv-image{position:absolute;z-index:1;inset:0;display:block;width:100%;height:100%", self.css)
+        self.assertIn('preserveAspectRatio="xMidYMid meet"', self.source)
         self.assertIn(".cv-stage.cv-stage-fixed .cv-faceplate-canvas", self.css)
         self.assertIn("transform:translateY(-50%)", self.css)
 
@@ -180,7 +178,6 @@ class RenderStabilityContractTests(unittest.TestCase):
     @unittest.skipUnless(CHROMIUM is not None, "maintained Chromium runtime unavailable")
     def test_browser_runtime_regressions(self) -> None:
         source = self.source.replace("</script>", "<\\/script>")
-        css = self.css.replace("</style>", "<\\/style>")
         harness = r"""
 window.requestAnimationFrame = (cb) => setTimeout(() => cb(performance.now()), 0);
 window.cancelAnimationFrame = (id) => clearTimeout(id);
@@ -584,59 +581,6 @@ async function scenarioCalibrationBehaviorContracts() {
   return {circle, mixed, metadata, testMode};
 }
 
-async function scenarioFaceplateCanvasAlignment() {
-  const conn = immediateConnection();
-  const card = document.createElement('switch-vision-3650');
-  card.setConfig({member:'SWALIGN', selected_switch:'SWALIGN', calibration_profile_load:false, calibration_profile_auto_load:false, demo:true, port_count:48, sfp_port_count:4});
-  document.body.appendChild(card);
-  card.hass = makeHass({}, conn);
-  await sleep(40);
-
-  const alignmentStyle = document.createElement('style');
-  alignmentStyle.textContent = '.cv-faceplate-canvas{position:relative;width:100%;aspect-ratio:2048/448;line-height:0}.cv-image{position:absolute;z-index:1;inset:0;display:block;width:100%;height:100%;max-width:none;user-select:none;pointer-events:none}.cv-svg{position:absolute;z-index:2;inset:0;width:100%;height:100%;overflow:visible}';
-  card.shadowRoot.prepend(alignmentStyle);
-  await sleep(10);
-  const image = card.shadowRoot.querySelector('[data-cv-faceplate-image]');
-  const canvas = card.shadowRoot.querySelector('.cv-faceplate-canvas');
-  const svg = card.shadowRoot.querySelector('.cv-svg');
-  const source = (width, height) => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"></svg>`);
-  const setSource = async (width, height) => {
-    await new Promise((resolve, reject) => {
-      const done = () => resolve();
-      image.addEventListener('load', done, {once:true});
-      image.addEventListener('error', reject, {once:true});
-      image.src = source(width, height);
-    });
-    await sleep(10);
-  };
-  const snapshot = () => {
-    const canvasRect = canvas.getBoundingClientRect();
-    const imageRect = image.getBoundingClientRect();
-    const svgRect = svg.getBoundingClientRect();
-    const point = svg.createSVGPoint();
-    point.x = 476.842666667;
-    point.y = 199.594666667;
-    const screenPoint = point.matrixTransform(svg.getScreenCTM());
-    return {
-      natural:[image.naturalWidth, image.naturalHeight],
-      canvas:[canvasRect.width, canvasRect.height],
-      image:[imageRect.width, imageRect.height],
-      svg:[svgRect.width, svgRect.height],
-      point:[screenPoint.x, screenPoint.y],
-      ratio:canvasRect.width / canvasRect.height,
-      svgAspect:svg.getAttribute('preserveAspectRatio'),
-      objectFit:getComputedStyle(image).objectFit,
-    };
-  };
-
-  await setSource(2172, 724);
-  const oldArtwork = snapshot();
-  await setSource(1935, 262);
-  const newArtwork = snapshot();
-  card.remove();
-  return {oldArtwork, newArtwork};
-}
-
 async function scenarioNativeFontControls() {
   const conn = immediateConnection();
   const card = document.createElement('switch-vision-3650');
@@ -702,9 +646,9 @@ async function scenarioNativeFontControls() {
   card.remove();
   return {initial, after, stored, rendered};
 }
-(async () => { try { const result = {live:await scenarioLiveGate(), subscriptions:await scenarioSubscriptions(), profile:await scenarioProfileRace(), calibration:await scenarioCalibrationStability(), activity:await scenarioActivity(), activityTargets:scenarioActivityTargetScheduling(), naturalActivity:scenarioNaturalActivityPattern(), colour:await scenarioColour(), faceplateHeight:await scenarioFaceplateHeight(), calibrationBehavior:await scenarioCalibrationBehaviorContracts(), faceplateAlignment:await scenarioFaceplateCanvasAlignment(), nativeFonts:await scenarioNativeFontControls()}; document.getElementById('result').textContent = JSON.stringify(result); } catch (err) { document.getElementById('result').textContent = JSON.stringify({error:String(err), stack:err?.stack||''}); } })();
+(async () => { try { const result = {live:await scenarioLiveGate(), subscriptions:await scenarioSubscriptions(), profile:await scenarioProfileRace(), calibration:await scenarioCalibrationStability(), activity:await scenarioActivity(), activityTargets:scenarioActivityTargetScheduling(), naturalActivity:scenarioNaturalActivityPattern(), colour:await scenarioColour(), faceplateHeight:await scenarioFaceplateHeight(), calibrationBehavior:await scenarioCalibrationBehaviorContracts(), nativeFonts:await scenarioNativeFontControls()}; document.getElementById('result').textContent = JSON.stringify(result); } catch (err) { document.getElementById('result').textContent = JSON.stringify({error:String(err), stack:err?.stack||''}); } })();
 """
-        document = '<!doctype html><html><head><style>' + css + '</style></head><body><pre id="result">pending</pre><script>' + source + '</script><script>' + harness + '</script></body></html>'
+        document = '<!doctype html><html><body><pre id="result">pending</pre><script>' + source + '</script><script>' + harness + '</script></body></html>'
         with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False, encoding="utf-8") as handle:
             handle.write(document)
             fixture = Path(handle.name)
@@ -798,10 +742,10 @@ async function scenarioNativeFontControls() {
         self.assertEqual(payload["faceplateHeight"]["compact"]["imageHeight"], "auto")
         self.assertEqual(payload["faceplateHeight"]["medium"]["imageHeight"], "auto")
         self.assertEqual(payload["faceplateHeight"]["roomy"]["imageHeight"], "auto")
-        self.assertEqual(payload["faceplateHeight"]["automatic"]["svgAspect"], "none")
-        self.assertEqual(payload["faceplateHeight"]["compact"]["svgAspect"], "none")
-        self.assertEqual(payload["faceplateHeight"]["medium"]["svgAspect"], "none")
-        self.assertEqual(payload["faceplateHeight"]["roomy"]["svgAspect"], "none")
+        self.assertEqual(payload["faceplateHeight"]["automatic"]["svgAspect"], "xMidYMid meet")
+        self.assertEqual(payload["faceplateHeight"]["compact"]["svgAspect"], "xMidYMid meet")
+        self.assertEqual(payload["faceplateHeight"]["medium"]["svgAspect"], "xMidYMid meet")
+        self.assertEqual(payload["faceplateHeight"]["roomy"]["svgAspect"], "xMidYMid meet")
         self.assertTrue(payload["faceplateHeight"]["automatic"]["canvasWrapped"])
         self.assertTrue(payload["faceplateHeight"]["medium"]["canvasWrapped"])
         self.assertEqual(payload["faceplateHeight"]["medium"]["calibrateRight"], "6px")
@@ -813,25 +757,6 @@ async function scenarioNativeFontControls() {
         self.assertEqual(payload["faceplateHeight"]["persistenceSave"]["cached"], 150)
         self.assertEqual(payload["faceplateHeight"]["persistenceLoad"]["loaded"], 150)
         self.assertEqual(payload["faceplateHeight"]["persistenceLoad"]["resolved"], 150)
-        old_alignment = payload["faceplateAlignment"]["oldArtwork"]
-        new_alignment = payload["faceplateAlignment"]["newArtwork"]
-        self.assertEqual(old_alignment["natural"], [2172, 724])
-        self.assertEqual(new_alignment["natural"], [1935, 262])
-        self.assertAlmostEqual(old_alignment["ratio"], 2048 / 448, places=3)
-        self.assertAlmostEqual(new_alignment["ratio"], 2048 / 448, places=3)
-        self.assertEqual(old_alignment["svgAspect"], "none")
-        self.assertEqual(new_alignment["svgAspect"], "none")
-        self.assertEqual(old_alignment["objectFit"], "fill")
-        self.assertEqual(new_alignment["objectFit"], "fill")
-        for key in ("canvas", "image", "svg", "point"):
-            self.assertEqual(len(old_alignment[key]), len(new_alignment[key]))
-            for before, after in zip(old_alignment[key], new_alignment[key]):
-                self.assertAlmostEqual(before, after, places=3, msg=key)
-        for artwork in (old_alignment, new_alignment):
-            self.assertAlmostEqual(artwork["canvas"][0], artwork["image"][0], places=3)
-            self.assertAlmostEqual(artwork["canvas"][1], artwork["image"][1], places=3)
-            self.assertAlmostEqual(artwork["canvas"][0], artwork["svg"][0], places=3)
-            self.assertAlmostEqual(artwork["canvas"][1], artwork["svg"][1], places=3)
         self.assertEqual(payload["nativeFonts"]["initial"], {"rj45":"13","sfp":"13.5","leds":"16.5","status1":"16","status2":"16"})
         self.assertEqual(payload["nativeFonts"]["after"], {"rj45":"14","sfp":"15","leds":"17","status1":"18","status2":"19"})
         self.assertAlmostEqual(payload["nativeFonts"]["stored"]["rj45"], 41.015625, places=6)

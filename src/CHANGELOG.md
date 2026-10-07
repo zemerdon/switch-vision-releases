@@ -1,3 +1,12 @@
+## v2.7.50 — Restore native-image calibration mapping
+
+- Revert the local-only 2.7.49 fixed 2048 × 448 canvas experiment and restore the established faceplate renderer: image-defined canvas height, `height:auto`, and SVG `preserveAspectRatio="xMidYMid meet"`.
+- Preserve the long-standing native-image calibration transform rather than changing the calibration workflow used by existing owner profiles.
+- Keep the latest 1935 × 262 Dell N4032F artwork and project the owner-supplied 2048 × 448 geometry into that real native image canvas.
+- Add a regression proving the Dell native-image projection maps SFP1–24 and QSFP25–26 to the same browser-space points as the legacy render-space geometry.
+- Keep the native-resolution header reporting the active PNG dimensions.
+- Retain the Cisco SG200-26 stock 24-RJ45 + 2-SFP visual correction and unchanged 26-interface contract.
+
 ## v2.7.49 — Stable 2048×448 faceplate render plane
 
 - Fix the runtime image/SVG mismatch by giving the faceplate canvas a fixed 2048 × 448 aspect ratio and mapping both the faceplate image and SVG overlay to the same full canvas.
