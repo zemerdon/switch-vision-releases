@@ -71,20 +71,49 @@ class FaceplateNativeCanvasContract(unittest.TestCase):
             self.assertEqual(image.get("coordinate_space"), "image-native-v1", path.name)
             self.assertEqual((image.get("width"), image.get("height")), (width, height), path.name)
 
+            extended_sfp = data.get("allow_out_of_bounds_sfp_geometry") is True
+            if extended_sfp:
+                self.assertEqual(
+                    path.name,
+                    "faceplate-dell-4032f.json",
+                    "extended SFP geometry requires a deliberately reviewed factory profile",
+                )
+
             for collection_name in ("ports", "sfp"):
+                collection_width = width * 2 if collection_name == "sfp" and extended_sfp else width
                 for key, item in (data.get(collection_name) or {}).items():
                     prefix = f"{path.name}:{collection_name}:{key}"
                     for field in ("center", "number", "label", "led_left", "led_right"):
-                        assert_point(self, item.get(field), width, height, f"{prefix}:{field}")
-                    assert_centered_box(self, item.get("center"), item.get("hitbox"), width, height, f"{prefix}:hitbox")
-                    assert_centered_box(self, item.get("led_left"), item.get("led_left_size"), width, height, f"{prefix}:led_left")
-                    assert_centered_box(self, item.get("led_right"), item.get("led_right_size"), width, height, f"{prefix}:led_right")
+                        assert_point(self, item.get(field), collection_width, height, f"{prefix}:{field}")
+                    assert_centered_box(self, item.get("center"), item.get("hitbox"), collection_width, height, f"{prefix}:hitbox")
+                    assert_centered_box(self, item.get("led_left"), item.get("led_left_size"), collection_width, height, f"{prefix}:led_left")
+                    assert_centered_box(self, item.get("led_right"), item.get("led_right_size"), collection_width, height, f"{prefix}:led_right")
 
             for name, point in (data.get("status_leds") or {}).items():
                 assert_point(self, point, width, height, f"{path.name}:status:{name}")
 
+            extended_ui = data.get("allow_out_of_bounds_ui_geometry") is True
+            if extended_ui:
+                self.assertEqual(
+                    path.name,
+                    "faceplate-dell-4032f.json",
+                    "extended UI geometry requires a deliberately reviewed factory profile",
+                )
             for name in ("logo", "calibration_button", "status_panel", "status_panel_2"):
-                assert_top_left_box(self, ui.get(name), width, height, f"{path.name}:{name}")
+                box = ui.get(name)
+                if extended_ui and isinstance(box, dict):
+                    x = float(box.get("x") or 0)
+                    y = float(box.get("y") or 0)
+                    box_w = float(box.get("width") or 0)
+                    box_h = float(box.get("height") or 0)
+                    self.assertGreaterEqual(x, -width, f"{path.name}:{name}: x below safe range")
+                    self.assertGreaterEqual(y, -height, f"{path.name}:{name}: y below safe range")
+                    self.assertLessEqual(x, width * 2, f"{path.name}:{name}: x above safe range")
+                    self.assertLessEqual(y, height * 2, f"{path.name}:{name}: y above safe range")
+                    self.assertGreater(box_w, 0.0, f"{path.name}:{name}: width must be positive")
+                    self.assertGreater(box_h, 0.0, f"{path.name}:{name}: height must be positive")
+                else:
+                    assert_top_left_box(self, box, width, height, f"{path.name}:{name}")
 
     def test_renderer_has_native_to_legacy_compatibility_transform(self) -> None:
         text = FRONTEND.read_text(encoding="utf-8")

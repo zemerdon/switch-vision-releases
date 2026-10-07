@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import json
 import subprocess
+import sys
 import unittest
 from pathlib import Path
 
@@ -8,8 +10,14 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from src.faceplate_native_canvas import render_space_calibration
+
 CARD = ROOT / "src" / "js" / "switch-vision.js"
 REGISTRY = ROOT / "src" / "devices" / "supported_devices.yaml"
+PROFILE = ROOT / "src" / "calibration" / "faceplate-dell-4032f.json"
+FACEPLATE = ROOT / "src" / "faceplates" / "dell-4032f.png"
+GEOMETRY_ORACLE = ROOT / "tests" / "fixtures" / "dell-n4032f-geometry.json"
 
 
 def extract_js_function(source: str, signature: str) -> str:
@@ -49,13 +57,53 @@ class DellN4032FFaceplateBindingTests(unittest.TestCase):
         self.assertEqual(row["status"], "experimental")
         self.assertTrue(row["dashboard_support"])
         self.assertEqual(row["ports"]["uplinks"], 24)
-        self.assertEqual(row["default_faceplate"], "faceplates/unifi-32sfp.png")
-        self.assertEqual(row["calibration_profile"], "unifi_32sfp")
+        self.assertEqual(row["default_faceplate"], "faceplates/dell-4032f.png")
+        self.assertEqual(row["calibration_profile"], "dell_n4032f")
 
+    def test_owner_geometry_round_trips_exactly(self) -> None:
+        profile = json.loads(PROFILE.read_text(encoding="utf-8"))
+        oracle = json.loads(GEOMETRY_ORACLE.read_text(encoding="utf-8"))
+        self.assertEqual(profile["model"], "dell-n4032f")
+        self.assertEqual(profile["profile"], "dell_n4032f")
+        self.assertEqual(profile["image"]["file"], "faceplates/dell-4032f.png")
+        self.assertEqual(profile["image"]["coordinate_space"], "image-native-v1")
+        self.assertEqual((profile["image"]["width"], profile["image"]["height"]), (2172, 724))
+        render = render_space_calibration(profile)
+        expected = json.loads(json.dumps(oracle))
+        expected["image"].pop("coordinate_space", None)
 
-    def test_rear_qsfp_slots_resolve_to_real_40g_entities(self) -> None:
+        def assert_subset(actual, wanted, where="root"):
+            if isinstance(wanted, dict):
+                self.assertIsInstance(actual, dict, where)
+                for key, value in wanted.items():
+                    self.assertIn(key, actual, where)
+                    assert_subset(actual[key], value, f"{where}.{key}")
+            else:
+                self.assertEqual(actual, wanted, where)
+
+        assert_subset(render, expected)
+        self.assertEqual(list(render["sfp"]), [f"SFP{n}" for n in range(1, 27)])
+
+    def test_faceplate_png_and_header_report_real_native_resolution(self) -> None:
+        raw = FACEPLATE.read_bytes()[:24]
+        self.assertEqual(raw[:8], bytes.fromhex("89504e470d0a1a0a"))
+        self.assertEqual(raw[12:16], b"IHDR")
+        self.assertEqual(
+            (int.from_bytes(raw[16:20], "big"), int.from_bytes(raw[20:24], "big")),
+            (2172, 724),
+        )
         source = CARD.read_text(encoding="utf-8")
-        helper = extract_js_function(
+        self.assertIn("data-cv-native-resolution", source)
+        self.assertIn("faceplateImage.naturalWidth", source)
+        self.assertIn("native ${w} × ${h}", source)
+        self.assertNotIn("native 2048 × 448", source)
+
+    def test_qsfp_module_slots_resolve_to_real_40g_entities(self) -> None:
+        source = CARD.read_text(encoding="utf-8")
+        canonical_helper = extract_js_function(
+            source, "function n4032QsfpEntity(config, port, suffix)"
+        )
+        legacy_helper = extract_js_function(
             source, "function n4032RearQsfpEntity(config, port, suffix)"
         )
         status = extract_js_function(
@@ -63,14 +111,18 @@ class DellN4032FFaceplateBindingTests(unittest.TestCase):
         )
         harness = f"""
 function normalizeEntityPrefix(config) {{ return 'n4032'; }}
-{helper}
+{canonical_helper}
+{legacy_helper}
 {status}
 const config = {{switch_model:'N4032F'}};
 const p25 = sfpStatusEntities(config, 'N4032', 25);
 const p26 = sfpStatusEntities(config, 'N4032', 26);
-if (p25[0] !== 'sensor.n4032_rear_qsfp_40g_1_status') throw new Error(p25[0]);
-if (p26[0] !== 'sensor.n4032_rear_qsfp_40g_2_status') throw new Error(p26[0]);
-if (n4032RearQsfpEntity(config, 24, 'status') !== null) throw new Error('front port remapped');
+if (p25[0] !== 'sensor.n4032_qsfp_40g_1_status') throw new Error(p25[0]);
+if (p25[1] !== 'sensor.n4032_rear_qsfp_40g_1_status') throw new Error(p25[1]);
+if (p26[0] !== 'sensor.n4032_qsfp_40g_2_status') throw new Error(p26[0]);
+if (p26[1] !== 'sensor.n4032_rear_qsfp_40g_2_status') throw new Error(p26[1]);
+if (n4032QsfpEntity(config, 24, 'status') !== null) throw new Error('front port remapped');
+if (n4032RearQsfpEntity(config, 24, 'status') !== null) throw new Error('legacy front port remapped');
 """
         result = subprocess.run(
             ["node", "-e", harness],
@@ -82,7 +134,10 @@ if (n4032RearQsfpEntity(config, 24, 'status') !== null) throw new Error('front p
 
         byte_fn = extract_js_function(source, "function sfpByteEntities(config, port, direction)")
         speed_fn = extract_js_function(source, "function sfpSpeedMbps(hass, config, port)")
+        self.assertIn("n4032QsfpEntity", byte_fn)
         self.assertIn("n4032RearQsfpEntity", byte_fn)
+        self.assertIn("n4032QsfpEntity", speed_fn)
+        self.assertIn("n4032RearQsfpEntity", speed_fn)
         self.assertIn('"speed_mbps"', speed_fn)
         self.assertIn('"speed_bps"', speed_fn)
 

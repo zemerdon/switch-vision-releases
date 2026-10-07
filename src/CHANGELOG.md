@@ -1,3 +1,12 @@
+## v2.7.47 — Dell N4032F dedicated faceplate
+
+- Add the dedicated Dell N4032F faceplate and owner-supplied 26-position optical geometry: SFP+ positions 1–24 plus optional 40G QSFP+ module positions 25–26.
+- Preserve the exact supplied 2048 × 448 render geometry while storing the factory profile against the artwork's real 2172 × 724 native PNG canvas.
+- Replace the generic N4032F UniFi optical fallback with the dedicated Dell faceplate/profile without changing its real-hardware 24-port base contract or optional QSFP parent-interface mapping.
+- Prefer the corrected `qsfp_40g` entity namespace for positions 25–26 while retaining the earlier `rear_qsfp_40g` entity IDs as compatibility fallbacks for existing installations.
+- Make the card header report the active faceplate image's actual native resolution instead of a fixed render-canvas value.
+- Add permanent regression coverage for exact geometry round-trip, PNG dimensions, native-resolution display and N4032F QSFP entity binding.
+
 ## v2.7.46 — Generic VLAN membership presentation
 
 - Render a discovered `allowed_vlans` / `vlans` membership list for any switch vendor when that trusted derived telemetry exists, instead of restricting multi-VLAN presentation to Juniper.

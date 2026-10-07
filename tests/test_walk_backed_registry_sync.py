@@ -75,8 +75,8 @@ class WalkBackedRegistrySyncTests(unittest.TestCase):
         self.assertEqual(n4032["ports"]["rj45"], 0)
         self.assertEqual(n4032["ports"]["uplinks"], 24)
         self.assertTrue(n4032["dashboard_support"])
-        self.assertEqual(n4032["default_faceplate"], "faceplates/unifi-32sfp.png")
-        self.assertEqual(n4032["calibration_profile"], "unifi_32sfp")
+        self.assertEqual(n4032["default_faceplate"], "faceplates/dell-4032f.png")
+        self.assertEqual(n4032["calibration_profile"], "dell_n4032f")
 
     def test_gs1915_exact_walk_contract_is_registered_without_phantom_uplinks(self):
         row = self.yaml_rows["GS1915-24EP"]

@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.47
+
+Core 2.7.47 adds the dedicated Dell N4032F visual. The owner-supplied faceplate is 2172 × 724 pixels and its complete 26-position calibration is preserved exactly in Switch Vision's 2048 × 448 render coordinate space: positions 1–24 are the front 10G SFP+ ports and positions 25–26 are the optional front-panel 40G QSFP+ expansion-module sockets.
+
+The factory profile is stored in native-image coordinates as usual, with a permanent regression proving that conversion back to render space reproduces the supplied geometry exactly. The N4032F functional topology remains evidence-driven: a base unit still renders 24 optical positions and the optional Fo1/1/1–2 parents extend the card to positions 25–26 only when the module is observed. Fresh telemetry now uses the neutral `qsfp_40g` entity namespace for those front-panel module ports, while Core retains the earlier `rear_qsfp_40g` names as legacy fallbacks so existing installations continue to resolve.
+
+The card header also now reports the actual native dimensions of the active faceplate image rather than displaying the fixed 2048 × 448 rendering canvas as though it were the source-image resolution.
+
 # Switch Vision Core v2.7.46
 
 Core 2.7.46 generalizes the existing multi-VLAN status presentation so standards-based Q-BRIDGE telemetry can show complete VLAN membership on non-Juniper switches. When a trusted `allowed_vlans` / `vlans` entity is available, the port status panel renders the full sorted membership list and labels multiple memberships as **VLANS**. Ports without a membership list retain the established single native/access VLAN behavior.

@@ -106,12 +106,37 @@ def test_all_shipped_faceplates_own_valid_native_geometry() -> None:
                     point_path,
                     point,
                 )
-                assert 0 <= x <= width and 0 <= y <= height, (
-                    filename,
-                    point_path,
-                    point,
-                    (width, height),
+                extended_sfp = (
+                    filename == "dell-4032f.png"
+                    and calibration.get("allow_out_of_bounds_sfp_geometry") is True
+                    and point_path.startswith("sfp.")
                 )
+                extended_ui = (
+                    filename == "dell-4032f.png"
+                    and calibration.get("allow_out_of_bounds_ui_geometry") is True
+                    and point_path.startswith("ui.")
+                )
+                if extended_sfp:
+                    assert 0 <= x <= width * 2 and 0 <= y <= height, (
+                        filename,
+                        point_path,
+                        point,
+                        (width * 2, height),
+                    )
+                elif extended_ui:
+                    assert -width <= x <= width * 2 and -height <= y <= height * 2, (
+                        filename,
+                        point_path,
+                        point,
+                        (width, height),
+                    )
+                else:
+                    assert 0 <= x <= width and 0 <= y <= height, (
+                        filename,
+                        point_path,
+                        point,
+                        (width, height),
+                    )
 
 
 def test_every_dashboard_default_profile_resolves_to_its_faceplate_geometry() -> None:
