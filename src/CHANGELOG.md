@@ -1,3 +1,12 @@
+## v2.7.49 — Stable 2048×448 faceplate render plane
+
+- Fix the runtime image/SVG mismatch by giving the faceplate canvas a fixed 2048 × 448 aspect ratio and mapping both the faceplate image and SVG overlay to the same full canvas.
+- Remove the SVG-only aspect-ratio transform so PNG native dimensions cannot make correct calibration coordinates appear larger, smaller or shifted.
+- Keep the Dell N4032F owner geometry exactly in Switch Vision render space and separate its geometry coordinate contract from the active PNG's native-resolution metadata.
+- Replace the Dell N4032F artwork with the latest owner-supplied 1935 × 262 dell-4032f.png while preserving SFP+ positions 1–24 and optional 40G QSFP positions 25–26 unchanged.
+- Add permanent Chromium regression coverage proving that changing between 2172 × 724 and 1935 × 262 artwork does not move or resize the canvas, SVG overlay or mapped geometry.
+- Retain the Cisco SG200-26 stock 24-RJ45 + 2-SFP correction and its unchanged 26-interface logical contract from the 2.7.48 candidate.
+
 ## v2.7.48 — Cisco SG200-26 stock 24+2 visual correction
 
 - Project Discovery 3.0.23's corrected Cisco SG200-26 visual contract into Core's generated exact-model registry.

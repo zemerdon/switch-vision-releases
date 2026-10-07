@@ -66,8 +66,9 @@ class DellN4032FFaceplateBindingTests(unittest.TestCase):
         self.assertEqual(profile["model"], "dell-n4032f")
         self.assertEqual(profile["profile"], "dell_n4032f")
         self.assertEqual(profile["image"]["file"], "faceplates/dell-4032f.png")
-        self.assertEqual(profile["image"]["coordinate_space"], "image-native-v1")
-        self.assertEqual((profile["image"]["width"], profile["image"]["height"]), (2172, 724))
+        self.assertEqual(profile["image"]["coordinate_space"], "switch-vision-render-2048x448-v1")
+        self.assertEqual((profile["image"]["width"], profile["image"]["height"]), (2048, 448))
+        self.assertEqual((profile["image"]["native_width"], profile["image"]["native_height"]), (1935, 262))
         render = render_space_calibration(profile)
         expected = json.loads(json.dumps(oracle))
         expected["image"].pop("coordinate_space", None)
@@ -90,7 +91,7 @@ class DellN4032FFaceplateBindingTests(unittest.TestCase):
         self.assertEqual(raw[12:16], b"IHDR")
         self.assertEqual(
             (int.from_bytes(raw[16:20], "big"), int.from_bytes(raw[20:24], "big")),
-            (2172, 724),
+            (1935, 262),
         )
         source = CARD.read_text(encoding="utf-8")
         self.assertIn("data-cv-native-resolution", source)

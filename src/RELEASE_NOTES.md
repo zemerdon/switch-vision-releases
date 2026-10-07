@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.49
+
+Core 2.7.49 fixes the faceplate image/overlay renderer so the physical artwork and all SVG calibration geometry share one stable 2048 × 448 display plane. Native PNG resolution is now presentation metadata only: changing artwork aspect ratio cannot resize, letterbox or otherwise apply a second transform to the geometry overlay.
+
+The Dell N4032F factory profile keeps the owner-supplied 2048 × 448 geometry exactly, including the optional front 40G QSFP positions 25–26, while the faceplate artwork is replaced with the latest owner-supplied 1935 × 262 PNG. A permanent Chromium regression swaps between the previous 2172 × 724 aspect ratio and the new 1935 × 262 aspect ratio and proves the rendered canvas, SVG overlay and mapped geometry point remain identical.
+
+This release also carries forward the Cisco SG200-26 correction from the 2.7.48 candidate: the model uses the existing stock 24-RJ45 + 2-SFP presentation while preserving the proven gi1–gi26 logical interface contract and ports 25–26 SFP logical mapping.
+
 # Switch Vision Core v2.7.48
 
 Core 2.7.48 corrects the Cisco SG200-26 front-panel presentation. The exact model now uses the existing stock 24-RJ45 + 2-SFP faceplate/profile rather than the oversized 48-port fallback.
