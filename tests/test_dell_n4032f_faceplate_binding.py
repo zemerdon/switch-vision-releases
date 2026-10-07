@@ -91,6 +91,10 @@ class DellN4032FFaceplateBindingTests(unittest.TestCase):
 
         assert_subset(render, expected)
         self.assertEqual(list(render["sfp"]), [f"SFP{n}" for n in range(1, 27)])
+        for key in ("SFP25", "SFP26"):
+            self.assertTrue(render["sfp"][key]["label_show"], key)
+            self.assertTrue(render["sfp"][key]["led_left_show"], key)
+            self.assertTrue(render["sfp"][key]["led_right_show"], key)
 
     def test_faceplate_png_and_header_report_real_native_resolution(self) -> None:
         raw = FACEPLATE.read_bytes()[:24]

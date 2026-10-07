@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.51
+
+Core 2.7.51 fixes the dedicated Dell N4032F visual contract so all 26 calibrated optical positions are always drawn, even when a stale or partially detected `sfp_port_count` reports fewer live entities. Missing telemetry now leaves those Dell positions inactive instead of hiding them.
+
+The exception is bound to the N4032F model/calibration profile only. Existing Cisco 3650, Cisco 3850-12XS and other model rendering behavior remains unchanged.
+
+QSFP positions 25–26 are now visibly labelled and retain their existing geometry, 40G role, native-image mapping and telemetry binding.
+
 # Switch Vision Core v2.7.50
 
 Core 2.7.50 restores the long-standing native-image calibration renderer after local testing exposed a regression in the 2.7.49 fixed-canvas experiment. Factory faceplates again render with the established image-defined canvas and SVG `xMidYMid meet` mapping, so the native-image conversion and browser transform remain inverse halves of the same calibration contract.

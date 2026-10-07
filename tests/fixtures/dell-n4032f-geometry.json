@@ -933,7 +933,7 @@
       ],
       "supported_speed": "40G",
       "port_role": "uplink",
-      "label_show": false,
+      "label_show": true,
       "led_left_show": true,
       "led_right_show": true,
       "led_left": [
@@ -970,7 +970,7 @@
       ],
       "supported_speed": "40G",
       "port_role": "uplink",
-      "label_show": false,
+      "label_show": true,
       "led_left_show": true,
       "led_right_show": true,
       "led_left": [

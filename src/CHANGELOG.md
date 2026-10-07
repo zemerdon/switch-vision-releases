@@ -1,3 +1,10 @@
+## v2.7.51 — Dell N4032F always renders all 26 optical positions
+
+- Bypass stale/partial `sfp_port_count` visual capping only for the dedicated N4032F model/calibration profile, so SFP/QSFP positions 1–26 are always drawn.
+- Keep normal count-driven rendering unchanged for Cisco 3650, Cisco 3850-12XS and every other model.
+- Make N4032F positions 25–26 labels visible while preserving their supplied geometry, LED positions and 40G telemetry binding.
+- Add Chromium regression coverage proving N4032F renders 26 positions with `sfp_port_count: 4` while Cisco 3850/3650 retain their existing count-capped behavior.
+
 ## v2.7.50 — Restore native-image calibration mapping
 
 - Revert the local-only 2.7.49 fixed 2048 × 448 canvas experiment and restore the established faceplate renderer: image-defined canvas height, `height:auto`, and SVG `preserveAspectRatio="xMidYMid meet"`.

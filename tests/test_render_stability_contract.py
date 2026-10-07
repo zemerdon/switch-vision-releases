@@ -581,6 +581,39 @@ async function scenarioCalibrationBehaviorContracts() {
   return {circle, mixed, metadata, testMode};
 }
 
+async function scenarioFaceplateOwnsVisualTopology() {
+  const conn = immediateConnection();
+  const renderCounts = async (member, model, portCount, sfpCount) => {
+    const card = document.createElement('switch-vision-3650');
+    card.setConfig({
+      member,
+      selected_switch:member,
+      switch_model:model,
+      calibration_profile_load:false,
+      calibration_profile_auto_load:false,
+      demo:false,
+      show_labels:true,
+      show_numbers:true,
+      port_count:portCount,
+      sfp_port_count:sfpCount,
+    });
+    document.body.appendChild(card);
+    card.hass = makeHass({}, conn);
+    await sleep(50);
+    const result = {
+      ports:card.shadowRoot.querySelectorAll('[data-cv-activity-port]').length,
+      sfp:card.shadowRoot.querySelectorAll('[data-cv-activity-sfp]').length,
+    };
+    card.remove();
+    return result;
+  };
+  return {
+    dell:await renderCounts('SWDELL26', 'N4032F', 0, 4),
+    c3850:await renderCounts('SW3850', 'WS-C3850-12XS-E', 0, 4),
+    c3650:await renderCounts('SW3650', 'WS-C3650-48PD-E', 1, 1),
+  };
+}
+
 async function scenarioNativeFontControls() {
   const conn = immediateConnection();
   const card = document.createElement('switch-vision-3650');
@@ -646,7 +679,7 @@ async function scenarioNativeFontControls() {
   card.remove();
   return {initial, after, stored, rendered};
 }
-(async () => { try { const result = {live:await scenarioLiveGate(), subscriptions:await scenarioSubscriptions(), profile:await scenarioProfileRace(), calibration:await scenarioCalibrationStability(), activity:await scenarioActivity(), activityTargets:scenarioActivityTargetScheduling(), naturalActivity:scenarioNaturalActivityPattern(), colour:await scenarioColour(), faceplateHeight:await scenarioFaceplateHeight(), calibrationBehavior:await scenarioCalibrationBehaviorContracts(), nativeFonts:await scenarioNativeFontControls()}; document.getElementById('result').textContent = JSON.stringify(result); } catch (err) { document.getElementById('result').textContent = JSON.stringify({error:String(err), stack:err?.stack||''}); } })();
+(async () => { try { const result = {live:await scenarioLiveGate(), subscriptions:await scenarioSubscriptions(), profile:await scenarioProfileRace(), calibration:await scenarioCalibrationStability(), activity:await scenarioActivity(), activityTargets:scenarioActivityTargetScheduling(), naturalActivity:scenarioNaturalActivityPattern(), colour:await scenarioColour(), faceplateHeight:await scenarioFaceplateHeight(), calibrationBehavior:await scenarioCalibrationBehaviorContracts(), faceplateTopology:await scenarioFaceplateOwnsVisualTopology(), nativeFonts:await scenarioNativeFontControls()}; document.getElementById('result').textContent = JSON.stringify(result); } catch (err) { document.getElementById('result').textContent = JSON.stringify({error:String(err), stack:err?.stack||''}); } })();
 """
         document = '<!doctype html><html><body><pre id="result">pending</pre><script>' + source + '</script><script>' + harness + '</script></body></html>'
         with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False, encoding="utf-8") as handle:
@@ -689,6 +722,9 @@ async function scenarioNativeFontControls() {
         self.assertEqual(payload["calibrationBehavior"]["testMode"]["afterDone"], {"enabled":True, "controls":False, "mode":False, "ledClass":"cv-led-green", "activityLedClass":"cv-led-amber", "activityAfterTickClass":"cv-led-amber", "activityTimer":False, "badgeActive":True, "extraSfpVisible":2})
         self.assertEqual(payload["calibrationBehavior"]["testMode"]["reopened"], {"enabled":True, "controls":True, "mode":True})
         self.assertEqual(payload["calibrationBehavior"]["testMode"]["afterCancel"], {"enabled":False, "controls":False, "mode":False})
+        self.assertEqual(payload["faceplateTopology"]["dell"], {"ports": 0, "sfp": 26})
+        self.assertEqual(payload["faceplateTopology"]["c3850"], {"ports": 0, "sfp": 4})
+        self.assertEqual(payload["faceplateTopology"]["c3650"], {"ports": 1, "sfp": 1})
         self.assertEqual(payload["activity"]["active"]["redraws"], 1)
         self.assertTrue(payload["activity"]["active"]["timer"])
         self.assertGreaterEqual(payload["activity"]["active"]["ticks"], 1)
