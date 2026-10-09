@@ -20,8 +20,9 @@ def main() -> None:
         assert 'poeSummary = unifiSwitchPoeSummary(runtime)' in text, path
         assert 'function formatUnifiCapabilitySpeed(value)' in text, path
         assert 'function useUnifiNativeStatusFields(config, type, panelNumber = 1)' in text, path
-        # The established generic/SNMP rows must not change as a side effect.
-        assert 'defaults: ["vlan", "mode", "desc", "link", "rx", "tx"]' in text, path
+        # Generic/SNMP fields gain only the requested, initially hidden Port Number row.
+        assert 'defaults: ["vlan", "mode", "desc", "link", "rx", "tx", "number"]' in text, path
+        assert 'hidden: ["mode", "number"]' in text, path
         assert 'defaults: ["model", "ip", "cpu", "temp", "poe", "uptime", "vendor", "os", "firmware", "serial", "stack", "fans", "psu"]' in text, path
         # UniFi per-port traffic remains explicitly disabled unless a future API
         # genuinely exposes it; this release must not fabricate byte counters.

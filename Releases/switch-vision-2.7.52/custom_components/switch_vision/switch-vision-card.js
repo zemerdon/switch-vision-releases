@@ -3644,9 +3644,10 @@ function drawStatusPanel(svg, hass, config, cal = calibration, panelNumber = 1) 
     let fields = statusPanelFieldSelection(config, "port", cal, panelNumber);
     if (useUnifiNativeStatusFields(config, "port", panelNumber)) {
       const optionalNumber = fields.includes("number") ? ["number"] : [];
-      fields = unifi?.poe?.available
-        ? [...optionalNumber, "link", "max_speed", "media", "poe", "poe_standard"]
-        : [...optionalNumber, "link", "max_speed", "media"];
+      const nativeFields = unifi?.poe?.available
+        ? ["link", "max_speed", "media", "poe", "poe_standard"]
+        : ["link", "max_speed", "media"];
+      fields = [...optionalNumber, ...nativeFields];
     } else if (!details.isJuniper) {
       // MODE is a Juniper-only optional row for the generic/SNMP path.
       fields = fields.filter((field) => field !== "mode");
@@ -3690,9 +3691,10 @@ function drawStatusPanel(svg, hass, config, cal = calibration, panelNumber = 1) 
     let fields = statusPanelFieldSelection(config, "sfp", cal, panelNumber);
     if (useUnifiNativeStatusFields(config, "sfp", panelNumber)) {
       const optionalNumber = fields.includes("number") ? ["number"] : [];
-      fields = unifi?.poe?.available
-        ? [...optionalNumber, "link", "max_speed", "media", "poe", "poe_standard"]
-        : [...optionalNumber, "link", "max_speed", "media"];
+      const nativeFields = unifi?.poe?.available
+        ? ["link", "max_speed", "media", "poe", "poe_standard"]
+        : ["link", "max_speed", "media"];
+      fields = [...optionalNumber, ...nativeFields];
     } else if (optics.available && String(config.switch_model || config.detected_switch_model || "").includes("N2128PX-ON")) {
       fields = [
         ...(fields.includes("number") ? ["number"] : []),
