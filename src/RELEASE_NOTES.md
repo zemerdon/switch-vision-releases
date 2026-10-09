@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.52
+
+This local-first Core candidate adds SFP/uplink range selection to interactive Calibration (for example `sfp1-sfp4`) and adds a selectable **Port Number** row to **Port Status Box → Field**. Port Number shows the calibrated custom display name when present or the faceplate's normal port number/label otherwise, for RJ45 and optical ports alike. The field is initially hidden to preserve existing saved layouts; selecting the field and choosing **Show** enables it. Port identity and telemetry bindings are unchanged.
+
 # Switch Vision Core v2.7.51
 
 Core 2.7.51 fixes the dedicated Dell N4032F visual contract so all 26 calibrated optical positions are always drawn, even when a stale or partially detected `sfp_port_count` reports fewer live entities. Missing telemetry now leaves those Dell positions inactive instead of hiding them.

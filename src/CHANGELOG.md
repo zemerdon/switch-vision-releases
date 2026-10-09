@@ -1,3 +1,10 @@
+## v2.7.52 — SFP calibration ranges and selectable Port Number status
+
+- Support optical selection ranges such as `sfp1-sfp4`, `sfp+1-sfp+4` and existing SFP/uplink aliases, resolving only actual calibrated cages and reporting unavailable positions without inventing hardware.
+- Add a Port Number field to the existing Port Status Box dropdown for RJ45 and SFP ports. Show the calibrated custom display name when set, otherwise the established faceplate port label; leave interface identities and telemetry mapping unchanged.
+- Keep Port Number hidden until enabled so existing saved status-panel layouts remain visually unchanged, and preserve per-panel field ordering/visibility.
+- Test parsing, naming, legacy-profile visibility and unchanged RJ45 range selection.
+
 ## v2.7.51 — Dell N4032F always renders all 26 optical positions
 
 - Bypass stale/partial `sfp_port_count` visual capping only for the dedicated N4032F model/calibration profile, so SFP/QSFP positions 1–26 are always drawn.
