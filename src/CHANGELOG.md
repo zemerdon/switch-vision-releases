@@ -1,3 +1,8 @@
+## v2.7.56 — Avaya ERS 3524GT-PWR+ factory default
+
+- Adopt the dedicated native-image `avaya-3524gt.png` and `avaya_3524gt` factory calibration as the exact-model default from Discovery, retaining the existing stock faceplate as an optional fallback.
+- Preserve 24 physical copper sockets, four shared front SFP positions, IF-MIB combo mapping and existing renderer/calibration geometry; no new telemetry semantics or renderer replacement.
+
 ## v2.7.55 — Selectable Avaya 3524GT faceplate registration
 
 - Register the owner-supplied 2925 × 323 Avaya ERS 3524GT-PWR+ artwork and its 24-RJ45/4-SFP calibration as a selectable bundled faceplate, without changing any model defaults or Discovery contracts.

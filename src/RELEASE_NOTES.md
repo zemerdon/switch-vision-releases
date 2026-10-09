@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.56
+
+The owner-calibrated Avaya ERS 3524GT-PWR+ faceplate is now the exact model's default, not just a selectable alternative. Discovery's corresponding model registry retains the older generic faceplate as a fallback. The established native-image rendering backend and combo-port interface mapping are unchanged.
+
 # Switch Vision Core v2.7.55
 
 Adds an optional selectable Avaya ERS 3524GT-PWR+ faceplate with its owner-calibrated 24 RJ45 + 4 shared-SFP visual positions. The SW1/Cisco calibration export was used only as a geometry workspace; no hardware model is reassigned, no automatic model default changes and no combo-port telemetry is altered. The established native-image renderer remains unchanged.

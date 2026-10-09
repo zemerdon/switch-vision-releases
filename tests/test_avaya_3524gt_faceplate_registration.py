@@ -42,8 +42,9 @@ class AvayaFaceplateRegistrationTests(unittest.TestCase):
         self.assertNotIn("stock-48rj45", json.dumps(self.profile))
         models = yaml.safe_load(REGISTRY.read_text(encoding="utf-8"))["devices"]
         avaya = next(row for row in models if row["model"] == "3524GT-PWR+")
-        self.assertEqual(avaya["default_faceplate"], "faceplates/24rj45-4sfp.png")
-        self.assertEqual(avaya["calibration_profile"], "stock_24rj45_4sfp")
+        self.assertEqual(avaya["default_faceplate"], "faceplates/avaya-3524gt.png")
+        self.assertEqual(avaya["calibration_profile"], "avaya_3524gt")
+        self.assertEqual(avaya["optional_faceplates"], ["faceplates/24rj45-4sfp.png"])
         self.assertEqual(avaya["ports"]["combo_logical_ports"], [21, 22, 23, 24])
         self.assertEqual(avaya["ports"]["combo_ports"], 4)
 
