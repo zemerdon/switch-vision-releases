@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.57
+
+Adds Core registry/stock faceplate binding for the walk-backed TP-Link JetStream TL-SG2428P and TL-SG2008P Experimental models. No changes to native-image calibration rendering, existing faceplates, or sensor inference.
+
 # Switch Vision Core v2.7.56
 
 The owner-calibrated Avaya ERS 3524GT-PWR+ faceplate is now the exact model's default, not just a selectable alternative. Discovery's corresponding model registry retains the older generic faceplate as a fallback. The established native-image rendering backend and combo-port interface mapping are unchanged.

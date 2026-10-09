@@ -1,3 +1,8 @@
+## v2.7.57 — TP-Link JetStream experimental registry projection
+
+- Project two reviewed Discovery exact-model candidates (TL-SG2428P and TL-SG2008P) into Core for consistent 24-RJ45/4-SFP and eight-RJ45 stock-visual assignments.
+- Preserve the current native-image calibration renderer and all existing faceplates, while retaining unknown PoE telemetry/hardware-revision acceptance state.
+
 ## v2.7.56 — Avaya ERS 3524GT-PWR+ factory default
 
 - Adopt the dedicated native-image `avaya-3524gt.png` and `avaya_3524gt` factory calibration as the exact-model default from Discovery, retaining the existing stock faceplate as an optional fallback.
