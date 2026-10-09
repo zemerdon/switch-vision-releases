@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.55
+
+Adds an optional selectable Avaya ERS 3524GT-PWR+ faceplate with its owner-calibrated 24 RJ45 + 4 shared-SFP visual positions. The SW1/Cisco calibration export was used only as a geometry workspace; no hardware model is reassigned, no automatic model default changes and no combo-port telemetry is altered. The established native-image renderer remains unchanged.
+
 # Switch Vision Core v2.7.54
 
 ROLE is now selectable, hideable and reorderable in Calibration's Port Status Box Field dropdown for both RJ45 and SFP ports. Existing recognized uplinks keep their visible ROLE row unless it is hidden or moved. This Local-only candidate also retains the SFP range selection and PORT ID caption from the previous versions.

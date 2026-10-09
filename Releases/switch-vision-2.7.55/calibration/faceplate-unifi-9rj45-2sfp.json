@@ -1,0 +1,700 @@
+{
+  "schema_version": 2,
+  "schema": "switch-vision-interactive-calibration-v1",
+  "model": "unifi-9-rj45-2sfp",
+  "profile": "unifi_9_rj45_2sfp",
+  "generated_by": "Switch Vision v2.7.23",
+  "image": {
+    "file": "faceplates/unifi-9rj45-2sfp.png",
+    "width": 2145,
+    "height": 215,
+    "master": "unifi-9-rj45-2sfp-owner-calibrated",
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "coordinate_space": "image-native-v1"
+  },
+  "ports": {
+    "1": {
+      "center": [
+        1467.466517857,
+        77.265625
+      ],
+      "number": [
+        1467.466517857,
+        77.265625
+      ],
+      "led_left": [
+        1442.991071429,
+        60.46875
+      ],
+      "led_right": [
+        1490.982142857,
+        60.46875
+      ],
+      "hitbox": [
+        42.712053571,
+        36.473214286
+      ],
+      "number_show": false,
+      "supported_speed": "",
+      "led_left_size": [
+        11.997767857,
+        6.71875
+      ],
+      "led_right_size": [
+        11.997767857,
+        6.71875
+      ],
+      "port_role": ""
+    },
+    "2": {
+      "center": [
+        1467.466517857,
+        134.854910714
+      ],
+      "number": [
+        1467.466517857,
+        134.854910714
+      ],
+      "led_left": [
+        1442.991071429,
+        155.491071429
+      ],
+      "led_right": [
+        1490.982142857,
+        155.491071429
+      ],
+      "hitbox": [
+        42.712053571,
+        36.473214286
+      ],
+      "number_show": false,
+      "supported_speed": "",
+      "led_left_size": [
+        11.997767857,
+        6.71875
+      ],
+      "led_right_size": [
+        11.997767857,
+        6.71875
+      ],
+      "port_role": ""
+    },
+    "3": {
+      "center": [
+        1537.053571429,
+        77.265625
+      ],
+      "number": [
+        1537.053571429,
+        77.265625
+      ],
+      "led_left": [
+        1512.578125,
+        60.46875
+      ],
+      "led_right": [
+        1561.049107143,
+        60.46875
+      ],
+      "hitbox": [
+        42.712053571,
+        36.473214286
+      ],
+      "number_show": false,
+      "supported_speed": "",
+      "led_left_size": [
+        11.997767857,
+        6.71875
+      ],
+      "led_right_size": [
+        11.997767857,
+        6.71875
+      ],
+      "port_role": ""
+    },
+    "4": {
+      "center": [
+        1537.053571429,
+        134.854910714
+      ],
+      "number": [
+        1537.053571429,
+        134.854910714
+      ],
+      "led_left": [
+        1513.058035714,
+        155.491071429
+      ],
+      "led_right": [
+        1561.049107143,
+        155.491071429
+      ],
+      "hitbox": [
+        42.712053571,
+        36.473214286
+      ],
+      "number_show": false,
+      "supported_speed": "",
+      "led_left_size": [
+        11.997767857,
+        6.71875
+      ],
+      "led_right_size": [
+        11.997767857,
+        6.71875
+      ],
+      "port_role": ""
+    },
+    "5": {
+      "center": [
+        1604.241071429,
+        77.265625
+      ],
+      "number": [
+        1604.241071429,
+        77.265625
+      ],
+      "led_left": [
+        1583.125,
+        60.46875
+      ],
+      "led_right": [
+        1631.116071429,
+        60.46875
+      ],
+      "hitbox": [
+        42.712053571,
+        36.473214286
+      ],
+      "number_show": false,
+      "supported_speed": "",
+      "led_left_size": [
+        11.997767857,
+        6.71875
+      ],
+      "led_right_size": [
+        11.997767857,
+        6.71875
+      ],
+      "port_role": ""
+    },
+    "6": {
+      "center": [
+        1604.241071429,
+        134.854910714
+      ],
+      "number": [
+        1604.241071429,
+        134.854910714
+      ],
+      "led_left": [
+        1583.125,
+        155.491071429
+      ],
+      "led_right": [
+        1631.116071429,
+        155.491071429
+      ],
+      "hitbox": [
+        42.712053571,
+        36.473214286
+      ],
+      "number_show": false,
+      "supported_speed": "",
+      "led_left_size": [
+        11.997767857,
+        6.71875
+      ],
+      "led_right_size": [
+        11.997767857,
+        6.71875
+      ],
+      "port_role": ""
+    },
+    "7": {
+      "center": [
+        1681.026785714,
+        77.265625
+      ],
+      "number": [
+        1681.026785714,
+        77.265625
+      ],
+      "led_left": [
+        1653.191964286,
+        60.46875
+      ],
+      "led_right": [
+        1701.183035714,
+        60.46875
+      ],
+      "hitbox": [
+        42.712053571,
+        36.473214286
+      ],
+      "number_show": false,
+      "supported_speed": "",
+      "led_left_size": [
+        11.997767857,
+        6.71875
+      ],
+      "led_right_size": [
+        11.997767857,
+        6.71875
+      ],
+      "port_role": ""
+    },
+    "8": {
+      "center": [
+        1671.428571429,
+        134.854910714
+      ],
+      "number": [
+        1671.428571429,
+        134.854910714
+      ],
+      "led_left": [
+        1653.191964286,
+        155.491071429
+      ],
+      "led_right": [
+        1701.183035714,
+        155.491071429
+      ],
+      "hitbox": [
+        42.712053571,
+        36.473214286
+      ],
+      "number_show": false,
+      "supported_speed": "",
+      "led_left_size": [
+        11.997767857,
+        6.71875
+      ],
+      "led_right_size": [
+        11.997767857,
+        6.71875
+      ],
+      "port_role": ""
+    },
+    "9": {
+      "center": [
+        1827.399553571,
+        132.455357143
+      ],
+      "number": [
+        1827.399553571,
+        132.455357143
+      ],
+      "led_left": [
+        1802.444196429,
+        115.178571429
+      ],
+      "led_right": [
+        1850.915178571,
+        115.658482143
+      ],
+      "hitbox": [
+        42.712053571,
+        36.473214286
+      ],
+      "number_show": false,
+      "supported_speed": "",
+      "led_left_size": [
+        13.4375,
+        6.71875
+      ],
+      "led_right_size": [
+        11.997767857,
+        6.71875
+      ],
+      "port_role": ""
+    }
+  },
+  "sfp": {
+    "SFP1": {
+      "center": [
+        1918.582589286,
+        70.066964286
+      ],
+      "hitbox": [
+        54.709821429,
+        30.234375
+      ],
+      "label": [
+        1918.582589286,
+        70.066964286
+      ],
+      "supported_speed": "",
+      "label_show": false,
+      "led_left": [
+        1899.866071429,
+        50.390625
+      ],
+      "led_right": [
+        1937.299107143,
+        50.390625
+      ],
+      "port_role": "",
+      "display_name": "SFP1"
+    },
+    "SFP2": {
+      "center": [
+        1918.582589286,
+        142.053571429
+      ],
+      "hitbox": [
+        54.709821429,
+        30.234375
+      ],
+      "label": [
+        1918.582589286,
+        142.053571429
+      ],
+      "supported_speed": "",
+      "label_show": false,
+      "led_left": [
+        1899.866071429,
+        122.377232143
+      ],
+      "led_right": [
+        1937.299107143,
+        122.377232143
+      ],
+      "port_role": "",
+      "display_name": "SFP2"
+    }
+  },
+  "status_leds": {
+    "STAT": [
+      904.53125,
+      40.3125
+    ],
+    "SYST": [
+      904.53125,
+      71.506696429
+    ],
+    "DUPLX": [
+      989.955357143,
+      40.3125
+    ],
+    "ACTV": [
+      989.955357143,
+      71.506696429
+    ],
+    "SPEED": [
+      1073.459821429,
+      40.3125
+    ],
+    "STACK": [
+      1158.883928571,
+      40.3125
+    ],
+    "PoE": [
+      1238.069196429,
+      40.3125
+    ]
+  },
+  "ui": {
+    "logo": {
+      "show": false,
+      "file": "sv-logo.png",
+      "source": "none",
+      "x": 313.881714286,
+      "y": 65.040571429,
+      "width": 89.743303571,
+      "height": 90.223214286
+    },
+    "status_panel": {
+      "show": true,
+      "x": 284.608952381,
+      "y": 50.576190476,
+      "width": 245.714285714,
+      "height": 109.752380952,
+      "font_family": "SwitchVisionCustom, Arial, Helvetica, sans-serif",
+      "font_size": 14.397321429,
+      "title_font_size": 7.678571429,
+      "font_weight": "normal",
+      "text_color": "#000000",
+      "label_color": "#000000",
+      "title_color": "#000000",
+      "background_color": "rgba(0,0,0,.06)",
+      "border_color": "#000000",
+      "border_show": true,
+      "field_order": {
+        "switch": [
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "uptime",
+          "vendor",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ],
+        "sfp": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ]
+      },
+      "hidden_fields": {
+        "switch": [
+          "vendor",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [],
+        "sfp": []
+      },
+      "fields": {
+        "row1_key": [
+          9.118303571,
+          18.716517857
+        ],
+        "row1_value": [
+          97.220952381,
+          18.723428571
+        ],
+        "row2_key": [
+          9.118303571,
+          27.834821429
+        ],
+        "row2_value": [
+          97.220952381,
+          27.831238095
+        ],
+        "row3_key": [
+          9.118303571,
+          37.433035714
+        ],
+        "row3_value": [
+          97.220952381,
+          37.430476191
+        ],
+        "row4_key": [
+          9.118303571,
+          46.551339286
+        ],
+        "row4_value": [
+          97.220952381,
+          46.554666667
+        ],
+        "row5_key": [
+          9.118303571,
+          55.669642857
+        ],
+        "row5_value": [
+          97.220952381,
+          55.662476191
+        ],
+        "row6_key": [
+          9.118303571,
+          64.787946429
+        ],
+        "row6_value": [
+          97.220952381,
+          64.786666667
+        ]
+      },
+      "background_show": true
+    },
+    "faceplate": {
+      "fit": "fill",
+      "opacity": 1,
+      "show": true,
+      "file": "unifi-9rj45-2sfp.png",
+      "source": "custom"
+    },
+    "calibration_button": {
+      "show": true,
+      "x": 1487.142857143,
+      "y": 6.71875,
+      "width": 66.227678571,
+      "height": 16.316964286,
+      "anchor": "top_right"
+    },
+    "status_panel_2": {
+      "show": true,
+      "x": 604.348761905,
+      "y": 50.576190476,
+      "width": 245.714285714,
+      "height": 109.752380952,
+      "font_family": "SwitchVisionCustom, Arial, Helvetica, sans-serif",
+      "font_size": 14.397321429,
+      "title_font_size": 7.678571429,
+      "font_weight": "normal",
+      "text_color": "#000000",
+      "label_color": "#000000",
+      "title_color": "#000000",
+      "background_color": "rgba(0,0,0,.06)",
+      "border_color": "#000000",
+      "border_show": true,
+      "title_mode": "custom",
+      "title_field": "model",
+      "custom_title": "",
+      "field_order": {
+        "switch": [
+          "vendor",
+          "uptime",
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ],
+        "sfp": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ]
+      },
+      "hidden_fields": {
+        "switch": [
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [],
+        "sfp": []
+      },
+      "fields": {
+        "row1_key": [
+          16.316964286,
+          26.395089286
+        ],
+        "row1_value": [
+          102.892857143,
+          26.395089286
+        ],
+        "row2_key": [
+          16.316964286,
+          34.553571429
+        ],
+        "row2_value": [
+          102.892857143,
+          34.553571429
+        ],
+        "row3_key": [
+          16.316964286,
+          42.712053571
+        ],
+        "row3_value": [
+          102.892857143,
+          42.712053571
+        ],
+        "row4_key": [
+          16.316964286,
+          50.870535714
+        ],
+        "row4_value": [
+          102.892857143,
+          50.870535714
+        ],
+        "row5_key": [
+          16.316964286,
+          59.029017857
+        ],
+        "row5_value": [
+          102.892857143,
+          59.029017857
+        ],
+        "row6_key": [
+          16.316964286,
+          67.1875
+        ],
+        "row6_value": [
+          102.892857143,
+          67.1875
+        ]
+      },
+      "background_show": true
+    },
+    "port_status_output": "status_box_2",
+    "port_led_shape": "rectangle",
+    "port_label_color": "#eef7ff",
+    "port_number_color": "#eef7ff",
+    "port_label_font_weight": "normal",
+    "port_number_font_size": 6.238839286,
+    "sfp_label_font_size": 6.478794643,
+    "status_leds": {
+      "hidden": [
+        "STAT",
+        "SYST",
+        "DUPLX",
+        "ACTV",
+        "SPEED",
+        "STACK",
+        "PoE"
+      ],
+      "text_color": "#000000",
+      "font_family": "Arial, Helvetica, sans-serif",
+      "font_size": 7.918526786,
+      "font_weight": "900"
+    },
+    "show_link_leds": true,
+    "show_activity_leds": true,
+    "test_mode_button": {
+      "show": true,
+      "x": 1487.151047619,
+      "y": 50.772761905,
+      "width": 66.227678571,
+      "height": 16.316964286,
+      "anchor": "top_right"
+    }
+  },
+  "stack": {
+    "enabled": false,
+    "stack_id": "",
+    "uptime_source": "",
+    "members": {}
+  },
+  "management": {
+    "switch_ip": ""
+  }
+}

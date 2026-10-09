@@ -1,3 +1,9 @@
+## v2.7.55 — Selectable Avaya 3524GT faceplate registration
+
+- Register the owner-supplied 2925 × 323 Avaya ERS 3524GT-PWR+ artwork and its 24-RJ45/4-SFP calibration as a selectable bundled faceplate, without changing any model defaults or Discovery contracts.
+- Convert the SW1 calibration workstation's render-space geometry to the new image's native coordinate space using the established native-image transformation; do not treat the SW1 Cisco factory identity as an Avaya binding.
+- Retain the restored native-image renderer, existing combo-port semantics and other faceplate defaults; add registration, geometry and selection regression coverage.
+
 ## v2.7.54 — Selectable ROLE row in Port Status Box
 
 - Move RJ45/SFP ROLE into the same Port Status Box field selector as PORT ID, with Show/Hide and Up/Down ordering, rather than unconditionally prepending a role row for uplinks.

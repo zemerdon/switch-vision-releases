@@ -744,11 +744,16 @@ def ensure_required_sources() -> None:
         raise SystemExit("Missing required source files:\n- " + "\n- ".join(missing))
 
 
+def is_editor_backup(path: Path) -> bool:
+    """Exclude temporary structured-edit backup files from all packaged artifacts."""
+    return bool(re.search(r"\.bak\.\d{8}-\d{6}-\d+$", path.name))
+
+
 def copy_tree_files(source: Path, destination: Path) -> None:
     if not source.exists():
         return
     for path in sorted(source.rglob("*")):
-        if "__pycache__" in path.parts or ".pytest_cache" in path.parts or path.suffix in {".pyc", ".pyo"}:
+        if "__pycache__" in path.parts or ".pytest_cache" in path.parts or path.suffix in {".pyc", ".pyo"} or is_editor_backup(path):
             continue
         if path.is_file():
             output = destination / path.relative_to(source)
@@ -1863,7 +1868,7 @@ def zip_directory(source_dir: Path, zip_path: Path, arc_base: Path) -> None:
         zip_path.unlink()
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as archive:
         for path in sorted(source_dir.rglob("*")):
-            if "__pycache__" in path.parts or ".pytest_cache" in path.parts or path.suffix in {".pyc", ".pyo"}:
+            if "__pycache__" in path.parts or ".pytest_cache" in path.parts or path.suffix in {".pyc", ".pyo"} or is_editor_backup(path):
                 continue
             if path.is_file():
                 write_zip_member(archive, path, path.relative_to(arc_base))
@@ -1908,7 +1913,7 @@ def write_source_zip(version: str, gold: bool = False) -> Path:
                     continue
                 if "__pycache__" in path.parts or ".pytest_cache" in path.parts:
                     continue
-                if path.suffix in {".pyc", ".pyo"}:
+                if path.suffix in {".pyc", ".pyo"} or is_editor_backup(path):
                     continue
                 write_zip_member(archive, path, path.relative_to(PROJECT_ROOT))
     return output
