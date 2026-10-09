@@ -1,3 +1,9 @@
+## v2.7.54 — Selectable ROLE row in Port Status Box
+
+- Move RJ45/SFP ROLE into the same Port Status Box field selector as PORT ID, with Show/Hide and Up/Down ordering, rather than unconditionally prepending a role row for uplinks.
+- Preserve legacy visible uplink ROLE and its leading placement when loading saved profiles without ROLE in the stored field order; explicit hidden state and user-defined order remain authoritative afterward.
+- Keep unknown roles suppressed, the two status boxes independent, existing UniFi/optical presentations and the Core 2.7.53 Port ID and SFP range features unchanged.
+
 ## v2.7.53 — Port ID status-field label
 
 - Rename the optional RJ45/SFP Port Status Box field label from `PORT NUMBER` to `PORT ID` for a better visual fit.

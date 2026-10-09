@@ -21,7 +21,7 @@ def main() -> None:
         assert 'function formatUnifiCapabilitySpeed(value)' in text, path
         assert 'function useUnifiNativeStatusFields(config, type, panelNumber = 1)' in text, path
         # Generic/SNMP fields gain only the requested, initially hidden Port Number row.
-        assert 'defaults: ["vlan", "mode", "desc", "link", "rx", "tx", "number"]' in text, path
+        assert 'defaults: ["role", "vlan", "mode", "desc", "link", "rx", "tx", "number"]' in text, path
         assert 'hidden: ["mode", "number"]' in text, path
         assert 'defaults: ["model", "ip", "cpu", "temp", "poe", "uptime", "vendor", "os", "firmware", "serial", "stack", "fans", "psu"]' in text, path
         # UniFi per-port traffic remains explicitly disabled unless a future API

@@ -23,10 +23,12 @@ class SfpRangePortNumberTests(unittest.TestCase):
             "sfpVisibleLabel", "selectedPortStatusLabel",
             "normalStatusPanelRowType", "fieldListFromValue",
             "normaliseStatusPanelFieldOrder", "ensureStatusPanelFieldState",
+            "statusPanelFieldSelection",
         )
         defs = source.split("const STATUS_PANEL_ROW_DEFS = {", 1)[1].split("\n};", 1)[0]
         harness = "\n".join([f"const STATUS_PANEL_ROW_DEFS = {{{defs}\n}};",
                               *(function(source, name) for name in names)]) + """
+function uiFromCalibration(cal){return cal.ui;}
 const assert=(ok, message)=>{if(!ok)throw new Error(message)};
 const cal = {
   ports:{'1':{},'2':{},'3':{},'12':{}},
@@ -61,6 +63,29 @@ ensureStatusPanelFieldState(legacy);
 assert(!legacy.hidden_fields.port.includes('number'),'explicit Show must persist');
 assert(STATUS_PANEL_ROW_DEFS.port.labels.number === 'PORT ID','dropdown label');
 assert(STATUS_PANEL_ROW_DEFS.sfp.labels.number === 'PORT ID','SFP label');
+assert(STATUS_PANEL_ROW_DEFS.port.defaults.includes('role'), 'RJ45 ROLE missing from dropdown');
+assert(STATUS_PANEL_ROW_DEFS.sfp.defaults.includes('role'), 'SFP ROLE missing from dropdown');
+assert(legacy.field_order.port[0] === 'role', 'legacy RJ45 role position not preserved');
+assert(legacy.field_order.sfp[0] === 'role', 'legacy SFP role position not preserved');
+const display = {ui:{
+  status_panel:legacy,
+  status_panel_2:{
+    field_order:{port:['link','role','number'],sfp:['link','role','number']},
+    hidden_fields:{port:['role'],sfp:['role']}
+  }
+}};
+let selected = statusPanelFieldSelection({}, 'port', display, 1);
+assert(selected.includes('role'), 'RJ45 role not shown by default');
+assert(selected[0] === 'role', 'RJ45 role not first for legacy');
+display.ui.status_panel.hidden_fields.port.push('role');
+selected = statusPanelFieldSelection({}, 'port', display, 1);
+assert(!selected.includes('role'), 'RJ45 ROLE Show/Hide does not apply');
+assert(!statusPanelFieldSelection({}, 'sfp', display, 2).includes('role'), 'SFP Status Box 2 hide ignored');
+display.ui.status_panel_2.hidden_fields.sfp = [];
+selected = statusPanelFieldSelection({}, 'sfp', display, 2);
+assert(selected.includes('role'), 'SFP Status Box 2 Show ignored');
+assert(selected.indexOf('role') > selected.indexOf('link'), 'SFP field reordering ignored');
+assert(!statusPanelFieldSelection({}, 'port', display, 2).includes('role'), 'Status Box 2 RJ45 hide ignored');
 console.log('SFP_RANGES_AND_PORT_NUMBER=PASS');
 """
         result = subprocess.run(["node", "-e", harness], cwd=ROOT, text=True,
@@ -71,8 +96,10 @@ console.log('SFP_RANGES_AND_PORT_NUMBER=PASS');
         source = SOURCE.read_text(encoding="utf-8")
         self.assertEqual(source.count("number: selectedPortStatusLabel(config, cal, selected)"), 2)
         self.assertIn('data-cv-field="port-status-row-field"', source)
-        self.assertIn('fields.includes("number") ? ["number"] : []', source)
+        self.assertIn('field === "number" || field === "role" || field === "link"', source)
         self.assertIn("panel.field_order.sfp = [...order]", source)
+        self.assertNotIn('if (values.role !== "—" && !fields.includes("role"))', source)
+        self.assertIn('data-cv-action="port-status-row-toggle"', source)
 
 
 if __name__ == "__main__":

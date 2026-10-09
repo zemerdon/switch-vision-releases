@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.54
+
+ROLE is now selectable, hideable and reorderable in Calibration's Port Status Box Field dropdown for both RJ45 and SFP ports. Existing recognized uplinks keep their visible ROLE row unless it is hidden or moved. This Local-only candidate also retains the SFP range selection and PORT ID caption from the previous versions.
+
 # Switch Vision Core v2.7.53
 
 The optional Port Status Box field is now labelled **PORT ID**, replacing **PORT NUMBER** to fit more neatly in the status panel. Its value remains the calibrated RJ45/SFP custom display name, or the default physical/interface label. SFP selection ranges such as `sfp1-sfp4` remain supported. The saved internal field identifier stays `number`, preserving existing calibration profiles.
