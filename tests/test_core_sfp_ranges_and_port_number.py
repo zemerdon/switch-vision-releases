@@ -59,8 +59,8 @@ assert(legacy.hidden_fields.sfp.includes('number'),'legacy SFP visibility change
 legacy.hidden_fields.port = legacy.hidden_fields.port.filter(x=>x!=='number');
 ensureStatusPanelFieldState(legacy);
 assert(!legacy.hidden_fields.port.includes('number'),'explicit Show must persist');
-assert(STATUS_PANEL_ROW_DEFS.port.labels.number === 'PORT NUMBER','dropdown label');
-assert(STATUS_PANEL_ROW_DEFS.sfp.labels.number === 'PORT NUMBER','SFP label');
+assert(STATUS_PANEL_ROW_DEFS.port.labels.number === 'PORT ID','dropdown label');
+assert(STATUS_PANEL_ROW_DEFS.sfp.labels.number === 'PORT ID','SFP label');
 console.log('SFP_RANGES_AND_PORT_NUMBER=PASS');
 """
         result = subprocess.run(["node", "-e", harness], cwd=ROOT, text=True,

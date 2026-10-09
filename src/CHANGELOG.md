@@ -1,3 +1,8 @@
+## v2.7.53 — Port ID status-field label
+
+- Rename the optional RJ45/SFP Port Status Box field label from `PORT NUMBER` to `PORT ID` for a better visual fit.
+- Preserve the existing internal `number` field key and the default-or-renamed port label behavior, along with the SFP range selection from 2.7.52.
+
 ## v2.7.52 — SFP calibration ranges and selectable Port Number status
 
 - Support optical selection ranges such as `sfp1-sfp4`, `sfp+1-sfp+4` and existing SFP/uplink aliases, resolving only actual calibrated cages and reporting unavailable positions without inventing hardware.

@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.53
+
+The optional Port Status Box field is now labelled **PORT ID**, replacing **PORT NUMBER** to fit more neatly in the status panel. Its value remains the calibrated RJ45/SFP custom display name, or the default physical/interface label. SFP selection ranges such as `sfp1-sfp4` remain supported. The saved internal field identifier stays `number`, preserving existing calibration profiles.
+
 # Switch Vision Core v2.7.52
 
 This local-first Core candidate adds SFP/uplink range selection to interactive Calibration (for example `sfp1-sfp4`) and adds a selectable **Port Number** row to **Port Status Box → Field**. Port Number shows the calibrated custom display name when present or the faceplate's normal port number/label otherwise, for RJ45 and optical ports alike. The field is initially hidden to preserve existing saved layouts; selecting the field and choosing **Show** enables it. Port identity and telemetry bindings are unchanged.
