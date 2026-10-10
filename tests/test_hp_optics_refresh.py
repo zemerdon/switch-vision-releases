@@ -11,10 +11,10 @@ module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
 
 MODEL = "HP J8693A Switch 3500yl-48G"
-CARDS = [{"member": "Paul3500", "switch_ip": "192.168.1.50", "switch_model": MODEL}]
+CARDS = [{"member": "LAB3500", "switch_ip": "10.254.22.50", "switch_model": MODEL}]
 assert module.supported_model(MODEL)
-assert module.trusted_target(CARDS, "192.168.1.50", "Paul3500", 49) == "192.168.1.50"
-for host, member, port in [("192.168.1.60", "Paul3500", 49), ("192.168.1.50", "Other", 49), ("192.168.1.50", "Paul3500", 2), ("127.0.0.1", "Paul3500", 49)]:
+assert module.trusted_target(CARDS, "10.254.22.50", "LAB3500", 49) == "10.254.22.50"
+for host, member, port in [("10.254.22.60", "LAB3500", 49), ("10.254.22.50", "Other", 49), ("10.254.22.50", "LAB3500", 2), ("127.0.0.1", "LAB3500", 49)]:
     try:
         module.trusted_target(CARDS, host, member, port)
     except ValueError:
@@ -61,13 +61,13 @@ class FakeAgent:
 
 async def check():
     agent = FakeAgent()
-    result = await module.refresh_dom("192.168.1.50", 49, "dedicated-write", lambda *_: agent)
+    result = await module.refresh_dom("10.254.22.50", 49, "dedicated-write", lambda *_: agent)
     assert result == {"status": "ok", "port": 49, "tx_dbm": "-2.111", "rx_dbm": "-7.223"}
     assert agent.sets == [(module.oid(module.UPDATE, 49), 1)]
     for wrong_identity in ["HP ProCurve Switch 3500yl-48G (J8694A)", "HP Switch 2530-48G (J8693A)", "Other vendor 3500yl-48G"]:
         agent = FakeAgent(sys_descr=wrong_identity)
         try:
-            await module.refresh_dom("192.168.1.50", 49, "dedicated-write", lambda *_: agent)
+            await module.refresh_dom("10.254.22.50", 49, "dedicated-write", lambda *_: agent)
         except ValueError:
             pass
         else:
@@ -76,19 +76,19 @@ async def check():
     for prohibited in [0, 2, 3, 4, None]:
         agent = FakeAgent(dom=prohibited)
         try:
-            await module.refresh_dom("192.168.1.50", 49, "dedicated-write", lambda *_: agent)
+            await module.refresh_dom("10.254.22.50", 49, "dedicated-write", lambda *_: agent)
         except ValueError:
             pass
         else:
             raise AssertionError("Non-DOM port sent a SET")
         assert not agent.sets, prohibited
     stale = FakeAgent(after=100)
-    result = await module.refresh_dom("192.168.1.50", 49, "dedicated-write", lambda *_: stale)
+    result = await module.refresh_dom("10.254.22.50", 49, "dedicated-write", lambda *_: stale)
     assert result["status"] == "stale" and len(stale.sets) == 1
     for value in [module.MISSING, -110000, "nan"]:
         agent = FakeAgent(rx=value)
         try:
-            await module.refresh_dom("192.168.1.50", 49, "dedicated-write", lambda *_: agent)
+            await module.refresh_dom("10.254.22.50", 49, "dedicated-write", lambda *_: agent)
         except ValueError:
             pass
         else:
