@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.61
+
+Local-only Calibration refinement: reduce editable grey input and blue button/select text insets to 3px per side (preserving dropdown arrow clearance); further compact hex, numeric, label, colour swatch, coordinate and target-select widths by approximately 10–15% where practical. Maintain the existing 24px control-height contract, Quick Selection buttons, all saved calibration values and functional target behaviour without changing the calibration profile schema or device telemetry.
+
 # Switch Vision Core v2.7.60
 
 Local-only Calibration layout cleanup: replace the single Target dropdown with Misc Targets, RJ45 Targets and SFP Targets, all preserving the existing active target and calibration profile format. Standardise input heights, reduce vertical padding, and shorten numeric, hex colour, colour swatch and port-metadata editors. No changes to faceplate geometry, telemetry or persisted calibration values.

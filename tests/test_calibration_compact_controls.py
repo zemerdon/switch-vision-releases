@@ -82,10 +82,26 @@ console.log("Calibration grouped targets: PASS");
 
     def test_compact_size_rules(self) -> None:
         css = CSS.read_text(encoding="utf-8")
-        self.assertRegex(css, r"(?s)\.cv-cal-tools input\.cv-cal-input \{[^}]*height: 24px;[^}]*padding: 1px 5px;")
-        self.assertRegex(css, r"(?s)\.cv-cal-colour-controls input\.cv-cal-hex-input \{[^}]*width: 67px !important;")
-        self.assertRegex(css, r"(?s)\.cv-cal-colour-controls \.cv-cal-colour-swatch \{[^}]*height: 22px;")
-        self.assertRegex(css, r"(?s)\.cv-cal-tools input\.cv-cal-input\[type=\"number\"\][^{]*\{[^}]*width: 70px;")
+        self.assertRegex(css, r"(?s)\.cv-cal-tools input\.cv-cal-input \{[^}]*height: 24px;[^}]*padding: 3px;[^}]*line-height: 16px;")
+        self.assertRegex(css, r"(?s)\.cv-cal-colour-controls input\.cv-cal-hex-input \{[^}]*width: 59px !important;[^}]*padding: 3px;")
+        self.assertRegex(css, r"(?s)\.cv-cal-colour-controls \.cv-cal-colour-swatch \{[^}]*width: 21px;[^}]*height: 22px;")
+        self.assertRegex(css, r"(?s)\.cv-cal-tools input\.cv-cal-input\[type=\"number\"\][^{]*\{[^}]*width: 61px;")
+        self.assertRegex(css, r"(?s)\.cv-cal-tools select\.cv-cal-select \{[^}]*padding: 3px 18px 3px 3px;")
+        self.assertRegex(css, r"(?s)\.cv-cal-tools button:not\(\.cv-cal-toggle\) \{[^}]*padding: 3px;")
+        self.assertIn("width: 127px;", css)
+        self.assertIn("max-width: min(100%, 185px);", css)
+
+    def test_quick_links_remain_unchanged(self) -> None:
+        source = SOURCE.read_text(encoding="utf-8")
+        for marker in (
+            '<span class="cv-cal-quick-label">Quick select</span>',
+            'data-target="ports" data-part="entire">All RJ45</button>',
+            'data-target="sfps" data-part="entire">All SFP</button>',
+            'data-target="ports_odd_entire" data-part="entire">Ports</button>',
+            'data-target="sfps_even_labels" data-part="label">Labels</button>',
+            'data-cv-action="select-custom-ports"',
+        ):
+            self.assertIn(marker, source)
 
 
 if __name__ == "__main__":

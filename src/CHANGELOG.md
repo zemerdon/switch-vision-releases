@@ -1,3 +1,9 @@
+## v2.7.61 — Tight 3px Calibration control spacing (Local)
+
+- Use 3px padding between the text and outlines of Calibration grey inputs and blue controls, reserving the necessary right-hand clearance for native dropdown arrows.
+- Reduce common numeric, hex, swatch, text-label, coordinate and target-dropdown widths by roughly 10–15% while retaining 24px-height controls.
+- Preserve all Quick Selection links unchanged pending owner review, and preserve saved calibration profiles and faceplate behaviour. Stage locally only; no public release.
+
 ## v2.7.60 — Compact Calibration targets and controls (Local)
 
 - Split Calibration Target into three focused dropdowns: Misc Targets, RJ45 Targets and SFP Targets, retaining the existing single active selection, part handling and saved-profile schema.
