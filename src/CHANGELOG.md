@@ -5,7 +5,7 @@
 - Require the live SNMP identity to contain both the 3500yl family and exact J8693A identifier before sending the fixed DOM refresh SET; a family-only match is insufficient.
 
 - Add the Port dB status row to RJ45/uplink and SFP show/hide menus, retaining existing saved-field order and presenting fresh optical RX/TX dBm for the selected HP 3500yl optic only.
-- Clicking a supported SFP invokes an administrator-only Home Assistant WebSocket action; the browser never handles SNMP write secrets, OIDs, or arbitrary target addresses.
+- Clicking a supported SFP invokes an administrator-only Home Assistant WebSocket action; the browser never receives stored SNMP write credentials or issues SNMP commands, while newly entered credentials are submitted to private Home Assistant storage.
 - Implement a separate default-off SNMPv2c write credential in private Home Assistant storage. Bind the action to the generated HP J8693A 3500yl-48G device and physical optical interface, check live sysDescr/ifDescr and strictly DOM(1) before the single fixed SNMP SET, rate-limit requests, and confirm the updated timestamp before displaying new power.
 - VCT/Other/unsupported diagnostic modes cannot send the SET. Read-only Discovery, unrelated models and normal interface polling remain unchanged.
 - Local evaluation only until actual HP firmware DOM refresh and non-disruptive behaviour are independently field-validated.
