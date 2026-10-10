@@ -15,10 +15,11 @@
 .cv-model-label,.cv-status-label{font-size:16.5px;font-weight:900;fill:#eef7ff;dominant-baseline:middle;paint-order:stroke;stroke:rgba(0,0,0,.88);stroke-width:2.3px}
 .cv-port-num{font-size:13px;font-weight:800;fill:#eef7ff;text-anchor:middle;dominant-baseline:middle;paint-order:stroke;stroke:rgba(0,0,0,.88);stroke-width:2px}
 .cv-sfp-label{font-size:13.5px;font-weight:850;fill:#eef7ff;text-anchor:middle;dominant-baseline:middle;paint-order:stroke;stroke:rgba(0,0,0,.88);stroke-width:2px}
-.cv-led-off{fill:var(--cv-off);stroke:rgba(0,0,0,.8);stroke-width:1}.cv-led-green{fill:var(--cv-green);filter:drop-shadow(0 0 2.5px var(--cv-green));stroke:rgba(0,0,0,.85);stroke-width:1}.cv-led-amber{fill:var(--cv-amber);filter:drop-shadow(0 0 2.5px var(--cv-amber));stroke:rgba(0,0,0,.85);stroke-width:1}.cv-led-blue{fill:var(--cv-blue);filter:drop-shadow(0 0 2.5px var(--cv-blue));stroke:rgba(0,0,0,.85);stroke-width:1}
+.cv-led-off{fill:var(--cv-off)}.cv-led-green{fill:var(--cv-green);filter:drop-shadow(0 0 2.5px var(--cv-green))}.cv-led-amber{fill:var(--cv-amber);filter:drop-shadow(0 0 2.5px var(--cv-amber))}.cv-led-blue{fill:var(--cv-blue);filter:drop-shadow(0 0 2.5px var(--cv-blue))}
 .cv-legend{margin-top:8px;padding:8px;border:1px solid rgba(0,229,255,.20);border-radius:6px;background:rgba(0,0,0,.30);font-size:11px}.cv-legend-row{display:flex;flex-wrap:wrap;align-items:center;gap:16px}.cv-legend-item{display:inline-flex;align-items:center;gap:6px;color:rgba(238,247,255,.82)}.cv-legend-dot{width:12px;height:12px;border-radius:50%;box-shadow:0 0 3px currentColor;border:1px solid rgba(0,0,0,.85)}
 
-.cv-led-red{fill:var(--cv-red);filter:drop-shadow(0 0 2.5px var(--cv-red));stroke:rgba(0,0,0,.85);stroke-width:1}
+.cv-led-red{fill:var(--cv-red);filter:drop-shadow(0 0 2.5px var(--cv-red))}
+.cv-led-off,.cv-led-green,.cv-led-amber,.cv-led-blue,.cv-led-red,.cv-led-poe{stroke:var(--cv-led-outline-color,none);stroke-width:var(--cv-led-outline-width,0)}
 
 .cv-status-panel-bg{fill:rgba(0,0,0,.06);stroke:rgba(0,0,0,.62);stroke-width:1.2;filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.58))}
 .cv-status-panel-border{fill:none;stroke:rgba(245,248,250,.75);stroke-width:1.05;filter:none}
@@ -72,8 +73,6 @@
 .cv-led-poe{
   fill:var(--cv-amber);
   filter:drop-shadow(0 0 3px var(--cv-amber)) drop-shadow(0 0 8px rgba(255,179,33,.78));
-  stroke:rgba(0,0,0,.85);
-  stroke-width:1;
 }
 
 /* v0.5.1 calibration mode overlay */

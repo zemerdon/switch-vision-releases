@@ -3020,6 +3020,21 @@ function customColourControlsHtml(field, value, defaultValue, resetValue = defau
   </span>`;
 }
 
+function normaliseLedOutlineThickness(value) {
+  const requested = Number(value);
+  if (!Number.isFinite(requested)) return 1;
+  return Math.min(3, Math.max(0.25, Math.round(requested * 4) / 4));
+}
+
+function normaliseLedOutlineSettings(value) {
+  const source = value && typeof value === "object" && !Array.isArray(value) ? value : {};
+  return {
+    enabled: source.enabled === true,
+    color: normaliseHexColour(source.color, "#000000"),
+    thickness: normaliseLedOutlineThickness(source.thickness ?? 1)
+  };
+}
+
 function defaultUiLayout() {
   const fields = {};
   const fields2 = {};
@@ -3031,6 +3046,7 @@ function defaultUiLayout() {
   return {
     port_status_output: "status_box_1",
     port_led_shape: "circle",
+    led_outline: { enabled: false, color: "#000000", thickness: 1 },
     port_label_color: "#eef7ff",
     port_number_color: "#eef7ff",
     port_number_mode: "static",
@@ -3171,6 +3187,7 @@ function ensureCalibrationUi(cal) {
       ? "status_box_2"
       : "status_box_1";
   cal.ui.port_led_shape = normalisePortLedShape(cal.ui.port_led_shape || defaults.port_led_shape || "circle");
+  cal.ui.led_outline = normaliseLedOutlineSettings(cal.ui.led_outline);
   for (const [field, fallback] of [["link_led_color", "#76ff33"], ["activity_led_color", "#ffb321"]]) {
     const value = String(cal.ui[field] || "").trim();
     if (value) cal.ui[field] = normaliseHexColour(value, fallback);
@@ -9266,6 +9283,17 @@ const testModeBadge = testModeUi.show !== false
         </span>
         <span class="cv-cal-current">Link and activity colours apply to every RJ45 and SFP/uplink port. Reset restores the factory LED colours, including speed-based link colours.</span>
       </div>
+<div class="cv-cal-tools-row cv-cal-style-row cv-cal-led-outline-row">
+        <span class="cv-cal-quick-label">LED Outlines</span>
+        <label title="Optional outline for RJ45, SFP/uplink and status LED overlays">Enable outlines <input type="checkbox" data-cv-field="led-outline-enabled" ${calibrationUi.led_outline?.enabled === true ? "checked" : ""}></label>
+        <span class="cv-cal-colour-field"><span>Outline colour</span>
+          ${customColourControlsHtml("led-outline-color", calibrationUi.led_outline?.color, "#000000")}
+        </span>
+        <label>Thickness
+          <input class="cv-cal-input" data-cv-field="led-outline-thickness" type="number" min="0.25" max="3" step="0.25" placeholder="0.25 – 3.00" value="${calibrationUi.led_outline?.enabled === true ? Number(calibrationUi.led_outline?.thickness ?? 1).toFixed(2) : ""}" ${calibrationUi.led_outline?.enabled === true ? "" : "disabled"}>
+        </label>
+        <span class="cv-cal-current">Off by default. Set thickness in steps of 0.25.</span>
+      </div>
 ${portPresentationControls}
 <div class="cv-cal-tools-row cv-cal-style-row cv-cal-port-label-style">
         <span class="cv-cal-quick-label">Port labels</span>
@@ -9449,6 +9477,9 @@ ${portPresentationControls}
 
     try {
       while (svg.firstChild) svg.removeChild(svg.firstChild);
+      const outline = normaliseLedOutlineSettings(renderCal.ui?.led_outline);
+      svg.style.setProperty("--cv-led-outline-color", outline.enabled ? outline.color : "none");
+      svg.style.setProperty("--cv-led-outline-width", outline.enabled ? String(outline.thickness) : "0");
 
       drawPanel(svg, {
         hass: trackedHass,
@@ -10196,6 +10227,23 @@ ${portPresentationControls}
       });
     }
 
+    const ledOutlineToggle = this.shadowRoot.querySelector('[data-cv-field="led-outline-enabled"]');
+    if (ledOutlineToggle) ledOutlineToggle.addEventListener("change", (event) => {
+      ensureCalibrationUi(cal);
+      cal.ui.led_outline.enabled = event.target.checked;
+      this.markCalibrationDirty();
+      this.render();
+    });
+
+    const ledOutlineThickness = this.shadowRoot.querySelector('[data-cv-field="led-outline-thickness"]');
+    if (ledOutlineThickness) ledOutlineThickness.addEventListener("change", (event) => {
+      ensureCalibrationUi(cal);
+      cal.ui.led_outline.thickness = normaliseLedOutlineThickness(event.target.value || 1);
+      this.markCalibrationDirty();
+      this.render();
+    });
+
+
     const portNumberModeSelect = this.shadowRoot.querySelector('[data-cv-field="port-number-mode"]');
     if (portNumberModeSelect) {
       portNumberModeSelect.addEventListener("change", (event) => {
@@ -10388,10 +10436,11 @@ ${portPresentationControls}
 
     const applyCustomColour = (field, value, { syncPicker = true, visualOnly = false } = {}) => {
       ensureCalibrationUi(cal);
-      const factoryDefaults = { "link-led-color": "#76ff33", "activity-led-color": "#ffb321" };
+      const factoryDefaults = { "link-led-color": "#76ff33", "activity-led-color": "#ffb321", "led-outline-color": "#000000" };
       if (String(value || "") === "__factory__" && factoryDefaults[field]) {
         if (field === "link-led-color") delete cal.ui.link_led_color;
         if (field === "activity-led-color") delete cal.ui.activity_led_color;
+        if (field === "led-outline-color") cal.ui.led_outline.color = factoryDefaults[field];
         this.markCalibrationDirty();
         if (syncPicker) refreshCustomColourPicker(this.shadowRoot.querySelector(`[data-cv-colour-control="${field}"]`), factoryDefaults[field]);
         if (visualOnly) this.scheduleCalibrationSvgRefresh(cal);
@@ -10402,6 +10451,7 @@ ${portPresentationControls}
       const setters = {
         "link-led-color": () => { cal.ui.link_led_color = colour; },
         "activity-led-color": () => { cal.ui.activity_led_color = colour; },
+        "led-outline-color": () => { cal.ui.led_outline.color = colour; },
         "port-number-color": () => { cal.ui.port_number_color = colour; },
         "port-label-color": () => { cal.ui.port_label_color = colour; },
         "status-led-text-color": () => { cal.ui.status_leds.text_color = colour; },
