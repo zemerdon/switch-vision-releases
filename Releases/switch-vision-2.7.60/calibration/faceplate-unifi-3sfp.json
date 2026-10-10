@@ -1,0 +1,453 @@
+{
+  "schema_version": 2,
+  "schema": "switch-vision-interactive-calibration-v1",
+  "model": "unifi-3sfp",
+  "profile": "unifi_3sfp",
+  "generated_by": "Switch Vision v2.7.23",
+  "image": {
+    "file": "faceplates/unifi-3sfp.png",
+    "width": 1592,
+    "height": 149,
+    "master": "unifi-3sfp-owner-calibrated",
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "coordinate_space": "image-native-v1"
+  },
+  "ports": {},
+  "sfp": {
+    "SFP1": {
+      "center": [
+        1279.838476191,
+        106.684
+      ],
+      "hitbox": [
+        49.269333333,
+        28.153904762
+      ],
+      "label": [
+        1279.838476191,
+        106.684
+      ],
+      "supported_speed": "",
+      "port_role": "",
+      "label_show": false,
+      "led_left": [
+        1262.809904762,
+        92.720571429
+      ],
+      "led_right": [
+        1295.277714286,
+        92.720571429
+      ],
+      "led_left_size": [
+        7.833142857,
+        3.065142857
+      ],
+      "led_right_size": [
+        7.833142857,
+        3.065142857
+      ],
+      "display_name": "SFP1"
+    },
+    "SFP2": {
+      "center": [
+        1341.822476191,
+        106.684
+      ],
+      "hitbox": [
+        49.269333333,
+        28.153904762
+      ],
+      "label": [
+        1341.822476191,
+        106.684
+      ],
+      "supported_speed": "",
+      "port_role": "",
+      "label_show": false,
+      "led_left": [
+        1324.793904762,
+        92.720571429
+      ],
+      "led_right": [
+        1357.261714286,
+        92.720571429
+      ],
+      "led_left_size": [
+        7.833142857,
+        3.065142857
+      ],
+      "led_right_size": [
+        7.833142857,
+        3.065142857
+      ],
+      "display_name": "SFP2"
+    },
+    "SFP3": {
+      "center": [
+        1439.907047619,
+        106.684
+      ],
+      "hitbox": [
+        49.269333333,
+        28.153904762
+      ],
+      "label": [
+        1439.907047619,
+        106.684
+      ],
+      "supported_speed": "",
+      "port_role": "",
+      "label_show": false,
+      "led_left": [
+        1422.878476191,
+        92.720571429
+      ],
+      "led_right": [
+        1455.346285714,
+        92.720571429
+      ],
+      "led_left_size": [
+        7.833142857,
+        3.065142857
+      ],
+      "led_right_size": [
+        7.833142857,
+        3.065142857
+      ],
+      "display_name": "SFP3"
+    }
+  },
+  "status_leds": {
+    "STAT": [
+      679.59375,
+      27.9375
+    ],
+    "SYST": [
+      679.59375,
+      49.555803571
+    ],
+    "DUPLX": [
+      738.794642857,
+      27.9375
+    ],
+    "ACTV": [
+      738.794642857,
+      49.555803571
+    ],
+    "SPEED": [
+      796.665178571,
+      27.9375
+    ],
+    "STACK": [
+      855.866071429,
+      27.9375
+    ],
+    "PoE": [
+      910.743303571,
+      27.9375
+    ]
+  },
+  "ui": {
+    "logo": {
+      "show": false,
+      "file": "sv-logo.png",
+      "source": "none",
+      "x": 502.988839286,
+      "y": 0,
+      "width": 62.194196429,
+      "height": 62.526785714
+    },
+    "status_panel": {
+      "show": true,
+      "x": 329.439847619,
+      "y": 39.591428571,
+      "width": 210.019047619,
+      "height": 79.466666667,
+      "font_family": "SwitchVisionCustom, Arial, Helvetica, sans-serif",
+      "font_size": 9.977678571,
+      "title_font_size": 5.321428571,
+      "font_weight": "normal",
+      "text_color": "#000000",
+      "label_color": "#000000",
+      "title_color": "#000000",
+      "background_color": "rgba(0,0,0,.06)",
+      "border_color": "#000000",
+      "border_show": true,
+      "field_order": {
+        "switch": [
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "uptime",
+          "vendor",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ],
+        "sfp": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ]
+      },
+      "hidden_fields": {
+        "switch": [
+          "vendor",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [],
+        "sfp": []
+      },
+      "fields": {
+        "row1_key": [
+          6.319196429,
+          12.970982143
+        ],
+        "row1_value": [
+          101.433523809,
+          12.975771429
+        ],
+        "row2_key": [
+          6.319196429,
+          19.290178571
+        ],
+        "row2_value": [
+          101.433523809,
+          19.287695238
+        ],
+        "row3_key": [
+          6.319196429,
+          25.941964286
+        ],
+        "row3_value": [
+          101.433523809,
+          25.940190476
+        ],
+        "row4_key": [
+          6.319196429,
+          32.261160714
+        ],
+        "row4_value": [
+          101.433523809,
+          32.263466667
+        ],
+        "row5_key": [
+          6.319196429,
+          38.580357143
+        ],
+        "row5_value": [
+          101.433523809,
+          38.575390476
+        ],
+        "row6_key": [
+          6.319196429,
+          44.899553571
+        ],
+        "row6_value": [
+          101.433523809,
+          44.898666667
+        ]
+      },
+      "background_show": true
+    },
+    "faceplate": {
+      "fit": "fill",
+      "opacity": 1,
+      "show": true,
+      "file": "unifi-3sfp.png",
+      "source": "custom"
+    },
+    "calibration_button": {
+      "show": true,
+      "x": 1083.357142857,
+      "y": 4.65625,
+      "width": 45.897321429,
+      "height": 11.308035714,
+      "anchor": "top_right"
+    },
+    "status_panel_2": {
+      "show": true,
+      "x": 587.354590476,
+      "y": 39.591428571,
+      "width": 210.019047619,
+      "height": 79.466666667,
+      "font_family": "SwitchVisionCustom, Arial, Helvetica, sans-serif",
+      "font_size": 9.977678571,
+      "title_font_size": 5.321428571,
+      "font_weight": "normal",
+      "text_color": "#000000",
+      "label_color": "#000000",
+      "title_color": "#000000",
+      "background_color": "rgba(0,0,0,.06)",
+      "border_color": "#000000",
+      "border_show": true,
+      "title_mode": "custom",
+      "title_field": "model",
+      "custom_title": "",
+      "field_order": {
+        "switch": [
+          "vendor",
+          "uptime",
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ],
+        "sfp": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ]
+      },
+      "hidden_fields": {
+        "switch": [
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "os",
+          "model",
+          "uptime",
+          "fans",
+          "psu",
+          "stack",
+          "serial"
+        ],
+        "port": [],
+        "sfp": []
+      },
+      "fields": {
+        "row1_key": [
+          10.2512,
+          18.288685714
+        ],
+        "row1_value": [
+          106.496685714,
+          18.288685714
+        ],
+        "row2_key": [
+          10.2512,
+          23.942171429
+        ],
+        "row2_value": [
+          106.496685714,
+          23.942171429
+        ],
+        "row3_key": [
+          10.2512,
+          29.595657143
+        ],
+        "row3_value": [
+          106.496685714,
+          29.595657143
+        ],
+        "row4_key": [
+          10.2512,
+          35.249142857
+        ],
+        "row4_value": [
+          106.496685714,
+          35.249142857
+        ],
+        "row5_key": [
+          10.2512,
+          40.913980952
+        ],
+        "row5_value": [
+          106.496685714,
+          40.913980952
+        ],
+        "row6_key": [
+          10.2512,
+          46.567466667
+        ],
+        "row6_value": [
+          106.496685714,
+          46.567466667
+        ]
+      },
+      "background_show": true
+    },
+    "port_status_output": "status_box_2",
+    "port_led_shape": "rectangle",
+    "port_label_color": "#eef7ff",
+    "port_number_color": "#eef7ff",
+    "port_label_font_weight": "bold",
+    "port_number_font_size": 4.323660714,
+    "sfp_label_font_size": 4.489955357,
+    "status_leds": {
+      "hidden": [
+        "STAT",
+        "SYST",
+        "DUPLX",
+        "ACTV",
+        "SPEED",
+        "STACK",
+        "PoE"
+      ],
+      "text_color": "#eef7ff",
+      "font_family": "Arial, Helvetica, sans-serif",
+      "font_size": 5.487723214,
+      "font_weight": "900"
+    },
+    "show_link_leds": true,
+    "show_activity_leds": true,
+    "test_mode_button": {
+      "show": true,
+      "x": 1083.362819048,
+      "y": 36.321942857,
+      "width": 45.897321429,
+      "height": 11.308035714,
+      "anchor": "top_right"
+    }
+  },
+  "stack": {
+    "enabled": false,
+    "stack_id": "",
+    "uptime_source": "",
+    "members": {}
+  },
+  "management": {
+    "switch_ip": ""
+  }
+}
