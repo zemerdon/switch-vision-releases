@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.59
+
+Local Calibration update: LED overlay outlines are now off by default, with optional per-profile colour and numeric border thickness (0.25–3.00, step 0.25) within Port Labels and LEDs. Status LEDs now provide Show All and Hide All immediately after Text colour; existing individual visibility checkboxes and saved positions remain supported. No SNMP, device telemetry or geometry changes. Staged to Switch Vision Local only; public release remains v2.7.58.
+
 # Switch Vision Core v2.7.58
 
 Local-first HP J8693A 3500yl-48G optics pilot: Port dB can be shown/hidden like VLAN; a supported SFP click resolves the real physical interface from Discovery and can request a guarded DOM-only optics refresh when explicitly enabled in the Hub, using private write credentials stored by Home Assistant. The fixed read-before-SET path rejects VCT/other ports and never sends an SNMP write for other models. Calibration controls and ordinary RJ45 clicks cannot initiate optical writes. The Avaya ERS 3524GT-PWR+ now has only its owner-calibrated dedicated PNG and factory profile assigned in the exact registry, while existing user-saved calibrations remain untouched. The HP feature defaults to disabled pending field validation and is not yet a public release.

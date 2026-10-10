@@ -1,3 +1,9 @@
+## v2.7.59 — Optional LED outlines and bulk Status LED visibility (Local)
+
+- Remove the default black SVG stroke from all rendered LED overlays, keeping their existing shapes, positions, fills and telemetry unchanged. In Calibration → Port Labels and LEDs, add optional per-profile LED outlines with colour and a bounded 0.25–3.00 thickness input in 0.25 increments; existing saved profiles default to off.
+- Add Show All and Hide All immediately after the Status LED Text colour control. Both buttons use the existing per-profile status-LED hidden list, keep individual checkboxes functional, and do not change status LED styling or port calibration.
+- Local-first candidate only; public Core remains v2.7.58 until separately authorized.
+
 ## v2.7.58 — HP 3500yl opt-in Port dB refresh (Local pilot)
 
 - Retire the generic optional Avaya ERS 3524GT-PWR+ faceplate assignment, retaining the sole reviewed Avaya PNG and factory profile without rewriting user-saved calibrations.
