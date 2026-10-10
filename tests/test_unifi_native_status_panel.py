@@ -20,8 +20,10 @@ def main() -> None:
         assert 'poeSummary = unifiSwitchPoeSummary(runtime)' in text, path
         assert 'function formatUnifiCapabilitySpeed(value)' in text, path
         assert 'function useUnifiNativeStatusFields(config, type, panelNumber = 1)' in text, path
-        # Generic/SNMP fields gain only the requested, initially hidden Port Number row.
-        assert 'defaults: ["role", "vlan", "mode", "desc", "link", "rx", "tx", "number"]' in text, path
+        # The generic SFP list also includes the HP-only Port dB row.
+        # Other models filter unavailable values; the native UniFi row
+        # contract remains fixed by the assertions above.
+        assert 'defaults: ["role", "vlan", "mode", "desc", "link", "rx", "tx", "number", "port_db"]' in text, path
         assert 'hidden: ["mode", "number"]' in text, path
         assert 'defaults: ["model", "ip", "cpu", "temp", "poe", "uptime", "vendor", "os", "firmware", "serial", "stack", "fans", "psu"]' in text, path
         # UniFi per-port traffic remains explicitly disabled unless a future API
