@@ -44,7 +44,8 @@ class AvayaFaceplateRegistrationTests(unittest.TestCase):
         avaya = next(row for row in models if row["model"] == "3524GT-PWR+")
         self.assertEqual(avaya["default_faceplate"], "faceplates/avaya-3524gt.png")
         self.assertEqual(avaya["calibration_profile"], "avaya_3524gt")
-        self.assertEqual(avaya["optional_faceplates"], ["faceplates/24rj45-4sfp.png"])
+        self.assertEqual(avaya["optional_faceplates"], [])
+        self.assertEqual(avaya["visuals"]["optional_faceplates"], [])
         self.assertEqual(avaya["ports"]["combo_logical_ports"], [21, 22, 23, 24])
         self.assertEqual(avaya["ports"]["combo_ports"], 4)
 

@@ -96,6 +96,10 @@ assert '"switch_vision/set_hp_optics_settings"' in source
 assert 'write_community_configured' in source
 assert 'hp_optics_busy' in source and 'hp_optics_last' in source
 assert 'type: "switch_vision/refresh_hp_optics"' in card
-assert 'this.refreshHpOpticsForPort(Number(selectedId))' in card
 assert 'port_db: "PORT dB"' in card
+assert 'this.refreshHpOpticsForPort(sfpLogicalPort(this.config, id));' in card
+assert 'if (type === "sfp" && !calibrationActive)' in card
+assert 'if (type === "sfp" && !calibrationActive) this.refreshHpOpticsForPort(Number(selectedId));' not in card
+assert 'port_db: hpOpticalDbValue(config, sfpLogicalPort(config, selected.id))' in card
+assert 'port_db: "—"' in card  # ordinary RJ45 ports stay read-only
 print("HP_OPTICS_CARD_AND_ADMIN_SETTINGS_CONTRACT_PASS")

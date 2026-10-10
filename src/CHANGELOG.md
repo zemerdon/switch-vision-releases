@@ -1,5 +1,8 @@
 ## v2.7.58 — HP 3500yl opt-in Port dB refresh (Local pilot)
 
+- Retire the generic optional Avaya ERS 3524GT-PWR+ faceplate assignment, retaining the sole reviewed Avaya PNG and factory profile without rewriting user-saved calibrations.
+- Resolve the visible HP SFP click through Discovery's physical interface map before requesting optical refresh; do not dispatch a write from Calibration controls or copper port clicks.
+
 - Add the Port dB status row to RJ45/uplink and SFP show/hide menus, retaining existing saved-field order and presenting fresh optical RX/TX dBm for the selected HP 3500yl optic only.
 - Clicking a supported SFP invokes an administrator-only Home Assistant WebSocket action; the browser never handles SNMP write secrets, OIDs, or arbitrary target addresses.
 - Implement a separate default-off SNMPv2c write credential in private Home Assistant storage. Bind the action to the generated HP J8693A 3500yl-48G device and physical optical interface, check live sysDescr/ifDescr and strictly DOM(1) before the single fixed SNMP SET, rate-limit requests, and confirm the updated timestamp before displaying new power.

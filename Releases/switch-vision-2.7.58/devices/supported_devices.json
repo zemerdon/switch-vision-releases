@@ -13,7 +13,7 @@
   "projection": {
     "schema": 1,
     "source_component": "discovery",
-    "source_registry_sha256": "dbf363dec3ce047b9f8f75a3d5199f40b2a48fbe623e59519934eb77957c2b04",
+    "source_registry_sha256": "2535944964a3671aae4ef50c75e89145acbae6c52a34e22b35193198f5b294ef",
     "device_field_allowlist": [
       "vendor",
       "family",
@@ -2922,9 +2922,7 @@
       "mapping_profile": "avaya-ers3524gt-pwrplus-20p-4dual",
       "calibration_profile": "avaya_3524gt",
       "default_faceplate": "faceplates/avaya-3524gt.png",
-      "optional_faceplates": [
-        "faceplates/24rj45-4sfp.png"
-      ],
+      "optional_faceplates": [],
       "validation": {
         "exact_model_detection": "real_hardware_sysobjectid_and_sysdescr_confirmed",
         "rj45_mapping": "real_hardware_numeric_ifname_ports_1_20_confirmed",
@@ -2936,9 +2934,7 @@
       "visuals": {
         "status": "experimental",
         "recommended_faceplate": "faceplates/avaya-3524gt.png",
-        "optional_faceplates": [
-          "faceplates/24rj45-4sfp.png"
-        ],
+        "optional_faceplates": [],
         "calibration_profile": "avaya_3524gt",
         "canvas": {
           "width": 2048,

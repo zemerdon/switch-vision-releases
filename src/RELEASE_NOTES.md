@@ -1,6 +1,6 @@
 # Switch Vision Core v2.7.58
 
-Local-first HP J8693A 3500yl-48G optics pilot: Port dB can be shown/hidden like VLAN; a supported SFP click can request a guarded DOM-only optics refresh when explicitly enabled in the Hub, using private write credentials stored by Home Assistant. The fixed read-before-SET path rejects VCT/other ports and never sends an SNMP write for other models. The feature defaults to disabled pending field validation and is not yet a public release.
+Local-first HP J8693A 3500yl-48G optics pilot: Port dB can be shown/hidden like VLAN; a supported SFP click resolves the real physical interface from Discovery and can request a guarded DOM-only optics refresh when explicitly enabled in the Hub, using private write credentials stored by Home Assistant. The fixed read-before-SET path rejects VCT/other ports and never sends an SNMP write for other models. Calibration controls and ordinary RJ45 clicks cannot initiate optical writes. The Avaya ERS 3524GT-PWR+ now has only its owner-calibrated dedicated PNG and factory profile assigned in the exact registry, while existing user-saved calibrations remain untouched. The HP feature defaults to disabled pending field validation and is not yet a public release.
 
 # Switch Vision Core v2.7.57
 
