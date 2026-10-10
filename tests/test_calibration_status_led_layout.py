@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 import unittest
 from pathlib import Path
 
@@ -145,6 +146,53 @@ class CalibrationStatusLedLayoutTests(unittest.TestCase):
             ensure,
         )
         self.assertNotIn("Object.keys(cal.status_leds || {})", ensure)
+
+    def test_show_hide_all_buttons_follow_status_led_text_colour(self) -> None:
+        start = self.source.index('data-cv-section="labels-leds"')
+        end = self.source.index('data-cv-section="status-boxes"', start)
+        html = self.source[start:end]
+        colour = html.index('customColourControlsHtml("status-led-text-color"')
+        show = html.index('data-cv-action="show-all-status-leds"')
+        hide = html.index('data-cv-action="hide-all-status-leds"')
+        port = html.index('cv-cal-port-led-shape')
+        self.assertLess(colour, show)
+        self.assertLess(show, hide)
+        self.assertLess(hide, port)
+        self.assertIn('Object.keys(cal.status_leds || {}).length ? "" : "disabled"', html)
+        self.assertNotIn('data-cv-action="show-all-status-leds"', self.source[:start])
+
+    def test_buttons_modify_existing_profile_hidden_list_and_save(self) -> None:
+        function_start = self.source.index("function setAllCalibrationStatusLedsVisible(cal, visible)")
+        function_end = self.source.index("let activeCalibrationUiRenderPass", function_start)
+        helper = self.source[function_start:function_end]
+        self.assertIn('cal.ui.status_leds.hidden = visible ? [] : Object.keys(cal.status_leds || {})', helper)
+
+        listener_start = self.source.index('for (const [action, visible] of [["show-all-status-leds", true], ["hide-all-status-leds", false]])')
+        listener_end = self.source.index('const statusLedFontSelect', listener_start)
+        listener = self.source[listener_start:listener_end]
+        for marker in ("setAllCalibrationStatusLedsVisible(cal, visible)", "this.markCalibrationDirty()", "this.render()"):
+            self.assertIn(marker, listener)
+        self.assertIn('data-cv-status-led', self.source)
+
+        js = """const ensureCalibrationUi = (cal) => cal;
+""" + helper + """
+const assert = require("assert");
+const cal = {
+  status_leds: { MODE:[1,2], STAT:[3,4], PoE:[5,6] },
+  ui: { status_leds: { hidden:["STAT"], text_color:"#ff00ff", font_size:17 } },
+  ports: { "1":{ center:[10,20] } }
+};
+const beforePorts = JSON.stringify(cal.ports);
+setAllCalibrationStatusLedsVisible(cal, false);
+assert.deepStrictEqual(cal.ui.status_leds.hidden, ["MODE","STAT","PoE"]);
+assert.deepStrictEqual(cal.ui.status_leds.font_size, 17);
+setAllCalibrationStatusLedsVisible(cal, true);
+assert.deepStrictEqual(cal.ui.status_leds.hidden, []);
+assert.strictEqual(cal.ui.status_leds.text_color, "#ff00ff");
+assert.strictEqual(JSON.stringify(cal.ports), beforePorts);
+"""
+        result = subprocess.run(["node", "-e", js], text=True, capture_output=True, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stderr)
 
 
 if __name__ == "__main__":

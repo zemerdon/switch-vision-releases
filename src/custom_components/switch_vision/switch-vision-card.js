@@ -3308,6 +3308,11 @@ function applyNewCalibrationStatusLedDefaults(cal) {
   return next;
 }
 
+function setAllCalibrationStatusLedsVisible(cal, visible) {
+  ensureCalibrationUi(cal);
+  cal.ui.status_leds.hidden = visible ? [] : Object.keys(cal.status_leds || {});
+}
+
 let activeCalibrationUiRenderPass = null;
 const calibrationUiRenderPassCache = new WeakMap();
 
@@ -9263,7 +9268,9 @@ const testModeBadge = testModeUi.show !== false
         <span class="cv-cal-colour-field"><span>Text colour</span>
           ${customColourControlsHtml("status-led-text-color", calibrationUi.status_leds?.text_color, "#eef7ff")}
         </span>
-        <span class="cv-cal-current">Untick an LED to hide it from this faceplate profile.</span>
+        <button type="button" data-cv-action="show-all-status-leds" ${Object.keys(cal.status_leds || {}).length ? "" : "disabled"} title="Show every status LED in this faceplate calibration profile">Show All</button>
+        <button type="button" data-cv-action="hide-all-status-leds" ${Object.keys(cal.status_leds || {}).length ? "" : "disabled"} title="Hide every status LED in this faceplate calibration profile">Hide All</button>
+        <span class="cv-cal-current">Show or hide every Status LED, or untick individual LEDs.</span>
       </div>
 <div class="cv-cal-tools-row cv-cal-style-row cv-cal-port-led-shape">
         <span class="cv-cal-quick-label">Port LEDs</span>
@@ -10140,6 +10147,15 @@ ${portPresentationControls}
       });
     }
 
+    for (const [action, visible] of [["show-all-status-leds", true], ["hide-all-status-leds", false]]) {
+      const button = this.shadowRoot.querySelector(`[data-cv-action="${action}"]`);
+      if (!button) continue;
+      button.addEventListener("click", () => {
+        setAllCalibrationStatusLedsVisible(cal, visible);
+        this.markCalibrationDirty();
+        this.render();
+      });
+    }
 
     const statusLedFontSelect = this.shadowRoot.querySelector('[data-cv-field="status-led-font"]');
     if (statusLedFontSelect) {
