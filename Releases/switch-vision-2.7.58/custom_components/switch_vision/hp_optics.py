@@ -80,8 +80,8 @@ def assert_dom(value: Any) -> None:
 
 def assert_device(sys_descr: Any) -> None:
     text = str(sys_descr or "")
-    if not re.search(r"(?i)(3500\s*yl|J8693A)", text):
-        raise ValueError("Live SNMP identity is not the supported HP 3500yl.")
+    if not re.search(r"(?i)\b3500\s*yl\b", text) or not re.search(r"(?i)\bJ8693A\b", text):
+        raise ValueError("Live SNMP identity is not the exact HP J8693A 3500yl.")
 
 
 def assert_optical(if_descr: Any) -> None:

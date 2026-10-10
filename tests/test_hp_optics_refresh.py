@@ -24,7 +24,8 @@ for host, member, port in [("192.168.1.60", "Paul3500", 49), ("192.168.1.50", "O
 
 
 class FakeAgent:
-    def __init__(self, dom=1, after=110, rx=-7223, tx=-2111):
+    def __init__(self, dom=1, after=110, rx=-7223, tx=-2111, sys_descr="HP ProCurve Switch 3500yl-48G (J8693A)"):
+        self.sys_descr = sys_descr
         self.dom = dom
         self.after = after
         self.rx = rx
@@ -40,7 +41,7 @@ class FakeAgent:
 
     async def get(self, oid):
         if oid == module.SYS_DESCR:
-            return "HP ProCurve Switch 3500yl-48G (J8693A)"
+            return self.sys_descr
         if oid == module.IF_DESCR + ".49":
             return "A1"
         if oid == module.oid(module.DOM, 49):
@@ -63,6 +64,15 @@ async def check():
     result = await module.refresh_dom("192.168.1.50", 49, "dedicated-write", lambda *_: agent)
     assert result == {"status": "ok", "port": 49, "tx_dbm": "-2.111", "rx_dbm": "-7.223"}
     assert agent.sets == [(module.oid(module.UPDATE, 49), 1)]
+    for wrong_identity in ["HP ProCurve Switch 3500yl-48G (J8694A)", "HP Switch 2530-48G (J8693A)", "Other vendor 3500yl-48G"]:
+        agent = FakeAgent(sys_descr=wrong_identity)
+        try:
+            await module.refresh_dom("192.168.1.50", 49, "dedicated-write", lambda *_: agent)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("Non-J8693A/3500yl live identity was allowed to issue an SNMP SET")
+        assert not agent.sets
     for prohibited in [0, 2, 3, 4, None]:
         agent = FakeAgent(dom=prohibited)
         try:
@@ -101,5 +111,7 @@ assert 'this.refreshHpOpticsForPort(sfpLogicalPort(this.config, id));' in card
 assert 'if (type === "sfp" && !calibrationActive)' in card
 assert 'if (type === "sfp" && !calibrationActive) this.refreshHpOpticsForPort(Number(selectedId));' not in card
 assert 'port_db: hpOpticalDbValue(config, sfpLogicalPort(config, selected.id))' in card
-assert 'port_db: "—"' in card  # ordinary RJ45 ports stay read-only
+assert 'port_db: selected.hp_optics_sfp === true ? hpOpticalDbValue(config, selected.id) : "—"' in card
+assert '...(type === "sfp" && hp3500ylOpticalPilot(this.config) ? { hp_optics_sfp: true } : {})' in card
+# Ordinary copper clicks have no HP optical-origin marker, so cannot display a stale SFP reading.
 print("HP_OPTICS_CARD_AND_ADMIN_SETTINGS_CONTRACT_PASS")

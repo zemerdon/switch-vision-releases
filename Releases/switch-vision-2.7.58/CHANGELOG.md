@@ -2,6 +2,7 @@
 
 - Retire the generic optional Avaya ERS 3524GT-PWR+ faceplate assignment, retaining the sole reviewed Avaya PNG and factory profile without rewriting user-saved calibrations.
 - Resolve the visible HP SFP click through Discovery's physical interface map before requesting optical refresh; do not dispatch a write from Calibration controls or copper port clicks.
+- Require the live SNMP identity to contain both the 3500yl family and exact J8693A identifier before sending the fixed DOM refresh SET; a family-only match is insufficient.
 
 - Add the Port dB status row to RJ45/uplink and SFP show/hide menus, retaining existing saved-field order and presenting fresh optical RX/TX dBm for the selected HP 3500yl optic only.
 - Clicking a supported SFP invokes an administrator-only Home Assistant WebSocket action; the browser never handles SNMP write secrets, OIDs, or arbitrary target addresses.

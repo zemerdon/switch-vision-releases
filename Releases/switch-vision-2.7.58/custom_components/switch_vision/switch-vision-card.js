@@ -3635,7 +3635,9 @@ function drawStatusPanel(svg, hass, config, cal = calibration, panelNumber = 1) 
     const values = {
       number: selectedPortStatusLabel(config, cal, selected),
       vlan: details.vlan,
-      port_db: "—",
+      // A shared HP combo port may use a copper-side status entity even
+      // though the user actually clicked its optical SFP connector.
+      port_db: selected.hp_optics_sfp === true ? hpOpticalDbValue(config, selected.id) : "—",
       mode: details.mode,
       desc: details.description,
       link: details.link,
@@ -11908,7 +11910,10 @@ ${portPresentationControls}
 
         const nextConfig = {
           ...this.config,
-          selected_interface: { type: selectedType, id: selectedId },
+          selected_interface: {
+            type: selectedType, id: selectedId,
+            ...(type === "sfp" && hp3500ylOpticalPilot(this.config) ? { hp_optics_sfp: true } : {})
+          },
           selected_port: selectedType === "port" ? selectedId : null
         };
 
