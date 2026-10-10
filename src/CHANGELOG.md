@@ -1,3 +1,11 @@
+## v2.7.58 — HP 3500yl opt-in Port dB refresh (Local pilot)
+
+- Add the Port dB status row to RJ45/uplink and SFP show/hide menus, retaining existing saved-field order and presenting fresh optical RX/TX dBm for the selected HP 3500yl optic only.
+- Clicking a supported SFP invokes an administrator-only Home Assistant WebSocket action; the browser never handles SNMP write secrets, OIDs, or arbitrary target addresses.
+- Implement a separate default-off SNMPv2c write credential in private Home Assistant storage. Bind the action to the generated HP J8693A 3500yl-48G device and physical optical interface, check live sysDescr/ifDescr and strictly DOM(1) before the single fixed SNMP SET, rate-limit requests, and confirm the updated timestamp before displaying new power.
+- VCT/Other/unsupported diagnostic modes cannot send the SET. Read-only Discovery, unrelated models and normal interface polling remain unchanged.
+- Local evaluation only until actual HP firmware DOM refresh and non-disruptive behaviour are independently field-validated.
+
 ## v2.7.57 — TP-Link JetStream experimental registry projection
 
 - Project two reviewed Discovery exact-model candidates (TL-SG2428P and TL-SG2008P) into Core for consistent 24-RJ45/4-SFP and eight-RJ45 stock-visual assignments.

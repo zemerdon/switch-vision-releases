@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.58
+
+Local-first HP J8693A 3500yl-48G optics pilot: Port dB can be shown/hidden like VLAN; a supported SFP click can request a guarded DOM-only optics refresh when explicitly enabled in the Hub, using private write credentials stored by Home Assistant. The fixed read-before-SET path rejects VCT/other ports and never sends an SNMP write for other models. The feature defaults to disabled pending field validation and is not yet a public release.
+
 # Switch Vision Core v2.7.57
 
 Adds Core registry/stock faceplate binding for the walk-backed TP-Link JetStream TL-SG2428P and TL-SG2008P Experimental models. No changes to native-image calibration rendering, existing faceplates, or sensor inference.
