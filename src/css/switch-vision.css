@@ -668,3 +668,37 @@
   .cv-cal-section-layout-help{align-items:flex-start;flex-wrap:wrap}
   .cv-cal-section-layout-help button{margin-left:auto}
 }
+
+/* Compact Calibration editors: consistent 24px value fields and minimal whitespace. */
+.cv-cal-tools input.cv-cal-input {
+  box-sizing: border-box;
+  height: 24px;
+  min-height: 24px;
+  padding: 1px 5px;
+  line-height: 20px;
+  font-size: 10px;
+}
+.cv-cal-tools input.cv-cal-input[type="number"]:not(.cv-cal-coordinate-input) {
+  width: 70px;
+  min-width: 0;
+}
+.cv-cal-tools .cv-cal-colour-controls input.cv-cal-hex-input {
+  width: 67px !important;
+  min-width: 67px !important;
+  padding: 1px 4px;
+}
+.cv-cal-tools .cv-cal-colour-controls .cv-cal-colour-swatch {
+  width: 24px;
+  min-width: 24px;
+  height: 22px;
+  min-height: 22px;
+}
+.cv-cal-tools .cv-cal-port-meta-row input.cv-cal-input:not([type="number"]) {
+  width: 145px;
+  max-width: 100%;
+}
+.cv-cal-tools .cv-cal-target-select {
+  max-width: min(100%, 210px);
+  min-width: 135px;
+  box-sizing: border-box;
+}

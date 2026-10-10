@@ -1,3 +1,9 @@
+## v2.7.60 — Compact Calibration targets and controls (Local)
+
+- Split Calibration Target into three focused dropdowns: Misc Targets, RJ45 Targets and SFP Targets, retaining the existing single active selection, part handling and saved-profile schema.
+- Compact editor controls to consistent input heights and reduced vertical padding; narrow numeric/hex boxes and colour swatches while retaining longer text-entry space where needed.
+- Local-only candidate; no public release, saved-calibration reset, forum or mail mutation.
+
 ## v2.7.59 — Optional LED outlines and bulk Status LED visibility (Local)
 
 - Remove the default black SVG stroke from all rendered LED overlays, keeping their existing shapes, positions, fills and telemetry unchanged. In Calibration → Port Labels and LEDs, add optional per-profile LED outlines with colour and a bounded 0.25–3.00 thickness input in 0.25 increments; existing saved profiles default to off.

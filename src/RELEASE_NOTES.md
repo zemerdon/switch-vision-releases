@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.60
+
+Local-only Calibration layout cleanup: replace the single Target dropdown with Misc Targets, RJ45 Targets and SFP Targets, all preserving the existing active target and calibration profile format. Standardise input heights, reduce vertical padding, and shorten numeric, hex colour, colour swatch and port-metadata editors. No changes to faceplate geometry, telemetry or persisted calibration values.
+
 # Switch Vision Core v2.7.59
 
 Local Calibration update: LED overlay outlines are now off by default, with optional per-profile colour and numeric border thickness (0.25–3.00, step 0.25) within Port Labels and LEDs. Status LEDs now provide Show All and Hide All immediately after Text colour; existing individual visibility checkboxes and saved positions remain supported. No SNMP, device telemetry or geometry changes. Staged to Switch Vision Local only; public release remains v2.7.58.
