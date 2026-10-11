@@ -183,7 +183,7 @@ UNIFI_DEVICE_WS_SCHEMA = {
 }
 
 PANEL_URL_PATH = "switch-vision"
-PANEL_VERSION = "2.7.68"
+PANEL_VERSION = "2.7.69"
 PANEL_JS_PATH = "/api/switch_vision/switch-vision-panel.js"
 PANEL_JS_URL = f"{PANEL_JS_PATH}?v={PANEL_VERSION}"
 ICONSET_JS_PATH = "/api/switch_vision/switch-vision-iconset.js"
@@ -248,6 +248,37 @@ CONF_INSTALLER_TEXT_SIZE = "installer_text_size"
 CONF_INSTALLER_CONTENT_WIDTH = "installer_content_width"
 CONF_MANAGEMENT_THEME_SELECTED = "management_theme_selected"
 CONF_CUSTOM_THEMES = "custom_themes"
+CONF_CALIBRATION_THEME = "calibration_theme"
+CALIBRATION_THEME_SECTIONS = frozenset({"workspace", "section_headers", "assets", "selection", "quick_selection", "labels_leds", "status_boxes", "switch_stack", "geometry", "profile_actions", "buttons", "inputs", "dropdown_closed", "dropdown_open"})
+CALIBRATION_THEME_FIELDS = frozenset({"font_size", "font_weight", "padding", "gap", "height", "width", "row_height", "max_height"})
+CALIBRATION_THEME_FIELD_LIMITS = {"font_size": (7, 22), "padding": (0, 24), "gap": (0, 24), "height": (12, 48), "width": (0, 480), "row_height": (20, 64), "max_height": (80, 600)}
+
+
+def _normalise_calibration_theme(value: Any) -> dict[str, dict[str, dict[str, Any]]]:
+    """Validate bounded Calibration-editor presentation only; never profile geometry."""
+    if not isinstance(value, dict) or set(value) - {"desktop", "mobile"}:
+        raise vol.Invalid("calibration_theme must contain desktop/mobile objects only")
+    result: dict[str, dict[str, dict[str, Any]]] = {"desktop": {}, "mobile": {}}
+    for mode in result:
+        sections = value.get(mode, {})
+        if not isinstance(sections, dict) or set(sections) - CALIBRATION_THEME_SECTIONS:
+            raise vol.Invalid(f"Invalid calibration_theme {mode} sections")
+        for name, fields in sections.items():
+            if not isinstance(fields, dict) or set(fields) - CALIBRATION_THEME_FIELDS:
+                raise vol.Invalid(f"Invalid calibration_theme {mode}.{name} fields")
+            valid: dict[str, Any] = {}
+            for key, item in fields.items():
+                if key == "font_weight":
+                    if item not in ("regular", "bold"):
+                        raise vol.Invalid("Calibration font_weight must be regular or bold")
+                else:
+                    minimum, maximum = CALIBRATION_THEME_FIELD_LIMITS[key]
+                    if type(item) is not int or not minimum <= item <= maximum:
+                        raise vol.Invalid(f"Invalid calibration {key} value")
+                valid[key] = item
+            if valid:
+                result[mode][name] = valid
+    return result
 
 MANAGEMENT_BUILTIN_THEME_IDS = ("switch-vision", "cisco-classic", "cisco-nexus", "unifi")
 MANAGEMENT_THEME_COLOR_KEYS = (
@@ -347,6 +378,7 @@ DEFAULT_OPTIONS = {
     CONF_INSTALLER_CONTENT_WIDTH: "wide",
     CONF_MANAGEMENT_THEME_SELECTED: "switch-vision",
     CONF_CUSTOM_THEMES: [],
+    CONF_CALIBRATION_THEME: {"desktop": {}, "mobile": {}},
     CONF_ACTIVITY_LED_SENSITIVITY_PRESET: "normal",
     CONF_ACTIVITY_SLOW_MAX_UTILIZATION_PCT: 0.10,
     CONF_ACTIVITY_MEDIUM_MAX_UTILIZATION_PCT: 1.0,
@@ -822,6 +854,7 @@ CORE_SETTINGS_GROUP_KEYS = {
         CONF_MANAGEMENT_THEME_SELECTED,
         CONF_CUSTOM_THEMES,
     ),
+    "calibration_theme": (CONF_CALIBRATION_THEME,),
 }
 
 CORE_SETTINGS_BOOL_KEYS = frozenset(
@@ -982,6 +1015,10 @@ def _core_settings_groups(
         for keys in CORE_SETTINGS_GROUP_KEYS.values()
         for key in keys
     }
+    try:
+        values[CONF_CALIBRATION_THEME] = _normalise_calibration_theme(values[CONF_CALIBRATION_THEME])
+    except vol.Invalid:
+        values[CONF_CALIBRATION_THEME] = {"desktop": {}, "mobile": {}}
     for key in (CONF_DISCOVERY_TEXT_SIZE, CONF_INSTALLER_TEXT_SIZE):
         values[key] = normalise_ui_text_size(values[key])
     try:
@@ -1069,6 +1106,11 @@ def _normalise_core_settings_update(
         unknown_keys = sorted(set(group_values) - allowed_keys)
         if unknown_keys:
             raise vol.Invalid(f"Unknown Core setting: {unknown_keys[0]}")
+
+        if group == "calibration_theme":
+            if CONF_CALIBRATION_THEME in group_values:
+                updated[CONF_CALIBRATION_THEME] = _normalise_calibration_theme(group_values[CONF_CALIBRATION_THEME])
+            continue
 
         if group == "management_theme":
             custom_themes = _normalise_custom_themes(
@@ -2656,6 +2698,7 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
             msg["id"],
             {
                 "show_card_headers": bool(domain_state.get(DATA_SHOW_CARD_HEADERS, True)),
+                "calibration_theme": _normalise_calibration_theme(domain_state.get(CONF_CALIBRATION_THEME, {"desktop": {}, "mobile": {}})),
                 "faceplate_width": dict(domain_state.get(DATA_FACEPLATE_WIDTH_SETTINGS, {"mode": "800", "custom": 800, "effective": 800})),
                 "activity_leds": dict(
                     domain_state.get(
@@ -2960,6 +3003,7 @@ async def _apply_entry_options(hass: HomeAssistant, entry: ConfigEntry) -> None:
     domain_state[DATA_SHOW_CALIBRATION_BUTTONS] = show_calibration_buttons
     domain_state[DATA_SHOW_DASHBOARD_HEADER] = show_dashboard_header
     domain_state[DATA_SHOW_CARD_HEADERS] = show_card_headers
+    domain_state[CONF_CALIBRATION_THEME] = _normalise_calibration_theme(entry.options.get(CONF_CALIBRATION_THEME, {"desktop": {}, "mobile": {}}))
     domain_state[DATA_ACTIVITY_LED_SETTINGS] = activity_led_settings
     domain_state[DATA_FACEPLATE_WIDTH_SETTINGS] = faceplate_width_settings
     domain_state[DATA_NATIVE_HEADER_SETTINGS] = native_header_settings
@@ -2967,6 +3011,7 @@ async def _apply_entry_options(hass: HomeAssistant, entry: ConfigEntry) -> None:
         EVENT_UI_SETTINGS_UPDATED,
         {
             "show_card_headers": show_card_headers,
+            "calibration_theme": domain_state[CONF_CALIBRATION_THEME],
             "activity_leds": activity_led_settings,
             "faceplate_width": faceplate_width_settings,
             "native_header": native_header_settings,

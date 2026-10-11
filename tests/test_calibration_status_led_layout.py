@@ -30,7 +30,7 @@ class CalibrationStatusLedLayoutTests(unittest.TestCase):
         self.assertEqual(CARD.read_bytes(), MIRROR.read_bytes())
 
     def test_labels_leds_order_is_status_then_port_leds_then_compact_presentation(self) -> None:
-        start = self.source.index('data-cv-section="labels-leds"')
+        start = self.source.index('<details class="cv-cal-section" data-cv-section="labels-leds"')
         end = self.source.index('data-cv-section="status-boxes"', start)
         section = self.source[start:end]
 
@@ -148,7 +148,7 @@ class CalibrationStatusLedLayoutTests(unittest.TestCase):
         self.assertNotIn("Object.keys(cal.status_leds || {})", ensure)
 
     def test_show_hide_all_buttons_follow_status_led_text_colour(self) -> None:
-        start = self.source.index('data-cv-section="labels-leds"')
+        start = self.source.index('<details class="cv-cal-section" data-cv-section="labels-leds"')
         end = self.source.index('data-cv-section="status-boxes"', start)
         html = self.source[start:end]
         colour = html.index('customColourControlsHtml("status-led-text-color"')

@@ -1,3 +1,9 @@
+## v2.7.69 — Calibration Theme desktop/mobile editor presentation (Local)
+
+- Add validated Core settings for independent Calibration-editor Desktop and Mobile appearance, grouped by workspace/sections, assets/selection, labels/fields, buttons/inputs and dropdown closed/open states.
+- Render safely bounded editor-only CSS, including configurable text weight, size, spacing, padding, dropdown dimensions, option row height and open-menu height. Use one accessible in-page dropdown on desktop/mobile while preserving the underlying native selection event contracts.
+- Do not change faceplate geometry, saved Calibration profiles, normal dashboards or protected contributor data. Local-only candidate.
+
 ## v2.7.68 — Mobile-only compact Calibration dropdown menus (Local)
 
 - Use the approved compact scrollable dropdown menus at mobile viewport widths (760px or less) only; restore native desktop select/dropdown behavior on wider viewports.

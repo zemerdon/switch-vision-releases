@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compact Calibration option-menu and legacy event-handler regressions."""
+"""Responsive Calibration option-menu and legacy event-handler regressions."""
 from __future__ import annotations
 
 import json
@@ -34,12 +34,12 @@ class CompactPickerTest(unittest.TestCase):
             'select.dispatchEvent(new Event("change", { bubbles: true }));',
             'if (child.tagName === "OPTGROUP")',
             'window.removeEventListener("pointerdown", onOutsidePointer, true);',
-            'Math.min(320, available)',
+            'Math.min(openTheme.max_height || 320, available)',
             'const SV_CALIBRATION_MOBILE_MEDIA = "(max-width: 760px)";',
             'window.matchMedia?.(SV_CALIBRATION_MOBILE_MEDIA)',
             'this.attachCalibrationMobileViewportListener();',
             'media.addEventListener("change", handler)',
-            'if (!compactMobile) return;',
+            'const openTheme = this._globalCalibrationTheme?.[mode ? "mobile" : "desktop"]?.dropdown_open || {};',
             'trigger.setAttribute("aria-expanded", "true");',
         ):
             self.assertIn(marker, src)
@@ -121,15 +121,16 @@ assert.equal(trigger.getAttribute("aria-expanded"),"true");
 window.fire("pointerdown",{composedPath:()=>[]});
 assert.equal(trigger.getAttribute("aria-expanded"),"false");
 assert.equal(card._closeCompactCalibrationMenu,null);
-// Desktop never wraps or hides native selects, even when the same card class is used.
+// Desktop uses the same popup owner so open menus are styleable on both screens.
 window.innerWidth=1280;
 const nativeSelect=new El("select");
+nativeSelect.selectedOptions=[opt("one","One",true)];nativeSelect.children=[nativeSelect.selectedOptions[0]];
 const desktop=new Card();desktop.shadowRoot={querySelectorAll:()=>[nativeSelect]};
 desktop.attachCompactCalibrationSelectMenus();
-assert.equal(nativeSelect.parent,undefined);
-assert.equal(nativeSelect.getAttribute("aria-hidden"),null);
-assert.equal(nativeSelect.tabIndex,undefined);
-console.log("Mobile compact and desktop native picker behavior: PASS");
+assert.equal(nativeSelect.parent.children[0].tagName,"BUTTON");
+assert.equal(nativeSelect.getAttribute("aria-hidden"),"true");
+assert.equal(nativeSelect.tabIndex,-1);
+console.log("Responsive calibration popup behavior: PASS");
 """
         proc = subprocess.run(
             ["node", "-e", "const method=" + json.dumps(method) + ";\n" + js],

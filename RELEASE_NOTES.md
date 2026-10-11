@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.69
+
+Local-only Calibration Theme support. Core now stores independent Desktop and Mobile editor appearance settings from Switch Vision Hub, covering section-specific typography, bold/regular weight, spacing and padding. Closed dropdowns and opened in-page menus are independently configurable on both device classes. The existing saved switch geometry, faceplate calibration, profile selection and dashboard presentation are unchanged; no public release implied.
+
 # Switch Vision Core v2.7.68
 
 Local-only responsive Calibration picker refinement: preserve the owner-approved compact in-page dropdown menus on mobile (viewport width up to 760px), while restoring desktop browsers' native opened dropdown selection behavior above 760px. The 16px closed controls, 11px regular-weight white text, mobile 32px option rows and maximum 320px popup height remain unchanged. Calibration uses the same selection handlers, model/port state, unsaved work and saved profiles on either device. Crossing the mobile/desktop breakpoint refreshes presentation without duplicating editor logic; event listeners are cleaned on disconnect. Quick Links and all unrelated Calibration features remain unchanged. No public release or personal Home Assistant installation.
