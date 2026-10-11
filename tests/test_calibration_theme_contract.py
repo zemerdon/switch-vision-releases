@@ -23,7 +23,7 @@ class CalibrationThemeContracts(unittest.TestCase):
         namespace = {"vol": Vol, "Any": Any}
         exec(compile(ast.Module(body=exprs + [fn], type_ignores=[]), str(BACKEND), "exec"), namespace)
         norm = namespace["_normalise_calibration_theme"]
-        theme = {"desktop":{"assets":{"font_size":11,"font_weight":"bold","padding":3,"padding_horizontal":8,"padding_vertical":2}},
+        theme = {"desktop":{"global":{"font_size":13,"font_weight":"bold","padding_horizontal":8,"padding_vertical":2,"gap":5},"assets":{"font_size":11,"font_weight":"regular","padding":3}},
                  "mobile":{"dropdown_open":{"font_size":14,"row_height":40,"max_height":300}}}
         self.assertEqual(norm(theme), theme)
         self.assertEqual(norm({}), {"desktop":{}, "mobile":{}})
@@ -60,6 +60,27 @@ class CalibrationThemeContracts(unittest.TestCase):
         self.assertIn('calibrationControlsEnabled(this.config) ?', src)
         self.assertIn("calibration_theme: event?.data?.calibration_theme", src)
         self.assertIn('select.dispatchEvent(new Event("change", { bubbles: true }))', src)
+
+
+    def test_global_controls_override_legacy_sections_only_in_calibration(self):
+        source = CARD.read_text()
+        start = source.index("const SV_CALIBRATION_MOBILE_MEDIA = ")
+        end = source.index("const SV_CALIBRATION_TRANSIENT_CONFIG_KEYS", start)
+        fragment = source[start:end]
+        script = ("const assert=require('node:assert/strict');" + fragment +
+                  "\nconst stored={desktop:{assets:{font_size:11,padding:6,font_weight:'regular'},global:{font_size:13,font_weight:'bold',padding_horizontal:7,padding_vertical:3,gap:5},dropdown_open:{row_height:42}},mobile:{global:{font_size:15,padding_horizontal:4,padding_vertical:2,gap:2}}};" +
+                  "\nassert.deepEqual(normalizeCalibrationTheme(stored),stored);" +
+                  "\nconst css=calibrationThemeCss(stored);" +
+                  "\nassert.match(css,/font-size:13px!important/);assert.match(css,/font-size:15px!important/);" +
+                  "\nassert.doesNotMatch(css,/font-size:11px!important/);assert.doesNotMatch(css,/padding:6px!important/);" +
+                  "\nassert.match(css,/padding-inline:7px!important/);assert.match(css,/padding-block:3px!important/);" +
+                  "\nassert.match(css,/\\.cv-cal-tools \\.cv-cal-tools-row button/);" +
+                  "\nassert.match(css,/\\.cv-cal-option-menu-item/);" +
+                  "\nassert.match(css,/min-height:42px!important/);" +
+                  "\nassert.doesNotMatch(css,/\\.cv-faceplate-canvas|\\.cv-stage|\\.cv-svg/);" +
+                  "\nassert.equal(normalizeCalibrationTheme({desktop:{global:{font_size:999}}}).desktop.global,undefined);")
+        result = subprocess.run(["node", "-e", script], cwd=ROOT, text=True, capture_output=True, timeout=20)
+        self.assertEqual(result.returncode, 0, result.stderr or result.stdout)
 
 
 if __name__ == "__main__":

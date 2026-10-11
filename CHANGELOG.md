@@ -1,3 +1,8 @@
+## v2.7.71 — Calibration Theme global settings (Local)
+
+- Consolidate editor presentation into one global Desktop/Mobile preference group for shared typography, padding axes and spacing.
+- Maintain backwards-compatible saved detailed settings with explicit global-property precedence, preserving special closed/open dropdown dimensions and normal Calibration functionality.
+
 ## v2.7.70 — Calibration Theme padding axes and exact-style preview (Local)
 
 - Validate and apply separate horizontal and vertical padding in Calibration Theme for applicable controls, with backward compatibility for all-side padding and device-specific scope.
