@@ -109,5 +109,16 @@ console.log("Calibration grouped targets: PASS");
             self.assertIn(marker, source)
 
 
+    def test_white_select_and_button_text_uses_regular_weight(self) -> None:
+        css = CSS.read_text(encoding="utf-8")
+        selector = ".cv-cal-tools select.cv-cal-select,\n.cv-cal-tools button:not(.cv-cal-toggle):not(.cv-cal-bold-toggle):not(.cv-cal-warning):not(.cv-cal-danger):not(.cv-cal-purple) {"
+        self.assertIn(selector, css)
+        rule = css.split(selector, 1)[1].split("}", 1)[0]
+        self.assertIn("font-weight: 400;", rule)
+        # The heavy control base remains, but is overridden only for the white controls.
+        self.assertIn("font-weight:800;", css)
+        self.assertIn(".cv-cal-tools button.cv-cal-bold-toggle.is-active", css)
+
+
 if __name__ == "__main__":
     unittest.main()

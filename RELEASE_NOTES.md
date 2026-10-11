@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.65
+
+Local-only Calibration typography refinement: keep the 16px control height, 12px font size, field widths, borders, arrow rendering, and existing layout exactly as in v2.7.64. Display white text in Calibration dropdowns and neutral/white action buttons at normal font weight (400) instead of bold. Preserve bold field labels and intentional B-format toggles; leave coloured warning, danger and purple actions, Quick Links behaviour, saved profiles, faceplate geometry and telemetry unchanged.
+
 # Switch Vision Core v2.7.64
 
 Local-only Calibration controls: 16px overall box height with 12px font, 12px line-height, 1px vertical and 2px horizontal text padding. All dropdowns override legacy minimums and use a consistent arrow. Quick Links, saved calibration and telemetry remain unchanged.

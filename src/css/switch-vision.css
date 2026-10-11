@@ -755,3 +755,9 @@
 .cv-cal-tools .cv-cal-switch-stack-row .cv-cal-entity-input {
   width: 185px;
 }
+
+/* Calibration white text: regular weight in selects and neutral buttons only. */
+.cv-cal-tools select.cv-cal-select,
+.cv-cal-tools button:not(.cv-cal-toggle):not(.cv-cal-bold-toggle):not(.cv-cal-warning):not(.cv-cal-danger):not(.cv-cal-purple) {
+  font-weight: 400;
+}

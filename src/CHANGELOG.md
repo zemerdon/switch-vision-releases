@@ -1,3 +1,9 @@
+## v2.7.65 — Regular-weight Calibration dropdown and white button text (Local)
+
+- Remove bold from the white text in Calibration dropdowns and neutral/white buttons, including Misc Targets and Duplicate selected; retain normal 400 font weight.
+- Leave the approved 16px control height, 12px text size, padding, widths and painted dropdown arrows unchanged.
+- Retain bold field labels and B-format controls, coloured actions, Quick Links, saved calibration and behaviour; Local-only candidate.
+
 ## v2.7.64 — 16px Calibration controls and dropdown sizing (Local)
 
 - Set Calibration blue dropdowns/buttons and grey inputs to 16px overall height with 12px text.
