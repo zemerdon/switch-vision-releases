@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.68
+
+Local-only responsive Calibration picker refinement: preserve the owner-approved compact in-page dropdown menus on mobile (viewport width up to 760px), while restoring desktop browsers' native opened dropdown selection behavior above 760px. The 16px closed controls, 11px regular-weight white text, mobile 32px option rows and maximum 320px popup height remain unchanged. Calibration uses the same selection handlers, model/port state, unsaved work and saved profiles on either device. Crossing the mobile/desktop breakpoint refreshes presentation without duplicating editor logic; event listeners are cleaned on disconnect. Quick Links and all unrelated Calibration features remain unchanged. No public release or personal Home Assistant installation.
+
 # Switch Vision Core v2.7.67
 
 Local-only Calibration menu usability update: replace Android's oversized native full-screen option picker with a compact in-page dropdown for Calibration selectors, preserving the existing closed 16px boxes and 11px regular-weight white text. The opened popup displays 12px option text in 32px rows with a scrollable 320px maximum height and optgroup headings. Original hidden native selects still own values and dispatch the same change events; retain target selection, part/options, disabled states, saved profiles, Quick Links and device behavior. Outside-tap/Escape/keyboard dismissal and render/disconnect cleanup are covered by regression tests. No public release or personal HAOS installation.

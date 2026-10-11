@@ -35,6 +35,11 @@ class CompactPickerTest(unittest.TestCase):
             'if (child.tagName === "OPTGROUP")',
             'window.removeEventListener("pointerdown", onOutsidePointer, true);',
             'Math.min(320, available)',
+            'const SV_CALIBRATION_MOBILE_MEDIA = "(max-width: 760px)";',
+            'window.matchMedia?.(SV_CALIBRATION_MOBILE_MEDIA)',
+            'this.attachCalibrationMobileViewportListener();',
+            'media.addEventListener("change", handler)',
+            'if (!compactMobile) return;',
             'trigger.setAttribute("aria-expanded", "true");',
         ):
             self.assertIn(marker, src)
@@ -79,12 +84,13 @@ select.children=[select.selectedOptions[0],opt("logo","Logo"),
 const document={createElement:tag=>new El(tag)};
 const window={
   innerWidth:360,innerHeight:700,
+  matchMedia:()=>({get matches(){return window.innerWidth<=760;}}),
   addEventListener(k,fn){(events.get(k)||events.set(k,[]).get(k)).push(fn);},
   removeEventListener(k,fn){events.set(k,(events.get(k)||[]).filter(f=>f!==fn));},
   fire(k,e){for(const fn of events.get(k)||[])fn(e);}
 };
-const Card=new Function("window","document","Event","return class {\n"+method+"\n}")(
-  window,document,class Event{constructor(type,o){this.type=type;this.bubbles=o.bubbles;}}
+const Card=new Function("window","document","Event","SV_CALIBRATION_MOBILE_MEDIA","return class {\n"+method+"\n}")(
+  window,document,class Event{constructor(type,o){this.type=type;this.bubbles=o.bubbles;}},"(max-width: 760px)"
 );
 const card=new Card();card.shadowRoot=root;
 let changes=0;select.addEventListener("change",()=>changes++);
@@ -115,7 +121,15 @@ assert.equal(trigger.getAttribute("aria-expanded"),"true");
 window.fire("pointerdown",{composedPath:()=>[]});
 assert.equal(trigger.getAttribute("aria-expanded"),"false");
 assert.equal(card._closeCompactCalibrationMenu,null);
-console.log("Compact picker behavior: PASS");
+// Desktop never wraps or hides native selects, even when the same card class is used.
+window.innerWidth=1280;
+const nativeSelect=new El("select");
+const desktop=new Card();desktop.shadowRoot={querySelectorAll:()=>[nativeSelect]};
+desktop.attachCompactCalibrationSelectMenus();
+assert.equal(nativeSelect.parent,undefined);
+assert.equal(nativeSelect.getAttribute("aria-hidden"),null);
+assert.equal(nativeSelect.tabIndex,undefined);
+console.log("Mobile compact and desktop native picker behavior: PASS");
 """
         proc = subprocess.run(
             ["node", "-e", "const method=" + json.dumps(method) + ";\n" + js],

@@ -1,3 +1,9 @@
+## v2.7.68 — Mobile-only compact Calibration dropdown menus (Local)
+
+- Use the approved compact scrollable dropdown menus at mobile viewport widths (760px or less) only; restore native desktop select/dropdown behavior on wider viewports.
+- Update picker presentation at breakpoint transitions while preserving the single shared Calibration engine, selected values, unsaved edits and stored profiles.
+- Keep approved mobile menu appearance, 16px closed-control sizes, 11px regular white labels, Quick Links and all unrelated behavior unchanged. Local-only candidate.
+
 ## v2.7.67 — Compact in-page Calibration dropdown menus (Local)
 
 - Replace Android's oversized native expanded select picker with a short scrollable in-page list (32px rows, 12px option text, maximum 320px height), retaining grouped options and disabled placeholders.
