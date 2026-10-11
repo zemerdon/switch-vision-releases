@@ -183,7 +183,7 @@ UNIFI_DEVICE_WS_SCHEMA = {
 }
 
 PANEL_URL_PATH = "switch-vision"
-PANEL_VERSION = "2.7.69"
+PANEL_VERSION = "2.7.70"
 PANEL_JS_PATH = "/api/switch_vision/switch-vision-panel.js"
 PANEL_JS_URL = f"{PANEL_JS_PATH}?v={PANEL_VERSION}"
 ICONSET_JS_PATH = "/api/switch_vision/switch-vision-iconset.js"
@@ -250,8 +250,8 @@ CONF_MANAGEMENT_THEME_SELECTED = "management_theme_selected"
 CONF_CUSTOM_THEMES = "custom_themes"
 CONF_CALIBRATION_THEME = "calibration_theme"
 CALIBRATION_THEME_SECTIONS = frozenset({"workspace", "section_headers", "assets", "selection", "quick_selection", "labels_leds", "status_boxes", "switch_stack", "geometry", "profile_actions", "buttons", "inputs", "dropdown_closed", "dropdown_open"})
-CALIBRATION_THEME_FIELDS = frozenset({"font_size", "font_weight", "padding", "gap", "height", "width", "row_height", "max_height"})
-CALIBRATION_THEME_FIELD_LIMITS = {"font_size": (7, 22), "padding": (0, 24), "gap": (0, 24), "height": (12, 48), "width": (0, 480), "row_height": (20, 64), "max_height": (80, 600)}
+CALIBRATION_THEME_FIELDS = frozenset({"font_size", "font_weight", "padding", "padding_horizontal", "padding_vertical", "gap", "height", "width", "row_height", "max_height"})
+CALIBRATION_THEME_FIELD_LIMITS = {"font_size": (7, 22), "padding": (0, 24), "padding_horizontal": (0, 24), "padding_vertical": (0, 24), "gap": (0, 24), "height": (12, 48), "width": (0, 480), "row_height": (20, 64), "max_height": (80, 600)}
 
 
 def _normalise_calibration_theme(value: Any) -> dict[str, dict[str, dict[str, Any]]]:

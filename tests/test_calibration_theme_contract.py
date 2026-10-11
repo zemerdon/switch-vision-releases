@@ -23,7 +23,7 @@ class CalibrationThemeContracts(unittest.TestCase):
         namespace = {"vol": Vol, "Any": Any}
         exec(compile(ast.Module(body=exprs + [fn], type_ignores=[]), str(BACKEND), "exec"), namespace)
         norm = namespace["_normalise_calibration_theme"]
-        theme = {"desktop":{"assets":{"font_size":11,"font_weight":"bold","padding":3}},
+        theme = {"desktop":{"assets":{"font_size":11,"font_weight":"bold","padding":3,"padding_horizontal":8,"padding_vertical":2}},
                  "mobile":{"dropdown_open":{"font_size":14,"row_height":40,"max_height":300}}}
         self.assertEqual(norm(theme), theme)
         self.assertEqual(norm({}), {"desktop":{}, "mobile":{}})
@@ -48,10 +48,11 @@ class CalibrationThemeContracts(unittest.TestCase):
         end = src.index('const SV_CALIBRATION_TRANSIENT_CONFIG_KEYS', start)
         fragment = src[start:end]
         js = ("const assert=require('node:assert/strict');\n" + fragment +
-              "\nconst css=calibrationThemeCss({desktop:{assets:{font_size:11,font_weight:'bold'},dropdown_open:{row_height:32,max_height:350}},mobile:{assets:{font_size:14},dropdown_open:{row_height:42}}});" +
+              "\nconst css=calibrationThemeCss({desktop:{assets:{font_size:11,font_weight:'bold',padding_horizontal:8,padding_vertical:2},dropdown_open:{row_height:32,max_height:350}},mobile:{assets:{font_size:14},dropdown_open:{row_height:42}}});" +
               "\nassert.match(css,/@media \\(min-width:761px\\)/);assert.match(css,/@media \\(max-width:760px\\)/);" +
               "\nassert.match(css,/font-size:11px!important/);assert.match(css,/font-size:14px!important/);" +
               "\nassert.match(css,/min-height:42px!important/);" +
+              "\nassert.match(css,/padding-inline:8px!important/);assert.match(css,/padding-block:2px!important/);" +
               "\nassert.doesNotMatch(css,/\\.cv-stage|\\.cv-svg|\\.cv-faceplate-canvas/);" +
               "\nassert.deepEqual(normalizeCalibrationTheme({mobile:{assets:{font_size:999,padding:5}}}).mobile.assets,{padding:5});")
         proc = subprocess.run(["node", "-e", js], cwd=ROOT, text=True, capture_output=True, timeout=20)

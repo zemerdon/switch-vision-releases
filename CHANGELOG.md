@@ -1,3 +1,8 @@
+## v2.7.70 — Calibration Theme padding axes and exact-style preview (Local)
+
+- Validate and apply separate horizontal and vertical padding in Calibration Theme for applicable controls, with backward compatibility for all-side padding and device-specific scope.
+- Ship the unmodified Core Calibration stylesheet and theme-rule generator to the Local Hub preview under exact Core-source parity checks. No saved profile or faceplate changes.
+
 ## v2.7.69 — Calibration Theme desktop/mobile editor presentation (Local)
 
 - Add validated Core settings for independent Calibration-editor Desktop and Mobile appearance, grouped by workspace/sections, assets/selection, labels/fields, buttons/inputs and dropdown closed/open states.

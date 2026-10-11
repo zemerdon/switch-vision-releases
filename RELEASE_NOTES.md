@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.70
+
+Local-only Calibration Theme refinement. All applicable Calibration editor sections now support independent horizontal and vertical padding for Desktop and Mobile. Existing all-side padding remains a backward-compatible fallback, and previously saved Calibration and faceplate geometry are unchanged. The Hub preview uses the actual Core Calibration stylesheet and style-rule generator, with read-only samples of the corresponding Calibration controls. No public release or personal HAOS update.
+
 # Switch Vision Core v2.7.69
 
 Local-only Calibration Theme support. Core now stores independent Desktop and Mobile editor appearance settings from Switch Vision Hub, covering section-specific typography, bold/regular weight, spacing and padding. Closed dropdowns and opened in-page menus are independently configurable on both device classes. The existing saved switch geometry, faceplate calibration, profile selection and dashboard presentation are unchanged; no public release implied.
