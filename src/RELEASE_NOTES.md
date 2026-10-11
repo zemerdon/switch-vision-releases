@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.63
+
+Local-only Calibration compact-control refinement: reduce the grey input, blue button and dropdown controls and colour swatches from 20px to 18px high, and apply 1px text padding on all four sides of text and buttons. Dropdowns reserve their existing arrow-side clearance. Preserve 10px text size, 12px line-height, existing field widths, Quick Links, profile formats and faceplate behaviour; no public release.
+
 # Switch Vision Core v2.7.62
 
 Local-only Calibration UI refinement: reduce grey input fields, blue buttons and dropdowns from 24px to 20px tall, with 10px text, 12px line-height and existing 3px insets. Preserve existing compact widths, the dropdown arrow clearance and all Quick Links, including parity and custom-port controls. No calibration-profile schema, saved geometry, faceplate rendering, device telemetry or behaviour change.

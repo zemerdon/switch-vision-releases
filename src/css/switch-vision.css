@@ -669,12 +669,12 @@
   .cv-cal-section-layout-help button{margin-left:auto}
 }
 
-/* Compact Calibration editor heights: 20px, 3px padding, unchanged quick-selection actions. */
+/* Compact Calibration controls: 18px tall, 1px text padding, Quick Links unchanged. */
 .cv-cal-tools input.cv-cal-input {
   box-sizing: border-box;
-  height: 20px;
-  min-height: 20px;
-  padding: 3px;
+  height: 18px;
+  min-height: 18px;
+  padding: 1px;
   line-height: 12px;
   font-size: 10px;
 }
@@ -685,13 +685,13 @@
 .cv-cal-tools .cv-cal-colour-controls input.cv-cal-hex-input {
   width: 59px !important;
   min-width: 59px !important;
-  padding: 3px;
+  padding: 1px;
 }
 .cv-cal-tools .cv-cal-colour-controls .cv-cal-colour-swatch {
   width: 21px;
   min-width: 21px;
-  height: 20px;
-  min-height: 20px;
+  height: 18px;
+  min-height: 18px;
 }
 .cv-cal-tools .cv-cal-port-meta-row input.cv-cal-input:not([type="number"]) {
   width: 127px;
@@ -705,21 +705,21 @@
 /* Keep the native dropdown arrow clear while tightening the text-side inset. */
 .cv-cal-tools select.cv-cal-select {
   box-sizing: border-box;
-  height: 20px;
-  min-height: 20px;
-  padding: 3px 18px 3px 3px;
+  height: 18px;
+  min-height: 18px;
+  padding: 1px 18px 1px 1px;
   line-height: 12px;
 }
 .cv-cal-tools button:not(.cv-cal-toggle) {
   box-sizing: border-box;
-  height: 20px;
-  min-height: 20px;
+  height: 18px;
+  min-height: 18px;
   min-width: 30px;
-  padding: 3px;
+  padding: 1px;
   line-height: 12px;
 }
 .cv-cal-tools button.cv-cal-toggle {
-  padding: 3px;
+  padding: 1px;
   line-height: 12px;
 }
 .cv-cal-tools .cv-cal-geometry-row .cv-cal-coordinate-input {

@@ -82,12 +82,12 @@ console.log("Calibration grouped targets: PASS");
 
     def test_compact_size_rules(self) -> None:
         css = CSS.read_text(encoding="utf-8")
-        self.assertRegex(css, r"(?s)\.cv-cal-tools input\.cv-cal-input \{[^}]*height: 20px;[^}]*min-height: 20px;[^}]*padding: 3px;[^}]*line-height: 12px;")
-        self.assertRegex(css, r"(?s)\.cv-cal-colour-controls input\.cv-cal-hex-input \{[^}]*width: 59px !important;[^}]*padding: 3px;")
-        self.assertRegex(css, r"(?s)\.cv-cal-colour-controls \.cv-cal-colour-swatch \{[^}]*width: 21px;[^}]*height: 20px;[^}]*min-height: 20px;")
+        self.assertRegex(css, r"(?s)\.cv-cal-tools input\.cv-cal-input \{[^}]*height: 18px;[^}]*min-height: 18px;[^}]*padding: 1px;[^}]*line-height: 12px;")
+        self.assertRegex(css, r"(?s)\.cv-cal-colour-controls input\.cv-cal-hex-input \{[^}]*width: 59px !important;[^}]*padding: 1px;")
+        self.assertRegex(css, r"(?s)\.cv-cal-colour-controls \.cv-cal-colour-swatch \{[^}]*width: 21px;[^}]*height: 18px;[^}]*min-height: 18px;")
         self.assertRegex(css, r"(?s)\.cv-cal-tools input\.cv-cal-input\[type=\"number\"\][^{]*\{[^}]*width: 61px;")
-        self.assertRegex(css, r"(?s)\.cv-cal-tools select\.cv-cal-select \{[^}]*height: 20px;[^}]*min-height: 20px;[^}]*padding: 3px 18px 3px 3px;[^}]*line-height: 12px;")
-        self.assertRegex(css, r"(?s)\.cv-cal-tools button:not\(\.cv-cal-toggle\) \{[^}]*height: 20px;[^}]*min-height: 20px;[^}]*padding: 3px;[^}]*line-height: 12px;")
+        self.assertRegex(css, r"(?s)\.cv-cal-tools select\.cv-cal-select \{[^}]*height: 18px;[^}]*min-height: 18px;[^}]*padding: 1px 18px 1px 1px;[^}]*line-height: 12px;")
+        self.assertRegex(css, r"(?s)\.cv-cal-tools button:not\(\.cv-cal-toggle\) \{[^}]*height: 18px;[^}]*min-height: 18px;[^}]*padding: 1px;[^}]*line-height: 12px;")
         self.assertIn("width: 127px;", css)
         self.assertIn("max-width: min(100%, 185px);", css)
 
