@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.74
+
+Local-only Calibration workspace refinement. Hint Text can be sized and weighted separately for desktop and mobile, X/Y/W/H inputs are readable and controlled by Number Input Width, and Status Box quick selections align. Port manager has its own row; redundant separators, Direct text, and faceplate help copy are removed. Quick Select now provides All / RJ45 / SFP Link+Activity LED groups for joint geometry edits while existing individual LED targets remain in dropdowns. Target and Part dropdown selection remains immediate and saved switch calibrations are untouched.
+
 # Switch Vision Core v2.7.73
 
 Local-only Calibration Theme typography refinement. Field labels, group labels, subsection headings and section headings each gain independent Desktop/Mobile font size and Regular/Bold choices. Global control typography no longer overrides these semantic roles. Existing per-section saved settings and switch calibration/faceplate geometry are preserved. Hub now previews each setting immediately below its dropdown using corresponding Core Calibration elements.

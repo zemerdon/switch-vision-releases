@@ -1,3 +1,11 @@
+## v2.7.74 — Calibration workspace polish and combined LED groups (Local)
+
+- Align Status Box 1/2 Quick Select controls; separate Port manager; remove redundant Direct text, vertical separators, and obsolete faceplate tip.
+- Expand X/Y/W/H entry fields and connect their widths to the existing Number Input Width Calibration Theme setting.
+- Introduce independent Desktop/Mobile Hint Text font size and Regular/Bold weight for grey section descriptions and inline helpers.
+- Add safe combined RJ45/SFP Link+Activity LED selection for position and size editing, preserving the existing individual link/activity controls via dropdowns; keep target/part dropdown changes immediate.
+- Preserve existing saved profile geometry and normal dashboard behavior; Local-only candidate.
+
 ## v2.7.73 — Independent Calibration label and heading typography (Local)
 
 - Separate field, group, subsection and section text size/weight from global control text in both Desktop and Mobile.

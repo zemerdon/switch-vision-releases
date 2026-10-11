@@ -1,0 +1,518 @@
+{
+  "schema_version": 2,
+  "schema": "switch-vision-interactive-calibration-v1",
+  "model": "usw-flex-mini",
+  "profile": "usw_flex_mini",
+  "generated_by": "Switch Vision v2.7.24",
+  "image": {
+    "file": "faceplates/usw-flex-mini.png",
+    "width": 2680,
+    "height": 356,
+    "master": "usw-flex-mini-owner-calibrated",
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "coordinate_space": "image-native-v1"
+  },
+  "ports": {
+    "1": {
+      "center": [
+        879.107142857,
+        228.857142857
+      ],
+      "number": [
+        879.107142857,
+        296.401785714
+      ],
+      "led_left": [
+        837.785714286,
+        193.098214286
+      ],
+      "led_right": [
+        919.633928571,
+        193.098214286
+      ],
+      "hitbox": [
+        94.5625,
+        88.205357143
+      ],
+      "number_show": true,
+      "supported_speed": "",
+      "port_role": "",
+      "led_left_size": [
+        17.482142857,
+        9.535714286
+      ],
+      "led_right_size": [
+        17.482142857,
+        9.535714286
+      ]
+    },
+    "2": {
+      "center": [
+        1069.821428571,
+        228.857142857
+      ],
+      "number": [
+        1069.821428571,
+        307.526785714
+      ],
+      "led_left": [
+        1028.5,
+        193.098214286
+      ],
+      "led_right": [
+        1110.348214286,
+        193.098214286
+      ],
+      "hitbox": [
+        94.5625,
+        88.205357143
+      ],
+      "number_show": true,
+      "supported_speed": "",
+      "port_role": "",
+      "led_left_size": [
+        17.482142857,
+        9.535714286
+      ],
+      "led_right_size": [
+        17.482142857,
+        9.535714286
+      ]
+    },
+    "3": {
+      "center": [
+        1260.535714286,
+        228.857142857
+      ],
+      "number": [
+        1260.535714286,
+        296.401785714
+      ],
+      "led_left": [
+        1219.214285714,
+        193.098214286
+      ],
+      "led_right": [
+        1301.0625,
+        193.098214286
+      ],
+      "hitbox": [
+        94.5625,
+        88.205357143
+      ],
+      "number_show": true,
+      "supported_speed": "",
+      "port_role": "",
+      "led_left_size": [
+        17.482142857,
+        9.535714286
+      ],
+      "led_right_size": [
+        17.482142857,
+        9.535714286
+      ]
+    },
+    "4": {
+      "center": [
+        1451.25,
+        228.857142857
+      ],
+      "number": [
+        1451.25,
+        307.526785714
+      ],
+      "led_left": [
+        1409.928571429,
+        193.098214286
+      ],
+      "led_right": [
+        1491.776785714,
+        193.098214286
+      ],
+      "hitbox": [
+        94.5625,
+        88.205357143
+      ],
+      "number_show": true,
+      "supported_speed": "",
+      "port_role": "",
+      "led_left_size": [
+        17.482142857,
+        9.535714286
+      ],
+      "led_right_size": [
+        17.482142857,
+        9.535714286
+      ]
+    },
+    "5": {
+      "center": [
+        1641.964285714,
+        228.857142857
+      ],
+      "number": [
+        1641.964285714,
+        296.401785714
+      ],
+      "led_left": [
+        1600.642857143,
+        193.098214286
+      ],
+      "led_right": [
+        1682.491071429,
+        193.098214286
+      ],
+      "hitbox": [
+        94.5625,
+        88.205357143
+      ],
+      "number_show": true,
+      "supported_speed": "",
+      "port_role": "",
+      "led_left_size": [
+        17.482142857,
+        9.535714286
+      ],
+      "led_right_size": [
+        17.482142857,
+        9.535714286
+      ]
+    }
+  },
+  "sfp": {},
+  "status_leds": {
+    "STAT": [
+      1061.875,
+      66.75
+    ],
+    "SYST": [
+      1061.875,
+      118.401785714
+    ],
+    "DUPLX": [
+      1203.321428571,
+      66.75
+    ],
+    "ACTV": [
+      1203.321428571,
+      118.401785714
+    ],
+    "SPEED": [
+      1341.589285714,
+      66.75
+    ],
+    "STACK": [
+      1483.035714286,
+      66.75
+    ],
+    "PoE": [
+      1614.151785714,
+      66.75
+    ]
+  },
+  "ui": {
+    "logo": {
+      "show": false,
+      "file": "sv-logo.png",
+      "source": "none",
+      "x": 639.919642857,
+      "y": 0,
+      "width": 148.598214286,
+      "height": 149.392857143
+    },
+    "status_panel": {
+      "show": true,
+      "x": 824.701866666,
+      "y": 51.196190476,
+      "width": 295.649523809,
+      "height": 105.782857143,
+      "font_family": "SwitchVisionCustom, Arial, Helvetica, sans-serif",
+      "font_size": 19.866071429,
+      "title_font_size": 12.714285714,
+      "font_weight": "normal",
+      "text_color": "#000000",
+      "label_color": "#000000",
+      "title_color": "#000000",
+      "background_color": "rgba(0,0,0,.06)",
+      "border_color": "#000000",
+      "border_show": true,
+      "field_order": {
+        "switch": [
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "uptime",
+          "vendor",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ],
+        "sfp": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ]
+      },
+      "hidden_fields": {
+        "switch": [
+          "vendor",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu",
+          "temp",
+          "poe"
+        ],
+        "port": [],
+        "sfp": []
+      },
+      "fields": {
+        "row1_key": [
+          15.098214286,
+          30.991071429
+        ],
+        "row1_value": [
+          85.026785714,
+          30.991071429
+        ],
+        "row2_key": [
+          15.098214286,
+          46.089285714
+        ],
+        "row2_value": [
+          85.026785714,
+          46.089285714
+        ],
+        "row3_key": [
+          15.098214286,
+          61.982142857
+        ],
+        "row3_value": [
+          85.026785714,
+          61.982142857
+        ],
+        "row4_key": [
+          15.098214286,
+          77.080357143
+        ],
+        "row4_value": [
+          85.026785714,
+          77.080357143
+        ],
+        "row5_key": [
+          15.098214286,
+          92.178571429
+        ],
+        "row5_value": [
+          85.026785714,
+          92.178571429
+        ],
+        "row6_key": [
+          15.098214286,
+          107.276785714
+        ],
+        "row6_value": [
+          85.026785714,
+          107.276785714
+        ]
+      },
+      "background_show": false
+    },
+    "faceplate": {
+      "fit": "fill",
+      "opacity": 1,
+      "show": true,
+      "file": "usw-flex-mini.png",
+      "source": "custom"
+    },
+    "calibration_button": {
+      "show": true,
+      "x": 2026.571428571,
+      "y": 11.125,
+      "width": 109.660714286,
+      "height": 27.017857143,
+      "anchor": "top_right"
+    },
+    "status_panel_2": {
+      "show": true,
+      "x": 1394.817219048,
+      "y": 51.196190476,
+      "width": 295.649523809,
+      "height": 103.070476191,
+      "font_family": "SwitchVisionCustom, Arial, Helvetica, sans-serif",
+      "font_size": 19.866071429,
+      "title_font_size": 12.714285714,
+      "font_weight": "normal",
+      "text_color": "#000000",
+      "label_color": "#000000",
+      "title_color": "#000000",
+      "background_color": "rgba(0,0,0,.06)",
+      "border_color": "#000000",
+      "border_show": true,
+      "title_mode": "custom",
+      "title_field": "model",
+      "custom_title": "",
+      "field_order": {
+        "switch": [
+          "vendor",
+          "uptime",
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ],
+        "sfp": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ]
+      },
+      "hidden_fields": {
+        "switch": [
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [],
+        "sfp": []
+      },
+      "fields": {
+        "row1_key": [
+          21.780419048,
+          43.696457143
+        ],
+        "row1_value": [
+          118.829409524,
+          43.696457143
+        ],
+        "row2_key": [
+          21.780419048,
+          57.204114286
+        ],
+        "row2_value": [
+          118.829409524,
+          57.204114286
+        ],
+        "row3_key": [
+          21.780419048,
+          70.711771429
+        ],
+        "row3_value": [
+          118.829409524,
+          70.711771429
+        ],
+        "row4_key": [
+          21.780419048,
+          84.219428571
+        ],
+        "row4_value": [
+          118.829409524,
+          84.219428571
+        ],
+        "row5_key": [
+          21.780419048,
+          97.754209524
+        ],
+        "row5_value": [
+          118.829409524,
+          97.754209524
+        ],
+        "row6_key": [
+          21.780419048,
+          111.261866666
+        ],
+        "row6_value": [
+          118.829409524,
+          111.261866666
+        ]
+      },
+      "background_show": false
+    },
+    "port_status_output": "status_box_2",
+    "port_led_shape": "rectangle",
+    "port_label_color": "#eef7ff",
+    "port_number_color": "#000000",
+    "port_label_font_weight": "normal",
+    "port_number_font_size": 23.839285714,
+    "sfp_label_font_size": 23.839285714,
+    "status_leds": {
+      "hidden": [
+        "STAT",
+        "SYST",
+        "DUPLX",
+        "ACTV",
+        "SPEED",
+        "STACK",
+        "PoE"
+      ],
+      "text_color": "#eef7ff",
+      "font_family": "Arial, Helvetica, sans-serif",
+      "font_size": 13.111607143,
+      "font_weight": "900"
+    },
+    "show_link_leds": true,
+    "show_activity_leds": true,
+    "test_mode_button": {
+      "show": true,
+      "x": 2022.598214286,
+      "y": 109.660714286,
+      "width": 109.660714286,
+      "height": 27.017857143,
+      "anchor": "top_right"
+    }
+  },
+  "stack": {
+    "enabled": false,
+    "stack_id": "",
+    "uptime_source": "",
+    "members": {}
+  },
+  "management": {
+    "switch_ip": ""
+  }
+}

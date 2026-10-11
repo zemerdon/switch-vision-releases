@@ -69,13 +69,22 @@ class PortLedShapeCalibrationTests(unittest.TestCase):
             'data-target="all_numbers" data-part="number">Port Labels</button>',
             'data-target="all_link_leds" data-part="led_left">All Link LEDs</button>',
             'data-target="all_activity_leds" data-part="led_right">All Activity LEDs</button>',
+            'data-target="all_link_activity_leds" data-part="both">All Link/Activity</button>',
+            'data-target="rj45_link_activity_leds" data-part="both">RJ45 Link/Activity</button>',
+            'data-target="sfp_link_activity_leds" data-part="both">SFP Link/Activity</button>',
+        ):
+            self.assertIn(marker, selection)
+            self.assertNotIn(marker, labels)
+
+        for removed in (
             'data-target="ports_led_left" data-part="led_left">RJ45 Link</button>',
             'data-target="ports_led_right" data-part="led_right">RJ45 Activity</button>',
             'data-target="sfps_led_left" data-part="led_left">SFP Link</button>',
             'data-target="sfps_led_right" data-part="led_right">SFP Activity</button>',
         ):
-            self.assertIn(marker, selection)
-            self.assertNotIn(marker, labels)
+            self.assertNotIn(removed, selection)
+        for target in ("ports_led_left", "ports_led_right", "sfps_led_left", "sfps_led_right"):
+            self.assertIn('option("'+target+'"', self.source)
 
         self.assertEqual(
             self.source.count('data-cv-action="select-target"'),
@@ -86,8 +95,10 @@ class PortLedShapeCalibrationTests(unittest.TestCase):
         required = (
             'return { type: "port_leds", id: "all", part: "led_left" };',
             'return { type: "port_leds", id: "all", part: "led_right" };',
-            '...Object.values(cal.ports || {}).map((port) => port?.[editable.part])',
-            '...Object.values(cal.sfp || {}).map((sfp) => sfpLedPoint(sfp, editable.part, createMissing))',
+            '...scope.portKeys.flatMap((key) => scope.parts.map((part) => cal.ports?.[key]?.[part]))',
+            '...scope.sfpKeys.flatMap((key) => scope.parts.map((part) => sfpLedPoint(cal.sfp?.[key], part, createMissing)))',
+            'return { type: "port_leds", id: "rj45", part: "both" };',
+            'return { type: "port_leds", id: "sfp", part: "both" };',
             'editable?.type === "port_leds"',
             '? sortedCalibrationPortKeys(cal)',
             '? sortedCalibrationSfpKeys(cal)',

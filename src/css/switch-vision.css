@@ -187,6 +187,12 @@
 .cv-cal-quick-row{
   gap:5px;
 }
+/* Keep both Status Box selection rows aligned without fixed button positions. */
+.cv-cal-status-quick-row > .cv-cal-quick-label{
+  flex:0 0 96px;
+  width:96px;
+  min-width:96px;
+}
 .cv-cal-quick-label{
   color:var(--cv-muted);
   font-weight:800;
@@ -200,12 +206,6 @@
 }
 .cv-cal-parity-row > * {
   flex: 0 0 auto;
-}
-.cv-cal-parity-divider {
-  width: 1px;
-  height: 22px;
-  margin: 0 3px;
-  background: rgba(130, 170, 200, .28);
 }
 
 .cv-cal-nudge-grid{
@@ -410,12 +410,10 @@
 .cv-cal-switch-stack-row .cv-cal-ip-input{width:150px}
 .cv-cal-switch-stack-row .cv-cal-entity-input{width:210px}
 .cv-cal-ip-help{white-space:nowrap}
-.cv-cal-row-divider{flex:0 0 1px;height:24px;background:rgba(130,170,200,.28);margin:0 2px}
 @media (max-width:900px){
   .cv-cal-style-row > .cv-cal-quick-label,
   .cv-cal-status-row > .cv-cal-quick-label,
   .cv-cal-switch-stack-row > .cv-cal-quick-label{flex-basis:100%;min-width:0}
-  .cv-cal-row-divider{display:none}
   .cv-cal-switch-stack-row .cv-cal-entity-input{width:min(100%,230px)}
 }
 
@@ -440,12 +438,6 @@
 .cv-cal-sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 
 /* v1.9.79 direct position and size controls */
-.cv-cal-coordinate-divider{
-  width:1px;
-  height:22px;
-  margin:0 3px;
-  background:rgba(130,170,200,.28);
-}
 .cv-cal-coordinate-input{
   width:72px;
   min-width:64px;
@@ -570,10 +562,6 @@
   width:42px;
   min-width:42px;
   margin-right:0;
-}
-.cv-cal-geometry-row .cv-cal-row-divider,
-.cv-cal-direct-geometry-row .cv-cal-row-divider{
-  height:20px;
 }
 .cv-cal-direct-geometry-row .cv-cal-coordinate-input{
   width:66px;
@@ -742,12 +730,12 @@
   font-size: 12px;
 }
 .cv-cal-tools .cv-cal-geometry-row .cv-cal-coordinate-input {
-  width: 52px;
-  min-width: 48px;
+  width: 110px;
+  min-width: 0;
 }
 .cv-cal-tools .cv-cal-direct-geometry-row .cv-cal-coordinate-input {
-  width: 59px;
-  min-width: 52px;
+  width: 110px;
+  min-width: 0;
 }
 .cv-cal-tools .cv-cal-switch-stack-row .cv-cal-ip-input {
   width: 132px;

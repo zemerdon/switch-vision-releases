@@ -62,7 +62,7 @@ class PortLabelStyleModeTests(unittest.TestCase):
         self.assertNotIn('"SFP label"', self.source)
 
     def test_selected_port_controls_remain_visible_for_every_port_part(self) -> None:
-        block_start = self.source.index('const portNumberKeys = ["number_labels", "port_leds"].includes(editable?.type)')
+        block_start = self.source.index('const portNumberKeys = editable?.type === "port_leds"')
         block_end = self.source.index('const isPortLedSize', block_start)
         block = self.source[block_start:block_end]
 

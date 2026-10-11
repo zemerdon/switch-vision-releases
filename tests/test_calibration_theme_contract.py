@@ -118,13 +118,13 @@ class CalibrationThemeContracts(unittest.TestCase):
             self.assertGreater(higher, baseline, field)
         self.assertEqual(ranges["row_height"], (0, 64))
 
-    def test_four_semantic_typography_roles_ignore_global_control_font(self):
+    def test_five_semantic_typography_roles_ignore_global_control_font(self):
         src = CARD.read_text()
         fragment = src[src.index("const SV_CALIBRATION_MOBILE_MEDIA = "):src.index("const SV_CALIBRATION_TRANSIENT_CONFIG_KEYS")]
         script = ("const assert=require('node:assert/strict');" + fragment +
                   "\nconst theme={desktop:{global:{font_size:17,font_weight:'bold'}," +
                   "field_labels:{font_size:10,font_weight:'regular'},group_labels:{font_size:11,font_weight:'bold'}," +
-                  "subsection_headings:{font_size:12,font_weight:'regular'},section_headings:{font_size:15,font_weight:'bold'}}," +
+                  "subsection_headings:{font_size:12,font_weight:'regular'},section_headings:{font_size:15,font_weight:'bold'},hint_text:{font_size:13,font_weight:'regular'}}," +
                   "mobile:{global:{font_size:14},field_labels:{font_size:9,font_weight:'bold'}}};" +
                   "\nassert.deepEqual(normalizeCalibrationTheme(theme),theme);" +
                   "\nconst css=calibrationThemeCss(theme);" +
@@ -132,7 +132,7 @@ class CalibrationThemeContracts(unittest.TestCase):
                   "['field_labels','.cv-cal-tools-row label',10,400]," +
                   "['group_labels','.cv-cal-quick-label',11,700]," +
                   "['subsection_headings','.cv-cal-subsection-divider > span',12,400]," +
-                  "['section_headings','> summary > span',15,700]]) {" +
+                  "['section_headings','> summary > span',15,700],['hint_text','> summary > small',13,400]]) {" +
                   "assert(css.includes(selector));assert(css.includes('font-size:'+size+'px!important'));" +
                   "assert(css.includes('font-weight:'+weight+'!important'));" +
                   "}" +
@@ -147,7 +147,7 @@ class CalibrationThemeContracts(unittest.TestCase):
         expr = next(n.value for n in tree.body if isinstance(n, ast.Assign)
                     and any(isinstance(t, ast.Name) and t.id == "CALIBRATION_THEME_SECTIONS" for t in n.targets))
         roles = ast.literal_eval(expr.args[0])
-        self.assertTrue({"field_labels", "group_labels", "subsection_headings", "section_headings"}.issubset(roles))
+        self.assertTrue({"field_labels", "group_labels", "subsection_headings", "section_headings", "hint_text"}.issubset(roles))
 
 
 if __name__ == "__main__":
