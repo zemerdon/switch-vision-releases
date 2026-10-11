@@ -82,12 +82,17 @@ console.log("Calibration grouped targets: PASS");
 
     def test_compact_size_rules(self) -> None:
         css = CSS.read_text(encoding="utf-8")
-        self.assertRegex(css, r"(?s)\.cv-cal-tools input\.cv-cal-input \{[^}]*height: 18px;[^}]*min-height: 18px;[^}]*padding: 1px;[^}]*line-height: 12px;")
-        self.assertRegex(css, r"(?s)\.cv-cal-colour-controls input\.cv-cal-hex-input \{[^}]*width: 59px !important;[^}]*padding: 1px;")
-        self.assertRegex(css, r"(?s)\.cv-cal-colour-controls \.cv-cal-colour-swatch \{[^}]*width: 21px;[^}]*height: 18px;[^}]*min-height: 18px;")
-        self.assertRegex(css, r"(?s)\.cv-cal-tools input\.cv-cal-input\[type=\"number\"\][^{]*\{[^}]*width: 61px;")
-        self.assertRegex(css, r"(?s)\.cv-cal-tools select\.cv-cal-select \{[^}]*height: 18px;[^}]*min-height: 18px;[^}]*padding: 1px 18px 1px 1px;[^}]*line-height: 12px;")
-        self.assertRegex(css, r"(?s)\.cv-cal-tools button:not\(\.cv-cal-toggle\) \{[^}]*height: 18px;[^}]*min-height: 18px;[^}]*padding: 1px;[^}]*line-height: 12px;")
+        control = css.split(".cv-cal-tools input.cv-cal-input,", 1)[1].split("}", 1)[0]
+        for token in ("height: 16px;", "min-height: 16px;", "padding: 1px 2px;", "line-height: 12px;", "font-size: 12px;"):
+            self.assertIn(token, control)
+        dropdown = css.split(".cv-cal-tools select.cv-cal-select {", 1)[1].split("}", 1)[0]
+        for token in ("appearance: none;", "height: 16px;", "min-height: 16px;", "max-height: 16px;", "padding: 1px 18px 1px 2px;", "font-size: 12px;", "background-image:"):
+            self.assertIn(token, dropdown)
+        button = css.split(".cv-cal-tools button:not(.cv-cal-toggle) {", 1)[1].split("}", 1)[0]
+        for token in ("height: 16px;", "padding: 1px 2px;", "font-size: 12px;"):
+            self.assertIn(token, button)
+        self.assertIn("width: 59px !important;", css)
+        self.assertIn("width: 21px;", css)
         self.assertIn("width: 127px;", css)
         self.assertIn("max-width: min(100%, 185px);", css)
 

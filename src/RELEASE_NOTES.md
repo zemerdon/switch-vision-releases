@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.64
+
+Local-only Calibration controls: 16px overall box height with 12px font, 12px line-height, 1px vertical and 2px horizontal text padding. All dropdowns override legacy minimums and use a consistent arrow. Quick Links, saved calibration and telemetry remain unchanged.
+
 # Switch Vision Core v2.7.63
 
 Local-only Calibration compact-control refinement: reduce the grey input, blue button and dropdown controls and colour swatches from 20px to 18px high, and apply 1px text padding on all four sides of text and buttons. Dropdowns reserve their existing arrow-side clearance. Preserve 10px text size, 12px line-height, existing field widths, Quick Links, profile formats and faceplate behaviour; no public release.

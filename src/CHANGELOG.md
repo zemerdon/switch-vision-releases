@@ -1,3 +1,9 @@
+## v2.7.64 — 16px Calibration controls and dropdown sizing (Local)
+
+- Set Calibration blue dropdowns/buttons and grey inputs to 16px overall height with 12px text.
+- Apply 2px horizontal and 1px vertical text padding within 1px borders; reserve dropdown arrow clearance and override legacy 24px minimums.
+- Leave Quick Links, saved profiles, faceplate geometry and telemetry unchanged. Local-only candidate.
+
 ## v2.7.63 — 18px Calibration controls with 1px padding (Local)
 
 - Reduce Calibration input, select, button and colour-swatch height from 20px to 18px.

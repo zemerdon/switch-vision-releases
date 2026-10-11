@@ -669,14 +669,17 @@
   .cv-cal-section-layout-help button{margin-left:auto}
 }
 
-/* Compact Calibration controls: 18px tall, 1px text padding, Quick Links unchanged. */
-.cv-cal-tools input.cv-cal-input {
+/* Calibration values and selects: 16px box, 12px text, 2px horizontal inset.
+ * A 1px border on each edge leaves 1px vertical inset per side.
+ * A painted select arrow avoids platform-specific native minimum heights. */
+.cv-cal-tools input.cv-cal-input,
+.cv-cal-tools input[type="number"] {
   box-sizing: border-box;
-  height: 18px;
-  min-height: 18px;
-  padding: 1px;
+  height: 16px;
+  min-height: 16px;
+  padding: 1px 2px;
   line-height: 12px;
-  font-size: 10px;
+  font-size: 12px;
 }
 .cv-cal-tools input.cv-cal-input[type="number"]:not(.cv-cal-coordinate-input) {
   width: 61px;
@@ -685,13 +688,13 @@
 .cv-cal-tools .cv-cal-colour-controls input.cv-cal-hex-input {
   width: 59px !important;
   min-width: 59px !important;
-  padding: 1px;
+  padding: 1px 2px;
 }
 .cv-cal-tools .cv-cal-colour-controls .cv-cal-colour-swatch {
   width: 21px;
   min-width: 21px;
-  height: 18px;
-  min-height: 18px;
+  height: 16px;
+  min-height: 16px;
 }
 .cv-cal-tools .cv-cal-port-meta-row input.cv-cal-input:not([type="number"]) {
   width: 127px;
@@ -702,25 +705,41 @@
   min-width: 120px;
   box-sizing: border-box;
 }
-/* Keep the native dropdown arrow clear while tightening the text-side inset. */
+/* Override legacy 24px select minimums and reserve space for the arrow. */
 .cv-cal-tools select.cv-cal-select {
+  -webkit-appearance: none;
+  appearance: none;
   box-sizing: border-box;
-  height: 18px;
-  min-height: 18px;
-  padding: 1px 18px 1px 1px;
+  height: 16px;
+  min-height: 16px;
+  max-height: 16px;
+  padding: 1px 18px 1px 2px;
   line-height: 12px;
+  font-size: 12px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23d8e7f3' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 4px center;
+  background-size: 10px 7px;
+}
+.cv-cal-tools .cv-cal-style-row label,
+.cv-cal-tools .cv-cal-status-row label,
+.cv-cal-tools .cv-cal-switch-stack-row label,
+.cv-cal-tools .cv-cal-colour-field {
+  min-height: 16px;
 }
 .cv-cal-tools button:not(.cv-cal-toggle) {
   box-sizing: border-box;
-  height: 18px;
-  min-height: 18px;
+  height: 16px;
+  min-height: 16px;
   min-width: 30px;
-  padding: 1px;
+  padding: 1px 2px;
   line-height: 12px;
+  font-size: 12px;
 }
 .cv-cal-tools button.cv-cal-toggle {
-  padding: 1px;
+  padding: 1px 2px;
   line-height: 12px;
+  font-size: 12px;
 }
 .cv-cal-tools .cv-cal-geometry-row .cv-cal-coordinate-input {
   width: 52px;
