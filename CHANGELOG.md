@@ -1,3 +1,9 @@
+## v2.7.62 — Compact Calibration control height (Local)
+
+- Reduce Calibration grey text/number/hex inputs, blue buttons and dropdowns from 24px to 20px with a 12px text line-height, retaining 10px text size and the 3px internal text padding.
+- Bring colour-swatch height to 20px and preserve 18px of dropdown arrow-side clearance; leave horizontal widths untouched.
+- Preserve all Quick Links, saved profiles, geometry and behaviour. Local staging only, no public publication.
+
 ## v2.7.61 — Tight 3px Calibration control spacing (Local)
 
 - Use 3px padding between the text and outlines of Calibration grey inputs and blue controls, reserving the necessary right-hand clearance for native dropdown arrows.
