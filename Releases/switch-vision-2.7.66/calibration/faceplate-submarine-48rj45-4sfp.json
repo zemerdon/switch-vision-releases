@@ -1,0 +1,1871 @@
+{
+  "schema_version": 2,
+  "schema": "switch-vision-interactive-calibration-v1",
+  "model": "cisco-3650-48p-4-uplink",
+  "profile": "default_cisco_48_port",
+  "generated_by": "Switch Vision factory faceplate defaults",
+  "image": {
+    "file": "faceplates/submarine-48rj45-4sfp.png",
+    "width": 2048,
+    "height": 452,
+    "master": "switch-master-v4.0",
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "coordinate_space": "image-native-v1"
+  },
+  "ports": {
+    "1": {
+      "center": [
+        176,
+        219
+      ],
+      "number": [
+        174,
+        164
+      ],
+      "led_left": [
+        157,
+        198
+      ],
+      "led_right": [
+        191,
+        198
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "2": {
+      "center": [
+        171,
+        299
+      ],
+      "number": [
+        173,
+        367
+      ],
+      "led_left": [
+        156,
+        324
+      ],
+      "led_right": [
+        192,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "3": {
+      "center": [
+        236,
+        219
+      ],
+      "number": [
+        235,
+        164
+      ],
+      "led_left": [
+        214,
+        198
+      ],
+      "led_right": [
+        251,
+        198
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "4": {
+      "center": [
+        231,
+        298
+      ],
+      "number": [
+        231,
+        367
+      ],
+      "led_left": [
+        215,
+        324
+      ],
+      "led_right": [
+        251,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "5": {
+      "center": [
+        294,
+        219
+      ],
+      "number": [
+        292,
+        164
+      ],
+      "led_left": [
+        274,
+        198
+      ],
+      "led_right": [
+        309,
+        198
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "6": {
+      "center": [
+        291,
+        298
+      ],
+      "number": [
+        291,
+        367
+      ],
+      "led_left": [
+        273,
+        324
+      ],
+      "led_right": [
+        309,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "7": {
+      "center": [
+        355,
+        219
+      ],
+      "number": [
+        352,
+        164
+      ],
+      "led_left": [
+        334,
+        198
+      ],
+      "led_right": [
+        368,
+        198
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "8": {
+      "center": [
+        351,
+        298
+      ],
+      "number": [
+        351,
+        367
+      ],
+      "led_left": [
+        333,
+        324
+      ],
+      "led_right": [
+        367,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "9": {
+      "center": [
+        414,
+        219
+      ],
+      "number": [
+        411,
+        164
+      ],
+      "led_left": [
+        393,
+        198
+      ],
+      "led_right": [
+        427,
+        198
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "10": {
+      "center": [
+        410,
+        298
+      ],
+      "number": [
+        409,
+        367
+      ],
+      "led_left": [
+        392,
+        324
+      ],
+      "led_right": [
+        427,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "11": {
+      "center": [
+        474,
+        219
+      ],
+      "number": [
+        469,
+        164
+      ],
+      "led_left": [
+        452,
+        198
+      ],
+      "led_right": [
+        486,
+        198
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "12": {
+      "center": [
+        470,
+        297
+      ],
+      "number": [
+        468,
+        367
+      ],
+      "led_left": [
+        452,
+        324
+      ],
+      "led_right": [
+        486,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "13": {
+      "center": [
+        535,
+        219
+      ],
+      "number": [
+        538,
+        163
+      ],
+      "led_left": [
+        522,
+        200
+      ],
+      "led_right": [
+        556,
+        200
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "14": {
+      "center": [
+        536,
+        298
+      ],
+      "number": [
+        538,
+        367
+      ],
+      "led_left": [
+        520,
+        324
+      ],
+      "led_right": [
+        555,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "15": {
+      "center": [
+        595,
+        219
+      ],
+      "number": [
+        597,
+        163
+      ],
+      "led_left": [
+        580,
+        200
+      ],
+      "led_right": [
+        614,
+        200
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "16": {
+      "center": [
+        595,
+        297
+      ],
+      "number": [
+        597,
+        367
+      ],
+      "led_left": [
+        579,
+        324
+      ],
+      "led_right": [
+        614,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "17": {
+      "center": [
+        654,
+        219
+      ],
+      "number": [
+        656,
+        163
+      ],
+      "led_left": [
+        639,
+        200
+      ],
+      "led_right": [
+        674,
+        200
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "18": {
+      "center": [
+        655,
+        298
+      ],
+      "number": [
+        656,
+        367
+      ],
+      "led_left": [
+        638,
+        324
+      ],
+      "led_right": [
+        673,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "19": {
+      "center": [
+        714,
+        219
+      ],
+      "number": [
+        715,
+        163
+      ],
+      "led_left": [
+        696,
+        200
+      ],
+      "led_right": [
+        733,
+        200
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "20": {
+      "center": [
+        715,
+        298
+      ],
+      "number": [
+        715,
+        367
+      ],
+      "led_left": [
+        698,
+        324
+      ],
+      "led_right": [
+        732,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "21": {
+      "center": [
+        773,
+        219
+      ],
+      "number": [
+        774,
+        163
+      ],
+      "led_left": [
+        757,
+        200
+      ],
+      "led_right": [
+        792,
+        200
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "22": {
+      "center": [
+        775,
+        298
+      ],
+      "number": [
+        773,
+        367
+      ],
+      "led_left": [
+        756,
+        324
+      ],
+      "led_right": [
+        791,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "23": {
+      "center": [
+        833,
+        219
+      ],
+      "number": [
+        833,
+        163
+      ],
+      "led_left": [
+        816,
+        200
+      ],
+      "led_right": [
+        851,
+        200
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "24": {
+      "center": [
+        837,
+        298
+      ],
+      "number": [
+        834,
+        367
+      ],
+      "led_left": [
+        816,
+        324
+      ],
+      "led_right": [
+        851,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "25": {
+      "center": [
+        902,
+        219
+      ],
+      "number": [
+        904,
+        164
+      ],
+      "led_left": [
+        887,
+        200
+      ],
+      "led_right": [
+        923,
+        200
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "26": {
+      "center": [
+        901,
+        297
+      ],
+      "number": [
+        904,
+        367
+      ],
+      "led_left": [
+        886,
+        324
+      ],
+      "led_right": [
+        921,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "27": {
+      "center": [
+        962,
+        219
+      ],
+      "number": [
+        963,
+        164
+      ],
+      "led_left": [
+        946,
+        200
+      ],
+      "led_right": [
+        980,
+        200
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "28": {
+      "center": [
+        960,
+        297
+      ],
+      "number": [
+        963,
+        367
+      ],
+      "led_left": [
+        945,
+        324
+      ],
+      "led_right": [
+        980,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "29": {
+      "center": [
+        1022,
+        219
+      ],
+      "number": [
+        1021,
+        164
+      ],
+      "led_left": [
+        1006,
+        200
+      ],
+      "led_right": [
+        1040,
+        200
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "30": {
+      "center": [
+        1021,
+        298
+      ],
+      "number": [
+        1022,
+        367
+      ],
+      "led_left": [
+        1005,
+        324
+      ],
+      "led_right": [
+        1038,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "31": {
+      "center": [
+        1084,
+        219
+      ],
+      "number": [
+        1081,
+        164
+      ],
+      "led_left": [
+        1062,
+        200
+      ],
+      "led_right": [
+        1097,
+        200
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "32": {
+      "center": [
+        1080,
+        298
+      ],
+      "number": [
+        1080,
+        367
+      ],
+      "led_left": [
+        1063,
+        324
+      ],
+      "led_right": [
+        1097,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "33": {
+      "center": [
+        1141,
+        219
+      ],
+      "number": [
+        1139,
+        164
+      ],
+      "led_left": [
+        1122,
+        200
+      ],
+      "led_right": [
+        1157,
+        200
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "34": {
+      "center": [
+        1140,
+        298
+      ],
+      "number": [
+        1139,
+        367
+      ],
+      "led_left": [
+        1122,
+        324
+      ],
+      "led_right": [
+        1156,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "35": {
+      "center": [
+        1204,
+        219
+      ],
+      "number": [
+        1199,
+        164
+      ],
+      "led_left": [
+        1182,
+        200
+      ],
+      "led_right": [
+        1217,
+        200
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "36": {
+      "center": [
+        1199,
+        298
+      ],
+      "number": [
+        1198,
+        367
+      ],
+      "led_left": [
+        1182,
+        324
+      ],
+      "led_right": [
+        1216,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "37": {
+      "center": [
+        1268,
+        219
+      ],
+      "number": [
+        1268,
+        164
+      ],
+      "led_left": [
+        1251,
+        200
+      ],
+      "led_right": [
+        1285,
+        200
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "38": {
+      "center": [
+        1266,
+        298
+      ],
+      "number": [
+        1266,
+        367
+      ],
+      "led_left": [
+        1250,
+        324
+      ],
+      "led_right": [
+        1285,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "39": {
+      "center": [
+        1326,
+        219
+      ],
+      "number": [
+        1327,
+        164
+      ],
+      "led_left": [
+        1309,
+        200
+      ],
+      "led_right": [
+        1343,
+        200
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "40": {
+      "center": [
+        1326,
+        298
+      ],
+      "number": [
+        1326,
+        367
+      ],
+      "led_left": [
+        1309,
+        324
+      ],
+      "led_right": [
+        1344,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "41": {
+      "center": [
+        1387,
+        219
+      ],
+      "number": [
+        1385,
+        164
+      ],
+      "led_left": [
+        1368,
+        200
+      ],
+      "led_right": [
+        1403,
+        200
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "42": {
+      "center": [
+        1385,
+        298
+      ],
+      "number": [
+        1384,
+        367
+      ],
+      "led_left": [
+        1368,
+        324
+      ],
+      "led_right": [
+        1402,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "43": {
+      "center": [
+        1446,
+        219
+      ],
+      "number": [
+        1443,
+        164
+      ],
+      "led_left": [
+        1426,
+        200
+      ],
+      "led_right": [
+        1462,
+        200
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "44": {
+      "center": [
+        1445,
+        297
+      ],
+      "number": [
+        1443,
+        367
+      ],
+      "led_left": [
+        1426,
+        324
+      ],
+      "led_right": [
+        1460,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "45": {
+      "center": [
+        1505,
+        219
+      ],
+      "number": [
+        1502,
+        164
+      ],
+      "led_left": [
+        1485,
+        200
+      ],
+      "led_right": [
+        1521,
+        200
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "46": {
+      "center": [
+        1505,
+        298
+      ],
+      "number": [
+        1502,
+        367
+      ],
+      "led_left": [
+        1486,
+        324
+      ],
+      "led_right": [
+        1520,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "47": {
+      "center": [
+        1565,
+        215
+      ],
+      "number": [
+        1562,
+        164
+      ],
+      "led_left": [
+        1544,
+        200
+      ],
+      "led_right": [
+        1580,
+        200
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    },
+    "48": {
+      "center": [
+        1564,
+        298
+      ],
+      "number": [
+        1562,
+        367
+      ],
+      "led_left": [
+        1545,
+        324
+      ],
+      "led_right": [
+        1579,
+        324
+      ],
+      "hitbox": [
+        34,
+        56
+      ],
+      "led_left_size": [
+        8.1,
+        4.7
+      ],
+      "led_right_size": [
+        8.1,
+        4.7
+      ],
+      "number_show": true
+    }
+  },
+  "sfp": {
+    "G1": {
+      "center": [
+        1699,
+        235
+      ],
+      "hitbox": [
+        94,
+        48
+      ],
+      "label": [
+        1700,
+        172
+      ]
+    },
+    "G2": {
+      "center": [
+        1835,
+        235
+      ],
+      "hitbox": [
+        94,
+        48
+      ],
+      "label": [
+        1835,
+        172
+      ]
+    },
+    "G3/TE3": {
+      "center": [
+        1696,
+        322
+      ],
+      "hitbox": [
+        94,
+        48
+      ],
+      "label": [
+        1695,
+        382
+      ]
+    },
+    "G4/TE4": {
+      "center": [
+        1834,
+        322
+      ],
+      "hitbox": [
+        94,
+        48
+      ],
+      "label": [
+        1834,
+        382
+      ]
+    }
+  },
+  "status_leds": {
+    "STAT": [
+      854,
+      56
+    ],
+    "SYST": [
+      854,
+      111
+    ],
+    "DUPLX": [
+      962,
+      56
+    ],
+    "ACTV": [
+      962,
+      111
+    ],
+    "SPEED": [
+      1074,
+      56
+    ],
+    "STACK": [
+      1074,
+      116
+    ],
+    "PoE": [
+      1199,
+      56
+    ]
+  },
+  "ui": {
+    "logo": {
+      "show": true,
+      "file": "sv-logo.png",
+      "source": "default",
+      "x": 143,
+      "y": 2,
+      "width": 174,
+      "height": 150
+    },
+    "status_panel": {
+      "show": true,
+      "x": 500,
+      "y": 22,
+      "width": 313,
+      "height": 102,
+      "font_family": "SwitchVisionCustom, Arial, Helvetica, sans-serif",
+      "font_size": 16,
+      "title_font_size": 16,
+      "font_weight": "bold",
+      "text_color": "#42c5d7",
+      "label_color": "#42c5d7",
+      "title_color": "#42c5d7",
+      "background_color": "rgba(0,0,0,.35)",
+      "border_color": "#42c5d7",
+      "border_show": true,
+      "field_order": {
+        "switch": [
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "uptime",
+          "vendor",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ],
+        "sfp": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ]
+      },
+      "hidden_fields": {
+        "switch": [
+          "vendor",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu",
+          "temp",
+          "poe"
+        ],
+        "port": [],
+        "sfp": []
+      },
+      "fields": {
+        "row1_key": [
+          19,
+          39
+        ],
+        "row1_value": [
+          107,
+          39
+        ],
+        "row2_key": [
+          19,
+          58
+        ],
+        "row2_value": [
+          107,
+          58
+        ],
+        "row3_key": [
+          19,
+          78
+        ],
+        "row3_value": [
+          107,
+          78
+        ],
+        "row4_key": [
+          19,
+          97
+        ],
+        "row4_value": [
+          107,
+          97
+        ],
+        "row5_key": [
+          19,
+          116
+        ],
+        "row5_value": [
+          107,
+          116
+        ],
+        "row6_key": [
+          19,
+          135
+        ],
+        "row6_value": [
+          107,
+          135
+        ]
+      }
+    },
+    "faceplate": {
+      "fit": "fill",
+      "opacity": 1,
+      "show": true,
+      "file": "submarine-48rj45-4sfp.png",
+      "source": "custom"
+    },
+    "calibration_button": {
+      "show": true,
+      "x": 1888,
+      "y": 16,
+      "width": 138,
+      "height": 34,
+      "anchor": "top_right"
+    },
+    "status_panel_2": {
+      "show": true,
+      "x": 1605,
+      "y": 27,
+      "width": 278,
+      "height": 55,
+      "font_family": "SwitchVisionCustom, Arial, Helvetica, sans-serif",
+      "font_size": 16,
+      "title_font_size": 16,
+      "font_weight": "bold",
+      "text_color": "#ffffff",
+      "label_color": "#eef2f4",
+      "title_color": "#f4f6f7",
+      "background_color": "rgba(0,0,0,.06)",
+      "border_color": "rgba(245,248,250,.75)",
+      "border_show": false,
+      "title_mode": "custom",
+      "title_field": "model",
+      "custom_title": "",
+      "field_order": {
+        "switch": [
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "uptime",
+          "vendor",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ],
+        "sfp": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ]
+      },
+      "hidden_fields": {
+        "switch": [
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "uptime",
+          "vendor",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [],
+        "sfp": []
+      },
+      "fields": {
+        "row1_key": [
+          24,
+          55
+        ],
+        "row1_value": [
+          112,
+          55
+        ],
+        "row2_key": [
+          24,
+          72
+        ],
+        "row2_value": [
+          112,
+          72
+        ],
+        "row3_key": [
+          24,
+          89
+        ],
+        "row3_value": [
+          112,
+          89
+        ],
+        "row4_key": [
+          24,
+          106
+        ],
+        "row4_value": [
+          112,
+          106
+        ],
+        "row5_key": [
+          24,
+          123
+        ],
+        "row5_value": [
+          112,
+          123
+        ],
+        "row6_key": [
+          24,
+          140
+        ],
+        "row6_value": [
+          112,
+          140
+        ]
+      }
+    },
+    "port_led_shape": "circle",
+    "port_label_color": "#eef7ff",
+    "status_leds": {
+      "hidden": []
+    }
+  },
+  "stack": {
+    "enabled": false,
+    "stack_id": "",
+    "uptime_source": "",
+    "members": {}
+  },
+  "management": {
+    "switch_ip": ""
+  }
+}

@@ -114,7 +114,10 @@ console.log("Calibration grouped targets: PASS");
         selector = ".cv-cal-tools select.cv-cal-select,\n.cv-cal-tools button:not(.cv-cal-toggle):not(.cv-cal-bold-toggle):not(.cv-cal-warning):not(.cv-cal-danger):not(.cv-cal-purple) {"
         self.assertIn(selector, css)
         rule = css.split(selector, 1)[1].split("}", 1)[0]
+        self.assertIn("font-size: 11px;", rule)
         self.assertIn("font-weight: 400;", rule)
+        self.assertIn("line-height: 12px;", css)
+        self.assertIn("height: 16px;", css)
         # The heavy control base remains, but is overridden only for the white controls.
         self.assertIn("font-weight:800;", css)
         self.assertIn(".cv-cal-tools button.cv-cal-bold-toggle.is-active", css)

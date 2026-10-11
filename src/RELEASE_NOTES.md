@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.66
+
+Local-only Calibration typography refinement: use 11px regular-weight white text on the existing Calibration target/part dropdowns and neutral/white buttons (including Select Misc target and Duplicate selected). Preserve the approved 16px control height, 12px line-height, 1px vertical and 2px horizontal padding, field widths and dropdown arrows. Keep other inputs, labels, bold-format toggles, coloured warning/danger/purple controls, Quick Links, saved profiles, geometry and telemetry unchanged.
+
 # Switch Vision Core v2.7.65
 
 Local-only Calibration typography refinement: keep the 16px control height, 12px font size, field widths, borders, arrow rendering, and existing layout exactly as in v2.7.64. Display white text in Calibration dropdowns and neutral/white action buttons at normal font weight (400) instead of bold. Preserve bold field labels and intentional B-format toggles; leave coloured warning, danger and purple actions, Quick Links behaviour, saved profiles, faceplate geometry and telemetry unchanged.
