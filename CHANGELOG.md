@@ -1,3 +1,9 @@
+## v2.7.67 — Compact in-page Calibration dropdown menus (Local)
+
+- Replace Android's oversized native expanded select picker with a short scrollable in-page list (32px rows, 12px option text, maximum 320px height), retaining grouped options and disabled placeholders.
+- Keep closed 16px selectors, 11px regular-weight white text, selected values, existing native-select change handlers, arrow styling and profile behavior unchanged.
+- Add keyboard/outside-tap dismissal, menu cleanup across rerender/disconnect and focused option-selection regression coverage. Quick Links and all other Calibration functionality remain unchanged; Local-only candidate.
+
 ## v2.7.66 — 11px regular-weight white Calibration control text (Local)
 
 - Reduce regular-weight white text in Calibration dropdowns and neutral/white buttons from 12px to 11px.

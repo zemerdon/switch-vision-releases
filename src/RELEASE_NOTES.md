@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.67
+
+Local-only Calibration menu usability update: replace Android's oversized native full-screen option picker with a compact in-page dropdown for Calibration selectors, preserving the existing closed 16px boxes and 11px regular-weight white text. The opened popup displays 12px option text in 32px rows with a scrollable 320px maximum height and optgroup headings. Original hidden native selects still own values and dispatch the same change events; retain target selection, part/options, disabled states, saved profiles, Quick Links and device behavior. Outside-tap/Escape/keyboard dismissal and render/disconnect cleanup are covered by regression tests. No public release or personal HAOS installation.
+
 # Switch Vision Core v2.7.66
 
 Local-only Calibration typography refinement: use 11px regular-weight white text on the existing Calibration target/part dropdowns and neutral/white buttons (including Select Misc target and Duplicate selected). Preserve the approved 16px control height, 12px line-height, 1px vertical and 2px horizontal padding, field widths and dropdown arrows. Keep other inputs, labels, bold-format toggles, coloured warning/danger/purple controls, Quick Links, saved profiles, geometry and telemetry unchanged.
