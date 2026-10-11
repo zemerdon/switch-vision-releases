@@ -1,3 +1,8 @@
+## v2.7.73 — Independent Calibration label and heading typography (Local)
+
+- Separate field, group, subsection and section text size/weight from global control text in both Desktop and Mobile.
+- Preserve existing settings and Core Calibration behavior; constrain generated style rules to the Calibration editor.
+
 ## v2.7.72 — Calibration Theme global sizing and density (Local)
 
 - Add bounded Desktop/Mobile row, button and input heights, line height, button width, row and label spacing, and input width controls, with values below and above current defaults.

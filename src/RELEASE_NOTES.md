@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.73
+
+Local-only Calibration Theme typography refinement. Field labels, group labels, subsection headings and section headings each gain independent Desktop/Mobile font size and Regular/Bold choices. Global control typography no longer overrides these semantic roles. Existing per-section saved settings and switch calibration/faceplate geometry are preserved. Hub now previews each setting immediately below its dropdown using corresponding Core Calibration elements.
+
 # Switch Vision Core v2.7.72
 
 Local-only Calibration Theme density controls. Add separate Desktop/Mobile global controls for responsive minimum row height, button and input height, text line height, minimum button width, row spacing, label spacing, and text/number input width, with values below and above current Core defaults. Preserve saved detailed styling, independent open-menu option height and all calibration/faceplate geometry; no public release.
