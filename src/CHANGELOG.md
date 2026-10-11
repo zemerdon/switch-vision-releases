@@ -1,3 +1,13 @@
+## v2.7.72 — Calibration Theme global sizing and density (Local)
+
+- Add bounded Desktop/Mobile row, button and input heights, line height, button width, row and label spacing, and input width controls, with values below and above current defaults.
+- Use minimum row heights to preserve mobile wrapping; leave stored switch Calibration profiles unchanged.
+
+## v2.7.72 — Global Calibration editor density adjustments (Local)
+
+- Add validated global Desktop/Mobile row-height, row-spacing, button/input minimum height, text line-height, label spacing, button minimum width, and text/number input width controls; preserve previous settings and independent open-menu option-height control.
+- Support values above and below actual compact Core defaults, let mobile rows expand for wrapping, and scope changes to the Calibration editor only.
+
 ## v2.7.71 — Calibration Theme global settings (Local)
 
 - Consolidate editor presentation into one global Desktop/Mobile preference group for shared typography, padding axes and spacing.

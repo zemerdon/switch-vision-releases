@@ -83,5 +83,40 @@ class CalibrationThemeContracts(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr or result.stdout)
 
 
+    def test_global_density_both_device_axes_and_row_wrapping(self):
+        source = CARD.read_text()
+        fragment = source[source.index("const SV_CALIBRATION_MOBILE_MEDIA = "):source.index("const SV_CALIBRATION_TRANSIENT_CONFIG_KEYS")]
+        script = ("const assert=require('node:assert/strict');\n" + fragment +
+                  "\nconst settings={desktop:{global:{row_height:14,button_height:13,input_height:13,line_height:10,button_min_width:18,row_spacing:2,label_spacing:1,text_input_width:95,number_input_width:40}},mobile:{global:{row_height:29,button_height:25,input_height:26,line_height:19,button_min_width:44,row_spacing:12,label_spacing:9,text_input_width:175,number_input_width:75}}};"+
+                  "\nassert.deepEqual(normalizeCalibrationTheme(settings),settings);"+
+                  "\nconst css=calibrationThemeCss(settings);"+
+                  "\nconst desk=css.slice(css.indexOf('@media (min-width:761px)'),css.indexOf('@media (max-width:760px)'));"+
+                  "\nconst mobile=css.slice(css.indexOf('@media (max-width:760px)'));"+
+                  "\nfor(const [rules,expect] of [[desk,{row:14,button:13,input:13,line:10,width:18,spacing:2,label:1,text:95,number:40}],[mobile,{row:29,button:25,input:26,line:19,width:44,spacing:12,label:9,text:175,number:75}]]){"+
+                  "\nassert.match(rules,new RegExp('min-height:'+expect.row+'px!important'));"+
+                  "\nassert.match(rules,new RegExp('min-height:'+expect.button+'px!important'));"+
+                  "\nassert.match(rules,new RegExp('min-height:'+expect.input+'px!important'));"+
+                  "\nassert.match(rules,new RegExp('line-height:'+expect.line+'px!important'));"+
+                  "\nassert.match(rules,new RegExp('min-width:'+expect.width+'px!important'));"+
+                  "\nassert.match(rules,new RegExp('margin-bottom:'+expect.spacing+'px!important'));"+
+                  "\nassert.match(rules,new RegExp('gap:'+expect.label+'px!important'));"+
+                  "\nassert.match(rules,new RegExp('width:'+expect.text+'px!important'));"+
+                  "\nassert.match(rules,new RegExp('width:'+expect.number+'px!important'));"+
+                  "\nassert.match(rules,/height:auto!important/);"+
+                  "\nassert.doesNotMatch(rules,/\\.cv-stage|\\.cv-faceplate-canvas/);"+
+                  "\n}"+
+                  "\nassert.deepEqual(normalizeCalibrationTheme({desktop:{global:{button_height:0,row_height:65}}}).desktop,{});"+
+                  "\nassert.equal(normalizeCalibrationTheme({desktop:{global:{row_height:0}}}).desktop.global.row_height,0);")
+        result = subprocess.run(["node", "-e", script], cwd=ROOT, text=True, capture_output=True, timeout=20)
+        self.assertEqual(result.returncode, 0, result.stderr or result.stdout)
+        tree = ast.parse(BACKEND.read_text())
+        assign = [n for n in tree.body if isinstance(n, ast.Assign) and any(isinstance(t, ast.Name) and t.id == "CALIBRATION_THEME_FIELD_LIMITS" for t in n.targets)][0]
+        ranges = ast.literal_eval(assign.value)
+        for field, baseline in {"button_height":16, "input_height":16, "line_height":12, "button_min_width":30, "row_spacing":6, "label_spacing":5, "text_input_width":127, "number_input_width":61}.items():
+            lower, higher = ranges[field]
+            self.assertLess(lower, baseline, field)
+            self.assertGreater(higher, baseline, field)
+        self.assertEqual(ranges["row_height"], (0, 64))
+
 if __name__ == "__main__":
     unittest.main()

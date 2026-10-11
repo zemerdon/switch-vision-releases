@@ -1,3 +1,11 @@
+# Switch Vision Core v2.7.72
+
+Local-only Calibration Theme density controls. Add separate Desktop/Mobile global controls for responsive minimum row height, button and input height, text line height, minimum button width, row spacing, label spacing, and text/number input width, with values below and above current Core defaults. Preserve saved detailed styling, independent open-menu option height and all calibration/faceplate geometry; no public release.
+
+# Switch Vision Core v2.7.72
+
+Local-only Calibration Theme density controls. Expand the one-panel global Desktop/Mobile editor settings with minimum row, button and input heights, text line height, minimum button width, space between rows, label spacing, and text/number input widths. Preserve compact options both below and above existing defaults; row heights remain responsive minimums to avoid clipping. No switch calibration/faceplate geometry, ordinary dashboard or public release change.
+
 # Switch Vision Core v2.7.71
 
 Local-only Calibration Theme simplification. Add a single device-specific global presentation setting across applicable Calibration controls: text size, bold/regular weight, all-side/horizontal/vertical padding and spacing. Preserve existing detailed saved values for compatibility, but explicit global fields win when supplied. Dropdown-specific dimensions remain separate. No switch profile geometry, faceplate calibration or normal dashboard changes; no public release.

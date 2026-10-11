@@ -1,6 +1,6 @@
 (() => {
 "use strict";
-const SWITCH_VISION_DASHBOARD_VERSION = "2.7.71";
+const SWITCH_VISION_DASHBOARD_VERSION = "2.7.72";
 function switchVisionPanelModuleUrl(version) {
   return `/api/switch_vision/switch-vision-panel.js?v=${encodeURIComponent(version)}`;
 }
