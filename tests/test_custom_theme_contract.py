@@ -57,6 +57,11 @@ normalise_selected = namespace["_normalise_management_theme_selected"]
 colors = {key: "#123456" for key in color_keys}
 theme = {"id": "lab_theme", "name": "Lab Theme", "colors": colors}
 assert normalise_themes([theme]) == [theme]
+assert colors["calibration_preview_highlight"] == "#123456"
+legacy = {**colors}
+legacy.pop("calibration_preview_highlight")
+backfilled = normalise_themes([{"id":"old_theme","name":"Old Theme","colors":legacy}])
+assert backfilled[0]["colors"]["calibration_preview_highlight"] == "#ff9f1c"
 assert normalise_selected("switch-vision", [theme]) == "switch-vision"
 assert normalise_selected("custom:lab_theme", [theme]) == "custom:lab_theme"
 

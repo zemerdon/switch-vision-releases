@@ -91,6 +91,24 @@ class PortLedShapeCalibrationTests(unittest.TestCase):
             selection.count('data-cv-action="select-target"'),
         )
 
+    def test_status_box_quick_select_groups_share_a_row_with_aligned_buttons(self) -> None:
+        css = (ROOT / "src/css/switch-vision.css").read_text()
+        start = self.source.index('<div class="cv-cal-tools-row cv-cal-status-quick-row">')
+        end = self.source.index('</div>', start)
+        row = self.source[start:end]
+        self.assertEqual(
+            self.source.count('<div class="cv-cal-tools-row cv-cal-status-quick-row">'), 1
+        )
+        self.assertEqual(row.count('<section class="cv-cal-status-quick-group">'), 2)
+        self.assertEqual(row.count('<span class="cv-cal-status-quick-actions">'), 2)
+        for index in (1, 2):
+            group = row.split(f'Status Box {index}</span>', 1)[1].split('</section>', 1)[0]
+            self.assertEqual(group.count('data-cv-action="select-target"'), 4)
+            self.assertIn(f'data-target="status_fields{"_2" if index == 2 else ""}"', group)
+        self.assertIn('grid-template-columns:repeat(2,max-content)', css)
+        self.assertIn('grid-template-columns:repeat(4,max-content)', css)
+        self.assertIn('grid-template-columns:max-content', css)
+
     def test_all_link_and_activity_targets_span_rj45_and_sfp(self) -> None:
         required = (
             'return { type: "port_leds", id: "all", part: "led_left" };',

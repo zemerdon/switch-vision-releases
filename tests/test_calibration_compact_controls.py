@@ -89,6 +89,20 @@ console.log("Calibration grouped targets: PASS");
         self.assertIn("calibration_target: value, calibration_part: part", source)
         self.assertIn("this.config = nextConfig;", source)
 
+    def test_port_manager_controls_follow_card_height_before_target_selectors(self) -> None:
+        source = SOURCE.read_text(encoding="utf-8")
+        card_height = source.index('data-cv-field="faceplate-height-preset"')
+        manager = source.index('cv-cal-port-manager-row cv-cal-port-manager-actions', card_height)
+        targets = source.index('cv-cal-port-targets-row cv-cal-port-manager-main', card_height)
+        metadata = source.index('cv-cal-port-meta-row', targets)
+        quick = source.index('cv-cal-subsection-divider', metadata)
+        self.assertTrue(card_height < manager < targets < metadata < quick)
+        manager_block = source[manager:targets]
+        for action in ("add-port", "add-sfp", "duplicate-port", "remove-port",
+                       "remove-all-rj45", "remove-all-sfp"):
+            self.assertIn('data-cv-action="' + action + '"', manager_block)
+        self.assertNotIn('data-cv-field="port-number"', manager_block)
+
     def test_compact_size_rules(self) -> None:
         css = CSS.read_text(encoding="utf-8")
         control = css.split(".cv-cal-tools input.cv-cal-input,", 1)[1].split("}", 1)[0]

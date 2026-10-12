@@ -187,11 +187,32 @@
 .cv-cal-quick-row{
   gap:5px;
 }
-/* Keep both Status Box selection rows aligned without fixed button positions. */
-.cv-cal-status-quick-row > .cv-cal-quick-label{
-  flex:0 0 96px;
-  width:96px;
-  min-width:96px;
+/* Two Status Box headings share one row, with matching action columns below.
+ * On narrow screens the two groups stack without clipping their buttons. */
+.cv-cal-tools .cv-cal-status-quick-row{
+  display:grid;
+  grid-template-columns:repeat(2,max-content);
+  column-gap:18px;
+  row-gap:6px;
+  align-items:start;
+  max-width:100%;
+  overflow-x:auto;
+}
+.cv-cal-tools .cv-cal-status-quick-group{
+  display:grid;
+  grid-template-rows:auto auto;
+  row-gap:4px;
+}
+.cv-cal-tools .cv-cal-status-quick-group > .cv-cal-quick-label{
+  margin-right:0;
+}
+.cv-cal-tools .cv-cal-status-quick-actions{
+  display:grid;
+  grid-template-columns:repeat(4,max-content);
+  column-gap:5px;
+}
+@media (max-width:760px){
+  .cv-cal-tools .cv-cal-status-quick-row{grid-template-columns:max-content}
 }
 .cv-cal-quick-label{
   color:var(--cv-muted);
@@ -754,22 +775,27 @@
 /* Compact in-page Calibration option menus: retain the native select as the
  * value/change-event owner, but never invoke the Android system picker. */
 .cv-cal-tools .cv-cal-select-shell {
-  display: inline-grid;
+  display: inline-flex;
   position: relative;
   max-width: 100%;
   vertical-align: middle;
 }
 .cv-cal-tools .cv-cal-select-shell > select.cv-cal-select {
-  grid-area: 1 / 1;
+  /* The native select owns values/events, but its widest option must not
+   * dictate the size of the visible, selected-value-only trigger. */
+  position: absolute;
+  inset: 0;
+  width: 100%;
   visibility: hidden;
   pointer-events: none;
 }
 .cv-cal-tools .cv-cal-select-shell > button.cv-cal-select-trigger {
-  position: absolute;
-  inset: 0;
+  position: relative;
   box-sizing: border-box;
   display: block;
-  width: 100%;
+  /* Auto = selected label + arrow, not the longest available option. */
+  width: max-content;
+  max-width: min(100%, 300px);
   height: 16px;
   min-height: 16px;
   min-width: 0;
@@ -790,6 +816,10 @@
   background-size: 10px 7px;
   color: var(--cv-text);
   cursor: pointer;
+}
+.cv-cal-tools .cv-cal-target-select-shell > button.cv-cal-select-trigger {
+  /* Keep the existing target-picker density even for long target labels. */
+  max-width: min(100%, 185px);
 }
 .cv-cal-tools .cv-cal-select-shell > button.cv-cal-select-trigger:disabled {
   opacity: .42;

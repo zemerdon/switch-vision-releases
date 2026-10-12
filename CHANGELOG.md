@@ -1,3 +1,9 @@
+## v2.7.75 — Content-aware Calibration dropdown widths (Local)
+
+- Closed Dropdowns Control width Auto now fits the selected option text plus dropdown arrow, instead of using the longest available option.
+- Make Auto content-aware for closed dropdown selected labels, open dropdown option menus, and numeric/text Calibration input widths, preserving explicit desktop/mobile pixel overrides and compact target-picker caps.
+- Fix truncated Font and Port Status Output choices while keeping short Field choices compact. Restore Status Box 1 and Status Box 2 Quick Select groups side by side with aligned action columns and mobile stacking. Add an optional Custom Theme Calibration preview highlight colour role (#ff9f1c default), backward compatible with saved themes. No saved calibration geometry or normal dashboard changes.
+
 ## v2.7.74 — Calibration workspace polish and combined LED groups (Local)
 
 - Align Status Box 1/2 Quick Select controls; separate Port manager; remove redundant Direct text, vertical separators, and obsolete faceplate tip.

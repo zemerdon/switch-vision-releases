@@ -183,7 +183,7 @@ UNIFI_DEVICE_WS_SCHEMA = {
 }
 
 PANEL_URL_PATH = "switch-vision"
-PANEL_VERSION = "2.7.74"
+PANEL_VERSION = "2.7.75"
 PANEL_JS_PATH = "/api/switch_vision/switch-vision-panel.js"
 PANEL_JS_URL = f"{PANEL_JS_PATH}?v={PANEL_VERSION}"
 ICONSET_JS_PATH = "/api/switch_vision/switch-vision-iconset.js"
@@ -291,7 +291,7 @@ MANAGEMENT_THEME_COLOR_KEYS = (
     "on_primary", "shadow", "status_bg", "code_bg", "chip_bg", "chip_hover",
     "heart", "link", "link_hover", "button_primary_bg", "button_primary_text",
     "button_secondary_bg", "button_secondary_text", "button_danger_bg",
-    "button_danger_text",
+    "button_danger_text", "calibration_preview_highlight",
 )
 MAX_CUSTOM_THEMES = 20
 MAX_CUSTOM_THEME_NAME_LENGTH = 64
@@ -975,7 +975,7 @@ def _normalise_custom_themes(value: Any) -> list[dict[str, Any]]:
             )
         colors: dict[str, str] = {}
         for key in MANAGEMENT_THEME_COLOR_KEYS:
-            raw_color = raw_colors.get(key)
+            raw_color = raw_colors.get(key, "#ff9f1c" if key == "calibration_preview_highlight" else None)
             if not isinstance(raw_color, str):
                 raise vol.Invalid(f"custom theme {index} is missing color role: {key}")
             color = raw_color.strip().lower()

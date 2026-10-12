@@ -62,6 +62,18 @@ class CalibrationThemeContracts(unittest.TestCase):
         self.assertIn('select.dispatchEvent(new Event("change", { bubbles: true }))', src)
 
 
+    def test_auto_width_uses_content_for_inputs_and_menu(self):
+        source = CARD.read_text()
+        fragment = source[source.index("const SV_CALIBRATION_MOBILE_MEDIA = "):source.index("const SV_CALIBRATION_TRANSIENT_CONFIG_KEYS")]
+        script = ("const assert=require('node:assert/strict');" + fragment +
+                  "\nconst css=calibrationThemeCss({desktop:{global:{number_input_width:0,text_input_width:0},dropdown_closed:{width:0},dropdown_open:{width:0}}});" +
+                  "\nassert.match(css,/field-sizing:content/);assert.match(css,/min-width:6ch/);assert.match(css,/min-width:7ch/);" +
+                  "\nassert.doesNotMatch(css,/width:110px!important/);")
+        proc = subprocess.run(["node", "-e", script], cwd=ROOT, text=True, capture_output=True, timeout=20)
+        self.assertEqual(proc.returncode, 0, proc.stderr or proc.stdout)
+        self.assertIn('menu.style.width = openTheme.width > 0 ? openTheme.width + "px" : "max-content";', source)
+        self.assertIn('const width = Math.min(menu.getBoundingClientRect().width, viewportWidth - 16);', source)
+
     def test_global_controls_override_legacy_sections_only_in_calibration(self):
         source = CARD.read_text()
         start = source.index("const SV_CALIBRATION_MOBILE_MEDIA = ")

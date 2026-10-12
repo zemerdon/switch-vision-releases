@@ -44,6 +44,26 @@ class CompactPickerTest(unittest.TestCase):
         ):
             self.assertIn(marker, src)
 
+    def test_auto_width_fits_selected_trigger_and_preserves_manual_override(self) -> None:
+        css = CSS.read_text(encoding="utf-8")
+        src = SOURCE.read_text(encoding="utf-8")
+        shell = css.split(".cv-cal-tools .cv-cal-select-shell {", 1)[1].split("}", 1)[0]
+        native = css.split(".cv-cal-tools .cv-cal-select-shell > select.cv-cal-select {", 1)[1].split("}", 1)[0]
+        trigger = css.split(".cv-cal-tools .cv-cal-select-shell > button.cv-cal-select-trigger {", 1)[1].split("}", 1)[0]
+        target = css.split(".cv-cal-tools .cv-cal-target-select-shell > button.cv-cal-select-trigger {", 1)[1].split("}", 1)[0]
+        self.assertIn("display: inline-flex;", shell)
+        self.assertIn("position: absolute;", native)
+        self.assertIn("width: 100%;", native)
+        self.assertIn("position: relative;", trigger)
+        self.assertIn("width: max-content;", trigger)
+        self.assertIn("max-width: min(100%, 300px);", trigger)
+        self.assertNotIn("inset: 0;", trigger)
+        self.assertIn("max-width: min(100%, 185px);", target)
+        self.assertIn('if (select.classList.contains("cv-cal-target-select")) shell.classList.add("cv-cal-target-select-shell");', src)
+        self.assertIn('if (name === "dropdown_closed" && fields.width > 0)', src)
+        self.assertIn('"width:" + fields.width + "px!important"', src)
+        self.assertIn("max-width:100%!important", src)
+
     def test_option_choice_dispatches_change_and_closes(self) -> None:
         src = SOURCE.read_text(encoding="utf-8")
         a = src.index("  attachCompactCalibrationSelectMenus() {")
@@ -59,6 +79,7 @@ class El {
   constructor(tag){
     this.tagName=tag.toUpperCase();this.children=[];this.attr={};this.events={};
     this.style={};this.textContent="";this.disabled=false;
+    this.classList={contains:()=>false,add:()=>{}};
     this.offsetTop=0;this.offsetHeight=32;this.clientHeight=160;this.scrollTop=0;
   }
   setAttribute(k,v){this.attr[k]=String(v);}

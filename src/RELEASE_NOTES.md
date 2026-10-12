@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.75
+
+Local-only Calibration usability fix: Closed Dropdowns Control width Auto sizes each closed picker to its selected label plus arrow. Long values such as Custom / IntelOne and Status Box 1 remain readable, while shorter values such as ROLE stay compact. Auto also fits open dropdown menu options and numeric/text input values; all explicit pixel widths remain available. Status Box 1 and Status Box 2 Quick Select groups sit on the same desktop line, with aligned action columns and mobile stacking. Custom Theme gains a Calibration preview highlight colour role with a backward-compatible orange default. Existing selections, popup behavior and saved Calibration profiles are unchanged.
+
 # Switch Vision Core v2.7.74
 
 Local-only Calibration workspace refinement. Hint Text can be sized and weighted separately for desktop and mobile, X/Y/W/H inputs are readable and controlled by Number Input Width, and Status Box quick selections align. Port manager has its own row; redundant separators, Direct text, and faceplate help copy are removed. Quick Select now provides All / RJ45 / SFP Link+Activity LED groups for joint geometry edits while existing individual LED targets remain in dropdowns. Target and Part dropdown selection remains immediate and saved switch calibrations are untouched.
