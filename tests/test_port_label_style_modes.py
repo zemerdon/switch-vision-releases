@@ -164,7 +164,8 @@ class PortLabelStyleModeTests(unittest.TestCase):
         self.assertIn('for (const [port, targets] of cachedTargets.sfp.entries())', refresh_block)
         self.assertNotIn('querySelectorAll(', refresh_block)
         self.assertEqual(refresh_block.count('testPortActivity(this._hass, this.config, port)'), 1)
-        self.assertEqual(refresh_block.count('testSfpActivity(this._hass, this.config, port)'), 1)
+        self.assertIn('const cfg = this._rearSfpRenderConfig || this.config;', refresh_block)
+        self.assertEqual(refresh_block.count('testSfpActivity(this._hass, cfg, port)'), 1)
         self.assertIn('for (const element of targets.leds)', refresh_block)
         self.assertIn('for (const element of targets.labels)', refresh_block)
 

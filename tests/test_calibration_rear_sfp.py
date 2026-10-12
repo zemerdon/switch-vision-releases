@@ -27,24 +27,26 @@ def main() -> int:
         'data-cv-field="rear-part"',
         'rearSfpTargetSelected ? "" : "disabled"',
         'this.shadowRoot.querySelectorAll(\'[data-cv-field="part"], [data-cv-field="rear-part"]\')',
-        'data-cv-field="rear-sfp-interface"',
-        'data-cv-field="rear-sfp-entity-base"',
-        'data-cv-action="set-rear-sfp-binding"',
         'calibration_target: `sfp:${sfpPortNumber(newKey)}`',
         '__rear_sfp_bindings: rearSfpBindings(this.config, renderCal)',
         "!rearSfpOrdinalFromPort(sfpPort)",
         "if (rearSfpOrdinalFromPort(n)) {",
+        "const sfpPort = sfpPortNumber(name);",
     ):
         assert marker in source, f"missing rear SFP contract: {marker}"
+    for mapping_control in ('data-cv-field="rear-sfp-interface"', 'data-cv-field="rear-sfp-entity-base"', 'data-cv-action="set-rear-sfp-binding"'):
+        assert mapping_control not in source, f"mapping should belong to Discovery, not Calibration: {mapping_control}"
+    assert "const hp3500 = " not in function(source, "rearSfpBindings"), "rSFP binding must not depend on model"
     selector_order = (
+        'data-cv-action="add-port"',
         'data-cv-target-group="sfp"',
         'data-cv-field="part"',
         'data-cv-target-group="rear_sfp"',
         'data-cv-field="rear-part"',
         'data-cv-action="add-rear-sfp"',
-        'data-cv-action="add-port"',
     )
-    assert [source.index(marker) for marker in selector_order] == sorted(source.index(marker) for marker in selector_order), "rSFP Target and Part must follow the front selectors before port manager"
+    assert [source.index(marker) for marker in selector_order] == sorted(source.index(marker) for marker in selector_order), "Port manager must precede front and rear selectors; rear target and Part must follow front selectors"
+    assert source.count("const sfpPort = sfpPortNumber(name);") == 2, "rendered rear slots and click hitboxes must share the collision-safe rear identity"
     assert source.count('<select class="cv-cal-select" data-cv-field="part"') == 1, "front Part selector must remain unique"
     assert source.count('<select class="cv-cal-select" data-cv-field="rear-part"') == 1, "rear Part selector must remain unique"
     for path in (CANONICAL, CARD):
@@ -73,7 +75,9 @@ const cal = {sfp: {
  SFP1: {center: [50,50]},
  SFP2: {center: [80,50]},
  rSFP1: {rear_interface: "A1", center: [100,100]},
- rSFP2: {rear_interface: "A4", center: [200,100]},
+ rSFP2: {center: [200,100]},
+ rSFP3: {center: [300,100]},
+ rSFP4: {rear_interface: "A4", center: [400,100]},
 }};
 assert.equal(sfpPortNumber("SFP1"), 1);
 assert.equal(sfpPortNumber("G3/TE3"), 3);
@@ -81,24 +85,41 @@ assert.equal(sfpPortNumber("rSFP1"), 1000001);
 assert.equal(sfpPortNumber("rSFP2"), 1000002);
 assert.equal(rearSfpOrdinal("rSFP129"), 0);
 assert.equal(nextCalibrationSfpNumber(cal), 3);
-assert.equal(nextCalibrationRearSfpNumber(cal), 3);
-assert.equal(new Set(Object.keys(cal.sfp).map(sfpPortNumber)).size, 4);
+assert.equal(nextCalibrationRearSfpNumber(cal), 5);
+assert.equal(new Set(Object.keys(cal.sfp).map(sfpPortNumber)).size, 6);
+assert.deepEqual(Object.keys(cal.sfp).filter(rearSfpOrdinal), ["rSFP1", "rSFP2", "rSFP3", "rSFP4"]);
+assert.deepEqual([2, 3].map(n => cal.sfp[`rSFP${n}`].center), [[200,100], [300,100]]);
+// A model label, calibration label, or inactive port must not fabricate sensors.
 const hp = {member: "sw9", switch_model: "HP J8693A Switch 3500yl-48G"};
-const bindings = rearSfpBindings(hp, cal);
-const render = {...hp, __rear_sfp_bindings: bindings};
+const noBindings = rearSfpBindings(hp, cal);
+for (let slot = 1; slot <= 4; slot++) {
+  assert.equal(noBindings[String(1000000 + slot)].entity_base, null);
+}
+assert.equal(noBindings["1000001"].interface_name, "A1");
+assert.equal(noBindings["1000004"].interface_name, "A4");
+const generic = {member: "sw9", switch_model: "Other Vendor 4000", rear_sfp_bindings: {
+  rSFP1: {interface_name: "xe-0/1/0", entity_base: "sensor.sw9_rear_10g_1"},
+  rSFP4: {interface_name: "xe-0/1/3", entity_base: "sensor.sw9_rear_10g_4"},
+}};
+const bindings = rearSfpBindings(generic, cal);
+const render = {...generic, __rear_sfp_bindings: bindings};
+assert.equal(bindings["1000001"].interface_name, "xe-0/1/0");
 assert.equal(bindings["1000001"].entity_base, "sensor.sw9_rear_10g_1");
-assert.equal(bindings["1000002"].entity_base, "sensor.sw9_rear_10g_4");
+assert.equal(bindings["1000002"].entity_base, null);
+assert.equal(bindings["1000003"].entity_base, null);
+assert.equal(bindings["1000004"].entity_base, "sensor.sw9_rear_10g_4");
 assert.deepEqual(sfpStatusEntities(render, "sw9", 1000001), ["sensor.sw9_rear_10g_1_status"]);
-assert.deepEqual(sfpStatusEntities(render, "sw9", 1000002), ["sensor.sw9_rear_10g_4_status"]);
-assert.deepEqual(sfpByteEntities(render, 1000002, "tx"), ["sensor.sw9_rear_10g_4_tx_bytes"]);
-assert.deepEqual(sfpByteEntities(render, 1000002, "rx"), ["sensor.sw9_rear_10g_4_rx_bytes"]);
+assert.deepEqual(sfpStatusEntities(render, "sw9", 1000002), []);
+assert.deepEqual(sfpStatusEntities(render, "sw9", 1000003), []);
+assert.deepEqual(sfpStatusEntities(render, "sw9", 1000004), ["sensor.sw9_rear_10g_4_status"]);
+assert.deepEqual(sfpByteEntities(render, 1000004, "tx"), ["sensor.sw9_rear_10g_4_tx_bytes"]);
+assert.deepEqual(sfpByteEntities(render, 1000004, "rx"), ["sensor.sw9_rear_10g_4_rx_bytes"]);
 assert.deepEqual(sfpStatusEntities(render, "sw9", 1).some(x => x && x.includes("rear_10g")), false);
-const unknown = {member: "sw4", switch_model: "Other Vendor 4000"};
-assert.equal(rearSfpBindings(unknown, cal)["1000001"].entity_base, null);
-assert.deepEqual(sfpStatusEntities({...unknown, __rear_sfp_bindings: rearSfpBindings(unknown, cal)}, "sw4", 1000001), []);
 const observed = structuredClone(cal);
 observed.sfp.rSFP1.rear_entity_base = "sensor.sw4_uplink_25";
-assert.equal(rearSfpBindings(unknown, observed)["1000001"].entity_base, "sensor.sw4_uplink_25");
+assert.equal(rearSfpBindings({member: "sw4"}, observed)["1000001"].entity_base, "sensor.sw4_uplink_25");
+const explicitlyUnmapped = {rear_sfp_bindings: {rSFP1: {interface_name: "xe-0/1/0"}}};
+assert.equal(rearSfpBindings(explicitlyUnmapped, observed)["1000001"].entity_base, null);
 console.log("Rear SFP behavior: PASS");
 """
     result = subprocess.run(["node", "-e", prelude + body + proof], cwd=ROOT, timeout=30, capture_output=True, text=True)

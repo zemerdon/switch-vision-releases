@@ -1,5 +1,6 @@
 ## v2.7.75 — Content-aware Calibration dropdown widths (Local)
 
+- Add model-neutral rear SFP (rSFP) Calibration positions, targeting, geometry and LED/label editing independent of front uplinks. Preserve existing profiles and permit explicit observed bindings, without deriving telemetry from vendor or model names.
 - Closed Dropdowns Control width Auto now fits the selected option text plus dropdown arrow, instead of using the longest available option.
 - Make Auto content-aware for closed dropdown selected labels, open dropdown option menus, and numeric/text Calibration input widths, preserving explicit desktop/mobile pixel overrides and compact target-picker caps.
 - Fix truncated Font and Port Status Output choices while keeping short Field choices compact. Restore Status Box 1 and Status Box 2 Quick Select groups side by side with aligned action columns and mobile stacking. Add an optional Custom Theme Calibration preview highlight colour role (#ff9f1c default), backward compatible with saved themes. No saved calibration geometry or normal dashboard changes.

@@ -66,6 +66,7 @@ class SpeedFormattingTests(unittest.TestCase):
         port_speed = extract_js_function(source, "function portSpeed(hass, config, port)")
         sfp_speed = extract_js_function(source, "function sfpSpeedMbps(hass, config, port)")
         sfp_logical = extract_js_function(source, "function sfpLogicalPort(config, sfpPort)")
+        rear_identity = extract_js_function(source, "function rearSfpOrdinalFromPort(port)")
 
         self.assertNotIn("max_speed_mbps", port_speed)
         self.assertNotIn("max_speed_mbps", sfp_speed)
@@ -75,6 +76,9 @@ class SpeedFormattingTests(unittest.TestCase):
         # - a 10G-capable US XG 16 RJ45 port currently linked at 1G;
         # - a 25G-capable Pro Aggregation SFP28 port currently linked at 10G.
         harness = f"""
+const SV_REAR_SFP_SLOT_BASE = 1000000;
+const SV_PROFILE_MAX_UPLINKS = 128;
+{rear_identity}
 function unifiAccessPort(config, port) {{ return config.__test_access || null; }}
 function unifiSfpPort(config, port) {{ return config.__test_sfp || null; }}
 function rawEntityState() {{ return null; }}

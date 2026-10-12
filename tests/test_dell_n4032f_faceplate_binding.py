@@ -153,7 +153,11 @@ class DellN4032FFaceplateBindingTests(unittest.TestCase):
         status = extract_js_function(
             source, "function sfpStatusEntities(config, member, port)"
         )
+        rear_identity = extract_js_function(source, "function rearSfpOrdinalFromPort(port)")
         harness = f"""
+const SV_REAR_SFP_SLOT_BASE = 1000000;
+const SV_PROFILE_MAX_UPLINKS = 128;
+{rear_identity}
 function normalizeEntityPrefix(config) {{ return 'n4032'; }}
 {canonical_helper}
 {legacy_helper}
