@@ -1,3 +1,11 @@
+## v2.7.80 — Five Calibration selectors and visual selection restoration (Local)
+
+- Split quick selections into five independent compact dropdowns: Status Box 1, Status Box 2, RJ45, SFP, and rSFP. Preserve each existing target/part choice and add rear-port Odd/Even Ports, Link LEDs, Activity LEDs, and Labels using existing rSFP geometry only.
+- Restore yellow selected hitbox/LED/label feedback for entire SFP and rSFP groups and their Odd/Even or individual selections without changing saved Calibration data or hardware telemetry binding.
+- Move Port Label Style immediately before the B bold button on the Port labels row; remove the redundant SFP-suffix hint.
+- Use the user-facing name rSFP throughout Calibration while retaining legacy internal target identifiers for saved profile compatibility.
+- Extend existing Quick Selection theme scope to include the five-dropdown row; existing dropdown typography, sizing and appearance settings remain authoritative, with no unnecessary extra fields.
+
 ## v2.7.79 — Compact Status Box dropdowns and rSFP control ordering (Local)
 
 - Replace both Status Box quick-action button groups with two compact dropdowns preserving all 24 original target/part selections and existing odd/even RJ45/SFP semantics.

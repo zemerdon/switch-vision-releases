@@ -40,6 +40,11 @@ class PortLabelStyleModeTests(unittest.TestCase):
         self.assertIn('cv-cal-port-presentation-row', self.source)
         self.assertIn('Port Label Style', self.source)
         self.assertIn('data-cv-field="port-number-mode"', self.source)
+        row = labels.split('cv-cal-port-label-style', 1)[1].split('</div>', 1)[0]
+        self.assertLess(row.index('${portLabelStyleControl}'), row.index('data-cv-action="toggle-port-label-bold"'))
+        presentation = self.source.split('const portPresentationControls =', 1)[1].split('const isPortLedSize', 1)[0]
+        self.assertNotIn('${portLabelStyleControl}', presentation)
+        self.assertNotIn('Blank removes the SFP/uplink suffix', labels)
         self.assertIn('value="static"', self.source)
         self.assertIn('value="activity"', self.source)
         self.assertIn('value="link_speed"', self.source)

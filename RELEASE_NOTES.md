@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.80
+
+Local-only Calibration UI polish. Five independently grouped Status Box 1, Status Box 2, RJ45, SFP and rSFP dropdowns replace the mixed selections, including full rear-port Odd/Even geometry selections. Correct SFP and rSFP entire-part yellow selection outlines and retain all existing geometry/label/LED operations. Move Port Label Style before B on the Port labels row, remove the redundant suffix hint, and standardize visible rSFP naming. Saved calibration profiles, sensor mapping ownership and existing UI/Calibration theme controls are preserved.
+
 # Switch Vision Core v2.7.79
 
 Local-only Calibration layout refinement. Status Box 1 and 2 each have a compact dropdown containing the same twelve quick selections formerly shown as buttons. rSFP add/remove-all actions now sit in the Port manager at their requested positions; target pickers appear in front SFP/Part then rSFP/Part order. Card Height and Custom Height controls move alongside the Assets row after folder scanning, and redundant Status LED, link/activity colour, and card-height hints are removed. The earlier model-neutral rear-port geometry, Auto picker sizing, LED labels, saved profile data and actual telemetry mappings are unchanged.

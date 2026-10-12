@@ -96,14 +96,17 @@ class PortLedShapeCalibrationTests(unittest.TestCase):
         start = self.source.index('<div class="cv-cal-tools-row cv-cal-status-quick-row">')
         end = self.source.index('<div class="cv-cal-tools-row cv-cal-custom-port-row">', start)
         row = self.source[start:end]
-        self.assertEqual(row.count('data-cv-quick-group='), 2)
-        self.assertEqual(row.count('<label class="cv-cal-status-quick-group">'), 2)
+        self.assertEqual(row.count('data-cv-quick-group='), 5)
+        self.assertEqual(row.count('<label class="cv-cal-status-quick-group">'), 5)
         self.assertEqual(row.count('data-cv-action="select-target"'), 0)
         self.assertIn('statusBoxQuickOptionsHtml(this.config, 1)', row)
         self.assertIn('statusBoxQuickOptionsHtml(this.config, 2)', row)
+        self.assertIn('statusBoxQuickOptionsHtml(this.config, 3)', row)
+        self.assertIn('statusBoxQuickOptionsHtml(this.config, 4)', row)
+        self.assertIn('statusBoxQuickOptionsHtml(this.config, 5)', row)
         quick_data = self.source.split('const SV_STATUS_BOX_QUICK_GROUPS = Object.freeze(', 1)[1].split('function statusBoxQuickOptionsHtml', 1)[0]
         for group in ("status_box", "status_box_2", "status_fields", "status_fields_2", "ports_odd_entire",
-                      "ports_even_numbers", "sfps_odd_entire", "sfps_even_labels"):
+                      "ports_even_numbers", "sfps_odd_entire", "sfps_even_labels", "rsfps_odd_entire", "rsfps_even_labels"):
             self.assertIn('"' + group + '"', quick_data)
         self.assertIn('this.applyCalibrationQuickTarget(cal, target, part);', self.source)
         self.assertIn('this.applyCalibrationQuickTarget(', self.source)
