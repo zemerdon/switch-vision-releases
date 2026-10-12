@@ -933,6 +933,10 @@ function n4032RearQsfpEntity(config, port, suffix) {
 function sfpStatusEntities(config, member, port) {
   const m = String(member).toLowerCase();
   const n = Number(port);
+  if (rearSfpOrdinalFromPort(n)) {
+    const id = rearSfpEntity(config, n, "status");
+    return id ? [id] : [];
+  }
 
   // Prefer an explicit template emitted by Discovery, then clean
   // Switch Vision / SNMP2MQTT entity IDs. Keep older entity IDs as fallbacks.
@@ -984,9 +988,14 @@ function sfpHasDedicatedTelemetry(hass, config, port) {
 }
 
 function sfpIsUp(hass, config, port) {
-  if (config.demo) return true;
-
   const n = Number(port);
+  if (rearSfpOrdinalFromPort(n)) {
+    if (config.demo) return true;
+    const id = rearSfpEntity(config, n, "status");
+    const state = id ? entityState(hass, id) : null;
+    return ["1", "up", "on", "true"].includes(state);
+  }
+  if (config.demo) return true;
   const configured = config?.sfp_status_entity_template
     ? templateEntity(config.sfp_status_entity_template, n)
     : null;
@@ -1456,6 +1465,20 @@ function selectedPortDetails(hass, config, port) {
 
 function selectedSfpOpticalDetails(hass, config, port) {
   const n = Number(port);
+  if (rearSfpOrdinalFromPort(n)) {
+    const metric = (suffix) => {
+      const id = rearSfpEntity(config, n, suffix);
+      return id ? firstEntityDisplayValue(hass, [id]) || "—" : "—";
+    };
+    const values = {
+      temperature: metric("temperature"), voltage: metric("voltage"),
+      current: metric("current"), tx_power: metric("tx_optical_power"),
+      rx_power: metric("rx_optical_power"), optic_status: metric("optical_status"),
+      transceiver_vendor: "—", transceiver_part: "—", media_type: "—"
+    };
+    values.available = Object.values(values).some((value) => value !== "—");
+    return values;
+  }
   const member = normalizeEntityPrefix(config);
   const metric = (type, suffix) => firstEntityDisplayValue(hass, [
     configuredEntity(config, n, type),
@@ -1482,6 +1505,18 @@ function selectedSfpOpticalDetails(hass, config, port) {
 
 function selectedSfpDetails(hass, config, port) {
   const n = Number(port);
+  if (rearSfpOrdinalFromPort(n)) {
+    const read = (suffix) => {
+      const id = rearSfpEntity(config, n, suffix);
+      return id ? firstEntityValue(hass, [id]) : null;
+    };
+    return {
+      isJuniper: false, vlan: trimText(read("native_vlan") || read("vlan_id") || "—", 10),
+      mode: trimText(read("vlan_mode") || "—", 10),
+      description: trimText(read("alias") || read("description") || "—", 22),
+      link: speedLabel(sfpSpeedMbps(hass, config, n), sfpIsUp(hass, config, n))
+    };
+  }
   const logicalPort = sfpLogicalPort(config, n);
   if (logicalPort && !sfpHasDedicatedTelemetry(hass, config, n)) {
     return selectedPortDetails(hass, config, logicalPort);
@@ -2317,6 +2352,9 @@ function portTrafficCounterSample(hass, config, port, direction) {
 }
 
 function sfpTrafficCounterSample(hass, config, port, direction) {
+  if (rearSfpOrdinalFromPort(port)) {
+    return readFirstCounterSample(hass, sfpByteEntities(config, port, direction));
+  }
   const isUnifi = String(config?.data_source || "").toLowerCase() === "unifi_api";
   if (isUnifi && rawUnifiRuntime(config)) {
     const runtimePort = unifiSfpPort(config, port);
@@ -2343,9 +2381,13 @@ function portByteEntity(config, port, direction) {
 }
 
 function sfpByteEntities(config, port, direction) {
+  const n = Number(port);
+  if (rearSfpOrdinalFromPort(n)) {
+    const id = rearSfpEntity(config, n, `${direction}_bytes`);
+    return id ? [id] : [];
+  }
   if (String(config?.data_source || "").toLowerCase() === "unifi_api" && config?.unifi_per_port_traffic !== true) return [];
   const member = normalizeMember(config);
-  const n = Number(port);
   const qsfpCounter = typeof n4032QsfpEntity === "function"
     ? n4032QsfpEntity(config, n, `${direction}_bytes`)
     : null;
@@ -2380,6 +2422,16 @@ function sfpByteEntities(config, port, direction) {
 }
 
 function sfpSpeedMbps(hass, config, port) {
+  if (rearSfpOrdinalFromPort(port)) {
+    const mbps = rearSfpEntity(config, port, "speed_mbps");
+    const bps = rearSfpEntity(config, port, "speed_bps");
+    for (const [id, divisor] of [[mbps, 1], [bps, 1000000]]) {
+      const raw = id ? rawEntityState(hass, id) : null;
+      const value = Number(raw);
+      if (raw !== null && Number.isFinite(value) && value > 0) return value / divisor;
+    }
+    return null;
+  }
   const unifi = unifiSfpPort(config, port);
   if (unifi && linkStateIsUp(unifi.state) && unifi.speed_mbps != null) {
     const value = Number(unifi.speed_mbps);
@@ -3837,9 +3889,60 @@ function isSelected(config, type, id) {
   return selected?.type === type && Number(selected.id) === Number(id);
 }
 
+// Rear SFP positions occupy a private visual selector range, never an SNMP
+// port number. This prevents rSFP1 from colliding with front SFP1 throughout
+// saved profiles, hitboxes, selection and activity state.
+const SV_REAR_SFP_SLOT_BASE = 1000000;
+
+function rearSfpOrdinal(name) {
+  const match = String(name || "").match(/^rSFP([1-9][0-9]*)$/i);
+  const ordinal = Number(match?.[1] || 0);
+  return Number.isSafeInteger(ordinal) && ordinal >= 1 && ordinal <= SV_PROFILE_MAX_UPLINKS ? ordinal : 0;
+}
+
+function rearSfpOrdinalFromPort(port) {
+  const ordinal = Number(port) - SV_REAR_SFP_SLOT_BASE;
+  return Number.isSafeInteger(ordinal) && ordinal >= 1 && ordinal <= SV_PROFILE_MAX_UPLINKS ? ordinal : 0;
+}
+
 function sfpPortNumber(name) {
+  const rear = rearSfpOrdinal(name);
+  if (rear) return SV_REAR_SFP_SLOT_BASE + rear;
+  if (/^rsfp/i.test(String(name))) return 0;
   const nums = String(name).match(/\d+/g) || [];
   return Number(nums[nums.length - 1] || 0);
+}
+
+function rearSfpEntityBase(config, port) {
+  if (!rearSfpOrdinalFromPort(port)) return null;
+  const base = String(config?.__rear_sfp_bindings?.[String(port)]?.entity_base || "");
+  return /^sensor\.[a-z0-9_]+$/.test(base) ? base : null;
+}
+
+function rearSfpEntity(config, port, suffix) {
+  const base = rearSfpEntityBase(config, port);
+  return base && /^(status|speed_mbps|speed_bps|rx_bytes|tx_bytes|alias|description|vlan_mode|native_vlan|vlan_id|temperature|voltage|current|tx_optical_power|rx_optical_power|optical_status)$/.test(suffix)
+    ? `${base}_${suffix}` : null;
+}
+
+function rearSfpBindings(config, calibration) {
+  const result = {};
+  const model = String(config?.switch_model || config?.detected_switch_model || config?.exact_model || config?.model || "");
+  const hp3500 = /^(?:HP )?(?:J8693A(?: Switch)? 3500yl-48G|J8693A|3500yl-48G)$/i.test(model.trim());
+  for (const [key, port] of Object.entries(calibration?.sfp || {})) {
+    if (!rearSfpOrdinal(key)) continue;
+    const iface = String(port?.rear_interface || "").trim();
+    const explicit = String(port?.rear_entity_base || "").trim().toLowerCase();
+    // Name-to-entity correlation is proven only for the exact HP 3500yl.
+    // Other manufacturers can supply an explicit observed entity base without
+    // borrowing HP numbering or inventing live telemetry.
+    const hpMatch = hp3500 ? iface.toUpperCase().match(/^A([1-4])$/) : null;
+    const base = /^sensor\.[a-z0-9_]+$/.test(explicit)
+      ? explicit
+      : hpMatch ? `sensor.${normalizeEntityPrefix(config)}_rear_10g_${hpMatch[1]}` : null;
+    result[String(sfpPortNumber(key))] = { interface_name: iface, entity_base: base };
+  }
+  return result;
 }
 
 
@@ -3935,7 +4038,7 @@ function calibrationSfpAliasMap(cal = null) {
       ...key.split(/[\\/|,]+/).map((item) => item.trim()).filter(Boolean)
     ]);
 
-    if (port > 0) {
+    if (port > 0 && !rearSfpOrdinal(key)) {
       candidates.add(`g${port}`);
       candidates.add(`te${port}`);
       candidates.add(`sfp${port}`);
@@ -4964,6 +5067,7 @@ function drawPanel(svg, { hass, config, calibration, layout }) {
     if (
       !calibrationEnabled(config)
       && !calibrationTestMode
+      && !rearSfpOrdinalFromPort(sfpPort)
       && !n4032VisualSfpPosition(config, calibration, sfpPort)
       && !configuredPortCountAllows(config, "sfp_port_count", sfpPort)
     ) continue;
@@ -5658,6 +5762,20 @@ function validateImportedCalibration(raw, currentCal = null, { preserveFaceplate
 
   const sfpCollision = calibrationSfpKeyCollision(raw.sfp);
   if (sfpCollision) errors.push(calibrationSfpCollisionMessage(sfpCollision));
+  const rearBindings = new Set();
+  for (const [key, port] of Object.entries(raw.sfp || {})) {
+    if (!/^rsfp/i.test(key)) continue;
+    if (!rearSfpOrdinal(key)) {
+      errors.push(`Invalid rear SFP key ${key}.`);
+      continue;
+    }
+    const iface = String(port?.rear_interface || "").trim();
+    const base = String(port?.rear_entity_base || "").trim().toLowerCase();
+    if (iface && !/^[A-Za-z0-9][A-Za-z0-9._\/-]{0,63}$/.test(iface)) errors.push(`Invalid interface for ${key}.`);
+    if (base && !/^sensor\.[a-z0-9_]+$/.test(base)) errors.push(`Invalid entity base for ${key}.`);
+    if (iface && rearBindings.has(iface.toLowerCase())) errors.push(`Rear interface ${iface} is assigned more than once.`);
+    if (iface) rearBindings.add(iface.toLowerCase());
+  }
 
   const validateEntries = (entries, type) => {
     for (const [key, item] of Object.entries(entries || {})) {
@@ -5823,6 +5941,7 @@ function normalCalibrationTarget(config) {
   if (["sfps_led_right", "sfp_activity_leds", "uplink_activity_leds"].includes(rawTarget)) return { type: "sfps", id: "all", part: "led_right" };
   if (rawTarget === "ports_custom") return { type: "ports", id: "custom", selection: "custom", part: String(config?.calibration_part || "entire").toLowerCase() };
   if (rawTarget === "sfps_custom") return { type: "sfps", id: "custom", selection: "custom", part: String(config?.calibration_part || "center").toLowerCase() };
+  if (rawTarget === "rear_sfps") return { type: "sfps", id: "rear", part: String(config?.calibration_part || "entire").toLowerCase() };
   const parityMatch = rawTarget.match(/^ports_(odd|even)(?:_(led_left|led_right|numbers|center|entire))?$/);
   if (parityMatch) {
     const partMap = { led_left: "led_left", led_right: "led_right", numbers: "number", center: "center", entire: "entire" };
@@ -5862,6 +5981,7 @@ function targetLabelForConfig(config) {
   if (type === "number_labels") return "all_numbers";
   if (type === "ports" && target.part === "number") return "ports_numbers";
   if (type === "ports" && (target.selection === "custom" || target.id === "custom")) return "ports_custom";
+  if (type === "sfps" && target.id === "rear") return "rear_sfps";
   if (type === "sfps" && (target.selection === "custom" || target.id === "custom")) return "sfps_custom";
   if (type === "ports" && target.parity) {
     const suffix = target.part === "led_left" ? "led_left" : (target.part === "led_right" ? "led_right" : (target.part === "number" ? "numbers" : (target.part === "entire" ? "entire" : "center")));
@@ -5891,7 +6011,7 @@ function targetLabelForConfig(config) {
 function calibrationLedGroupScope(cal, editable) {
   return {
     portKeys: editable?.id === "sfp" ? [] : sortedCalibrationPortKeys(cal),
-    sfpKeys: editable?.id === "rj45" ? [] : sortedCalibrationSfpKeys(cal),
+    sfpKeys: editable?.id === "rj45" ? [] : (editable?.id === "sfp" ? sortedCalibrationSfpKeys(cal).filter((key) => !rearSfpOrdinal(key)) : sortedCalibrationSfpKeys(cal)),
     parts: editable?.part === "both" ? ["led_left", "led_right"] : [editable?.part],
   };
 }
@@ -5990,7 +6110,9 @@ function getEditableCalibrationTarget(cal, config) {
     if (!["center", "entire", "label", "led_left", "led_right"].includes(part)) part = "center";
     const custom = target.selection === "custom" || String(rawId) === "custom";
     const parity = custom ? "custom" : (target.parity || (["odd", "even"].includes(String(rawId)) ? String(rawId) : "all"));
-    const keys = custom ? calibrationSelectedSfpKeys(config, cal) : calibrationSfpKeysByParity(cal, parity);
+    const keys = String(rawId) === "rear"
+      ? sortedCalibrationSfpKeys(cal).filter((key) => rearSfpOrdinal(key))
+      : (custom ? calibrationSelectedSfpKeys(config, cal) : calibrationSfpKeysByParity(cal, parity));
     const representative = cal.sfp?.[keys[0]] || null;
     const sizeKey = portLedSizeKey(part);
     const hitbox = sizeKey
@@ -6090,7 +6212,7 @@ function calibrationPortKeysForEditable(cal, editable) {
 }
 
 function calibrationSfpKeysByParity(cal, parity = "all") {
-  const keys = sortedCalibrationSfpKeys(cal);
+  const keys = sortedCalibrationSfpKeys(cal).filter((key) => !rearSfpOrdinal(key));
   if (parity === "odd") return keys.filter((key) => sfpPortNumber(key) % 2 === 1);
   if (parity === "even") return keys.filter((key) => sfpPortNumber(key) % 2 === 0);
   return keys;
@@ -6256,8 +6378,14 @@ function sortedCalibrationSfpKeys(cal) {
 
 function nextCalibrationSfpNumber(cal) {
   const nums = sortedCalibrationSfpKeys(cal)
+    .filter((key) => !rearSfpOrdinal(key))
     .map((key) => sfpPortNumber(key))
     .filter((number) => Number.isFinite(number) && number > 0);
+  return nums.length ? Math.max(...nums) + 1 : 1;
+}
+
+function nextCalibrationRearSfpNumber(cal) {
+  const nums = sortedCalibrationSfpKeys(cal).map(rearSfpOrdinal).filter(Boolean);
   return nums.length ? Math.max(...nums) + 1 : 1;
 }
 
@@ -6295,7 +6423,9 @@ function calibrationSfpCollisionMessage(collision) {
 }
 
 function normaliseCalibrationSfpKey(value) {
-  return String(value || "").trim().toUpperCase();
+  const raw = String(value || "").trim().toUpperCase();
+  const rear = rearSfpOrdinal(raw);
+  return rear ? `rSFP${rear}` : raw;
 }
 
 function calibrationSfpKeyValidationMessage(value) {
@@ -6305,6 +6435,7 @@ function calibrationSfpKeyValidationMessage(value) {
   if (!/^[A-Z0-9][A-Z0-9._\/-]*$/.test(key)) {
     return "SFP key may contain letters, numbers, dot, underscore, slash, and hyphen.";
   }
+  if (/^RSFP/i.test(key) && !rearSfpOrdinal(key)) return `Rear SFP key must be rSFP1 through rSFP${SV_PROFILE_MAX_UPLINKS}.`;
   if (!(sfpPortNumber(key) > 0)) return "SFP key must contain a positive logical uplink number.";
   return "";
 }
@@ -6314,11 +6445,12 @@ function targetOptionsHtml(cal, selected, group = "misc") {
   const category = (value) => {
     const text = String(value || "").toLowerCase();
     if (text.startsWith("port:") || text === "ports" || text.startsWith("ports_")) return "rj45";
+    if (text === "rear_sfps" || (text.startsWith("sfp:") && rearSfpOrdinalFromPort(Number(text.slice(4))))) return "rear_sfp";
     if (text.startsWith("sfp:") || text === "sfps" || text.startsWith("sfps_")) return "sfp";
     return "misc";
   };
   const option = (value, label) => `<option value="${htmlEscape(value)}" ${String(value).toLowerCase() === selectedValue ? "selected" : ""}>${htmlEscape(label)}</option>`;
-  const labels = { misc: "Misc target", rj45: "RJ45 target", sfp: "SFP target" };
+  const labels = { misc: "Misc target", rj45: "RJ45 target", sfp: "SFP target", rear_sfp: "rear SFP target" };
   const opts = [`<option value="" disabled ${category(selectedValue) !== group ? "selected" : ""}>Select ${labels[group] || "target"}</option>`];
   if (group === "misc") {
     opts.push(option("logo", "Logo"));
@@ -6365,9 +6497,17 @@ function targetOptionsHtml(cal, selected, group = "misc") {
     opts.push(option("sfps_led_left", "SFP Link"));
     opts.push(option("sfps_led_right", "SFP Activity"));
     opts.push('<optgroup label="SFP / uplinks">');
-    for (const name of sortedCalibrationSfpKeys(cal)) {
+    for (const name of sortedCalibrationSfpKeys(cal).filter((key) => !rearSfpOrdinal(key))) {
       const display = String(cal.sfp?.[name]?.display_name || "").trim();
       opts.push(option(`sfp:${sfpPortNumber(name)}`, display ? `${name} · ${display}` : name));
+    }
+    opts.push("</optgroup>");
+  } else if (group === "rear_sfp") {
+    opts.push(option("rear_sfps", "All Rear SFP"));
+    opts.push('<optgroup label="Rear optical connectors">');
+    for (const name of sortedCalibrationSfpKeys(cal).filter((key) => rearSfpOrdinal(key))) {
+      const iface = String(cal.sfp?.[name]?.rear_interface || "").trim();
+      opts.push(option(`sfp:${sfpPortNumber(name)}`, iface ? `${name} → ${iface}` : name));
     }
     opts.push("</optgroup>");
   }
@@ -7400,8 +7540,9 @@ class SwitchVision3650 extends HTMLElement {
     }
 
     for (const [port, targets] of cachedTargets.sfp.entries()) {
-      const up = sfpIsUp(this._hass, this.config, port);
-      const cls = activityClass(this.config, up && testSfpActivity(this._hass, this.config, port));
+      const cfg = this._rearSfpRenderConfig || this.config;
+      const up = sfpIsUp(this._hass, cfg, port);
+      const cls = activityClass(cfg, up && testSfpActivity(this._hass, cfg, port));
       for (const element of targets.leds) {
         updatePortLedVisualState(element, activeCalibration, "led_right", cls, activeCalibration.ui);
       }
@@ -9035,6 +9176,8 @@ const testModeBadge = testModeUi.show !== false
 
     const target = normalCalibrationTarget(this.config);
     const selectedTarget = targetLabelForConfig(this.config);
+    const rearSfpTargetSelected = selectedTarget === "rear_sfps"
+      || (selectedTarget.startsWith("sfp:") && rearSfpOrdinalFromPort(Number(selectedTarget.slice(4))) > 0);
     const editable = getEditableCalibrationTarget(cal, this.config);
     const step = Math.max(1, Number(this.config.calibration_step || 1));
     const point = editable?.point || (editable?.group ? ["all", "all"] : ["?", "?"]);
@@ -9334,8 +9477,19 @@ const testModeBadge = testModeUi.show !== false
           <select class="cv-cal-select cv-cal-target-select" data-cv-target-group="sfp" aria-label="SFP Targets">${targetOptionsHtml(cal, selectedTarget, "sfp")}</select>
         </label>
         <label>Part
-          <select class="cv-cal-select" data-cv-field="part">${calibrationPartOptionsHtml(target, this.config.calibration_part)}</select>
+          <select class="cv-cal-select" data-cv-field="part" ${rearSfpTargetSelected ? "disabled" : ""}>${calibrationPartOptionsHtml(target, this.config.calibration_part)}</select>
         </label>
+      </div>
+      <div class="cv-cal-tools-row cv-cal-port-targets-row cv-cal-rear-sfp-row">
+        <label>rSFP Target
+          <select class="cv-cal-select cv-cal-target-select" data-cv-target-group="rear_sfp" aria-label="rSFP Target">${targetOptionsHtml(cal, selectedTarget, "rear_sfp")}</select>
+        </label>
+        <label>Part
+          <select class="cv-cal-select" data-cv-field="rear-part" ${rearSfpTargetSelected ? "" : "disabled"}>${calibrationPartOptionsHtml(rearSfpTargetSelected ? target : { type: "sfp" }, rearSfpTargetSelected ? this.config.calibration_part : "entire")}</select>
+        </label>
+        <button type="button" data-cv-action="add-rear-sfp">Add Rear SFP</button>
+        <button type="button" data-cv-action="remove-all-rear-sfp" ${sortedCalibrationSfpKeys(cal).some((key) => rearSfpOrdinal(key)) ? "" : "disabled"}>Remove All Rear SFP</button>
+        <span class="cv-cal-current">${sortedCalibrationSfpKeys(cal).filter((key) => rearSfpOrdinal(key)).length} rear optical position(s)</span>
       </div>
       <div class="cv-cal-tools-row cv-cal-port-manager-row cv-cal-port-manager-actions">
         <span class="cv-cal-quick-label">Port manager</span>
@@ -9344,8 +9498,8 @@ const testModeBadge = testModeUi.show !== false
         <button type="button" data-cv-action="duplicate-port" ${["port", "sfp"].includes(editable?.type) ? "" : "disabled"}>Duplicate selected</button>
         <button type="button" data-cv-action="remove-port" ${["port", "sfp"].includes(editable?.type) ? "" : "disabled"}>Remove selected</button>
         <button type="button" data-cv-action="remove-all-rj45" ${sortedCalibrationPortKeys(cal).length ? "" : "disabled"}>Remove All RJ45 Ports</button>
-        <button type="button" data-cv-action="remove-all-sfp" ${sortedCalibrationSfpKeys(cal).length ? "" : "disabled"}>Remove All SFP Ports</button>
-        <span class="cv-cal-current">${sortedCalibrationPortKeys(cal).length} RJ45 · ${sortedCalibrationSfpKeys(cal).length} SFP</span>
+        <button type="button" data-cv-action="remove-all-sfp" ${sortedCalibrationSfpKeys(cal).some((key) => !rearSfpOrdinal(key)) ? "" : "disabled"}>Remove All SFP Ports</button>
+        <span class="cv-cal-current">${sortedCalibrationPortKeys(cal).length} RJ45 · ${sortedCalibrationSfpKeys(cal).filter((key) => !rearSfpOrdinal(key)).length} front SFP</span>
       </div>
       <div class="cv-cal-tools-row cv-cal-port-meta-row">
         <label>RJ45 key<input class="cv-cal-input" data-cv-field="port-number" type="number" min="1" step="1" value="${editable?.type === "port" ? htmlEscape(editable.key) : ""}" ${editable?.type === "port" ? "" : "disabled"}></label>
@@ -9362,12 +9516,24 @@ const testModeBadge = testModeUi.show !== false
           <select class="cv-cal-select" data-cv-field="port-role" ${metadataEditable ? "" : "disabled"}>${portRoleOptionsHtml(portRoleState.value, inheritedPortRole, { mixed: portRoleState.mixed })}</select>
         </label>
       </div>
+      ${editable?.type === "sfp" && rearSfpOrdinal(editable.key) ? `<div class="cv-cal-tools-row cv-cal-port-meta-row cv-cal-rear-sfp-binding-row">
+        <span class="cv-cal-quick-label">Rear interface binding</span>
+        <label>Hardware interface
+          <input class="cv-cal-input" data-cv-field="rear-sfp-interface" maxlength="64" value="${htmlEscape(editable.item.rear_interface || "")}" placeholder="A1, A4, xe-0/1/0...">
+        </label>
+        <label>Entity base (optional)
+          <input class="cv-cal-input" data-cv-field="rear-sfp-entity-base" maxlength="128" value="${htmlEscape(editable.item.rear_entity_base || "")}" placeholder="sensor.sw1_rear_10g_1">
+        </label>
+        <button type="button" data-cv-action="set-rear-sfp-binding">Set mapping</button>
+        <span class="cv-cal-current">Interface identity is explicit. HP J8693A A1–A4 resolve automatically; other models need an observed entity base.</span>
+      </div>` : ""}
       <div class="cv-cal-subsection-divider"><span>Quick selection</span></div>
 <div class="cv-cal-tools-row cv-cal-quick-row">
         <span class="cv-cal-quick-label">Quick select</span>
         <button type="button" data-cv-action="select-target" data-target="status_leds" data-part="center">Status LEDs</button>
         <button type="button" data-cv-action="select-target" data-target="ports" data-part="entire">All RJ45</button>
         <button type="button" data-cv-action="select-target" data-target="sfps" data-part="entire">All SFP</button>
+        <button type="button" data-cv-action="select-target" data-target="rear_sfps" data-part="entire">All Rear SFP</button>
         <button type="button" data-cv-action="select-target" data-target="all_numbers" data-part="number">Port Labels</button>
         <button type="button" data-cv-action="select-target" data-target="all_link_leds" data-part="led_left">All Link LEDs</button>
         <button type="button" data-cv-action="select-target" data-target="all_activity_leds" data-part="led_right">All Activity LEDs</button>
@@ -9709,9 +9875,14 @@ ${portPresentationControls}
       svg.style.setProperty("--cv-led-outline-color", outline.enabled ? outline.color : "none");
       svg.style.setProperty("--cv-led-outline-width", outline.enabled ? String(outline.thickness) : "0");
 
+      const renderConfig = {
+        ...this.config,
+        __rear_sfp_bindings: rearSfpBindings(this.config, renderCal)
+      };
+      this._rearSfpRenderConfig = renderConfig;
       drawPanel(svg, {
         hass: trackedHass,
-        config: this.config,
+        config: renderConfig,
         calibration: renderCal,
         layout
       });
@@ -10431,6 +10602,7 @@ ${portPresentationControls}
         const isInterfaceTarget =
           value === "ports" ||
           value === "sfps" ||
+          value === "rear_sfps" ||
           value.startsWith("port:") ||
           value.startsWith("sfp:") ||
           /^ports_(odd|even)$/.test(value) ||
@@ -10479,11 +10651,12 @@ ${portPresentationControls}
           nextConfig.calibration_port_selection = keys.join(",");
           nextConfig.calibration_sfp_selection = "";
           nextConfig.calibration_port_selection_summary = `${keys.length} RJ45 port${keys.length === 1 ? "" : "s"} selected`;
-        } else if (["sfps", "sfps_led_left", "sfps_led_right"].includes(value)) {
-          const keys = sortedCalibrationSfpKeys(cal);
+        } else if (["sfps", "sfps_led_left", "sfps_led_right", "rear_sfps"].includes(value)) {
+          const rear = value === "rear_sfps";
+          const keys = sortedCalibrationSfpKeys(cal).filter((key) => rear ? Boolean(rearSfpOrdinal(key)) : !rearSfpOrdinal(key));
           nextConfig.calibration_sfp_selection = keys.join(",");
           nextConfig.calibration_port_selection = "";
-          nextConfig.calibration_port_selection_summary = `${keys.length} SFP/uplink${keys.length === 1 ? "" : "s"} selected`;
+          nextConfig.calibration_port_selection_summary = `${keys.length} ${rear ? "rear " : ""}SFP/uplink${keys.length === 1 ? "" : "s"} selected`;
         }
 
         this.config = nextConfig;
@@ -10491,9 +10664,11 @@ ${portPresentationControls}
       });
     }
 
-    const partSelect = this.shadowRoot.querySelector('[data-cv-field="part"]');
-    if (partSelect) {
+    for (const partSelect of this.shadowRoot.querySelectorAll('[data-cv-field="part"], [data-cv-field="rear-part"]')) {
       partSelect.addEventListener("change", (event) => {
+        const isRear = targetLabelForConfig(this.config) === "rear_sfps"
+          || rearSfpOrdinalFromPort(Number(String(targetLabelForConfig(this.config)).replace(/^sfp:/, ""))) > 0;
+        if ((partSelect.getAttribute("data-cv-field") === "rear-part") !== isRear) return;
         this.config = { ...this.config, calibration_part: event.target.value };
         this.render();
       });
@@ -11409,11 +11584,14 @@ ${portPresentationControls}
           let resolvedPortKeys = null;
           let resolvedSfpKeys = null;
           const allPortKeys = sortedCalibrationPortKeys(cal);
-          const allSfpKeys = sortedCalibrationSfpKeys(cal);
+          const allSfpKeys = sortedCalibrationSfpKeys(cal).filter((key) => !rearSfpOrdinal(key));
+          const allRearSfpKeys = sortedCalibrationSfpKeys(cal).filter((key) => rearSfpOrdinal(key));
 
           if (nextTarget === "all_link_activity_leds") {
             resolvedPortKeys = allPortKeys;
-            resolvedSfpKeys = allSfpKeys;
+            resolvedSfpKeys = sortedCalibrationSfpKeys(cal);
+          } else if (nextTarget === "rear_sfps") {
+            resolvedSfpKeys = allRearSfpKeys;
           } else if (nextTarget === "rj45_link_activity_leds") {
             resolvedPortKeys = allPortKeys;
           } else if (nextTarget === "sfp_link_activity_leds") {
@@ -11459,6 +11637,64 @@ ${portPresentationControls}
 
           this.config = nextConfig;
           this.render();
+          return;
+        }
+
+        if (action === "set-rear-sfp-binding" && editable?.type === "sfp" && rearSfpOrdinal(editable.key)) {
+          const iface = String(this.shadowRoot.querySelector('[data-cv-field="rear-sfp-interface"]')?.value || "").trim();
+          const base = String(this.shadowRoot.querySelector('[data-cv-field="rear-sfp-entity-base"]')?.value || "").trim().toLowerCase();
+          if (iface && !/^[A-Za-z0-9][A-Za-z0-9._\/-]{0,63}$/.test(iface)) {
+            this.setCalibrationSaveStatus("Invalid rear interface name", true);
+            this.clearCalibrationSaveStatusSoon();
+            return;
+          }
+          if (base && !/^sensor\.[a-z0-9_]+$/.test(base)) {
+            this.setCalibrationSaveStatus("Entity base must look like sensor.sw1_rear_10g_1", true);
+            this.clearCalibrationSaveStatusSoon();
+            return;
+          }
+          const conflict = Object.entries(cal.sfp || {}).find(([key, value]) =>
+            key !== editable.key && rearSfpOrdinal(key) && iface && String(value?.rear_interface || "").toLowerCase() === iface.toLowerCase()
+          );
+          if (conflict) {
+            this.setCalibrationSaveStatus(`Rear interface ${iface} is already bound to ${conflict[0]}`, true);
+            this.clearCalibrationSaveStatusSoon();
+            return;
+          }
+          editable.item.rear_interface = iface;
+          editable.item.rear_entity_base = base;
+          this.markCalibrationDirty();
+          this.setCalibrationSaveStatus(`${editable.key} bound to ${iface || "unassigned"}`, false);
+          this.render();
+          this.clearCalibrationSaveStatusSoon();
+          return;
+        }
+
+        if (action === "add-rear-sfp" || (action === "duplicate-port" && editable?.type === "sfp" && rearSfpOrdinal(editable.key))) {
+          const ordinal = nextCalibrationRearSfpNumber(cal);
+          if (ordinal > SV_PROFILE_MAX_UPLINKS || sortedCalibrationSfpKeys(cal).length >= SV_PROFILE_MAX_UPLINKS) {
+            this.setCalibrationSaveStatus("Rear SFP limit reached", true);
+            this.clearCalibrationSaveStatusSoon();
+            return;
+          }
+          const sourceKey = editable?.type === "sfp" ? editable.key : sortedCalibrationSfpKeys(cal).at(-1);
+          const newKey = `rSFP${ordinal}`;
+          cloneCalibrationSfp(cal, sourceKey, newKey, 12, 0);
+          cal.sfp[newKey].rear_interface = "";
+          cal.sfp[newKey].rear_entity_base = "";
+          cal.sfp[newKey].supported_speed = "";
+          cal.sfp[newKey].port_role = "";
+          this.config = {
+            ...this.config,
+            calibration_target: `sfp:${sfpPortNumber(newKey)}`,
+            calibration_part: "entire",
+            calibration_sfp_selection: newKey,
+            calibration_port_selection: ""
+          };
+          this.markCalibrationDirty();
+          this.setCalibrationSaveStatus(`Added rear optical connector ${newKey}; set its hardware interface mapping`, false);
+          this.render();
+          this.clearCalibrationSaveStatusSoon();
           return;
         }
 
@@ -11579,6 +11815,11 @@ ${portPresentationControls}
             this.clearCalibrationSaveStatusSoon();
             return;
           }
+          if (Boolean(rearSfpOrdinal(next)) !== Boolean(rearSfpOrdinal(editable.key))) {
+            this.setCalibrationSaveStatus("Front and rear SFP keys cannot be renamed into each other; use Add Rear SFP", true);
+            this.clearCalibrationSaveStatusSoon();
+            return;
+          }
           const nextNumber = sfpPortNumber(next);
           const conflictingKey = sortedCalibrationSfpKeys(cal).find(
             (key) => key !== editable.key && sfpPortNumber(key) === nextNumber
@@ -11603,6 +11844,24 @@ ${portPresentationControls}
           return;
         }
 
+        if (action === "remove-all-rear-sfp") {
+          for (const key of sortedCalibrationSfpKeys(cal).filter((name) => rearSfpOrdinal(name))) delete cal.sfp[key];
+          const nextSfp = sortedCalibrationSfpKeys(cal)[0];
+          const nextPort = sortedCalibrationPortKeys(cal)[0];
+          this.config = {
+            ...this.config,
+            calibration_target: nextSfp ? `sfp:${sfpPortNumber(nextSfp)}` : (nextPort ? `port:${nextPort}` : "all"),
+            calibration_part: "entire",
+            calibration_sfp_selection: nextSfp || "",
+            calibration_port_selection: nextPort || ""
+          };
+          this.markCalibrationDirty();
+          this.setCalibrationSaveStatus("Removed all rear SFP positions", false);
+          this.render();
+          this.clearCalibrationSaveStatusSoon();
+          return;
+        }
+
         if (action === "remove-all-rj45" || action === "remove-all-sfp") {
           const removeRj45 = action === "remove-all-rj45";
           const otherKeys = removeRj45 ? sortedCalibrationSfpKeys(cal) : sortedCalibrationPortKeys(cal);
@@ -11619,15 +11878,16 @@ ${portPresentationControls}
             };
             this.setCalibrationSaveStatus("Removed all RJ45 ports", false);
           } else {
-            cal.sfp = {};
+            cal.sfp = Object.fromEntries(Object.entries(cal.sfp || {}).filter(([key]) => rearSfpOrdinal(key)));
             const nextKey = otherKeys[0];
+            const firstRearSfp = sortedCalibrationSfpKeys(cal)[0];
             this.config = {
               ...this.config,
-              calibration_target: nextKey ? `port:${nextKey}` : "all",
-              calibration_part: nextKey ? "entire" : "center",
+              calibration_target: nextKey ? `port:${nextKey}` : (firstRearSfp ? `sfp:${sfpPortNumber(firstRearSfp)}` : "all"),
+              calibration_part: nextKey || firstRearSfp ? "entire" : "center",
               calibration_port_selection: nextKey || "",
-              calibration_sfp_selection: "",
-              calibration_port_selection_summary: nextKey ? "1 RJ45 port selected" : "No visual ports selected"
+              calibration_sfp_selection: firstRearSfp && !nextKey ? firstRearSfp : "",
+              calibration_port_selection_summary: nextKey ? "1 RJ45 port selected" : (firstRearSfp ? "1 rear SFP selected" : "No visual ports selected")
             };
             this.setCalibrationSaveStatus("Removed all SFP/uplink ports", false);
           }

@@ -79,6 +79,9 @@ if (sfpVisibleLabel({{}}, 1, 'G1') !== 'G1') throw new Error('ordinary SFP label
 {port_range}
 {template_entity}
 {mapping}
+const SV_PROFILE_MAX_UPLINKS = 128;
+const SV_REAR_SFP_SLOT_BASE = 1000000;
+{extract_js_function(source, "function rearSfpOrdinalFromPort(port)")}
 function n4032RearQsfpEntity() {{ return null; }}
 function unifiSfpPort() {{ return null; }}
 function linkStateIsUp(value) {{ return String(value || '').toLowerCase() === 'up'; }}

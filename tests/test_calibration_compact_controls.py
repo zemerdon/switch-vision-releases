@@ -24,14 +24,16 @@ const STATUS_PANEL_FIELD_DEFS = [["model", "MODEL"], ["ip", "IP"]];
 const htmlEscape = value => String(value).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
 const sortedCalibrationPortKeys = cal => Object.keys(cal.ports).sort((a,b) => +a - +b);
 const sortedCalibrationSfpKeys = cal => Object.keys(cal.sfp).sort();
-const sfpPortNumber = value => +(String(value).match(/\d+/g) || ["0"]).slice(-1)[0];
+const rearSfpOrdinal = value => +(String(value).match(/^rSFP([1-9][0-9]*)$/i) || ["", "0"])[1];
+const rearSfpOrdinalFromPort = value => +value > 1000000 ? +value - 1000000 : 0;
+const sfpPortNumber = value => rearSfpOrdinal(value) ? 1000000 + rearSfpOrdinal(value) : +(String(value).match(/\d+/g) || ["0"]).slice(-1)[0];
 """ + function_source + r"""
 const cal = {
   ports: {"1": {display_name:"Server"}, "2": {}},
-  sfp: {"SFP1": {display_name:"Uplink"}, "SFP2": {}},
+  sfp: {"SFP1": {display_name:"Uplink"}, "SFP2": {}, "rSFP1": {rear_interface:"A1"}},
   status_leds: {STAT:[0,0], SYST:[0,0], MODE:[0,0]},
 };
-const groups = ["misc", "rj45", "sfp"];
+const groups = ["misc", "rj45", "sfp", "rear_sfp"];
 const cases = [
   ["logo", "misc"],
   ["status:STAT", "misc"],
@@ -45,6 +47,8 @@ const cases = [
   ["sfps", "sfp"],
   ["sfps_custom", "sfp"],
   ["sfps_even_labels", "sfp"],
+  ["sfp:1000001", "rear_sfp"],
+  ["rear_sfps", "rear_sfp"],
 ];
 for (const [target, active] of cases) {
   const outputs = Object.fromEntries(groups.map(g => [g, targetOptionsHtml(cal, target, g)]));
@@ -58,11 +62,15 @@ for (const [target, active] of cases) {
 }
 const rj45 = targetOptionsHtml(cal, "port:1", "rj45");
 const sfp = targetOptionsHtml(cal, "sfp:1", "sfp");
+const rear = targetOptionsHtml(cal, "sfp:1000001", "rear_sfp");
 const misc = targetOptionsHtml(cal, "status:STAT", "misc");
 assert.ok(rj45.includes('value="port:2"'));
 assert.ok(!rj45.includes('value="sfp:1"'));
 assert.ok(sfp.includes('value="sfp:2"'));
 assert.ok(!sfp.includes('value="port:1"'));
+assert.ok(!sfp.includes('value="sfp:1000001"'));
+assert.ok(rear.includes('rSFP1 → A1'));
+assert.ok(!rear.includes('value="sfp:1"'));
 assert.ok(misc.includes('value="status:SYST"'));
 assert.ok(!misc.includes('value="status:MODE"'));
 console.log("Calibration grouped targets: PASS");
@@ -75,6 +83,7 @@ console.log("Calibration grouped targets: PASS");
         self.assertEqual(source.count('data-cv-target-group="misc"'), 1)
         self.assertEqual(source.count('data-cv-target-group="rj45"'), 1)
         self.assertEqual(source.count('data-cv-target-group="sfp"'), 1)
+        self.assertEqual(source.count('data-cv-target-group="rear_sfp"'), 1)
         self.assertNotIn('data-cv-field="target"', source)
         self.assertIn("const targetSelects = this.shadowRoot.querySelectorAll('[data-cv-target-group]');", source)
         self.assertIn("calibration_target: value, calibration_part: part", source)

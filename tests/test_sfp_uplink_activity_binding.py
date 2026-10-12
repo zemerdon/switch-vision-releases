@@ -48,6 +48,9 @@ class SfpUplinkActivityBindingTests(unittest.TestCase):
             source, "function sfpByteEntities(config, port, direction)"
         )
         harness = f"""
+const SV_PROFILE_MAX_UPLINKS = 128;
+const SV_REAR_SFP_SLOT_BASE = 1000000;
+{extract_js_function(source, "function rearSfpOrdinalFromPort(port)")}
 function normalizeMember() {{ return "hp1"; }}
 {helper}
 

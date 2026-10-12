@@ -18,6 +18,7 @@ class SfpRangePortNumberTests(unittest.TestCase):
     def test_real_javascript_behavior(self):
         source = SOURCE.read_text(encoding="utf-8")
         names = (
+            "rearSfpOrdinal", "rearSfpOrdinalFromPort",
             "sfpPortNumber", "calibrationSfpAliasMap",
             "parseCalibrationCustomPortSelection", "sfpLogicalPort",
             "sfpVisibleLabel", "selectedPortStatusLabel",
@@ -26,7 +27,7 @@ class SfpRangePortNumberTests(unittest.TestCase):
             "statusPanelFieldSelection",
         )
         defs = source.split("const STATUS_PANEL_ROW_DEFS = {", 1)[1].split("\n};", 1)[0]
-        harness = "\n".join([f"const STATUS_PANEL_ROW_DEFS = {{{defs}\n}};",
+        harness = "\n".join(["const SV_REAR_SFP_SLOT_BASE = 1000000;", "const SV_PROFILE_MAX_UPLINKS = 128;", f"const STATUS_PANEL_ROW_DEFS = {{{defs}\n}};",
                               *(function(source, name) for name in names)]) + """
 function uiFromCalibration(cal){return cal.ui;}
 const assert=(ok, message)=>{if(!ok)throw new Error(message)};
