@@ -1,3 +1,9 @@
+## v2.7.82 — HP 3500yl-48G exact default artwork (Local)
+
+- Register the unmodified owner-provided 6000 × 1600 HP 3500yl-48G PNG and its unmodified geometry export; use geometry only, ignoring the SW1 test-profile metadata.
+- Bind this dedicated native-image factory profile as the HP J8693A Switch 3500yl-48G default, with renderer round-trip and SHA-256 regressions guarding the 48 calibrated RJ45, four SFP and four rear SFP positions.
+- Preserve the existing 44 fixed and 4 dual-personality logical port identities, optical/PoE telemetry contract, source renderer and other models without modifying saved user calibration.
+
 ## v2.7.81 — Cisco SG200-26 exact owner-supplied default faceplate (Local)
 
 - Make `cisco-sg200-26.png` the exclusive Cisco SG200-26 default faceplate, replacing the generic stock visual for this exact model without affecting other models.

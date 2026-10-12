@@ -63,7 +63,8 @@ class WalkBackedRegistrySyncTests(unittest.TestCase):
         self.assertEqual(hp["ports"]["rj45"], 44)
         self.assertEqual(hp["ports"]["combo_ports"], 4)
         self.assertEqual(hp["ports"]["uplinks"], 4)
-        self.assertEqual(hp["default_faceplate"], "faceplates/48rj45-4sfp.png")
+        self.assertEqual(hp["default_faceplate"], "faceplates/hp-3500yl-48g.png")
+        self.assertEqual(hp["calibration_profile"], "hp_3500yl_48g")
         avaya = self.yaml_rows["3524GT-PWR+"]
         self.assertEqual(avaya["ports"]["rj45"], 20)
         self.assertEqual(avaya["ports"]["combo_ports"], 4)

@@ -46,6 +46,10 @@
       "display_name": "HP ProCurve 1810G-24 · 24 × RJ45 · 2 × SFP"
     },
     {
+      "filename": "hp-3500yl-48g.png",
+      "display_name": "HP 3500yl-48G · 44 fixed RJ45 · 4 shared RJ45/SFP"
+    },
+    {
       "filename": "submarine-48rj45-4sfp.png",
       "display_name": "Submarine · 48 × RJ45 · 4 × SFP"
     },

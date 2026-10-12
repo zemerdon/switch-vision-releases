@@ -12,7 +12,7 @@ support_statuses:
 projection:
   schema: 1
   source_component: discovery
-  source_registry_sha256: d352e4f768337440251239fa1754563344ac0b95c49bac3cbceebb010693b97d
+  source_registry_sha256: 66e454e4f1bfb1c57529457c88d7293bb75760f673f5fc65d37fff316aa6d276
   device_field_allowlist:
   - vendor
   - family
@@ -2188,8 +2188,8 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: hp-3500yl-48g-44p-4dual
-  calibration_profile: stock_48rj45_4sfp
-  default_faceplate: faceplates/48rj45-4sfp.png
+  calibration_profile: hp_3500yl_48g
+  default_faceplate: faceplates/hp-3500yl-48g.png
   optional_faceplates: []
   validation:
     exact_model_detection: contribution_confirmed
@@ -2200,9 +2200,9 @@ devices:
     stack: not_applicable
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/48rj45-4sfp.png
+    recommended_faceplate: faceplates/hp-3500yl-48g.png
     optional_faceplates: []
-    calibration_profile: stock_48rj45_4sfp
+    calibration_profile: hp_3500yl_48g
     canvas:
       width: 2048
       height: 448

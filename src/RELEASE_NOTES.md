@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.82
+
+Local-only HP J8693A 3500yl-48G exact default faceplate. The source PNG (6000 × 1600) and geometry export are copied byte-for-byte; only their existing geometry collection is imported, not the unrelated SW1 test calibration identity. The reviewed native-image renderer transform round-trips the supplied 48-port, four SFP and four rear SFP calibration geometry without manual repositioning. This exact model now selects its own faceplate and factory profile by default, retaining the established 44 fixed RJ45 plus 4 shared RJ45/SFP hardware, SNMP mapping, status and other model defaults. No renderer changes or saved user calibration migration.
+
 # Switch Vision Core v2.7.81
 
 Local-only SG200-26 default artwork. The owner-supplied original `cisco-sg200-26.png` and exported geometry are preserved byte-for-byte and mapped to a dedicated SG200-26 factory calibration profile, without manually changing coordinates or image size. This is the sole stock default for this exact model. Its 26 physical RJ45 sockets and two shared SFP cages are drawn as supplied, while the reviewed 26 logical/telemetry interface contract remains unchanged. Other models and the old stock generic profile are untouched.
