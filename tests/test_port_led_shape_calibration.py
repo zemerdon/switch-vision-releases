@@ -91,30 +91,25 @@ class PortLedShapeCalibrationTests(unittest.TestCase):
             selection.count('data-cv-action="select-target"'),
         )
 
-    def test_status_box_quick_select_groups_share_a_row_with_aligned_buttons(self) -> None:
+    def test_status_box_quick_selects_use_two_compact_dropdowns(self) -> None:
         css = (ROOT / "src/css/switch-vision.css").read_text()
         start = self.source.index('<div class="cv-cal-tools-row cv-cal-status-quick-row">')
         end = self.source.index('<div class="cv-cal-tools-row cv-cal-custom-port-row">', start)
         row = self.source[start:end]
-        self.assertEqual(
-            self.source.count('<div class="cv-cal-tools-row cv-cal-status-quick-row">'), 1
-        )
-        self.assertEqual(row.count('<section class="cv-cal-status-quick-group">'), 2)
-        self.assertEqual(row.count('<span class="cv-cal-status-quick-actions">'), 6)
-        for index in (1, 2):
-            group = row.split(f'Status Box {index}</span>', 1)[1]
-            if index == 1:
-                group = group.split('<section class="cv-cal-status-quick-group">', 1)[0]
-            self.assertEqual(group.count('data-cv-action="select-target"'), 12)
-            self.assertIn(f'data-target="status_fields{"_2" if index == 2 else ""}"', group)
-            self.assertEqual(group.count('<section class="cv-cal-parity-row cv-cal-parity-subgroup">'), 2)
-            parity = ("ports", "sfps")[index - 1]
-            self.assertLess(group.index('data-part="box">Box</button>'), group.index(f'data-target="{parity}_odd_entire"'))
-            self.assertLess(group.index(f'data-target="{parity}_odd_entire"'), group.index(f'data-target="{parity}_even_entire"'))
-        self.assertIn('grid-template-columns:repeat(2,max-content)', css)
-        self.assertIn('grid-template-columns:repeat(4,max-content)', css)
-        self.assertIn('.cv-cal-status-quick-group > .cv-cal-parity-subgroup{', css)
-        self.assertIn('grid-template-columns:max-content', css)
+        self.assertEqual(row.count('data-cv-quick-group='), 2)
+        self.assertEqual(row.count('<label class="cv-cal-status-quick-group">'), 2)
+        self.assertEqual(row.count('data-cv-action="select-target"'), 0)
+        self.assertIn('statusBoxQuickOptionsHtml(this.config, 1)', row)
+        self.assertIn('statusBoxQuickOptionsHtml(this.config, 2)', row)
+        quick_data = self.source.split('const SV_STATUS_BOX_QUICK_GROUPS = Object.freeze(', 1)[1].split('function statusBoxQuickOptionsHtml', 1)[0]
+        for group in ("status_box", "status_box_2", "status_fields", "status_fields_2", "ports_odd_entire",
+                      "ports_even_numbers", "sfps_odd_entire", "sfps_even_labels"):
+            self.assertIn('"' + group + '"', quick_data)
+        self.assertIn('this.applyCalibrationQuickTarget(cal, target, part);', self.source)
+        self.assertIn('this.applyCalibrationQuickTarget(', self.source)
+        self.assertIn('.cv-cal-tools .cv-cal-status-quick-row{', css)
+        self.assertIn('flex-wrap:wrap;', css)
+        self.assertNotIn('.cv-cal-status-quick-actions', css)
 
     def test_all_link_and_activity_targets_span_rj45_and_sfp(self) -> None:
         required = (

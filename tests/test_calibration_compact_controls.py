@@ -124,10 +124,12 @@ console.log("Calibration grouped targets: PASS");
         self.assertLess(block.index('data-cv-target-group="misc"'), block.index('data-cv-target-group="rj45"'))
         self.assertLess(block.index('data-cv-target-group="rj45"'), block.index('data-cv-target-group="sfp"'))
         self.assertLess(block.index('data-cv-target-group="sfp"'), block.index('data-cv-target-group="rear_sfp"'))
-        self.assertLess(block.index('data-cv-target-group="rear_sfp"'), block.index('data-cv-field="part"'))
+        self.assertLess(block.index('data-cv-target-group="sfp"'), block.index('data-cv-field="part"'))
+        self.assertLess(block.index('data-cv-field="part"'), block.index('data-cv-target-group="rear_sfp"'))
+        self.assertLess(block.index('data-cv-target-group="rear_sfp"'), block.index('data-cv-field="rear-part"'))
         self.assertIn('data-cv-field="rear-part"', block)
         self.assertEqual(source.count('data-cv-target-group="rear_sfp"'), 1)
-        actions = source.split('<div class="cv-cal-tools-row cv-cal-rear-sfp-actions-row">', 1)[1].split('</div>', 1)[0]
+        actions = source.split('cv-cal-port-manager-row cv-cal-port-manager-actions', 1)[1].split('</div>', 1)[0]
         self.assertIn('data-cv-action="add-rear-sfp"', actions)
         self.assertIn('data-cv-action="remove-all-rear-sfp"', actions)
         self.assertNotIn('.cv-cal-port-manager-main,', css)
@@ -168,8 +170,8 @@ console.log("Calibration grouped targets: PASS");
             '<span class="cv-cal-quick-label">Quick select</span>',
             'data-target="ports" data-part="entire">All RJ45</button>',
             'data-target="sfps" data-part="entire">All SFP</button>',
-            'data-target="ports_odd_entire" data-part="entire">Ports</button>',
-            'data-target="sfps_even_labels" data-part="label">Labels</button>',
+            '["Odd RJ45", [["Ports", "ports_odd_entire", "entire"]',
+            '["Even SFP", [["Ports", "sfps_even_entire", "entire"]',
             'data-cv-action="select-custom-ports"',
         ):
             self.assertIn(marker, source)

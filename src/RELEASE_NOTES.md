@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.79
+
+Local-only Calibration layout refinement. Status Box 1 and 2 each have a compact dropdown containing the same twelve quick selections formerly shown as buttons. rSFP add/remove-all actions now sit in the Port manager at their requested positions; target pickers appear in front SFP/Part then rSFP/Part order. Card Height and Custom Height controls move alongside the Assets row after folder scanning, and redundant Status LED, link/activity colour, and card-height hints are removed. The earlier model-neutral rear-port geometry, Auto picker sizing, LED labels, saved profile data and actual telemetry mappings are unchanged.
+
 # Switch Vision Core v2.7.78
 
 Local-only rollback of the common first-column alignment introduced in 2.7.77. The Calibration layout now uses the previous 2.7.76 row arrangement. The independent rSFP controls, Auto selected-text dropdown sizing, Status Box 1/2 quick selection, compact Port Label actions, Link LED Shape and Activity LED Shape labels, and all saved Calibration profiles remain available and unchanged.

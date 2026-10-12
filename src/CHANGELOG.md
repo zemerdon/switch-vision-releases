@@ -1,3 +1,11 @@
+## v2.7.79 — Compact Status Box dropdowns and rSFP control ordering (Local)
+
+- Replace both Status Box quick-action button groups with two compact dropdowns preserving all 24 original target/part selections and existing odd/even RJ45/SFP semantics.
+- Position Add rSFP after Add SFP and Remove All rSFP Ports after Remove All SFP Ports in the Port manager row.
+- Order front SFP Targets and Part before rSFP Targets and Part; preserve their independent geometry, registry-owned mapping, and saved profiles.
+- Place Card Height and Custom Height alongside the asset controls after folder-scan status.
+- Remove the three redundant Calibration hints for Status LED visibility, link/activity colour scope, and Auto card height.
+
 ## v2.7.78 — Revert shared Calibration label-column alignment (Local)
 
 - Undo the 2.7.77 fixed primary label-column layout and restore the proven 2.7.76 Calibration row spacing and first-control positions.

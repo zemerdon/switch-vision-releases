@@ -23,7 +23,7 @@ def main() -> int:
         "SV_REAR_SFP_SLOT_BASE = 1000000",
         'data-cv-action="add-rear-sfp"',
         'data-cv-target-group="rear_sfp"',
-        '<label>rSFP Target',
+        '<label>rSFP Targets',
         'data-cv-field="rear-part"',
         'rearSfpTargetSelected ? "" : "disabled"',
         'this.shadowRoot.querySelectorAll(\'[data-cv-field="part"], [data-cv-field="rear-part"]\')',
@@ -37,15 +37,28 @@ def main() -> int:
     for mapping_control in ('data-cv-field="rear-sfp-interface"', 'data-cv-field="rear-sfp-entity-base"', 'data-cv-action="set-rear-sfp-binding"'):
         assert mapping_control not in source, f"mapping should belong to Discovery, not Calibration: {mapping_control}"
     assert "const hp3500 = " not in function(source, "rearSfpBindings"), "rSFP binding must not depend on model"
-    selector_order = (
+    manager_order = (
         'data-cv-action="add-port"',
-        'data-cv-target-group="sfp"',
-        'data-cv-target-group="rear_sfp"',
-        'data-cv-field="part"',
-        'data-cv-field="rear-part"',
+        'data-cv-action="add-sfp"',
         'data-cv-action="add-rear-sfp"',
+        'data-cv-action="duplicate-port"',
+        'data-cv-action="remove-port"',
+        'data-cv-action="remove-all-rj45"',
+        'data-cv-action="remove-all-sfp"',
+        'data-cv-action="remove-all-rear-sfp"',
     )
-    assert [source.index(marker) for marker in selector_order] == sorted(source.index(marker) for marker in selector_order), "Port manager must precede front and rear selectors; rear target and Part must follow front selectors"
+    assert [source.index(marker) for marker in manager_order] == sorted(source.index(marker) for marker in manager_order), "rSFP actions belong in the Port manager in hardware-type order"
+    targets = source.split('cv-cal-port-targets-row cv-cal-port-manager-main', 1)[1].split('</div>', 1)[0]
+    selector_order = (
+        'data-cv-target-group="sfp"',
+        'data-cv-field="part"',
+        'data-cv-target-group="rear_sfp"',
+        'data-cv-field="rear-part"',
+    )
+    assert [targets.index(marker) for marker in selector_order] == sorted(targets.index(marker) for marker in selector_order), "front SFP/Part must precede rear SFP/Part"
+    assert source.count('data-cv-action="add-rear-sfp"') == 1
+    assert source.count('data-cv-action="remove-all-rear-sfp"') == 1
+    assert 'cv-cal-rear-sfp-actions-row' not in source
     assert source.count("const sfpPort = sfpPortNumber(name);") == 2, "rendered rear slots and click hitboxes must share the collision-safe rear identity"
     assert source.count('<select class="cv-cal-select" data-cv-field="part"') == 1, "front Part selector must remain unique"
     assert source.count('<select class="cv-cal-select" data-cv-field="rear-part"') == 1, "rear Part selector must remain unique"
