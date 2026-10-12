@@ -131,6 +131,39 @@ console.log("Calibration grouped targets: PASS");
         self.assertIn('.cv-cal-port-presentation-row > .cv-cal-led-shape-label', css)
         self.assertIn('white-space: nowrap;', css)
 
+    def test_shared_first_column_alignment_across_calibration_sections(self) -> None:
+        source = SOURCE.read_text(encoding="utf-8")
+        css = CSS.read_text(encoding="utf-8")
+        self.assertIn("--cv-cal-primary-label-width: 130px;", css)
+        self.assertIn(".cv-cal-section-body > .cv-cal-tools-row > .cv-cal-quick-label:first-child", css)
+        self.assertIn("flex: 0 0 var(--cv-cal-primary-label-width);", css)
+        self.assertIn("flex-basis: 100%;", css)
+        # First-column semantics are shared by primary rows, without changing
+        # the existing independent group controls or selector event ownership.
+        for marker in (
+            '<span class="cv-cal-quick-label">Assets</span>',
+            '<span class="cv-cal-quick-label">Card Height</span>',
+            '<span class="cv-cal-quick-label">Port manager</span>',
+            '<span class="cv-cal-quick-label">Misc Targets</span>',
+            '<span class="cv-cal-quick-label">Rear SFP</span>',
+            '<span class="cv-cal-quick-label">RJ45 key</span>',
+            '<span class="cv-cal-quick-label">Quick select</span>',
+            '<span class="cv-cal-quick-label">Status LEDs</span>',
+            '<span class="cv-cal-quick-label">Port LEDs</span>',
+            '<span class="cv-cal-quick-label">LED Outlines</span>',
+            '<span class="cv-cal-quick-label">Port labels</span>',
+            '<span class="cv-cal-quick-label">Status Box 1 style</span>',
+            '<span class="cv-cal-quick-label">Status Box 2 style</span>',
+        ):
+            self.assertIn(marker, source)
+        self.assertIn('aria-label="Port Label Style"', source)
+        self.assertIn('aria-label="RJ45 key"', source)
+        self.assertIn('aria-label="Card Height"', source)
+        self.assertIn('data-cv-target-group="rear_sfp"', source)
+        # Secondary inline labels stay compact, not another primary column.
+        self.assertIn(".cv-cal-port-presentation-row > .cv-cal-quick-label {", css)
+        self.assertIn(".cv-cal-status-quick-group > .cv-cal-parity-subgroup{", css)
+
     def test_compact_size_rules(self) -> None:
         css = CSS.read_text(encoding="utf-8")
         control = css.split(".cv-cal-tools input.cv-cal-input,", 1)[1].split("}", 1)[0]

@@ -1,3 +1,9 @@
+## v2.7.77 — Shared Calibration label-column alignment (Local)
+
+- Use the same first-control starting column as Status Boxes across Selection, Port Labels and LEDs, Position & Size, and other primary Calibration rows, with responsive stacking for narrow screens.
+- Align Card Height, Port manager, Misc Targets, rear SFP actions, RJ45 key, quick selectors, and Port Label Style without widening nested controls or breaking SFP/rSFP adjacency.
+- Preserve existing saved geometry, accessibility of the renamed first-column controls, and model-neutral rSFP/Discovery mapping contracts.
+
 ## v2.7.76 — Calibration selector sizing and aligned quick controls (Local)
 
 - Put the independent rSFP Target beside the front SFP selector, keeping rear-port add/remove actions below without changing discovery/registry bindings or saved geometry.

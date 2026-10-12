@@ -857,6 +857,26 @@
 .cv-cal-tools .cv-cal-port-presentation-row > .cv-cal-led-shape-label {
   white-space: nowrap;
 }
+/* One first-column width for the primary Calibration rows, matched to
+ * Status Boxes. Only the first group label is aligned: secondary pickers,
+ * inline Port Label visibility and LED Shape controls stay compact. */
+.cv-cal-tools {
+  --cv-cal-primary-label-width: 130px;
+}
+.cv-cal-tools .cv-cal-section-body > .cv-cal-tools-row > .cv-cal-quick-label:first-child {
+  box-sizing: border-box;
+  flex: 0 0 var(--cv-cal-primary-label-width);
+  width: var(--cv-cal-primary-label-width);
+  min-width: var(--cv-cal-primary-label-width);
+  margin-right: 0;
+}
+@media (max-width: 900px) {
+  .cv-cal-tools .cv-cal-section-body > .cv-cal-tools-row > .cv-cal-quick-label:first-child {
+    flex-basis: 100%;
+    width: 100%;
+    min-width: 0;
+  }
+}
 /* The control arrow requires a reserved gutter even with a global theme padding. */
 .cv-cal-tools .cv-cal-select-shell > button.cv-cal-select-trigger {
   padding-right: max(24px, var(--cv-cal-select-arrow-gutter, 24px)) !important;
