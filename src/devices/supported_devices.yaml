@@ -12,7 +12,7 @@ support_statuses:
 projection:
   schema: 1
   source_component: discovery
-  source_registry_sha256: 2535944964a3671aae4ef50c75e89145acbae6c52a34e22b35193198f5b294ef
+  source_registry_sha256: d352e4f768337440251239fa1754563344ac0b95c49bac3cbceebb010693b97d
   device_field_allowlist:
   - vendor
   - family
@@ -2147,8 +2147,8 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: cisco-sg200-26-24p-2dual
-  calibration_profile: stock_24rj45_2sfp
-  default_faceplate: faceplates/24rj45-2sfp.png
+  calibration_profile: cisco_sg200_26
+  default_faceplate: faceplates/cisco-sg200-26.png
   optional_faceplates: []
   validation:
     exact_model_detection: real_hardware_sysobjectid_confirmed
@@ -2159,9 +2159,9 @@ devices:
     stack: not_applicable
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/24rj45-2sfp.png
+    recommended_faceplate: faceplates/cisco-sg200-26.png
     optional_faceplates: []
-    calibration_profile: stock_24rj45_2sfp
+    calibration_profile: cisco_sg200_26
     canvas:
       width: 2048
       height: 448

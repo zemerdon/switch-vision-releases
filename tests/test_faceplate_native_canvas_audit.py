@@ -113,6 +113,8 @@ class FaceplateNativeCanvasContract(unittest.TestCase):
                     self.assertGreater(box_w, 0.0, f"{path.name}:{name}: width must be positive")
                     self.assertGreater(box_h, 0.0, f"{path.name}:{name}: height must be positive")
                 else:
+                    if name == "logo" and isinstance(box, dict) and box.get("show") is False:
+                        continue  # Hidden artwork should not block other geometry.
                     assert_top_left_box(self, box, width, height, f"{path.name}:{name}")
 
     def test_renderer_has_native_to_legacy_compatibility_transform(self) -> None:

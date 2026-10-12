@@ -30,6 +30,10 @@
       "display_name": "Cisco Catalyst 3850 12XS · 12 × SFP"
     },
     {
+      "filename": "cisco-sg200-26.png",
+      "display_name": "Cisco SG200-26 · 24 × RJ45 · 2 × shared RJ45/SFP"
+    },
+    {
       "filename": "dell-28-rj45-2sfp.png",
       "display_name": "Dell N2128PX-ON · 28 × RJ45 · 2 × SFP"
     },

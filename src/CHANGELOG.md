@@ -1,3 +1,9 @@
+## v2.7.81 — Cisco SG200-26 exact owner-supplied default faceplate (Local)
+
+- Make `cisco-sg200-26.png` the exclusive Cisco SG200-26 default faceplate, replacing the generic stock visual for this exact model without affecting other models.
+- Preserve owner-supplied PNG bytes and complete geometry JSON verbatim; carry all 26 RJ45 socket positions, two shared optical cage positions, seven status LEDs and calibrated UI fields into the dedicated factory profile without rescaling or moving coordinates.
+- Keep the existing 24 fixed RJ45 + two dual-personality 1G RJ45/SFP logical interface telemetry and discovery contract unchanged; source checksum and coordinate-equality regressions protect owner geometry.
+
 ## v2.7.80 — Five Calibration selectors and visual selection restoration (Local)
 
 - Split quick selections into five independent compact dropdowns: Status Box 1, Status Box 2, RJ45, SFP, and rSFP. Preserve each existing target/part choice and add rear-port Odd/Even Ports, Link LEDs, Activity LEDs, and Labels using existing rSFP geometry only.

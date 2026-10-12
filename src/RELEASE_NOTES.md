@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.81
+
+Local-only SG200-26 default artwork. The owner-supplied original `cisco-sg200-26.png` and exported geometry are preserved byte-for-byte and mapped to a dedicated SG200-26 factory calibration profile, without manually changing coordinates or image size. This is the sole stock default for this exact model. Its 26 physical RJ45 sockets and two shared SFP cages are drawn as supplied, while the reviewed 26 logical/telemetry interface contract remains unchanged. Other models and the old stock generic profile are untouched.
+
 # Switch Vision Core v2.7.80
 
 Local-only Calibration UI polish. Five independently grouped Status Box 1, Status Box 2, RJ45, SFP and rSFP dropdowns replace the mixed selections, including full rear-port Odd/Even geometry selections. Correct SFP and rSFP entire-part yellow selection outlines and retain all existing geometry/label/LED operations. Move Port Label Style before B on the Port labels row, remove the redundant suffix hint, and standardize visible rSFP naming. Saved calibration profiles, sensor mapping ownership and existing UI/Calibration theme controls are preserved.
