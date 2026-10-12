@@ -79,6 +79,7 @@ const SV_FACEPLATE_PROFILE_FILES = {
   stock_48rj45_2sfp: "48rj45-2sfp.png",
   stock_48rj45_4sfp: "48rj45-4sfp.png",
   cisco_3560cg_8pc: "c3560cg-8pc-s.png",
+  cisco_sg200_26: "cisco-sg200-26.png",
   avaya_3524gt: "avaya-3524gt.png",
   cisco_3850_12xs: "cisco-3850-12xs.png",
   dell_28rj45_2sfp: "dell-28-rj45-2sfp.png",

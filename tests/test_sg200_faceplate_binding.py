@@ -32,6 +32,8 @@ class SG200FaceplateBindingTests(unittest.TestCase):
         self.assertEqual(row["mapping_profile"], "cisco-sg200-26-24p-2dual")
         self.assertEqual(row["default_faceplate"], "faceplates/cisco-sg200-26.png")
         self.assertEqual(row["calibration_profile"], "cisco_sg200_26")
+        source = (ROOT / "src/js/switch-vision.js").read_text(encoding="utf-8")
+        self.assertIn('cisco_sg200_26: "cisco-sg200-26.png"', source)
         self.assertEqual(row["optional_faceplates"], [])
         self.assertEqual(row["visuals"]["recommended_faceplate"], row["default_faceplate"])
         self.assertEqual(row["visuals"]["calibration_profile"], row["calibration_profile"])
