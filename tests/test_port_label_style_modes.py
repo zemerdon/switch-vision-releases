@@ -90,7 +90,7 @@ class PortLabelStyleModeTests(unittest.TestCase):
         led_controls_start = block.index('const selectedPortLedControls')
         label_visibility_start = block.index('const portLabelStyleControl')
         led_controls = block[led_controls_start:label_visibility_start]
-        self.assertLess(led_controls.index('>Link LED</span>'), led_controls.index('>Activity LED</span>'))
+        self.assertLess(led_controls.index('>Link LED Shape'), led_controls.index('>Activity LED Shape'))
 
     def test_selected_port_led_visibility_is_persisted_and_render_gated(self) -> None:
         required = (

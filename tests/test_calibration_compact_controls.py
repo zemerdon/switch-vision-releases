@@ -104,6 +104,33 @@ console.log("Calibration grouped targets: PASS");
             self.assertIn('data-cv-action="' + action + '"', manager_block)
         self.assertNotIn('data-cv-field="port-number"', manager_block)
 
+    def test_rear_selector_adjacent_to_front_sfp_and_wraps_with_auto_width(self) -> None:
+        source = SOURCE.read_text(encoding="utf-8")
+        css = CSS.read_text(encoding="utf-8")
+        block = source.split('<div class="cv-cal-tools-row cv-cal-port-targets-row cv-cal-port-manager-main">', 1)[1].split('</div>', 1)[0]
+        self.assertLess(block.index('data-cv-target-group="misc"'), block.index('data-cv-target-group="rj45"'))
+        self.assertLess(block.index('data-cv-target-group="rj45"'), block.index('data-cv-target-group="sfp"'))
+        self.assertLess(block.index('data-cv-target-group="sfp"'), block.index('data-cv-target-group="rear_sfp"'))
+        self.assertLess(block.index('data-cv-target-group="rear_sfp"'), block.index('data-cv-field="part"'))
+        self.assertIn('data-cv-field="rear-part"', block)
+        self.assertEqual(source.count('data-cv-target-group="rear_sfp"'), 1)
+        actions = source.split('<div class="cv-cal-tools-row cv-cal-rear-sfp-actions-row">', 1)[1].split('</div>', 1)[0]
+        self.assertIn('data-cv-action="add-rear-sfp"', actions)
+        self.assertIn('data-cv-action="remove-all-rear-sfp"', actions)
+        self.assertNotIn('.cv-cal-port-manager-main,', css)
+        self.assertIn('flex-wrap:wrap;', css)
+
+    def test_port_label_show_and_led_shape_labels_stay_compact(self) -> None:
+        source = SOURCE.read_text(encoding="utf-8")
+        css = CSS.read_text(encoding="utf-8")
+        block = source.split('const selectedPortLedControls = selectedPortCount ? `', 1)[1].split('` : "";', 1)[0]
+        for text, field in (("Link LED Shape", "link-led-shape"), ("Activity LED Shape", "activity-led-shape")):
+            self.assertIn(f'>{text}', block)
+            self.assertIn(f'data-cv-field="{field}"', block)
+        self.assertIn('.cv-cal-port-presentation-row > .cv-cal-quick-label', css)
+        self.assertIn('.cv-cal-port-presentation-row > .cv-cal-led-shape-label', css)
+        self.assertIn('white-space: nowrap;', css)
+
     def test_compact_size_rules(self) -> None:
         css = CSS.read_text(encoding="utf-8")
         control = css.split(".cv-cal-tools input.cv-cal-input,", 1)[1].split("}", 1)[0]
@@ -118,7 +145,9 @@ console.log("Calibration grouped targets: PASS");
         self.assertIn("width: 59px !important;", css)
         self.assertIn("width: 21px;", css)
         self.assertIn("width: 127px;", css)
-        self.assertIn("max-width: min(100%, 185px);", css)
+        self.assertIn(".cv-cal-tools .cv-cal-target-select-shell > button.cv-cal-select-trigger {", css)
+        self.assertNotIn("max-width: min(100%, 185px);", css)
+        self.assertIn("padding-right: max(24px, var(--cv-cal-select-arrow-gutter, 24px)) !important;", css)
 
     def test_quick_links_remain_unchanged(self) -> None:
         source = SOURCE.read_text(encoding="utf-8")

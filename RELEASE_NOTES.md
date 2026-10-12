@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.76
+
+Local-only Calibration layout repair. rSFP Target now sits beside front SFP Targets, with independent controls preserved. Closed dropdown Auto sizing is no longer capped at 185 px and keeps selected text and arrow readable, wrapping target groups at narrower widths. Status Box 1 quick actions align above Odd/Even RJ45 controls, while Status Box 2 aligns above Odd/Even SFP; the Port Label and Show controls sit closer together, and Link LED Shape / Activity LED Shape read as single-line labels. The underlying geometry, model-neutral rSFP telemetry contract and saved Calibration profiles remain unchanged.
+
 # Switch Vision Core v2.7.75
 
 Local-only Calibration usability fix: Closed Dropdowns Control width Auto sizes each closed picker to its selected label plus arrow. Long values such as Custom / IntelOne and Status Box 1 remain readable, while shorter values such as ROLE stay compact. Auto also fits open dropdown menu options and numeric/text input values; all explicit pixel widths remain available. Status Box 1 and Status Box 2 Quick Select groups sit on the same desktop line, with aligned action columns and mobile stacking. Custom Theme gains a Calibration preview highlight colour role with a backward-compatible orange default. Existing selections, popup behavior and saved Calibration profiles are unchanged.

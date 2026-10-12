@@ -1,3 +1,10 @@
+## v2.7.76 — Calibration selector sizing and aligned quick controls (Local)
+
+- Put the independent rSFP Target beside the front SFP selector, keeping rear-port add/remove actions below without changing discovery/registry bindings or saved geometry.
+- Make Closed Dropdown Auto fit the selected label plus arrow by removing the fixed target-picker cap and letting target groups wrap when necessary; preserve explicit pixel overrides.
+- Align Odd/Even RJ45 quick actions under Status Box 1 and Odd/Even SFP actions under Status Box 2, including responsive stacking.
+- Tighten Port Label / Show spacing and keep Link LED Shape and Activity LED Shape labels intact on one line. Retain existing selection, shape, save and persistence behaviour.
+
 ## v2.7.75 — Content-aware Calibration dropdown widths (Local)
 
 - Add model-neutral rear SFP (rSFP) Calibration positions, targeting, geometry and LED/label editing independent of front uplinks. Preserve existing profiles and permit explicit observed bindings, without deriving telemetry from vendor or model names.

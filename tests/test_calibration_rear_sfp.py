@@ -40,8 +40,8 @@ def main() -> int:
     selector_order = (
         'data-cv-action="add-port"',
         'data-cv-target-group="sfp"',
-        'data-cv-field="part"',
         'data-cv-target-group="rear_sfp"',
+        'data-cv-field="part"',
         'data-cv-field="rear-part"',
         'data-cv-action="add-rear-sfp"',
     )

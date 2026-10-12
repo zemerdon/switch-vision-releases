@@ -60,9 +60,9 @@ class CalibrationStatusLedLayoutTests(unittest.TestCase):
             'Port Label Style',
             'data-cv-action="show-number-label"',
             'data-cv-action="hide-number-label"',
-            '>Link LED</span>',
+            '>Link LED Shape',
             'data-cv-field="link-led-shape"',
-            '>Activity LED</span>',
+            '>Activity LED Shape',
             'data-cv-field="activity-led-shape"',
         ):
             self.assertIn(marker, block)
