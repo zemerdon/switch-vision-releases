@@ -12,6 +12,12 @@ CALIBRATION_DIR = ROOT / "src" / "calibration"
 
 
 def logical_sfp_number(key: str) -> int:
+    # Mirror the existing renderer's separate, non-SNMP rear selection range.
+    # rSFP1 and front SFP1 are independent visual positions, not two names
+    # for the same logical uplink; front aliases still must not collide.
+    rear = re.fullmatch(r"rSFP([1-9][0-9]*)", str(key), re.IGNORECASE)
+    if rear:
+        return 1000000 + int(rear.group(1))
     numbers = re.findall(r"\d+", str(key))
     return int(numbers[-1]) if numbers else 0
 
@@ -89,6 +95,9 @@ def main() -> int:
     assert logical_sfp_number("G3/TE3") == 3
     assert logical_sfp_number("SFP12") == 12
     assert logical_sfp_number("TE12") == 12
+    assert logical_sfp_number("rSFP1") == 1000001
+    assert logical_sfp_number("rSFP4") == 1000004
+    assert logical_sfp_number("SFP1") != logical_sfp_number("rSFP1")
 
     print("Switch Vision calibration SFP port-manager regression: PASS")
     return 0
