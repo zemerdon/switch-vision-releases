@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.78
+
+Local-only rollback of the common first-column alignment introduced in 2.7.77. The Calibration layout now uses the previous 2.7.76 row arrangement. The independent rSFP controls, Auto selected-text dropdown sizing, Status Box 1/2 quick selection, compact Port Label actions, Link LED Shape and Activity LED Shape labels, and all saved Calibration profiles remain available and unchanged.
+
 # Switch Vision Core v2.7.77
 
 Local-only Calibration layout refinement. Primary control rows now reserve a consistent label column matching Status Boxes so Selection, Card Height, Port manager, quick selection, Position & Size and Port Labels and LEDs begin their controls at the same horizontal position. Nested Port Label Show/Hide and Link/Activity LED Shape groups remain compact and SFP/rSFP targets stay adjacent. Narrow viewports stack first-column labels above controls to avoid clipping. The faceplate, model/telemetry mappings and saved Calibration profiles are unchanged.

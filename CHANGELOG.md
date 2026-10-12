@@ -1,3 +1,9 @@
+## v2.7.78 — Revert shared Calibration label-column alignment (Local)
+
+- Undo the 2.7.77 fixed primary label-column layout and restore the proven 2.7.76 Calibration row spacing and first-control positions.
+- Keep the earlier rSFP selector beside SFP, content-aware Auto dropdown sizing, Status Box quick-action grouping, and Port Label / LED Shape control refinements.
+- Preserve user Calibration geometry, saved profiles, telemetry separation, and all other functionality.
+
 ## v2.7.77 — Shared Calibration label-column alignment (Local)
 
 - Use the same first-control starting column as Status Boxes across Selection, Port Labels and LEDs, Position & Size, and other primary Calibration rows, with responsive stacking for narrow screens.
