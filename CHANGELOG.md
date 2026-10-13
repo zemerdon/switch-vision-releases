@@ -1,3 +1,8 @@
+## v2.7.83 — Rear optical status accuracy
+
+- Display an unknown state instead of falsely reporting Down when rear optical status telemetry is absent or unavailable.
+- Preserve confirmed Up/Down states, speed reporting, front shared-port mapping, supplied faceplate geometry and saved Calibration settings.
+
 ## v2.7.82 — HP 3500yl-48G exact default artwork (Local)
 
 - Register the unmodified owner-provided 6000 × 1600 HP 3500yl-48G PNG and its unmodified geometry export; use geometry only, ignoring the SW1 test-profile metadata.

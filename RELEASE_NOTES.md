@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.83
+
+Rear optical port details now distinguish missing or unavailable status telemetry from a confirmed Down link. Unavailable readings display an unknown state, while valid Up/Down link status, link speed, front shared-port identities, factory faceplate geometry and saved calibration remain unchanged.
+
 # Switch Vision Core v2.7.82
 
 Local-only HP J8693A 3500yl-48G exact default faceplate. The source PNG (6000 × 1600) and geometry export are copied byte-for-byte; only their existing geometry collection is imported, not the unrelated SW1 test calibration identity. The reviewed native-image renderer transform round-trips the supplied 48-port, four SFP and four rear SFP calibration geometry without manual repositioning. This exact model now selects its own faceplate and factory profile by default, retaining the established 44 fixed RJ45 plus 4 shared RJ45/SFP hardware, SNMP mapping, status and other model defaults. No renderer changes or saved user calibration migration.
