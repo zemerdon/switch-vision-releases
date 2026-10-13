@@ -1,3 +1,9 @@
+## v2.7.84 — Configurable SFP optical status rows
+
+- Make SFP optical sensor rows individually configurable via the existing Port Status Box Show/Hide/Move controls, separate from RJ45 fields.
+- Preserve the previous Dell N2128PX-ON optical display until the user edits SFP rows; retain saved calibration and independent status-box layouts.
+- Keep missing telemetry unavailable; add no hover information, extra polling or SNMP writes.
+
 ## v2.7.83 — Rear optical status accuracy
 
 - Display an unknown state instead of falsely reporting Down when rear optical status telemetry is absent or unavailable.

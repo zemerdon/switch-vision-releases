@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.84
+
+SFP optical diagnostics in the existing Calibration Port Status Box can now be shown, hidden and reordered separately from RJ45 fields. Dell N2128PX-ON current read-only optical rows retain their familiar display until an SFP-specific edit, and saved per-switch and per-status-box preferences persist. Unavailable optical readings stay unavailable. No hover UI, extra polling, SNMP SET, geometry migration or source-original changes.
+
 # Switch Vision Core v2.7.83
 
 Rear optical port details now distinguish missing or unavailable status telemetry from a confirmed Down link. Unavailable readings display an unknown state, while valid Up/Down link status, link speed, front shared-port identities, factory faceplate geometry and saved calibration remain unchanged.

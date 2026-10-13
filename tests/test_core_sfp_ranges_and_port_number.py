@@ -27,7 +27,7 @@ class SfpRangePortNumberTests(unittest.TestCase):
             "statusPanelFieldSelection",
         )
         defs = source.split("const STATUS_PANEL_ROW_DEFS = {", 1)[1].split("\n};", 1)[0]
-        harness = "\n".join(["const SV_REAR_SFP_SLOT_BASE = 1000000;", "const SV_PROFILE_MAX_UPLINKS = 128;", f"const STATUS_PANEL_ROW_DEFS = {{{defs}\n}};",
+        harness = "\n".join(["const SV_REAR_SFP_SLOT_BASE = 1000000;", "const SV_PROFILE_MAX_UPLINKS = 128;", "const SFP_OPTICAL_FIELDS = [\"optic_status\", \"temperature\", \"voltage\", \"current\", \"tx_power\", \"rx_power\", \"media_type\", \"transceiver_vendor\", \"transceiver_part\"];", f"const STATUS_PANEL_ROW_DEFS = {{{defs}\n}};",
                               *(function(source, name) for name in names)]) + """
 function uiFromCalibration(cal){return cal.ui;}
 const assert=(ok, message)=>{if(!ok)throw new Error(message)};
@@ -98,7 +98,9 @@ console.log('SFP_RANGES_AND_PORT_NUMBER=PASS');
         self.assertEqual(source.count("number: selectedPortStatusLabel(config, cal, selected)"), 2)
         self.assertIn('data-cv-field="port-status-row-field"', source)
         self.assertIn('field === "number" || field === "role" || field === "link"', source)
-        self.assertIn("panel.field_order.sfp = [...order]", source)
+        self.assertNotIn("panel.field_order.sfp = [...order]", source)
+        self.assertIn("panel.field_order[rowType] = order;", source)
+        self.assertIn('data-cv-field="port-status-row-type"', source)
         self.assertNotIn('if (values.role !== "—" && !fields.includes("role"))', source)
         self.assertIn('data-cv-action="port-status-row-toggle"', source)
 
