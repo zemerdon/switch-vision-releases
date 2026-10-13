@@ -70,7 +70,7 @@ def main() -> int:
         "rearSfpEntityBase", "rearSfpEntity", "rearSfpBindings",
         "sortedCalibrationSfpKeys", "nextCalibrationSfpNumber",
         "nextCalibrationRearSfpNumber", "sfpStatusEntities",
-        "sfpByteEntities",
+        "sfpByteEntities", "selectedSfpDetails",
     )
     prelude = """
 const assert = require("node:assert/strict");
@@ -81,6 +81,12 @@ function normalizeMember(config) { return config.member || "sw1"; }
 function n4032QsfpEntity() { return null; }
 function n4032RearQsfpEntity() { return null; }
 function templateEntity() { return null; }
+function entityState(hass, id) { return hass?.states?.[id] ? String(hass.states[id].state).toLowerCase() : null; }
+function firstEntityValue(hass, ids) { return ids.map(id => hass?.states?.[id]?.state).find(v => v !== undefined) || null; }
+function trimText(value) { return String(value); }
+function sfpSpeedMbps() { return 10000; }
+function sfpIsUp(hass, config, n) { const id = rearSfpEntity(config, n, "status"); return entityState(hass,id) === "up"; }
+function speedLabel(speed, up) { return up ? "10G Full" : "Down"; }
 """
     body = "\n".join(function(source, name) for name in functions)
     proof = """
@@ -133,6 +139,13 @@ observed.sfp.rSFP1.rear_entity_base = "sensor.sw4_uplink_25";
 assert.equal(rearSfpBindings({member: "sw4"}, observed)["1000001"].entity_base, "sensor.sw4_uplink_25");
 const explicitlyUnmapped = {rear_sfp_bindings: {rSFP1: {interface_name: "xe-0/1/0"}}};
 assert.equal(rearSfpBindings(explicitlyUnmapped, observed)["1000001"].entity_base, null);
+const noModule = {...hp, __rear_sfp_bindings: noBindings};
+assert.equal(selectedSfpDetails({states: {}}, noModule, 1000001).link, "—", "no module has no known Down state");
+assert.equal(selectedSfpDetails({states: {}}, render, 1000004).link, "—", "missing sensor is unknown");
+const liveId = "sensor.sw9_rear_10g_4_status";
+assert.equal(selectedSfpDetails({states: {[liveId]: {state: "unavailable"}}}, render, 1000004).link, "—", "unavailable sensor is unknown");
+assert.equal(selectedSfpDetails({states: {[liveId]: {state: "up"}}}, render, 1000004).link, "10G Full", "A4 live link is shown");
+assert.equal(selectedSfpDetails({states: {[liveId]: {state: "down"}}}, render, 1000004).link, "Down", "real down remains down");
 console.log("Rear SFP behavior: PASS");
 """
     result = subprocess.run(["node", "-e", prelude + body + proof], cwd=ROOT, timeout=30, capture_output=True, text=True)

@@ -1514,11 +1514,16 @@ function selectedSfpDetails(hass, config, port) {
       const id = rearSfpEntity(config, n, suffix);
       return id ? firstEntityValue(hass, [id]) : null;
     };
+    const statusId = rearSfpEntity(config, n, "status");
+    const linkState = statusId ? entityState(hass, statusId) : null;
+    // An unobserved or currently unavailable rear module is not a Down link.
+    // Only an actual status sensor may establish an Up/Down state.
+    const linkKnown = linkState !== null && !["unknown", "unavailable", "none", "null", ""].includes(linkState);
     return {
       isJuniper: false, vlan: trimText(read("native_vlan") || read("vlan_id") || "—", 10),
       mode: trimText(read("vlan_mode") || "—", 10),
       description: trimText(read("alias") || read("description") || "—", 22),
-      link: speedLabel(sfpSpeedMbps(hass, config, n), sfpIsUp(hass, config, n))
+      link: linkKnown ? speedLabel(sfpSpeedMbps(hass, config, n), sfpIsUp(hass, config, n)) : "—"
     };
   }
   const logicalPort = sfpLogicalPort(config, n);
