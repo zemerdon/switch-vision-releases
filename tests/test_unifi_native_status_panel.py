@@ -23,7 +23,7 @@ def main() -> None:
         # The generic SFP list also includes the HP-only Port dB row.
         # Other models filter unavailable values; the native UniFi row
         # contract remains fixed by the assertions above.
-        assert 'defaults: ["role", "vlan", "mode", "desc", "link", "rx", "tx", "number", "port_db"]' in text, path
+        assert 'defaults: ["role", "vlan", "mode", "desc", "link", "rx", "tx", "number", "port_db", ...SFP_OPTICAL_FIELDS]' in text, path
         assert 'hidden: ["mode", "number"]' in text, path
         assert 'defaults: ["model", "ip", "cpu", "temp", "poe", "uptime", "vendor", "os", "firmware", "serial", "stack", "fans", "psu"]' in text, path
         # UniFi per-port traffic remains explicitly disabled unless a future API
