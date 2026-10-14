@@ -68,6 +68,7 @@ def main() -> int:
     functions = (
         "rearSfpOrdinal", "rearSfpOrdinalFromPort", "sfpPortNumber",
         "rearSfpEntityBase", "rearSfpEntity", "rearSfpBindings",
+        "hp3500ylOpticalPilot", "hpRearOpticIfIndex", "hpOpticalSfpIndex",
         "sortedCalibrationSfpKeys", "nextCalibrationSfpNumber",
         "nextCalibrationRearSfpNumber", "sfpStatusEntities",
         "sfpByteEntities", "selectedSfpDetails",
@@ -116,6 +117,27 @@ for (let slot = 1; slot <= 4; slot++) {
 }
 assert.equal(noBindings["1000001"].interface_name, "A1");
 assert.equal(noBindings["1000004"].interface_name, "A4");
+assert.equal(hpRearOpticIfIndex(hp, 1000001), null, "artwork alone is not module evidence");
+const hpObserved = {...hp, rear_sfp_bindings: {
+  rSFP1: {interface_name:"A1", entity_base:"sensor.sw9_rear_10g_1", if_index:49},
+  rSFP2: {interface_name:"A2", entity_base:"sensor.sw9_rear_10g_2", if_index:50},
+  rSFP3: {interface_name:"A3", entity_base:"sensor.sw9_rear_10g_3", if_index:51},
+  rSFP4: {interface_name:"A4", entity_base:"sensor.sw9_rear_10g_4", if_index:52}
+}};
+assert.equal(hpRearOpticIfIndex(hpObserved, 1000001), 49);
+assert.equal(hpRearOpticIfIndex(hpObserved, 1000004), 52);
+assert.equal(hpOpticalSfpIndex(hpObserved, 1000002), null, "CX4 A2 cannot refresh optical DOM");
+assert.equal(hpOpticalSfpIndex(hpObserved, 1000003), null, "CX4 A3 cannot refresh optical DOM");
+for (const bad of [
+  {interface_name:"A1", entity_base:"sensor.sw9_rear_10g_1", if_index:52},
+  {interface_name:"A1", if_index:49},
+  {interface_name:"A1", entity_base:"sensor.sw9_rear_10g_1", if_index:"49"}
+]) {
+  assert.equal(hpRearOpticIfIndex({...hpObserved, rear_sfp_bindings:{...hpObserved.rear_sfp_bindings, rSFP1:bad}},1000001),null);
+}
+assert.equal(hpRearOpticIfIndex({...hpObserved,switch_model:"Other Vendor"},1000001),null);
+assert.equal(rearSfpBindings(hpObserved,cal)["1000001"].if_index,49);
+assert.equal(rearSfpBindings(hpObserved,cal)["1000002"].if_index,50);
 const generic = {member: "sw9", switch_model: "Other Vendor 4000", rear_sfp_bindings: {
   rSFP1: {interface_name: "xe-0/1/0", entity_base: "sensor.sw9_rear_10g_1"},
   rSFP4: {interface_name: "xe-0/1/3", entity_base: "sensor.sw9_rear_10g_4"},

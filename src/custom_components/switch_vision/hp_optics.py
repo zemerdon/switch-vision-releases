@@ -15,6 +15,7 @@ SUPPORTED_MODELS = frozenset({"J8693A", "HP J8693A Switch 3500yl-48G", "HP J8693
 PREFIX = "1.3.6.1.4.1.11.2.14.11.5.1.82.1.1.1.1"
 SYS_DESCR = "1.3.6.1.2.1.1.1.0"
 IF_DESCR = "1.3.6.1.2.1.2.2.1.2"
+IF_NAME = "1.3.6.1.2.1.31.1.1.1.1"
 DOM = 9
 UPDATE = 10
 TX = 14
@@ -50,8 +51,22 @@ def trusted_target(cards: list[dict[str, Any]], host: str, member: str, index: i
     ]
     if len(matching) != 1:
         raise ValueError("No unique registered HP 3500yl matches this selected switch.")
-    # Ports 45-48 may be optical only when their dual-purpose SFP is populated.
-    # Rear optional module positions 49-52 are also subject to the live DOM check.
+    if index >= 49:
+        # The rear artwork alone never authorizes a SET. For now only A1/A4
+        # may be probed, and only when Discovery recorded their exact IF index.
+        # A2/A3 CX4/unpopulated positions must not produce optical commands.
+        if index not in (49, 52):
+            raise ValueError("No verified rear optical candidate at this slot.")
+        slot = index - 48
+        bound = matching[0].get("rear_sfp_bindings")
+        row = bound.get(f"rSFP{slot}") if isinstance(bound, dict) else None
+        if (not isinstance(row, dict)
+                or row.get("interface_name") != f"A{slot}"
+                or type(row.get("if_index")) is not int
+                or row["if_index"] != index):
+            raise ValueError("Rear optical slot lacks an observed exact interface binding.")
+    # A module-independent IF-MIB status entry is not optical module evidence.
+    # Live model, interface name and DOM(1) must still pass before a SET.
     return str(ip)
 
 
@@ -84,10 +99,12 @@ def assert_device(sys_descr: Any) -> None:
         raise ValueError("Live SNMP identity is not the exact HP J8693A 3500yl.")
 
 
-def assert_optical(if_descr: Any) -> None:
+def assert_optical(if_descr: Any, if_name: Any, port: int) -> None:
     value = str(if_descr or "").strip()
     if not value or len(value) > 256:
         raise ValueError("Selected interface does not have a valid live SNMP description.")
+    if port >= 49 and str(if_name or "").strip() != f"A{port - 48}":
+        raise ValueError("Live IF-MIB rear identity does not match the registered A-port.")
 
 
 async def refresh_dom(
@@ -107,7 +124,9 @@ async def refresh_dom(
         snmp_factory = SnmpV2Agent
     async with snmp_factory(host, write_community) as agent:
         assert_device(await agent.get(SYS_DESCR))
-        assert_optical(await agent.get(f"{IF_DESCR}.{port}"))
+        assert_optical(await agent.get(f"{IF_DESCR}.{port}"),
+                       await agent.get(f"{IF_NAME}.{port}") if port >= 49 else None,
+                       port)
         assert_dom(await agent.get(oid(DOM, port)))
         # Only the numeric TruthValue for DOM update is ever written. Never
         # offer an arbitrary OID/value or re-purpose this path for VCT.

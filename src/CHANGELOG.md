@@ -1,3 +1,10 @@
+## v2.7.85 — Guarded HP 3500yl rear optical selection
+
+- Resolve rear A1/A4 optical selections to their actual Discovery-observed physical IF-MIB indexes; never infer an optical module from stock artwork, stale Calibration labels or CX4/empty A2/A3 positions.
+- Reuse the explicitly enabled, admin-only HP DOM refresh and RX/TX dBm presentation with exact dashboard-bound index and live interface identity checks before any existing fixed OID SNMP SET. No arbitrary writes, automatic polling or new credentials.
+- Preserve rear status entities, front 45–48 combo-port behavior, faceplate geometry, native rendering and saved Calibration profiles.
+- Coordinate with Discovery 3.0.55's observed rear-index metadata.
+
 ## v2.7.84 — Configurable SFP optical status rows
 
 - Make SFP optical sensor rows individually configurable via the existing Port Status Box Show/Hide/Move controls, separate from RJ45 fields.
