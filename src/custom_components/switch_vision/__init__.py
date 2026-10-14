@@ -183,7 +183,7 @@ UNIFI_DEVICE_WS_SCHEMA = {
 }
 
 PANEL_URL_PATH = "switch-vision"
-PANEL_VERSION = "2.7.85"
+PANEL_VERSION = "2.7.86"
 PANEL_JS_PATH = "/api/switch_vision/switch-vision-panel.js"
 PANEL_JS_URL = f"{PANEL_JS_PATH}?v={PANEL_VERSION}"
 ICONSET_JS_PATH = "/api/switch_vision/switch-vision-iconset.js"
@@ -2490,6 +2490,18 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
                     faceplate_ui.get("source") or ""
                 ).strip().lower()
 
+                # Retain the image referenced by the user's saved factory
+                # calibration, even when ui.faceplate selects "default".
+                # Hub uses this after Core restart to offer Reset Current
+                # Switch only when a newer model default differs.
+                saved_image = calibration.get("image")
+                saved_image = saved_image if isinstance(saved_image, dict) else {}
+                image_file = str(saved_image.get("file") or "").strip()
+                if image_file.startswith("faceplates/"):
+                    image_file = image_file.split("/", 1)[1]
+                if image_file != Path(image_file).name or image_file.startswith("."):
+                    image_file = ""
+
                 faceplate = raw_faceplate
                 if faceplate.startswith("faceplates/"):
                     faceplate = faceplate.split("/", 1)[1]
@@ -2512,6 +2524,7 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
                         "faceplate_profile": faceplate_profile,
                         "faceplate": faceplate,
                         "faceplate_source": faceplate_source,
+                        "saved_calibration_image": image_file,
                         "active": active,
                         "model": str(calibration.get("model") or ""),
                         "port_count": len(
@@ -2588,6 +2601,12 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
     async def websocket_list_assets(hass: HomeAssistant, connection, msg):
         """Return safe logo and faceplate filenames from the Switch Vision folders."""
         assets = await hass.async_add_executor_job(_list_assets)
+        # Hub compares installed stock assets after Home Assistant Core restarts.
+        # This is read-only metadata; no Calibration is changed by detection.
+        assets["faceplate_fingerprints"] = await hass.async_add_executor_job(
+            _fingerprint_faceplates
+        )
+        assets["core_version"] = PANEL_VERSION
         connection.send_result(msg["id"], assets)
 
     @websocket_api.websocket_command(GET_BACKUP_ASSET_WS_SCHEMA)

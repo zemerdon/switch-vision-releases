@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.86
+
+Adds read-only installed faceplate SHA-256 metadata and the original saved Calibration image identity for Discovery / Hub's upcoming model-aware faceplate upgrade offer (Discovery 3.0.56). After Home Assistant Core restarts, Hub can compare a switch's saved stock faceplate against the currently recommended model image and offer the existing Reset Current Switch path. No automatic Calibration resets, model changes, port remapping or renderer changes occur in Core.
+
 # Switch Vision Core v2.7.85
 
 HP J8693A 3500yl rear optical A1/A4 selections now resolve through actual Discovery-observed IF-MIB indexes, retaining the existing explicitly opted-in/admin-controlled DOM diagnostics refresh and RX/TX dBm display. Empty/CX4 A2/A3 rear positions never trigger this optical refresh path, and the backend refuses unknown, mismatched or non-DOM interfaces before any fixed OID SNMP SET. Requires compatible Discovery 3.0.55 for rear index metadata. Existing faceplates, per-switch Calibration profiles, and front dual-purpose port behaviour remain unchanged. No new automated polling or arbitrary SNMP writes.

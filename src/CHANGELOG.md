@@ -1,3 +1,9 @@
+## v2.7.86 — Read-only Hub faceplate upgrade metadata
+
+- Expose SHA-256 fingerprints of installed faceplate images and Core runtime version through the existing read-only asset listing after Home Assistant Core starts.
+- Expose the stock image retained inside each saved Calibration profile so Hub can compare it with the latest reviewed model default without duplicating Calibration state.
+- Preserve existing Reset Current Switch, saved Calibration, stock artwork, model mapping and native renderer behavior; Core does not automatically reset any profiles.
+
 ## v2.7.85 — Guarded HP 3500yl rear optical selection
 
 - Resolve rear A1/A4 optical selections to their actual Discovery-observed physical IF-MIB indexes; never infer an optical module from stock artwork, stale Calibration labels or CX4/empty A2/A3 positions.
