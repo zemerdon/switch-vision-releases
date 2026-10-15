@@ -1,3 +1,9 @@
+## v2.7.91 — Cisco 3850-12XS stock faceplate art refinement (Local)
+
+- Replace the stock `cisco-3850-12xs.png` with the owner's latest verified 2680 × 356 PNG, retaining the exact filename and all twelve factory SFP positions.
+- Advance the stock asset checksum to distinguish this image from the previous revision for the already-staged per-switch Keep Current / Upgrade Faceplate workflow.
+- Leave model telemetry, geometry, saved Calibration profiles and admin actions unchanged.
+
 ## v2.7.90 — Opt-in faceplate artwork selection (Local)
 
 - Persist one approved stock artwork SHA per switch and dashboard scope without relying on saved Calibration.

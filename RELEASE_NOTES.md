@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.91
+
+Local-only follow-up owner-supplied Cisco Catalyst 3850-12XS artwork revision (`cisco-3850-12xs.png`, SHA-256 `eba68a052bc0baff1a5af583eb869895e30c93a51d3836bc763baee1025eacde`). The outgoing stock art was `990a72433510e64e164a55bf07fb814dd2d276fac256be726f530b53334b3dc9`. The filename, 2680 × 356 PNG dimensions, twelve SFP port positions, calibration geometry and device/telemetry contract remain unchanged. Existing installations with the previous verified selected revision may retain that stock artwork through Installer's holding directory and explicitly approve the new pixels in Hub; no automatic Calibration reset. A first migration without preserved originals cannot reconstruct old images. No public release or owner-HAOS installation is implied.
+
 # Switch Vision Core v2.7.90
 
 Faceplate artwork changes require explicit per-switch approval. The original stock filenames stay unchanged; Core stores verified per-switch and scope artwork fingerprints separate from Calibration geometry. The card continues using verified archived pixels when an update changes the stock image. An unavailable or untrusted archived image cannot silently fall back to a newer one. Hub may approve an exact new stock fingerprint via an admin-only operation without deleting saved Calibration. New switch profiles initially select the verified current stock image. Existing HP 3500yl per-port cooldown, port mapping and faceplate geometry are unchanged.

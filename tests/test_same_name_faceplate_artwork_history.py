@@ -27,7 +27,7 @@ class SameNameArtworkHistoryTests(unittest.TestCase):
         assert data["image"]["height"] == 356
         assert len(data["sfp"]) == 12
         sha = hashlib.sha256(asset.read_bytes()).hexdigest()
-        assert sha == "990a72433510e64e164a55bf07fb814dd2d276fac256be726f530b53334b3dc9"
+        assert sha == "eba68a052bc0baff1a5af583eb869895e30c93a51d3836bc763baee1025eacde"
         assert manifest["assets"]["faceplates"]["cisco-3850-12xs.png"] == sha
 
 
