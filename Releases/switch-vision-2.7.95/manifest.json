@@ -1,9 +1,9 @@
 {
   "name": "Switch Vision",
-  "version": "2.7.94",
+  "version": "2.7.95",
   "status": "public-release",
-  "release_name": "switch-vision-2.7.94",
-  "resource": "/local/switch-vision/js/switch-vision.js?v=2.7.94",
+  "release_name": "switch-vision-2.7.95",
+  "resource": "/local/switch-vision/js/switch-vision.js?v=2.7.95",
   "card_type": "custom:switch-vision-3650",
   "custom_component_domain": "switch_vision",
   "installer_repository": "https://github.com/zemerdon/switch-vision-installer",

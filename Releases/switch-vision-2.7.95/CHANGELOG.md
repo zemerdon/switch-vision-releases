@@ -1,3 +1,8 @@
+## v2.7.95 — Reproducible Core source-archive packaging (Local)
+
+- Package the faceplate revision builder with the exact source archive and load it reliably in clean extracted-source regressions.
+- Keep all 2.7.94 bounded-revision, geometry, Calibration-isolation and archive-parity protections unchanged; 2.7.94 was not staged.
+
 ## v2.7.94 — Three distinct faceplate revisions (Local)
 
 - Limit each shipped stock faceplate to its latest distinct PNG/factory geometry pair and two preceding distinct pairs, without new revisions on routine Core releases.

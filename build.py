@@ -11,6 +11,9 @@ import subprocess
 import sys
 import zipfile
 
+_BUILD_ROOT = Path(__file__).resolve().parent
+if str(_BUILD_ROOT) not in sys.path:
+    sys.path.insert(0, str(_BUILD_ROOT))
 import faceplate_revision_build
 
 import yaml
@@ -1896,6 +1899,7 @@ def write_source_zip(version: str, gold: bool = False) -> Path:
         "SECURITY.md",
         "VERSION",
         "build.py",
+        "faceplate_revision_build.py",
     ]
     if (PROJECT_ROOT / "LICENSE").exists():
         root_names.append("LICENSE")
