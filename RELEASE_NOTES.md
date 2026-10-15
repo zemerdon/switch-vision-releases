@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.87
+
+Local-only Cisco Catalyst 3850-12XS faceplate artwork refresh. The owner-supplied 2680 × 356 `cisco-3850-12xs.png` replaces the bundled stock PNG at the same native dimensions. The 12 existing optical-port positions, factory Calibration geometry and controls, model/telemetry contract, native renderer and saved per-switch calibrations are unchanged. The new image has a refreshed integrity fingerprint for model-aware faceplate upgrade comparison; it does not automatically reset existing saved profiles. No public publication is implied.
+
 # Switch Vision Core v2.7.86
 
 Adds read-only installed faceplate SHA-256 metadata and the original saved Calibration image identity for Discovery / Hub's upcoming model-aware faceplate upgrade offer (Discovery 3.0.56). After Home Assistant Core restarts, Hub can compare a switch's saved stock faceplate against the currently recommended model image and offer the existing Reset Current Switch path. No automatic Calibration resets, model changes, port remapping or renderer changes occur in Core.

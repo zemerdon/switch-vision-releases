@@ -1,3 +1,8 @@
+## v2.7.87 — Cisco Catalyst 3850-12XS artwork replacement (Local)
+
+- Replace only the bundled `cisco-3850-12xs.png` artwork with the owner-provided 2680 × 356 PNG, preserving its source bytes and updating the stock-image SHA-256 fingerprint.
+- Keep the existing factory Calibration JSON, all 12 SFP port/LED hitboxes, native-image coordinates, exact-model mapping, telemetry and saved user preferences unchanged. No renderer or geometry migration.
+
 ## v2.7.86 — Read-only Hub faceplate upgrade metadata
 
 - Expose SHA-256 fingerprints of installed faceplate images and Core runtime version through the existing read-only asset listing after Home Assistant Core starts.

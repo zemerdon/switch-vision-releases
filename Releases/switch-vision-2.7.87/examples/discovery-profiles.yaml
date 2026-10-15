@@ -1,0 +1,50 @@
+# Switch Vision discovery mapping profiles
+# Cross-component example; not tied to a Discovery release number
+# Supported means personally validated by the project owner.
+# Experimental means possible only; review mapping report and generated YAML before use.
+profiles:
+  cisco-3650-48p-2x10g:
+    status: supported
+    vendor: Cisco
+    family: Catalyst 3650
+    model_patterns:
+      - WS-C3650-48PD-E
+      - WS-C3650-48PD-L
+    layout:
+      members: auto
+      rj45_ports: 48
+      sfp_1g_ports: 2
+      sfp_10g_ports: 2
+    interface_patterns:
+      rj45:
+        - Gi{member}/0/{port}
+        - GigabitEthernet{member}/0/{port}
+      sfp_1g:
+        - Gi{member}/1/{port}
+        - GigabitEthernet{member}/1/{port}
+      sfp_10g:
+        - Te{member}/1/{port}
+        - TenGigabitEthernet{member}/1/{port}
+
+  cisco-3750x-24p:
+    status: experimental
+    vendor: Cisco
+    family: Catalyst 3750X
+    model_patterns:
+      - WS-C3750X-24P
+      - WS-C3750X-24P-L
+    layout:
+      members: auto
+      rj45_ports: 24
+      sfp_1g_ports: 4
+      sfp_10g_ports: 2
+    interface_patterns:
+      rj45:
+        - Gi{member}/0/{port}
+        - GigabitEthernet{member}/0/{port}
+      sfp_1g:
+        - Gi{member}/1/{port}
+        - GigabitEthernet{member}/1/{port}
+      sfp_10g:
+        - Te{member}/1/{port}
+        - TenGigabitEthernet{member}/1/{port}
