@@ -8,6 +8,7 @@ No profile is reset automatically, and no renderer/geometry is rewritten.
 from __future__ import annotations
 
 import hashlib
+import json
 from pathlib import Path
 import re
 from typing import Any
@@ -137,3 +138,34 @@ def pin_for_profile(root: Path, filename: str, current_sha: str,
         if old_sha:
             return old_sha
     return current_sha
+
+
+def recorded_preupgrade_choice(root: Path, base: str, name: str,
+                               installed_sha: str) -> str:
+    """Use a private Installer pre-replacement record, never a guessed image.
+
+    The record must name this already-configured switch and image, match the
+    installed new bytes, and point at digest-verified preserved previous bytes.
+    A missing record cannot manufacture an old version for a new switch.
+    """
+    if not re.fullmatch(r"(?:native|custom)_[A-Za-z0-9_-]{1,96}", base):
+        return ""
+    if not _FILE.fullmatch(name) or not _SHA.fullmatch(installed_sha):
+        return ""
+    file = root.parent.parent / "switch-vision-faceplate-upgrades.json"
+    try:
+        if file.is_symlink() or not file.is_file() or file.stat().st_size > 512 * 1024:
+            return ""
+        payload = json.loads(file.read_text(encoding="utf-8"))
+        if not isinstance(payload, dict) or payload.get("schema") != "switch-vision-faceplate-upgrade-record-v1":
+            return ""
+        entry = payload.get("choices", {}).get(base, {}).get(name, {})
+        if not isinstance(entry, dict) or entry.get("after") != installed_sha:
+            return ""
+        before = entry.get("before")
+        if not isinstance(before, str) or not _SHA.fullmatch(before) or before == installed_sha:
+            return ""
+        choice = verified_choice(root, name, before, installed_sha)
+        return before if choice.get("path") == f"faceplate-history/{before}/{name}" else ""
+    except (OSError, ValueError, AttributeError, TypeError):
+        return ""

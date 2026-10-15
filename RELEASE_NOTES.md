@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.92
+
+Fix first-direct-upgrade stock faceplate consent. When Installer has saved a private, verified pre-replacement record for an already configured switch, Core initialises that switch's first artwork selection to the preserved prior stock PNG (not the newly installed same-name image). Core checks the record's exact installed SHA and verifies the archived original bytes. Existing per-switch selections, saved Calibration and port geometry are never reset or replaced. A missing/invalid record is not presented as old artwork; earlier installations that did not capture this record cannot be reconstructed retroactively. Requires Installer 2.1.56 for newly captured migrations and coordinated Discovery / Hub 3.0.61.
+
 # Switch Vision Core v2.7.91
 
 Local-only follow-up owner-supplied Cisco Catalyst 3850-12XS artwork revision (`cisco-3850-12xs.png`, SHA-256 `eba68a052bc0baff1a5af583eb869895e30c93a51d3836bc763baee1025eacde`). The outgoing stock art was `990a72433510e64e164a55bf07fb814dd2d276fac256be726f530b53334b3dc9`. The filename, 2680 × 356 PNG dimensions, twelve SFP port positions, calibration geometry and device/telemetry contract remain unchanged. Existing installations with the previous verified selected revision may retain that stock artwork through Installer's holding directory and explicitly approve the new pixels in Hub; no automatic Calibration reset. A first migration without preserved originals cannot reconstruct old images. No public release or owner-HAOS installation is implied.

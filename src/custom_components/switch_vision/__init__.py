@@ -196,7 +196,7 @@ UNIFI_DEVICE_WS_SCHEMA = {
 }
 
 PANEL_URL_PATH = "switch-vision"
-PANEL_VERSION = "2.7.91"
+PANEL_VERSION = "2.7.92"
 PANEL_JS_PATH = "/api/switch_vision/switch-vision-panel.js"
 PANEL_JS_URL = f"{PANEL_JS_PATH}?v={PANEL_VERSION}"
 ICONSET_JS_PATH = "/api/switch_vision/switch-vision-iconset.js"
@@ -2444,11 +2444,17 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
             except (OSError, ValueError, KeyError):
                 current_sha = ""
             if current_sha:
+                recorded_sha = await hass.async_add_executor_job(
+                    _faceplate_artwork.recorded_preupgrade_choice, _asset_root(),
+                    base_profile, filename, current_sha,
+                )
                 initial_sha = await hass.async_add_executor_job(
                     _faceplate_artwork.pin_for_profile, _asset_root(),
                     filename, current_sha,
                     calibration if isinstance(calibration, dict) else None,
                 )
+                if initial_sha == current_sha and recorded_sha:
+                    initial_sha = recorded_sha
                 selected_filename = filename
                 selected_sha = ""
                 async with storage_lock:

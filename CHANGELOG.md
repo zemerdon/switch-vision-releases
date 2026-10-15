@@ -1,3 +1,8 @@
+## v2.7.92 — Direct faceplate migration (Local)
+
+- Reuse Installer's verified prior-artwork record for existing switches without a selection.
+- Preserve saved artwork decisions and Calibration.
+
 ## v2.7.91 — Cisco 3850-12XS stock faceplate art refinement (Local)
 
 - Replace the stock `cisco-3850-12xs.png` with the owner's latest verified 2680 × 356 PNG, retaining the exact filename and all twelve factory SFP positions.
