@@ -80,7 +80,7 @@ def saved_artwork(root: Path, calibration: dict[str, Any],
         if saved == current_sha:
             return saved, ""
         revision = revision_choice(root, name, saved, current_sha)
-        if revision and revision["path"].startswith("faceplates-old/"):
+        if revision and revision["path"].startswith(("faceplates-old/", "faceplate-history/revisions/sha/")):
             return saved, revision["path"]
         relative = f"faceplate-history/{saved}/{name}"
     else:
@@ -194,7 +194,13 @@ def catalog_revisions(root: Path, filename: str) -> list[dict[str, Any]]:
     """Return only manifest-bound, byte-verified artwork+factory geometry pairs."""
     if not _FILE.fullmatch(filename):
         return []
-    file = root / "faceplates-old" / "manifest.json"
+    # Prefer the Installer-managed history where it exists, but allow old
+    # bundled Core inventories to be read unmodified during migration.
+    local_manifest = root / "faceplate-history/revisions/sha/manifest.json"
+    legacy_manifest = root / "faceplates-old/manifest.json"
+    if local_manifest.exists() or not legacy_manifest.exists():
+        return sha_catalog_revisions(root, filename)
+    file = legacy_manifest
     try:
         if file.is_symlink() or file.stat().st_size > 1024 * 1024:
             return []
@@ -308,14 +314,31 @@ def revision_choice(root: Path, filename: str, sha: str,
 
 def revision_index(root: Path) -> dict[str, list[dict[str, str]]]:
     """Small preview index; full trusted geometry is delivered only for selected art."""
+    file = root / "faceplate-history/revisions/sha/manifest.json"
+    try:
+        if file.is_file() and not file.is_symlink() and file.stat().st_size <= 1024 * 1024:
+            data = json.loads(file.read_text(encoding="utf-8"))
+            images = data.get("faceplates", {})
+            if data.get("schema") == 2 and isinstance(images, dict) and len(images) <= 128:
+                return {
+                    name: [{key: row[key] for key in
+                            ("version", "filename", "sha256", "geometry_sha256", "path")}
+                           for row in catalog_revisions(root, name)]
+                    for name in (set(images) | {p.name for p in (root / 'faceplates').glob('*.png')}) if isinstance(name, str) and _FILE.fullmatch(name)
+                }
+    except (ValueError, TypeError, OSError, AttributeError):
+        pass
     file = root / "faceplates-old" / "manifest.json"
     try:
-        if file.is_symlink() or file.stat().st_size > 1024 * 1024:
-            return {}
-        data = json.loads(file.read_text(encoding="utf-8"))
-        images = data.get("faceplates", {})
-        if data.get("schema") != 1 or not isinstance(images, dict) or len(images) > 128:
-            return {}
+        if not file.exists():
+            images = {p.name: [] for p in (root / "faceplates").glob("*.png")}
+        else:
+            if file.is_symlink() or file.stat().st_size > 1024 * 1024:
+                return {}
+            data = json.loads(file.read_text(encoding="utf-8"))
+            images = data.get("faceplates", {})
+            if data.get("schema") != 1 or not isinstance(images, dict) or len(images) > 128:
+                return {}
     except (ValueError, TypeError, OSError, AttributeError):
         return {}
     result = {}
@@ -328,3 +351,92 @@ def revision_index(root: Path) -> dict[str, list[dict[str, str]]]:
                              ("version", "filename", "sha256", "geometry_sha256", "path")}
                             for row in found]
     return result
+
+
+
+def sha_catalog_revisions(root: Path, filename: str) -> list[dict[str, Any]]:
+    """Verified SHA-identified Installer history paired with one factory geometry.
+
+    The component version is never used as an artwork revision identity.
+    Older Core-versioned inventories are read separately for migration only.
+    """
+    if not _FILE.fullmatch(filename):
+        return []
+    manifest = root / "faceplate-history/revisions/sha/manifest.json"
+    if manifest.is_symlink():
+        return []
+    try:
+        if manifest.is_file():
+            if manifest.stat().st_size > 1024 * 1024:
+                return []
+            data = json.loads(manifest.read_text(encoding="utf-8"))
+            if data.get("schema") != 2 or not isinstance(data.get("faceplates"), dict):
+                return []
+            saved = data["faceplates"].get(filename, [])
+            if not isinstance(saved, list) or len(saved) > 128:
+                return []
+        else:
+            saved = []
+        result = []
+        for row in saved:
+            if not isinstance(row, dict):
+                continue
+            image_sha = str(row.get("sha256") or "")
+            factory_sha = str(row.get("geometry_sha256") or "")
+            identity = str(row.get("identity") or "")
+            name = str(row.get("geometry_file") or "")
+            if (not _SHA.fullmatch(image_sha) or not _SHA.fullmatch(factory_sha)
+                    or not _SHA.fullmatch(identity)
+                    or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,140}\.json", name)):
+                continue
+            if hashlib.sha256((image_sha + ":" + factory_sha).encode("ascii")).hexdigest() != identity:
+                continue
+            path = f"faceplate-history/revisions/sha/{identity}/{filename}"
+            geo_path = f"faceplate-history/revisions/sha/{identity}/{filename[:-4]}.json"
+            if row.get("path") != path or row.get("geometry_path") != geo_path:
+                continue
+            if (root / "faceplate-history/revisions/sha" / identity).is_symlink():
+                continue
+            if digest_at(root / path) != image_sha or digest_at(root / geo_path) != factory_sha:
+                continue
+            try:
+                geometry = json.loads((root / geo_path).read_text(encoding="utf-8"))
+                if (geometry.get("schema") != "switch-vision-interactive-calibration-v1"
+                        or geometry.get("image", {}).get("file") != "faceplates/" + filename
+                        or not isinstance(geometry.get("ports"), dict)
+                        or not isinstance(geometry.get("sfp"), dict)):
+                    continue
+            except (ValueError, AttributeError, OSError):
+                continue
+            result.append({"version": "sha-" + identity[:20], "filename": filename,
+                           "sha256": image_sha, "geometry_sha256": factory_sha,
+                           "identity": identity, "path": path,
+                           "geometry_path": geo_path, "geometry": geometry})
+        # Current Core always owns the newest factory artwork/geometry pair.
+        image_path = root / "faceplates" / filename
+        stem = filename[:-4]
+        factory_file = next((f"calibration/{candidate}" for candidate in (
+            f"faceplate-{stem}.json", f"faceplate-stock-{stem}.json")
+            if (root / "calibration" / candidate).is_file()), "")
+        if factory_file and image_path.is_file():
+            current_image_sha = digest_at(image_path)
+            current_geo_sha = digest_at(root / factory_file)
+            if current_image_sha and current_geo_sha:
+                geometry = json.loads((root / factory_file).read_text(encoding="utf-8"))
+                if (geometry.get("schema") == "switch-vision-interactive-calibration-v1"
+                        and geometry.get("image", {}).get("file") == "faceplates/" + filename
+                        and isinstance(geometry.get("ports"), dict)
+                        and isinstance(geometry.get("sfp"), dict)):
+                    identity = hashlib.sha256(
+                        (current_image_sha + ":" + current_geo_sha).encode("ascii")
+                    ).hexdigest()
+                    result = [x for x in result if x["identity"] != identity]
+                    result.append({
+                        "version": "sha-" + identity[:20], "filename": filename,
+                        "sha256": current_image_sha, "geometry_sha256": current_geo_sha,
+                        "identity": identity, "path": "faceplates/" + filename,
+                        "geometry_path": factory_file, "geometry": geometry,
+                    })
+        return result
+    except (OSError, ValueError, TypeError, AttributeError):
+        return []

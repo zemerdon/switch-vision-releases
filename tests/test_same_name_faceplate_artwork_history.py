@@ -97,13 +97,15 @@ class SameNameArtworkHistoryTests(unittest.TestCase):
             assert history.verified_choice(root, "../not-stock.png", old_sha, new_sha) == {}
             assert history.verified_choice(root, name, "bad", new_sha) == {}
 
-    def test_real_card_path_is_pinned_and_upgrade_does_not_reset_geometry(self) -> None:
+    def test_real_card_path_is_pinned_and_explicit_upgrade_resets_switch_geometry(self) -> None:
         source = (ROOT / "src/custom_components/switch_vision/__init__.py").read_text()
         card = (ROOT / "src/js/switch-vision.js").read_text()
         assert '"switch_vision/approve_stock_artwork"' in source
         assert 'websocket_api.require_admin' in source
         assert '"stock_artwork_choices"' in source
-        assert 'pins[base] = {"filename": name, "sha256": revision["sha256"]' in source
+        assert '_stock_selection.apply_approved_switch_artwork(' in source
+        assert 'reset_switch_calibration' in source
+        assert '"calibration_reset": True' in source
         assert '"geometry_sha256": revision["geometry_sha256"]' in source
         assert 'stock_artwork: artwork_choice' not in source  # JSON response is keyed
         assert '"stock_artwork": artwork_choice' in source

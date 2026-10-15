@@ -43,6 +43,7 @@ from homeassistant.components.http import StaticPathConfig
 from homeassistant.components.hassio.const import DATA_ADDONS_LIST
 from homeassistant.components.hassio.handler import get_supervisor_client
 from . import faceplate_artwork_history as _faceplate_artwork
+from . import stock_artwork_selection as _stock_selection
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -128,6 +129,8 @@ APPROVE_STOCK_ARTWORK_WS_SCHEMA = {
     vol.Required("approved_sha256"): vol.Match(r"^[a-f0-9]{64}$"),
     vol.Optional("approved_version", default=""): vol.All(str, vol.Length(max=30)),
     vol.Optional("expected_version", default=""): vol.All(str, vol.Length(max=30)),
+    # Explicit owner consent to replace the active switch's visual Calibration.
+    vol.Required("reset_switch_calibration"): vol.In([True]),
 }
 
 LIST_ASSETS_WS_SCHEMA = {
@@ -198,7 +201,7 @@ UNIFI_DEVICE_WS_SCHEMA = {
 }
 
 PANEL_URL_PATH = "switch-vision"
-PANEL_VERSION = "2.7.95"
+PANEL_VERSION = "2.7.96"
 PANEL_JS_PATH = "/api/switch_vision/switch-vision-panel.js"
 PANEL_JS_URL = f"{PANEL_JS_PATH}?v={PANEL_VERSION}"
 ICONSET_JS_PATH = "/api/switch_vision/switch-vision-iconset.js"
@@ -2472,7 +2475,8 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
                         selected_filename = str(previous.get("filename") or "")
                         selected_sha = str(previous.get("sha256") or "")
                     elif len(pins) < 256:
-                        pins[base_profile] = {"filename": filename, "sha256": initial_sha}
+                        pins[base_profile] = {"filename": filename, "sha256": initial_sha,
+                                              "eligible_faceplates": [filename]}
                         await _save(current)
                         selected_sha = initial_sha
                 if selected_sha:
@@ -2640,13 +2644,20 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
             saved_choices = dict((await _load()).get("stock_artwork_choices") or {})
         artwork_choices = await hass.async_add_executor_job(
             lambda: {
-                base: _faceplate_artwork.verified_choice(
-                    _asset_root(), str(pin.get("filename") or ""),
-                    str(pin.get("sha256") or ""),
-                    str(fingerprints.get(str(pin.get("filename") or ""), {}).get("sha256") or ""),
-                    str(pin.get("version") or ""),
-                    str(pin.get("geometry_sha256") or ""),
-                )
+                base: {
+                    **_faceplate_artwork.verified_choice(
+                        _asset_root(), str(pin.get("filename") or ""),
+                        str(pin.get("sha256") or ""),
+                        str(fingerprints.get(str(pin.get("filename") or ""), {}).get("sha256") or ""),
+                        str(pin.get("version") or ""),
+                        str(pin.get("geometry_sha256") or ""),
+                    ),
+                    "eligible_faceplates": [
+                        name for name in pin.get("eligible_faceplates", [])[:16]
+                        if isinstance(name, str) and name == Path(name).name
+                        and name.lower().endswith(".png") and len(name) <= 145
+                    ] if isinstance(pin.get("eligible_faceplates"), list) else [],
+                }
                 for base, pin in saved_choices.items()
                 if isinstance(base, str) and isinstance(pin, dict)
                 and base.startswith(("native_", "custom_"))
@@ -2729,7 +2740,9 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
     @websocket_api.require_admin
     @websocket_api.async_response
     async def websocket_approve_stock_artwork(hass: HomeAssistant, connection, msg):
-        """Change only this switch's artwork pin, never its Calibration."""
+        """Atomically approve a verified stock pair and reset this switch's
+        saved visual Calibration only with an explicit, admin-authorized click.
+        """
         base = str(msg["base_profile"])
         name = str(msg["filename"])
         previous_name = str(msg["previous_filename"])
@@ -2766,13 +2779,26 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
                     or (msg.get("expected_version") and pin.get("version") != msg["expected_version"])):
                 connection.send_error(msg["id"], "stale_choice", "The switch's artwork choice changed.")
                 return
-            pins[base] = {"filename": name, "sha256": revision["sha256"],
-                          "version": revision["version"],
-                          "geometry_sha256": revision["geometry_sha256"]}
+            # One saved-state transaction: the exact switch's prior Calibration
+            # cannot survive alongside its newly selected factory pair.
+            try:
+                removed = _stock_selection.apply_approved_switch_artwork(
+                    state, base, previous_name, name, revision,
+                )
+            except ValueError as err:
+                connection.send_error(msg["id"], "invalid_artwork", str(err))
+                return
             await _save(state)
+        hass.bus.async_fire(EVENT_CALIBRATION_UPDATED, {
+            "profile": base, "profiles_changed": removed,
+            "base_profile_name": base, "action": "reset_switch",
+            "removed": len(removed),
+        })
         connection.send_result(msg["id"], {
             "ok": True, "base_profile": base,
             "filename": name, "sha256": revision["sha256"],
+            "geometry_sha256": revision["geometry_sha256"],
+            "calibration_reset": True, "removed": len(removed),
         })
 
     @websocket_api.websocket_command(LIST_ASSETS_WS_SCHEMA)

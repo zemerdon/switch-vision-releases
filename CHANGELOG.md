@@ -1,3 +1,9 @@
+## v2.7.96 — Installer-owned SHA faceplate preservation (Local)
+
+- Stop bundling historical `faceplates-old` archives; Core ships current stock PNGs and their factory geometry only.
+- Read validated Installer-preserved SHA image/geometry pairs for per-switch selection, with legacy versioned archives supported only during migration.
+- Preserve generic-stock selections when a model gains dedicated artwork and keep user-authored Calibration independent of stock revision changes.
+
 ## v2.7.95 — Reproducible Core source-archive packaging (Local)
 
 - Package the faceplate revision builder with the exact source archive and load it reliably in clean extracted-source regressions.

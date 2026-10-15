@@ -2,13 +2,11 @@
 
 from hashlib import sha256
 from pathlib import Path
-from tempfile import TemporaryDirectory
 import sys
 
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-import faceplate_revision_build  # deterministic build owner for generated pairs
 
 SOURCE = ROOT / "src"
 
@@ -71,11 +69,7 @@ def main() -> int:
 
     unexpected_source = sorted(source_names - release_names)
 
-    generated_archive_names = {name for name in release_names
-                               if name.startswith("faceplates-old/")}
-    unexpected_release = sorted(
-        (release_names - source_names) - RELEASE_ONLY - generated_archive_names
-    )
+    unexpected_release = sorted((release_names - source_names) - RELEASE_ONLY)
 
     changed = sorted(
         name
@@ -84,27 +78,10 @@ def main() -> int:
     )
 
     errors = []
-    # Generated archives are not source files, but every emitted byte must
-    # match the exact deterministic revision builder. This is not an exclusion
-    # from parity: missing, extra, tampered PNGs, geometry and manifest fail.
-    try:
-        with TemporaryDirectory(prefix="sv-core-faceplate-parity-") as tmp:
-            faceplate_revision_build.generate(ROOT, Path(tmp), VERSION)
-            expected_archive = inventory(Path(tmp) / "faceplates-old")
-        actual_archive = {
-            name[len("faceplates-old/"):]: release[name]
-            for name in generated_archive_names
-        }
-        mismatched = sorted({
-            name for name in expected_archive.keys() | actual_archive.keys()
-            if expected_archive.get(name) != actual_archive.get(name)
-        })
-        if mismatched:
-            errors.append("Generated faceplate archive differs: " +
-                          ", ".join(mismatched[:20]) +
-                          (f" (+{len(mismatched)-20} more)" if len(mismatched)>20 else ""))
-    except (OSError, RuntimeError, ValueError) as exc:
-        errors.append(f"Generated faceplate archive cannot be verified: {exc}")
+    # Core now ships only latest stock artwork/geometry. Extra historical
+    # archives violate source/release parity rather than being exempted.
+    if any(name.startswith("faceplates-old/") for name in release_names):
+        errors.append("Core releases must not bundle faceplates-old history.")
 
     if unexpected_source:
         errors.append(

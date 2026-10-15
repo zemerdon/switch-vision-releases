@@ -14,7 +14,6 @@ import zipfile
 _BUILD_ROOT = Path(__file__).resolve().parent
 if str(_BUILD_ROOT) not in sys.path:
     sys.path.insert(0, str(_BUILD_ROOT))
-import faceplate_revision_build
 
 import yaml
 
@@ -1899,7 +1898,6 @@ def write_source_zip(version: str, gold: bool = False) -> Path:
         "SECURITY.md",
         "VERSION",
         "build.py",
-        "faceplate_revision_build.py",
     ]
     if (PROJECT_ROOT / "LICENSE").exists():
         root_names.append("LICENSE")
@@ -2098,8 +2096,6 @@ def build(version: str, gold: bool = False) -> tuple[Path, Path]:
         "custom_components", "docs", "devices"
     ]:
         copy_tree_files(SRC / folder, release_dir / folder)
-    # Ship every verified historical PNG together with its matching factory geometry.
-    faceplate_revision_build.generate(PROJECT_ROOT, release_dir, version)
 
     root_files = ["README.md", "CHANGELOG.md", "RELEASE_NOTES.md", "CONTRIBUTING.md", "SECURITY.md"]
     if gold:
