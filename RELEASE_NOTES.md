@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.88
+
+Local-only safe same-filename faceplate upgrade metadata. Factory filenames and all geometry remain unchanged; each newly saved Calibration records its manifest-verified stock-art SHA-256. Core exposes a prior image version only when Installer retained verified old pixels in a separate history area, allowing Hub to show a truthful old/new comparison even for identical stock filenames. Legacy profiles use the earliest verified retained original when available. No automatic Calibration reset, new SNMP calls or renderer changes. Installer 2.1.54 and Discovery / Hub 3.0.58 provide the corresponding history preservation and comparison.
+
 # Switch Vision Core v2.7.87
 
 Local-only Cisco Catalyst 3850-12XS faceplate artwork refresh. The owner-supplied 2680 × 356 `cisco-3850-12xs.png` replaces the bundled stock PNG at the same native dimensions. The 12 existing optical-port positions, factory Calibration geometry and controls, model/telemetry contract, native renderer and saved per-switch calibrations are unchanged. The new image has a refreshed integrity fingerprint for model-aware faceplate upgrade comparison; it does not automatically reset existing saved profiles. No public publication is implied.

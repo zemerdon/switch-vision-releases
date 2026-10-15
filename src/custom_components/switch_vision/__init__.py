@@ -42,6 +42,7 @@ from homeassistant.components.frontend import async_panel_exists, async_remove_p
 from homeassistant.components.http import StaticPathConfig
 from homeassistant.components.hassio.const import DATA_ADDONS_LIST
 from homeassistant.components.hassio.handler import get_supervisor_client
+from . import faceplate_artwork_history as _faceplate_artwork
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -183,7 +184,7 @@ UNIFI_DEVICE_WS_SCHEMA = {
 }
 
 PANEL_URL_PATH = "switch-vision"
-PANEL_VERSION = "2.7.87"
+PANEL_VERSION = "2.7.88"
 PANEL_JS_PATH = "/api/switch_vision/switch-vision-panel.js"
 PANEL_JS_URL = f"{PANEL_JS_PATH}?v={PANEL_VERSION}"
 ICONSET_JS_PATH = "/api/switch_vision/switch-vision-iconset.js"
@@ -2138,7 +2139,20 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
         # mirrored_from_profile is legacy backend-owned metadata and must never
         # be trusted from a browser/imported payload.
         calibration.pop("mirrored_from_profile", None)
+        # The stock version pin is trusted only when calculated server-side
+        # from the currently installed, manifest-verified artwork.
+        calibration.pop(_faceplate_artwork.STOCK_SHA_FIELD, None)
         _validate_calibration(profile, calibration)
+        try:
+            stock_assets = _load_stock_asset_manifest()
+            artwork_sha = await hass.async_add_executor_job(
+                _faceplate_artwork.current_stock_sha, _asset_root(), calibration, stock_assets
+            )
+        except (OSError, ValueError, KeyError):
+            artwork_sha = ""
+        if artwork_sha:
+            calibration[_faceplate_artwork.STOCK_SHA_FIELD] = artwork_sha
+            _validate_calibration(profile, calibration)
         activate_for_base = bool(call.data.get("mirror_to_base", False))
         base_profile = _normalise_profile(calibration.get("base_profile_name", ""))
         if activate_for_base and _is_protected_factory_profile(base_profile):
@@ -2543,6 +2557,19 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
         assets = await hass.async_add_executor_job(_list_assets)
         fingerprints = await hass.async_add_executor_job(_fingerprint_faceplates)
         available_faceplates = set(assets.get("faceplates") or [])
+        # Historical assets may be large; verify their bytes off the HA event
+        # loop before publishing any saved-vs-installed comparison metadata.
+        artwork_versions = await hass.async_add_executor_job(
+            lambda: {
+                item["profile"]: _faceplate_artwork.saved_artwork(
+                    _asset_root(),
+                    stored_profiles.get(item["profile"])
+                    if isinstance(stored_profiles.get(item["profile"]), dict) else {},
+                    str(fingerprints.get(item["saved_calibration_image"], {}).get("sha256") or ""),
+                )
+                for item in items
+            }
+        )
 
         fingerprint_groups: dict[str, list[str]] = {}
         for filename, metadata in fingerprints.items():
@@ -2560,6 +2587,12 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
         ]
 
         for item in items:
+            # A stock PNG can be replaced without renaming it. Compare the
+            # saved version against the new installed pixels, and expose
+            # previous artwork only when its actual SHA can be verified.
+            historical_sha, historical_path = artwork_versions.get(item["profile"], ("", ""))
+            item["saved_stock_sha256"] = historical_sha
+            item["saved_stock_preview"] = historical_path
             faceplate = str(item.get("faceplate") or "").strip()
 
             if faceplate in {"", FACEPLATE_DEFAULT, FACEPLATE_NONE}:

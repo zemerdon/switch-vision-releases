@@ -1,3 +1,9 @@
+## v2.7.88 — Same-filename faceplate history support (Local)
+
+- Record a server-verified stock image SHA-256 whenever a Calibration profile is saved, without changing its geometry, filename or visual mapping.
+- Expose a previous artwork revision only when a retained historical PNG matches its expected SHA; support legacy pre-fingerprint profiles using the Installer's verified first retained stock version.
+- Preserve all saved profiles unless the owner explicitly invokes Reset Current Switch; no renderer changes or automatic resets.
+
 ## v2.7.87 — Cisco Catalyst 3850-12XS artwork replacement (Local)
 
 - Replace only the bundled `cisco-3850-12xs.png` artwork with the owner-provided 2680 × 356 PNG, preserving its source bytes and updating the stock-image SHA-256 fingerprint.
