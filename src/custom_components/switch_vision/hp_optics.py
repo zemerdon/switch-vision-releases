@@ -25,6 +25,32 @@ MISSING = -99999999
 MIN_COOLDOWN_SECONDS = 30
 
 
+def reserve_refresh(
+    host: str,
+    port: int,
+    busy_devices: set[str],
+    last_by_port: dict[tuple[str, int], float],
+    now: float,
+) -> str | None:
+    """Reserve one device-wide SNMP transaction; rate-limit each optical port.
+
+    Call only after admin/configuration and exact trusted_target verification.
+    A pending refresh on *any* port of this device still returns busy. Once
+    that request completes, a different physical optical port can refresh
+    immediately, but the original port must respect its full 30-second delay.
+    The timestamp remains after errors/stale results to prevent SET retries
+    from circumventing the cooldown.
+    """
+    if host in busy_devices:
+        return "busy"
+    key = (host, port)
+    if key in last_by_port and now - last_by_port[key] < MIN_COOLDOWN_SECONDS:
+        return "cooldown"
+    busy_devices.add(host)
+    last_by_port[key] = now
+    return None
+
+
 def supported_model(value: Any) -> bool:
     model = str(value or "").strip()
     return model in SUPPORTED_MODELS

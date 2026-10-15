@@ -138,7 +138,9 @@ assert '"switch_vision/refresh_hp_optics"' in source
 assert '"switch_vision/get_hp_optics_settings"' in source
 assert '"switch_vision/set_hp_optics_settings"' in source
 assert 'write_community_configured' in source
-assert 'hp_optics_busy' in source and 'hp_optics_last' in source
+assert 'hp_optics_busy' in source and 'hp_optics_last_by_port' in source
+assert 'admission = reserve_refresh(' in source
+assert source.index('host = trusted_target(') < source.index('admission = reserve_refresh(')
 assert 'type: "switch_vision/refresh_hp_optics"' in card
 assert 'port_db: "PORT dB"' in card
 assert 'if (physicalIndex !== null) this.refreshHpOpticsForPort(physicalIndex);' in card

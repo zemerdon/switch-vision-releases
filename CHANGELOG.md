@@ -1,3 +1,9 @@
+## v2.7.89 — HP 3500yl optical refresh per-port cooldown (Local)
+
+- Apply the existing 30-second rate limit to the exact selected physical optical port, not every port on the switch. Refreshing rear A1 does not delay a later rear A4 refresh after the first operation finishes.
+- Preserve the single in-flight refresh lock per switch, admin-only explicit opt-in/write credentials, exact J8693A model and IF-index binding, live DOM(1) validation, fixed SNMP SET target/value, 30-second operation timeout and cooldown after stale/failed requests.
+- Add offline per-port/host concurrency, retry, time-edge and trust-order regressions. Do not change physical port mappings, faceplates, factory Calibration or Discovery telemetry.
+
 ## v2.7.88 — Same-filename faceplate history support (Local)
 
 - Record a server-verified stock image SHA-256 whenever a Calibration profile is saved, without changing its geometry, filename or visual mapping.

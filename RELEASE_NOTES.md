@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.89
+
+Local Core optical diagnostic safety refinement for HP J8693A 3500yl-48G. The 30-second refresh cooldown now applies to a selected physical optical port instead of blocking different optical ports on the same switch. Requests on any port remain serialized per switch while one SNMP refresh is running; after completion, refreshing a different verified port can proceed without an additional global 30-second delay. Admin authorization, explicit write configuration, exact generated binding, live model/interface/DOM checks and fixed one-value SNMP SET remain unchanged. Failed/stale requests keep their per-port cooldown. Offline regressions exercise the new boundaries. This does not enable SNMP writes by default and does not alter faceplate artwork, geometry or other models.
+
 # Switch Vision Core v2.7.88
 
 Local-only safe same-filename faceplate upgrade metadata. Factory filenames and all geometry remain unchanged; each newly saved Calibration records its manifest-verified stock-art SHA-256. Core exposes a prior image version only when Installer retained verified old pixels in a separate history area, allowing Hub to show a truthful old/new comparison even for identical stock filenames. Legacy profiles use the earliest verified retained original when available. No automatic Calibration reset, new SNMP calls or renderer changes. Installer 2.1.54 and Discovery / Hub 3.0.58 provide the corresponding history preservation and comparison.

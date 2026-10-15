@@ -184,7 +184,7 @@ UNIFI_DEVICE_WS_SCHEMA = {
 }
 
 PANEL_URL_PATH = "switch-vision"
-PANEL_VERSION = "2.7.88"
+PANEL_VERSION = "2.7.89"
 PANEL_JS_PATH = "/api/switch_vision/switch-vision-panel.js"
 PANEL_JS_URL = f"{PANEL_JS_PATH}?v={PANEL_VERSION}"
 ICONSET_JS_PATH = "/api/switch_vision/switch-vision-iconset.js"
@@ -2826,7 +2826,9 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
     # Never include it in ordinary integration settings or portable backups.
     hp_optics_store: Store[dict[str, Any]] = Store(hass, 1, "switch_vision_hp_optics")
     hp_optics_busy: set[str] = domain_data.setdefault("hp_optics_busy", set())
-    hp_optics_last: dict[str, float] = domain_data.setdefault("hp_optics_last", {})
+    # Keep switch-wide in-flight serialization, but remember cooldown per
+    # exact optical port. Do not reuse legacy host-wide cooldown timestamps.
+    hp_optics_last: dict[tuple[str, int], float] = domain_data.setdefault("hp_optics_last_by_port", {})
 
     async def _hp_optics_settings() -> dict[str, Any]:
         data = await hp_optics_store.async_load()
@@ -2861,7 +2863,7 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
     @websocket_api.require_admin
     @websocket_api.async_response
     async def websocket_refresh_hp_optics(hass: HomeAssistant, connection, msg):
-        from .hp_optics import refresh_dom, trusted_target
+        from .hp_optics import refresh_dom, reserve_refresh, trusted_target
 
         settings = await _hp_optics_settings()
         if settings.get("enabled") is not True or not settings.get("write_community"):
@@ -2875,16 +2877,15 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
             connection.send_result(msg["id"], {"status": "denied", "message": "Port is not a registered HP 3500yl optical candidate."})
             return
 
-        now = time.monotonic()
-        if host in hp_optics_busy:
+        admission = reserve_refresh(
+            host, msg["port"], hp_optics_busy, hp_optics_last, time.monotonic()
+        )
+        if admission == "busy":
             connection.send_result(msg["id"], {"status": "busy", "message": "Optical refresh already running for this device."})
             return
-        last = hp_optics_last.get(host, 0.0)
-        if now - last < 30.0:
-            connection.send_result(msg["id"], {"status": "cooldown", "message": "Please wait before refreshing another optical port."})
+        if admission == "cooldown":
+            connection.send_result(msg["id"], {"status": "cooldown", "message": "Please wait before refreshing this optical port again."})
             return
-        hp_optics_busy.add(host)
-        hp_optics_last[host] = now
         try:
             result = await asyncio.wait_for(
                 refresh_dom(host, msg["port"], str(settings["write_community"])),
