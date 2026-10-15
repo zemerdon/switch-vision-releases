@@ -11,6 +11,8 @@ import subprocess
 import sys
 import zipfile
 
+import faceplate_revision_build
+
 import yaml
 
 PROJECT_ROOT = Path(__file__).resolve().parent
@@ -2092,6 +2094,8 @@ def build(version: str, gold: bool = False) -> tuple[Path, Path]:
         "custom_components", "docs", "devices"
     ]:
         copy_tree_files(SRC / folder, release_dir / folder)
+    # Ship every verified historical PNG together with its matching factory geometry.
+    faceplate_revision_build.generate(PROJECT_ROOT, release_dir, version)
 
     root_files = ["README.md", "CHANGELOG.md", "RELEASE_NOTES.md", "CONTRIBUTING.md", "SECURITY.md"]
     if gold:

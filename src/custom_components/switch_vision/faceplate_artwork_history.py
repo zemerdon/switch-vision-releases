@@ -79,6 +79,9 @@ def saved_artwork(root: Path, calibration: dict[str, Any],
             return "", ""
         if saved == current_sha:
             return saved, ""
+        revision = revision_choice(root, name, saved, current_sha)
+        if revision and revision["path"].startswith("faceplates-old/"):
+            return saved, revision["path"]
         relative = f"faceplate-history/{saved}/{name}"
     else:
         # Legacy profiles predate Core's server-owned save-time hash. The
@@ -101,7 +104,7 @@ def saved_artwork(root: Path, calibration: dict[str, Any],
 
 
 def verified_choice(root: Path, filename: str, selected_sha: str,
-                    current_sha: str) -> dict[str, str]:
+                    current_sha: str, selected_version: str = "") -> dict[str, Any]:
     """Resolve a switch's accepted stock artwork without trusting a filename.
 
     The caller supplies current_sha only after checking the stock manifest.
@@ -115,6 +118,13 @@ def verified_choice(root: Path, filename: str, selected_sha: str,
         return {}
     if current_sha and not _SHA.fullmatch(current_sha):
         return {}
+    if current_sha:
+        bundle = revision_choice(root, filename, selected_sha, current_sha, selected_version)
+        if bundle:
+            return bundle
+        if selected_version:
+            return {"filename": filename, "sha256": selected_sha,
+                    "current_sha256": current_sha, "unavailable": "true"}
     if current_sha and selected_sha == current_sha:
         return {"filename": filename, "sha256": selected_sha,
                 "current_sha256": current_sha, "path": f"faceplates/{filename}"}
@@ -169,3 +179,95 @@ def recorded_preupgrade_choice(root: Path, base: str, name: str,
         return before if choice.get("path") == f"faceplate-history/{before}/{name}" else ""
     except (OSError, ValueError, AttributeError, TypeError):
         return ""
+
+
+_VERSION = re.compile(r"^\d+\.\d+\.\d+$")
+
+
+def catalog_revisions(root: Path, filename: str) -> list[dict[str, Any]]:
+    """Return only manifest-bound, byte-verified artwork+factory geometry pairs."""
+    if not _FILE.fullmatch(filename):
+        return []
+    file = root / "faceplates-old" / "manifest.json"
+    try:
+        if file.is_symlink() or file.stat().st_size > 1024 * 1024:
+            return []
+        data = json.loads(file.read_text(encoding="utf-8"))
+        if data.get("schema") != 1 or not _VERSION.fullmatch(str(data.get("core_version", ""))):
+            return []
+        versions = data.get("faceplates", {}).get(filename, [])
+        if not isinstance(versions, list) or len(versions) > 64:
+            return []
+    except (OSError, TypeError, ValueError, AttributeError):
+        return []
+    verified = []
+    for item in versions:
+        if not isinstance(item, dict):
+            continue
+        version = str(item.get("version", ""))
+        sha = str(item.get("sha256", ""))
+        geo_sha = str(item.get("geometry_sha256", ""))
+        if (not _VERSION.fullmatch(version) or not _SHA.fullmatch(sha)
+                or not _SHA.fullmatch(geo_sha) or item.get("filename") != filename):
+            continue
+        latest = version == data["core_version"]
+        path = ("faceplates/" + filename if latest
+                else f"faceplates-old/{version}/{filename}")
+        geo_path = ("calibration/" + str(item.get("geometry_path", "")).split("/")[-1]
+                    if latest else f"faceplates-old/{version}/{filename[:-4]}.json")
+        if item.get("path") != path or item.get("geometry_path") != geo_path:
+            continue
+        if (not latest and (root / "faceplates-old" / version).is_symlink()):
+            continue
+        image = root / path
+        geometry = root / geo_path
+        if digest_at(image) != sha or digest_at(geometry) != geo_sha:
+            continue
+        try:
+            factory = json.loads(geometry.read_text(encoding="utf-8"))
+            if (not isinstance(factory, dict) or factory.get("schema") != "switch-vision-interactive-calibration-v1"
+                    or factory.get("image", {}).get("file") != "faceplates/" + filename
+                    or not isinstance(factory.get("ports"), dict)
+                    or not isinstance(factory.get("sfp"), dict)):
+                continue
+        except (ValueError, OSError, AttributeError):
+            continue
+        verified.append({"version": version, "filename": filename, "sha256": sha,
+                         "geometry_sha256": geo_sha, "path": path,
+                         "geometry_path": geo_path, "geometry": factory})
+    return verified
+
+
+def revision_choice(root: Path, filename: str, sha: str,
+                    current_sha: str, version: str = "") -> dict[str, Any]:
+    """Never accept a revision from a browser or unverified manifest."""
+    if not _SHA.fullmatch(str(sha)) or not _SHA.fullmatch(str(current_sha)):
+        return {}
+    for item in reversed(catalog_revisions(root, filename)):
+        if item["sha256"] == sha and (not version or item["version"] == version):
+            return {**item, "current_sha256": current_sha}
+    return {}
+
+
+def revision_index(root: Path) -> dict[str, list[dict[str, str]]]:
+    """Small preview index; full trusted geometry is delivered only for selected art."""
+    file = root / "faceplates-old" / "manifest.json"
+    try:
+        if file.is_symlink() or file.stat().st_size > 1024 * 1024:
+            return {}
+        data = json.loads(file.read_text(encoding="utf-8"))
+        images = data.get("faceplates", {})
+        if data.get("schema") != 1 or not isinstance(images, dict) or len(images) > 128:
+            return {}
+    except (ValueError, TypeError, OSError, AttributeError):
+        return {}
+    result = {}
+    for name in images:
+        if not isinstance(name, str) or not _FILE.fullmatch(name):
+            continue
+        found = catalog_revisions(root, name)
+        if found:
+            result[name] = [{key: row[key] for key in
+                             ("version", "filename", "sha256", "geometry_sha256", "path")}
+                            for row in found]
+    return result

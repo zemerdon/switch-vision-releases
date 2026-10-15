@@ -126,6 +126,8 @@ APPROVE_STOCK_ARTWORK_WS_SCHEMA = {
     vol.Required("previous_filename"): vol.All(str, vol.Length(min=1, max=145)),
     vol.Required("expected_sha256"): vol.Match(r"^[a-f0-9]{64}$"),
     vol.Required("approved_sha256"): vol.Match(r"^[a-f0-9]{64}$"),
+    vol.Optional("approved_version", default=""): vol.All(str, vol.Length(max=30)),
+    vol.Optional("expected_version", default=""): vol.All(str, vol.Length(max=30)),
 }
 
 LIST_ASSETS_WS_SCHEMA = {
@@ -196,7 +198,7 @@ UNIFI_DEVICE_WS_SCHEMA = {
 }
 
 PANEL_URL_PATH = "switch-vision"
-PANEL_VERSION = "2.7.92"
+PANEL_VERSION = "2.7.93"
 PANEL_JS_PATH = "/api/switch_vision/switch-vision-panel.js"
 PANEL_JS_URL = f"{PANEL_JS_PATH}?v={PANEL_VERSION}"
 ICONSET_JS_PATH = "/api/switch_vision/switch-vision-iconset.js"
@@ -2483,7 +2485,8 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
                         )
                     artwork_choice = await hass.async_add_executor_job(
                         _faceplate_artwork.verified_choice, _asset_root(),
-                        selected_filename, selected_sha, pin_current_sha
+                        selected_filename, selected_sha, pin_current_sha,
+                        str(previous.get("version") or "") if isinstance(previous, dict) else "",
                     )
 
         connection.send_result(
@@ -2640,6 +2643,7 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
                     _asset_root(), str(pin.get("filename") or ""),
                     str(pin.get("sha256") or ""),
                     str(fingerprints.get(str(pin.get("filename") or ""), {}).get("sha256") or ""),
+                    str(pin.get("version") or ""),
                 )
                 for base, pin in saved_choices.items()
                 if isinstance(base, str) and isinstance(pin, dict)
@@ -2741,22 +2745,32 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
             )
         except (OSError, ValueError, KeyError):
             installed_sha = ""
-        if not installed_sha or msg["approved_sha256"] != installed_sha:
-            connection.send_error(msg["id"], "stale_artwork", "Installed stock artwork has changed.")
+        if not installed_sha:
+            connection.send_error(msg["id"], "stale_artwork", "Installed stock artwork is unverified.")
+            return
+        revision = await hass.async_add_executor_job(
+            _faceplate_artwork.revision_choice, _asset_root(), name,
+            msg["approved_sha256"], installed_sha, msg.get("approved_version", ""),
+        )
+        if not revision:
+            connection.send_error(msg["id"], "stale_artwork", "Requested revision is unavailable or unverified.")
             return
         async with storage_lock:
             state = await _load()
             pins = state.get("stock_artwork_choices")
             pin = pins.get(base) if isinstance(pins, dict) else None
             if (not isinstance(pin, dict) or pin.get("filename") != previous_name
-                    or pin.get("sha256") != msg["expected_sha256"]):
+                    or pin.get("sha256") != msg["expected_sha256"]
+                    or (msg.get("expected_version") and pin.get("version") != msg["expected_version"])):
                 connection.send_error(msg["id"], "stale_choice", "The switch's artwork choice changed.")
                 return
-            pins[base] = {"filename": name, "sha256": installed_sha}
+            pins[base] = {"filename": name, "sha256": revision["sha256"],
+                          "version": revision["version"],
+                          "geometry_sha256": revision["geometry_sha256"]}
             await _save(state)
         connection.send_result(msg["id"], {
             "ok": True, "base_profile": base,
-            "filename": name, "sha256": installed_sha,
+            "filename": name, "sha256": revision["sha256"],
         })
 
     @websocket_api.websocket_command(LIST_ASSETS_WS_SCHEMA)
@@ -2770,6 +2784,9 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
             _fingerprint_faceplates
         )
         assets["core_version"] = PANEL_VERSION
+        assets["faceplate_revisions"] = await hass.async_add_executor_job(
+            _faceplate_artwork.revision_index, _asset_root()
+        )
         connection.send_result(msg["id"], assets)
 
     @websocket_api.websocket_command(GET_BACKUP_ASSET_WS_SCHEMA)

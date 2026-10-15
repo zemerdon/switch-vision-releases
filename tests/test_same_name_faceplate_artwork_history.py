@@ -103,7 +103,8 @@ class SameNameArtworkHistoryTests(unittest.TestCase):
         assert '"switch_vision/approve_stock_artwork"' in source
         assert 'websocket_api.require_admin' in source
         assert '"stock_artwork_choices"' in source
-        assert 'pins[base] = {"filename": name, "sha256": installed_sha}' in source
+        assert 'pins[base] = {"filename": name, "sha256": revision["sha256"]' in source
+        assert '"geometry_sha256": revision["geometry_sha256"]' in source
         assert 'stock_artwork: artwork_choice' not in source  # JSON response is keyed
         assert '"stock_artwork": artwork_choice' in source
         assert '"stock_artwork": artwork_choice' in source

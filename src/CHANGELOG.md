@@ -1,3 +1,9 @@
+## v2.7.93 — Versioned faceplates with paired factory geometry (Local)
+
+- Bundle every verified historical faceplate and its matching factory port geometry from Core release history; retain current stock files and automatically derive past revisions when building.
+- Expose exact Core-version/image/geometry revisions through the trusted Core assets API and permit per-switch selection of any verified revision without changing saved user Calibration.
+- Render selected historical factory geometry only where no user-authored Calibration is active. Reject absent/tampered historical image/geometry pairs.
+
 ## v2.7.92 — Direct faceplate migration (Local)
 
 - Reuse Installer's verified prior-artwork record for existing switches without a selection.

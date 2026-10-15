@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.93
+
+Core now bundles each previous verified stock faceplate image together with its matching factory port/LED geometry, labelled with the outgoing Core release. Discovery Hub can preview and select Core-versioned artwork revisions for configured switches. New installations use current stock artwork; existing saved user Calibration remains independent and is not reset or overwritten. Installer 2.1.57 copies the bundled history without an update-order dependency. Previous Installer-history-only installations remain compatible where their verified originals are available. Local-first candidate, not a public release.
+
 # Switch Vision Core v2.7.92
 
 Fix first-direct-upgrade stock faceplate consent. When Installer has saved a private, verified pre-replacement record for an already configured switch, Core initialises that switch's first artwork selection to the preserved prior stock PNG (not the newly installed same-name image). Core checks the record's exact installed SHA and verifies the archived original bytes. Existing per-switch selections, saved Calibration and port geometry are never reset or replaced. A missing/invalid record is not presented as old artwork; earlier installations that did not capture this record cannot be reconstructed retroactively. Requires Installer 2.1.56 for newly captured migrations and coordinated Discovery / Hub 3.0.61.
