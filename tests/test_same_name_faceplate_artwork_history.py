@@ -69,3 +69,44 @@ class SameNameArtworkHistoryTests(unittest.TestCase):
             )
             profile["ui"]["faceplate"]["file"] = "../bad.png"
             assert history.stock_filename(profile) == ""
+
+
+    def test_switch_choice_uses_exact_previous_pixels_without_geometry_mutation(self) -> None:
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            name = "switch.png"
+            old, new = b"catalog-before", b"catalog-after"
+            old_sha, new_sha = hashlib.sha256(old).hexdigest(), hashlib.sha256(new).hexdigest()
+            (root / "faceplates").mkdir()
+            (root / "faceplates" / name).write_bytes(new)
+            historical = root / "faceplate-history" / old_sha / name
+            historical.parent.mkdir(parents=True)
+            historical.write_bytes(old)
+            old_profile = {"image": {"file": "faceplates/" + name},
+                           "ui": {"faceplate": {"source": "default", "file": "default"}},
+                           history.STOCK_SHA_FIELD: old_sha}
+            assert history.pin_for_profile(root, name, new_sha, old_profile) == old_sha
+            assert history.pin_for_profile(root, name, new_sha, None) == new_sha
+            kept = history.verified_choice(root, name, old_sha, new_sha)
+            assert kept["path"] == f"faceplate-history/{old_sha}/{name}"
+            assert kept["sha256"] == old_sha
+            assert history.verified_choice(root, name, new_sha, new_sha)["path"] == f"faceplates/{name}"
+            historical.write_bytes(b"damaged")
+            missing = history.verified_choice(root, name, old_sha, new_sha)
+            assert "path" not in missing and missing["unavailable"] == "true"
+            assert history.verified_choice(root, "../not-stock.png", old_sha, new_sha) == {}
+            assert history.verified_choice(root, name, "bad", new_sha) == {}
+
+    def test_real_card_path_is_pinned_and_upgrade_does_not_reset_geometry(self) -> None:
+        source = (ROOT / "src/custom_components/switch_vision/__init__.py").read_text()
+        card = (ROOT / "src/js/switch-vision.js").read_text()
+        assert '"switch_vision/approve_stock_artwork"' in source
+        assert 'websocket_api.require_admin' in source
+        assert '"stock_artwork_choices"' in source
+        assert 'pins[base] = {"filename": name, "sha256": installed_sha}' in source
+        assert 'stock_artwork: artwork_choice' not in source  # JSON response is keyed
+        assert '"stock_artwork": artwork_choice' in source
+        assert '"stock_artwork": artwork_choice' in source
+        assert 'this._stockArtworkChoice' in card
+        assert 'faceplate-history/' in card
+        assert 'Verifying this switch' in card

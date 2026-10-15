@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.90
+
+Faceplate artwork changes require explicit per-switch approval. The original stock filenames stay unchanged; Core stores verified per-switch and scope artwork fingerprints separate from Calibration geometry. The card continues using verified archived pixels when an update changes the stock image. An unavailable or untrusted archived image cannot silently fall back to a newer one. Hub may approve an exact new stock fingerprint via an admin-only operation without deleting saved Calibration. New switch profiles initially select the verified current stock image. Existing HP 3500yl per-port cooldown, port mapping and faceplate geometry are unchanged.
+
 # Switch Vision Core v2.7.89
 
 Local Core optical diagnostic safety refinement for HP J8693A 3500yl-48G. The 30-second refresh cooldown now applies to a selected physical optical port instead of blocking different optical ports on the same switch. Requests on any port remain serialized per switch while one SNMP refresh is running; after completion, refreshing a different verified port can proceed without an additional global 30-second delay. Admin authorization, explicit write configuration, exact generated binding, live model/interface/DOM checks and fixed one-value SNMP SET remain unchanged. Failed/stale requests keep their per-port cooldown. Offline regressions exercise the new boundaries. This does not enable SNMP writes by default and does not alter faceplate artwork, geometry or other models.

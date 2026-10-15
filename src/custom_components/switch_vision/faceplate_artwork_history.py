@@ -97,3 +97,43 @@ def saved_artwork(root: Path, calibration: dict[str, Any],
         # companion, both retained from an installer-verified old stock PNG.
         return "", ""
     return historical, relative
+
+
+def verified_choice(root: Path, filename: str, selected_sha: str,
+                    current_sha: str) -> dict[str, str]:
+    """Resolve a switch's accepted stock artwork without trusting a filename.
+
+    The caller supplies current_sha only after checking the stock manifest.
+    Historical pixels are usable only if their actual SHA equals the saved pin.
+    A missing historical original is reported; it is never fabricated from the
+    new same-name artwork or passed through a path supplied by the browser.
+    """
+    if not _FILE.fullmatch(filename):
+        return {}
+    if not isinstance(selected_sha, str) or not _SHA.fullmatch(selected_sha):
+        return {}
+    if current_sha and not _SHA.fullmatch(current_sha):
+        return {}
+    if current_sha and selected_sha == current_sha:
+        return {"filename": filename, "sha256": selected_sha,
+                "current_sha256": current_sha, "path": f"faceplates/{filename}"}
+    directory = root / "faceplate-history"
+    revision = directory / selected_sha
+    if directory.is_symlink() or revision.is_symlink():
+        return {}
+    relative = f"faceplate-history/{selected_sha}/{filename}"
+    if digest_at(root / relative) != selected_sha:
+        return {"filename": filename, "sha256": selected_sha,
+                "current_sha256": current_sha, "unavailable": "true"}
+    return {"filename": filename, "sha256": selected_sha,
+            "current_sha256": current_sha, "path": relative}
+
+
+def pin_for_profile(root: Path, filename: str, current_sha: str,
+                    saved_calibration: dict[str, Any] | None) -> str:
+    """Seed a new switch pin from its verified previous saved art, if any."""
+    if saved_calibration and stock_filename(saved_calibration) == filename:
+        old_sha, _ = saved_artwork(root, saved_calibration, current_sha)
+        if old_sha:
+            return old_sha
+    return current_sha

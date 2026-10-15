@@ -105,6 +105,9 @@ GET_WS_SCHEMA = {
     vol.Required("type"): "switch_vision/get_calibration",
     vol.Required("profile"): vol.All(str, vol.Length(min=1)),
     vol.Optional("exact", default=False): bool,
+    # Current model's recommended stock artwork, used to pin first display
+    # independently of optional saved Calibration geometry.
+    vol.Optional("stock_faceplate"): vol.All(str, vol.Length(min=1, max=145)),
 }
 
 DELETE_WS_SCHEMA = {
@@ -114,6 +117,15 @@ DELETE_WS_SCHEMA = {
 
 LIST_WS_SCHEMA = {
     vol.Required("type"): "switch_vision/list_calibrations",
+}
+
+APPROVE_STOCK_ARTWORK_WS_SCHEMA = {
+    vol.Required("type"): "switch_vision/approve_stock_artwork",
+    vol.Required("base_profile"): vol.All(str, vol.Length(min=1, max=145)),
+    vol.Required("filename"): vol.All(str, vol.Length(min=1, max=145)),
+    vol.Required("previous_filename"): vol.All(str, vol.Length(min=1, max=145)),
+    vol.Required("expected_sha256"): vol.Match(r"^[a-f0-9]{64}$"),
+    vol.Required("approved_sha256"): vol.Match(r"^[a-f0-9]{64}$"),
 }
 
 LIST_ASSETS_WS_SCHEMA = {
@@ -184,7 +196,7 @@ UNIFI_DEVICE_WS_SCHEMA = {
 }
 
 PANEL_URL_PATH = "switch-vision"
-PANEL_VERSION = "2.7.89"
+PANEL_VERSION = "2.7.90"
 PANEL_JS_PATH = "/api/switch_vision/switch-vision-panel.js"
 PANEL_JS_URL = f"{PANEL_JS_PATH}?v={PANEL_VERSION}"
 ICONSET_JS_PATH = "/api/switch_vision/switch-vision-iconset.js"
@@ -2415,9 +2427,63 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
                 )
                 calibration = None
 
+        artwork_choice: dict[str, str] = {}
+        filename = str(msg.get("stock_faceplate") or "").strip()
+        base_profile = requested_profile.split("__faceplate__", 1)[0]
+        if (filename and base_profile.startswith(("native_", "custom_"))
+                and len(base_profile) <= 145):
+            # A browser cannot choose a hash or historical path. It may name
+            # only a file whose bytes match the installed stock manifest.
+            try:
+                stock = _load_stock_asset_manifest()
+                current_sha = await hass.async_add_executor_job(
+                    _faceplate_artwork.current_stock_sha, _asset_root(),
+                    {"image": {"file": "faceplates/" + filename}},
+                    stock,
+                )
+            except (OSError, ValueError, KeyError):
+                current_sha = ""
+            if current_sha:
+                initial_sha = await hass.async_add_executor_job(
+                    _faceplate_artwork.pin_for_profile, _asset_root(),
+                    filename, current_sha,
+                    calibration if isinstance(calibration, dict) else None,
+                )
+                selected_filename = filename
+                selected_sha = ""
+                async with storage_lock:
+                    current = await _load()
+                    pins = current.get("stock_artwork_choices")
+                    if not isinstance(pins, dict):
+                        pins = {}
+                        current["stock_artwork_choices"] = pins
+                    previous = pins.get(base_profile)
+                    if isinstance(previous, dict):
+                        # Never replace a previously approved filename/sha
+                        # merely because a newer model recommendation differs.
+                        selected_filename = str(previous.get("filename") or "")
+                        selected_sha = str(previous.get("sha256") or "")
+                    elif len(pins) < 256:
+                        pins[base_profile] = {"filename": filename, "sha256": initial_sha}
+                        await _save(current)
+                        selected_sha = initial_sha
+                if selected_sha:
+                    pin_current_sha = current_sha
+                    if selected_filename != filename:
+                        pin_current_sha = await hass.async_add_executor_job(
+                            _faceplate_artwork.current_stock_sha, _asset_root(),
+                            {"image": {"file": "faceplates/" + selected_filename}},
+                            stock,
+                        )
+                    artwork_choice = await hass.async_add_executor_job(
+                        _faceplate_artwork.verified_choice, _asset_root(),
+                        selected_filename, selected_sha, pin_current_sha
+                    )
+
         connection.send_result(
             msg["id"],
             {
+                "stock_artwork": artwork_choice,
                 "profile": resolved_profile,
                 "requested_profile": requested_profile,
                 "active_profile": active_profile,
@@ -2557,6 +2623,23 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
         assets = await hass.async_add_executor_job(_list_assets)
         fingerprints = await hass.async_add_executor_job(_fingerprint_faceplates)
         available_faceplates = set(assets.get("faceplates") or [])
+        # Artwork decisions are per switch and independent of Calibration.
+        # Compare only server-pinned stock revisions whose historical bytes
+        # can be verified; never turn a missing old image into a fake preview.
+        async with storage_lock:
+            saved_choices = dict((await _load()).get("stock_artwork_choices") or {})
+        artwork_choices = await hass.async_add_executor_job(
+            lambda: {
+                base: _faceplate_artwork.verified_choice(
+                    _asset_root(), str(pin.get("filename") or ""),
+                    str(pin.get("sha256") or ""),
+                    str(fingerprints.get(str(pin.get("filename") or ""), {}).get("sha256") or ""),
+                )
+                for base, pin in saved_choices.items()
+                if isinstance(base, str) and isinstance(pin, dict)
+                and base.startswith(("native_", "custom_"))
+            }
+        )
         # Historical assets may be large; verify their bytes off the HA event
         # loop before publishing any saved-vs-installed comparison metadata.
         artwork_versions = await hass.async_add_executor_job(
@@ -2624,10 +2707,51 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
                 "items": items,
                 "active_profiles": active_profiles,
                 "duplicate_faceplate_groups": duplicate_faceplate_groups,
+                "stock_artwork_choices": artwork_choices,
                 "storage_key": STORAGE_KEY,
                 "storage_path": STORAGE_PATH,
             },
         )
+
+    @websocket_api.websocket_command(APPROVE_STOCK_ARTWORK_WS_SCHEMA)
+    @websocket_api.require_admin
+    @websocket_api.async_response
+    async def websocket_approve_stock_artwork(hass: HomeAssistant, connection, msg):
+        """Change only this switch's artwork pin, never its Calibration."""
+        base = str(msg["base_profile"])
+        name = str(msg["filename"])
+        previous_name = str(msg["previous_filename"])
+        if (not base.startswith(("native_", "custom_"))
+                or "__faceplate__" in base
+                or name != Path(name).name
+                or previous_name != Path(previous_name).name):
+            connection.send_error(msg["id"], "invalid_target", "Invalid switch artwork selection.")
+            return
+        try:
+            manifest = _load_stock_asset_manifest()
+            installed_sha = await hass.async_add_executor_job(
+                _faceplate_artwork.current_stock_sha, _asset_root(),
+                {"image": {"file": "faceplates/" + name}}, manifest,
+            )
+        except (OSError, ValueError, KeyError):
+            installed_sha = ""
+        if not installed_sha or msg["approved_sha256"] != installed_sha:
+            connection.send_error(msg["id"], "stale_artwork", "Installed stock artwork has changed.")
+            return
+        async with storage_lock:
+            state = await _load()
+            pins = state.get("stock_artwork_choices")
+            pin = pins.get(base) if isinstance(pins, dict) else None
+            if (not isinstance(pin, dict) or pin.get("filename") != previous_name
+                    or pin.get("sha256") != msg["expected_sha256"]):
+                connection.send_error(msg["id"], "stale_choice", "The switch's artwork choice changed.")
+                return
+            pins[base] = {"filename": name, "sha256": installed_sha}
+            await _save(state)
+        connection.send_result(msg["id"], {
+            "ok": True, "base_profile": base,
+            "filename": name, "sha256": installed_sha,
+        })
 
     @websocket_api.websocket_command(LIST_ASSETS_WS_SCHEMA)
     @websocket_api.async_response
@@ -2911,6 +3035,7 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
     websocket_api.async_register_command(hass, websocket_get_calibration)
     websocket_api.async_register_command(hass, websocket_delete_calibration)
     websocket_api.async_register_command(hass, websocket_list_calibrations)
+    websocket_api.async_register_command(hass, websocket_approve_stock_artwork)
     websocket_api.async_register_command(hass, websocket_list_assets)
     websocket_api.async_register_command(hass, websocket_get_backup_asset)
     websocket_api.async_register_command(hass, websocket_put_backup_asset)

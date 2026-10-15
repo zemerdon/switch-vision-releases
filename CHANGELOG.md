@@ -1,3 +1,10 @@
+## v2.7.90 — Opt-in faceplate artwork selection (Local)
+
+- Persist one approved stock artwork SHA per switch and dashboard scope without relying on saved Calibration.
+- Keep displaying verified archived older stock pixels when the canonical stock filename changes contents, or even when a model recommendation is renamed.
+- Protect unapproved updates from being displayed until the artwork pin is resolved; reject missing/tampered history without substituting new pixels.
+- Add admin-only exact-SHA artwork approval without resetting per-switch Calibration, preserving native geometry and saved adjustments.
+
 ## v2.7.89 — HP 3500yl optical refresh per-port cooldown (Local)
 
 - Apply the existing 30-second rate limit to the exact selected physical optical port, not every port on the switch. Refreshing rear A1 does not delay a later rear A4 refresh after the first operation finishes.
