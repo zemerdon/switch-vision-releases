@@ -1,3 +1,9 @@
+## v2.7.94 — Three distinct faceplate revisions (Local)
+
+- Limit each shipped stock faceplate to its latest distinct PNG/factory geometry pair and two preceding distinct pairs, without new revisions on routine Core releases.
+- Preserve per-switch older selected geometry when it rotates out of shipping and verify every generated archive member under exact release parity.
+- Do not change user Calibration, topology, or opt-in faceplate selections.
+
 ## v2.7.93 — Versioned faceplates with paired factory geometry (Local)
 
 - Bundle every verified historical faceplate and its matching factory port geometry from Core release history; retain current stock files and automatically derive past revisions when building.

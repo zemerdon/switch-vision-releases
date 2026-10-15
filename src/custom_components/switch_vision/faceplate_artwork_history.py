@@ -104,7 +104,8 @@ def saved_artwork(root: Path, calibration: dict[str, Any],
 
 
 def verified_choice(root: Path, filename: str, selected_sha: str,
-                    current_sha: str, selected_version: str = "") -> dict[str, Any]:
+                    current_sha: str, selected_version: str = "",
+                    selected_geometry_sha: str = "") -> dict[str, Any]:
     """Resolve a switch's accepted stock artwork without trusting a filename.
 
     The caller supplies current_sha only after checking the stock manifest.
@@ -120,9 +121,14 @@ def verified_choice(root: Path, filename: str, selected_sha: str,
         return {}
     if current_sha:
         bundle = revision_choice(root, filename, selected_sha, current_sha, selected_version)
-        if bundle:
+        if bundle and (not selected_geometry_sha or
+                       bundle.get("geometry_sha256") == selected_geometry_sha):
             return bundle
         if selected_version:
+            local = retained_revision(root, filename, selected_sha,
+                                      selected_version, selected_geometry_sha)
+            if local:
+                return {**local, "current_sha256": current_sha}
             return {"filename": filename, "sha256": selected_sha,
                     "current_sha256": current_sha, "unavailable": "true"}
     if current_sha and selected_sha == current_sha:
@@ -196,7 +202,7 @@ def catalog_revisions(root: Path, filename: str) -> list[dict[str, Any]]:
         if data.get("schema") != 1 or not _VERSION.fullmatch(str(data.get("core_version", ""))):
             return []
         versions = data.get("faceplates", {}).get(filename, [])
-        if not isinstance(versions, list) or len(versions) > 64:
+        if not isinstance(versions, list) or len(versions) > 3:
             return []
     except (OSError, TypeError, ValueError, AttributeError):
         return []
@@ -210,7 +216,7 @@ def catalog_revisions(root: Path, filename: str) -> list[dict[str, Any]]:
         if (not _VERSION.fullmatch(version) or not _SHA.fullmatch(sha)
                 or not _SHA.fullmatch(geo_sha) or item.get("filename") != filename):
             continue
-        latest = version == data["core_version"]
+        latest = item.get("path") == "faceplates/" + filename
         path = ("faceplates/" + filename if latest
                 else f"faceplates-old/{version}/{filename}")
         geo_path = ("calibration/" + str(item.get("geometry_path", "")).split("/")[-1]
@@ -236,6 +242,57 @@ def catalog_revisions(root: Path, filename: str) -> list[dict[str, Any]]:
                          "geometry_sha256": geo_sha, "path": path,
                          "geometry_path": geo_path, "geometry": factory})
     return verified
+
+
+def retained_revision(root: Path, filename: str, sha: str,
+                      version: str, geometry_sha: str = "") -> dict[str, Any]:
+    """Resolve a dropped selected pair preserved locally by Installer.
+
+    Only an exact server-pinned image/version/geometry pair may use this
+    installation-local fallback. The shipped selection catalogue stays capped.
+    """
+    if (not _FILE.fullmatch(filename) or not _SHA.fullmatch(str(sha))
+            or not _VERSION.fullmatch(str(version))
+            or (geometry_sha and not _SHA.fullmatch(str(geometry_sha)))):
+        return {}
+    directory = root / "faceplate-history" / "revisions"
+    manifest = directory / "manifest.json"
+    try:
+        if (directory.is_symlink() or manifest.is_symlink()
+                or manifest.stat().st_size > 1024 * 1024):
+            return {}
+        data = json.loads(manifest.read_text(encoding="utf-8"))
+        if data.get("schema") != 1:
+            return {}
+        versions = data.get("faceplates", {}).get(filename, [])
+        if not isinstance(versions, list) or len(versions) > 256:
+            return {}
+        for item in versions:
+            if (not isinstance(item, dict) or item.get("version") != version
+                    or item.get("filename") != filename
+                    or item.get("sha256") != sha
+                    or not _SHA.fullmatch(str(item.get("geometry_sha256", "")))
+                    or (geometry_sha and item["geometry_sha256"] != geometry_sha)):
+                continue
+            path = f"faceplate-history/revisions/{version}/{filename}"
+            geometry_path = f"faceplate-history/revisions/{version}/{filename[:-4]}.json"
+            if item.get("path") != path or item.get("geometry_path") != geometry_path:
+                continue
+            if (directory.joinpath(version).is_symlink()
+                    or digest_at(root / path) != sha
+                    or digest_at(root / geometry_path) != item["geometry_sha256"]):
+                continue
+            factory = json.loads((root / geometry_path).read_text(encoding="utf-8"))
+            if (not isinstance(factory, dict)
+                    or factory.get("schema") != "switch-vision-interactive-calibration-v1"
+                    or factory.get("image", {}).get("file") != "faceplates/" + filename
+                    or not isinstance(factory.get("ports"), dict)
+                    or not isinstance(factory.get("sfp"), dict)):
+                continue
+            return {**item, "geometry": factory}
+    except (OSError, TypeError, ValueError, AttributeError):
+        return {}
+    return {}
 
 
 def revision_choice(root: Path, filename: str, sha: str,

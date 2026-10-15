@@ -77,8 +77,7 @@ def generate(repo: Path, release: Path, version: str) -> dict:
         history = _git(repo, "rev-list", "--reverse", "HEAD", "--", image_path, geometry_path)
         if history is None:
             raise RuntimeError("Local Core history unavailable for faceplate revision build")
-        revisions = []
-        seen = set()
+        candidates: list[tuple[dict, bytes, bytes]] = []
 
         def retain(commit: str, old_png: bytes | None, old_geometry: bytes | None,
                    old_version: bytes | None) -> None:
@@ -90,39 +89,57 @@ def generate(repo: Path, release: Path, version: str) -> dict:
             if old == version:
                 return
             key = (_digest(old_png), _digest(old_geometry))
-            if key in seen:
-                return
-            seen.add(key)
-            folder = destination / old
-            folder.mkdir(parents=True, exist_ok=True)
-            filename = image.name
-            geometry_output = filename[:-4] + ".json"
-            target_png = folder / filename
-            target_geometry = folder / geometry_output
-            for target, value in ((target_png, old_png), (target_geometry, old_geometry)):
-                if target.exists() and target.read_bytes() != value:
-                    raise ValueError("Core version identifies conflicting factory faceplate revision")
-                target.write_bytes(value)
-            revisions.append({
-                "version": old, "filename": filename, "sha256": key[0],
+            candidates.append(({
+                "version": old, "filename": image.name, "sha256": key[0],
                 "geometry_sha256": key[1],
-                "path": f"faceplates-old/{old}/{filename}",
-                "geometry_path": f"faceplates-old/{old}/{geometry_output}",
-            })
+                "path": f"faceplates-old/{old}/{image.name}",
+                "geometry_path": f"faceplates-old/{old}/{image.stem}.json",
+            }, old_png, old_geometry))
 
-        for commit in history.decode("ascii").splitlines():
+        changes = history.decode("ascii").splitlines()
+        for commit in changes:
             retain(commit, _previous(repo, commit, image_path),
                    _previous(repo, commit, geometry_path),
                    _previous(repo, commit, "VERSION"))
 
         head_png = _git(repo, "show", "HEAD:" + image_path)
         head_geometry = _git(repo, "show", "HEAD:" + geometry_path)
-        if (head_png != current_png or head_geometry != current_geometry):
+        committed_pair = head_png == current_png and head_geometry == current_geometry
+        if not committed_pair:
             retain("HEAD", head_png, head_geometry, _git(repo, "show", "HEAD:VERSION"))
         latest_key = (_digest(current_png), _digest(current_geometry))
-        revisions = [r for r in revisions if (r["sha256"], r["geometry_sha256"]) != latest_key]
+        # A routine Core bump does not relabel unchanged artwork. Its revision
+        # is the version at which the most recent committed pair appeared.
+        origin = _git(repo, "show", f"{changes[-1]}:VERSION") if committed_pair and changes else None
+        latest_version = (origin.decode("ascii", errors="replace").strip() if origin else version)
+        if not _VERSION.fullmatch(latest_version):
+            raise ValueError("Unversioned current factory faceplate revision")
+
+        # Select before writing: only latest + two distinct predecessors are
+        # shipped. Reintroduced identical pairs are one revision, and PNG-only
+        # or geometry-only differences both count as a genuine new pair.
+        chosen = []
+        seen = {latest_key}
+        for record, old_png, old_geometry in reversed(candidates):
+            key = (record["sha256"], record["geometry_sha256"])
+            if key in seen:
+                continue
+            seen.add(key)
+            chosen.append((record, old_png, old_geometry))
+            if len(chosen) == 2:
+                break
+        revisions = []
+        for record, old_png, old_geometry in reversed(chosen):
+            folder = destination / record["version"]
+            folder.mkdir(parents=True, exist_ok=True)
+            for target, value in ((folder / image.name, old_png),
+                                  (folder / f"{image.stem}.json", old_geometry)):
+                if target.exists() and target.read_bytes() != value:
+                    raise ValueError("Core version identifies conflicting factory faceplate revision")
+                target.write_bytes(value)
+            revisions.append(record)
         revisions.append({
-            "version": version, "filename": image.name, "sha256": latest_key[0],
+            "version": latest_version, "filename": image.name, "sha256": latest_key[0],
             "geometry_sha256": latest_key[1], "path": "faceplates/" + image.name,
             "geometry_path": "calibration/" + geometry_name,
         })

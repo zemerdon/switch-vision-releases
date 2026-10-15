@@ -82,5 +82,95 @@ class VersionedFaceplateTests(unittest.TestCase):
             self.assertEqual(len(history.catalog_revisions(frontend, name)), 3)
 
 
+    def test_three_distinct_pairs_rotate_without_release_only_revision(self) -> None:
+        with TemporaryDirectory(prefix="faceplate-cap-") as temp:
+            repo = Path(temp) / "repo"
+            frontend = Path(temp) / "www"
+            (repo / "src/faceplates").mkdir(parents=True)
+            (repo / "src/calibration").mkdir()
+            image = repo / "src/faceplates/example.png"
+            geometry = repo / "src/calibration/faceplate-example.json"
+            run(repo, "init", "-q")
+
+            def commit(version: str, pixels: bytes, x: int) -> None:
+                (repo / "VERSION").write_text(version + "\n")
+                image.write_bytes(pixels)
+                geometry.write_text(json.dumps({
+                    "schema": "switch-vision-interactive-calibration-v1",
+                    "image": {"file": "faceplates/example.png"},
+                    "ports": {"1": {"center": [x, 10]}}, "sfp": {},
+                }))
+                run(repo, "add", ".")
+                run(repo, "-c", "user.name=Test", "-c",
+                    "user.email=test@example.invalid", "commit", "-qm", version)
+
+            commit("2.7.70", b"art-a", 10)
+            commit("2.7.71", b"art-b", 10)  # PNG-only
+            commit("2.7.72", b"art-b", 20)  # geometry-only, same PNG SHA
+            commit("2.7.73", b"art-c", 20)  # fourth distinct pair
+            (repo / "VERSION").write_text("2.7.99\n")
+            run(repo, "add", ".")
+            run(repo, "-c", "user.name=Test", "-c",
+                "user.email=test@example.invalid", "commit", "-qm", "version-only")
+            (frontend / "faceplates").mkdir(parents=True)
+            (frontend / "calibration").mkdir()
+            (frontend / "faceplates/example.png").write_bytes(image.read_bytes())
+            (frontend / "calibration/faceplate-example.json").write_bytes(geometry.read_bytes())
+            index = module.generate(repo, frontend, "2.7.99")
+            rows = index["faceplates"]["example.png"]
+            self.assertEqual(len(rows), 3)
+            self.assertEqual([r["version"] for r in rows],
+                             ["2.7.71", "2.7.72", "2.7.73"])
+            self.assertEqual(rows[0]["sha256"], rows[1]["sha256"])
+            self.assertNotEqual(rows[0]["geometry_sha256"], rows[1]["geometry_sha256"])
+            self.assertEqual(len(history.catalog_revisions(frontend, "example.png")), 3)
+            self.assertFalse((frontend / "faceplates-old/2.7.70/example.png").exists())
+            self.assertEqual(rows[-1]["path"], "faceplates/example.png")
+            self.assertEqual(index["core_version"], "2.7.99")
+            # A new version with no actual change does not create an extra pair.
+            (repo / "VERSION").write_text("2.7.100\n")
+            (frontend / "faceplates-old").rename(frontend / "archive")
+            again = module.generate(repo, frontend, "2.7.100")
+            self.assertEqual([r["version"] for r in again["faceplates"]["example.png"]],
+                             ["2.7.71", "2.7.72", "2.7.73"])
+
+
+    def test_retained_selected_pair_requires_exact_version_and_geometry(self) -> None:
+        import hashlib
+        with TemporaryDirectory(prefix="faceplate-selected-") as temp:
+            root = Path(temp)
+            name, pixels = "example.png", b"identical-pixels"
+            sha = hashlib.sha256(pixels).hexdigest()
+            old = root / "faceplate-history/revisions/2.7.70"
+            old.mkdir(parents=True)
+            (old / name).write_bytes(pixels)
+            factory = json.dumps({
+                "schema": "switch-vision-interactive-calibration-v1",
+                "image": {"file": "faceplates/" + name},
+                "ports": {"1": {"center": [10, 20]}}, "sfp": {},
+            }).encode()
+            geometry_sha = hashlib.sha256(factory).hexdigest()
+            (old / "example.json").write_bytes(factory)
+            (root / "faceplate-history/revisions/manifest.json").write_text(
+                json.dumps({"schema": 1, "faceplates": {name: [{
+                    "version": "2.7.70", "filename": name,
+                    "sha256": sha, "geometry_sha256": geometry_sha,
+                    "path": "faceplate-history/revisions/2.7.70/example.png",
+                    "geometry_path": "faceplate-history/revisions/2.7.70/example.json",
+                }]}}))
+            # Same PNG hash as currently shipped, but different old geometry:
+            # a sha-only comparison would silently select the wrong ports.
+            selected = history.verified_choice(root, name, sha, sha,
+                                               "2.7.70", geometry_sha)
+            self.assertEqual(selected["geometry"]["ports"]["1"]["center"], [10, 20])
+            self.assertEqual(selected["path"],
+                             "faceplate-history/revisions/2.7.70/example.png")
+            self.assertEqual(history.verified_choice(root, name, sha, sha,
+                                   "2.7.70", "0" * 64).get("unavailable"), "true")
+            (old / "example.json").write_text("tampered")
+            self.assertEqual(history.verified_choice(root, name, sha, sha,
+                                   "2.7.70", geometry_sha).get("unavailable"), "true")
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -198,7 +198,7 @@ UNIFI_DEVICE_WS_SCHEMA = {
 }
 
 PANEL_URL_PATH = "switch-vision"
-PANEL_VERSION = "2.7.93"
+PANEL_VERSION = "2.7.94"
 PANEL_JS_PATH = "/api/switch_vision/switch-vision-panel.js"
 PANEL_JS_URL = f"{PANEL_JS_PATH}?v={PANEL_VERSION}"
 ICONSET_JS_PATH = "/api/switch_vision/switch-vision-iconset.js"
@@ -2487,6 +2487,7 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
                         _faceplate_artwork.verified_choice, _asset_root(),
                         selected_filename, selected_sha, pin_current_sha,
                         str(previous.get("version") or "") if isinstance(previous, dict) else "",
+                        str(previous.get("geometry_sha256") or "") if isinstance(previous, dict) else "",
                     )
 
         connection.send_result(
@@ -2644,6 +2645,7 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
                     str(pin.get("sha256") or ""),
                     str(fingerprints.get(str(pin.get("filename") or ""), {}).get("sha256") or ""),
                     str(pin.get("version") or ""),
+                    str(pin.get("geometry_sha256") or ""),
                 )
                 for base, pin in saved_choices.items()
                 if isinstance(base, str) and isinstance(pin, dict)

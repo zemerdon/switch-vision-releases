@@ -1,0 +1,466 @@
+{
+  "core_version": "2.7.94",
+  "faceplates": {
+    "24rj45-2sfp.png": [
+      {
+        "filename": "24rj45-2sfp.png",
+        "geometry_path": "faceplates-old/2.6.5/24rj45-2sfp.json",
+        "geometry_sha256": "becac0064b043768eeb0aa7a9fff7e6563150441073a76ec9d3f7f191627ddb5",
+        "path": "faceplates-old/2.6.5/24rj45-2sfp.png",
+        "sha256": "917b638525ba0a6dbed76f7b619a38cf81a6da3c090bd60b3a76aa0006304bcd",
+        "version": "2.6.5"
+      },
+      {
+        "filename": "24rj45-2sfp.png",
+        "geometry_path": "faceplates-old/2.7.39/24rj45-2sfp.json",
+        "geometry_sha256": "a776dcec6561a8836281b171111643ccd79ace8bcea95c100b3c81ca9d73e2b3",
+        "path": "faceplates-old/2.7.39/24rj45-2sfp.png",
+        "sha256": "917b638525ba0a6dbed76f7b619a38cf81a6da3c090bd60b3a76aa0006304bcd",
+        "version": "2.7.39"
+      },
+      {
+        "filename": "24rj45-2sfp.png",
+        "geometry_path": "calibration/faceplate-stock-24rj45-2sfp.json",
+        "geometry_sha256": "c94bf1bab999deddb39fafd1456f4a8690f1841097805f5046f05e42a3a6d7d1",
+        "path": "faceplates/24rj45-2sfp.png",
+        "sha256": "917b638525ba0a6dbed76f7b619a38cf81a6da3c090bd60b3a76aa0006304bcd",
+        "version": "2.7.40"
+      }
+    ],
+    "24rj45-4sfp.png": [
+      {
+        "filename": "24rj45-4sfp.png",
+        "geometry_path": "faceplates-old/2.6.5/24rj45-4sfp.json",
+        "geometry_sha256": "1472c828691d872b2aa69b268ff947325696e740940de01e9abe1c700345ce44",
+        "path": "faceplates-old/2.6.5/24rj45-4sfp.png",
+        "sha256": "dfc1a7e3ec675e9ce534eb675c8692358e8e122fb09976956fb0858a77760851",
+        "version": "2.6.5"
+      },
+      {
+        "filename": "24rj45-4sfp.png",
+        "geometry_path": "faceplates-old/2.7.39/24rj45-4sfp.json",
+        "geometry_sha256": "f75013420b596880372770a8095eefdc00f6e6fafc3ddad0ba97025431f1ffb1",
+        "path": "faceplates-old/2.7.39/24rj45-4sfp.png",
+        "sha256": "dfc1a7e3ec675e9ce534eb675c8692358e8e122fb09976956fb0858a77760851",
+        "version": "2.7.39"
+      },
+      {
+        "filename": "24rj45-4sfp.png",
+        "geometry_path": "calibration/faceplate-stock-24rj45-4sfp.json",
+        "geometry_sha256": "ebabc95a8530b5f8e52c71472f8dcbf02159f4f59e9ed92e3c3580284947753a",
+        "path": "faceplates/24rj45-4sfp.png",
+        "sha256": "dfc1a7e3ec675e9ce534eb675c8692358e8e122fb09976956fb0858a77760851",
+        "version": "2.7.40"
+      }
+    ],
+    "48rj45-2sfp.png": [
+      {
+        "filename": "48rj45-2sfp.png",
+        "geometry_path": "faceplates-old/2.7.15/48rj45-2sfp.json",
+        "geometry_sha256": "1dff71a8b3c92b843cd3a47cccf4c518f605dc166956e9cde911bf4825180039",
+        "path": "faceplates-old/2.7.15/48rj45-2sfp.png",
+        "sha256": "955d10fc23eb97555e7f6b45133dfa27b9569a2675f84d95b18aac43f5bd420c",
+        "version": "2.7.15"
+      },
+      {
+        "filename": "48rj45-2sfp.png",
+        "geometry_path": "faceplates-old/2.7.39/48rj45-2sfp.json",
+        "geometry_sha256": "0dd008b8745f1a3b09829d59cc8ae895f440b534d60199fbc1d77cdd092e6cf1",
+        "path": "faceplates-old/2.7.39/48rj45-2sfp.png",
+        "sha256": "955d10fc23eb97555e7f6b45133dfa27b9569a2675f84d95b18aac43f5bd420c",
+        "version": "2.7.39"
+      },
+      {
+        "filename": "48rj45-2sfp.png",
+        "geometry_path": "calibration/faceplate-stock-48rj45-2sfp.json",
+        "geometry_sha256": "8368bf2e1a232b3986c1ea6486f62d35db810b4a2a03857a1ece3cfcbd557a2f",
+        "path": "faceplates/48rj45-2sfp.png",
+        "sha256": "955d10fc23eb97555e7f6b45133dfa27b9569a2675f84d95b18aac43f5bd420c",
+        "version": "2.7.40"
+      }
+    ],
+    "48rj45-4sfp.png": [
+      {
+        "filename": "48rj45-4sfp.png",
+        "geometry_path": "faceplates-old/2.7.15/48rj45-4sfp.json",
+        "geometry_sha256": "4260c5f9fc9163e128c300df0d62c58ba9b0fcd7c4f5b6887e90e0241f1e2038",
+        "path": "faceplates-old/2.7.15/48rj45-4sfp.png",
+        "sha256": "73c6f017a09f91d2979e50cd8c0de5f4763cac521174f527ec99edfbf5523047",
+        "version": "2.7.15"
+      },
+      {
+        "filename": "48rj45-4sfp.png",
+        "geometry_path": "faceplates-old/2.7.39/48rj45-4sfp.json",
+        "geometry_sha256": "a5fb55ab4a02380dbf8bbf3c71044f62159fa17e4fad8158979df522e4643e7c",
+        "path": "faceplates-old/2.7.39/48rj45-4sfp.png",
+        "sha256": "73c6f017a09f91d2979e50cd8c0de5f4763cac521174f527ec99edfbf5523047",
+        "version": "2.7.39"
+      },
+      {
+        "filename": "48rj45-4sfp.png",
+        "geometry_path": "calibration/faceplate-stock-48rj45-4sfp.json",
+        "geometry_sha256": "6903b5a8bf17a429644b5cf4358253b8fd143c568c66da0809a0b2ff9d37a552",
+        "path": "faceplates/48rj45-4sfp.png",
+        "sha256": "73c6f017a09f91d2979e50cd8c0de5f4763cac521174f527ec99edfbf5523047",
+        "version": "2.7.40"
+      }
+    ],
+    "avaya-3524gt.png": [
+      {
+        "filename": "avaya-3524gt.png",
+        "geometry_path": "calibration/faceplate-avaya-3524gt.json",
+        "geometry_sha256": "92215305a2dea1bc14b3b4ee5dbb5cee384d5d40f7eba9f6f2e16493a3143d6a",
+        "path": "faceplates/avaya-3524gt.png",
+        "sha256": "a7d9dedc6d9298a46dfdb80dea7dfd8bf74a07d53931081fbd2bdac87007c621",
+        "version": "2.7.55"
+      }
+    ],
+    "c3560cg-8pc-s.png": [
+      {
+        "filename": "c3560cg-8pc-s.png",
+        "geometry_path": "faceplates-old/2.6.5/c3560cg-8pc-s.json",
+        "geometry_sha256": "5942b8fb12f5a17b34e0c1994b0c8c8a1dcce326770daaef36d94ceb41cdcb7c",
+        "path": "faceplates-old/2.6.5/c3560cg-8pc-s.png",
+        "sha256": "99378eefb832de346ef9a777071de837af08a03af30541764f50889a22fa6101",
+        "version": "2.6.5"
+      },
+      {
+        "filename": "c3560cg-8pc-s.png",
+        "geometry_path": "faceplates-old/2.7.39/c3560cg-8pc-s.json",
+        "geometry_sha256": "2f18c18d01e11541b5e2d0c7042aa76082d459196573a845dd7d66004e009a9e",
+        "path": "faceplates-old/2.7.39/c3560cg-8pc-s.png",
+        "sha256": "99378eefb832de346ef9a777071de837af08a03af30541764f50889a22fa6101",
+        "version": "2.7.39"
+      },
+      {
+        "filename": "c3560cg-8pc-s.png",
+        "geometry_path": "calibration/faceplate-c3560cg-8pc-s.json",
+        "geometry_sha256": "225199a987e07fbdf60fdf4110a0e427b15e391dd6434bc54bc11e5d6645fe04",
+        "path": "faceplates/c3560cg-8pc-s.png",
+        "sha256": "99378eefb832de346ef9a777071de837af08a03af30541764f50889a22fa6101",
+        "version": "2.7.40"
+      }
+    ],
+    "cisco-3850-12xs.png": [
+      {
+        "filename": "cisco-3850-12xs.png",
+        "geometry_path": "faceplates-old/2.7.86/cisco-3850-12xs.json",
+        "geometry_sha256": "ecea0d2cd40b4d6ae561ededbf5e017debaa227eb1c8de5d27a640085e4394b1",
+        "path": "faceplates-old/2.7.86/cisco-3850-12xs.png",
+        "sha256": "c67483d24fc708c9ffaa62b8721c3680ea215c03540f88f62850ad672f3c6f40",
+        "version": "2.7.86"
+      },
+      {
+        "filename": "cisco-3850-12xs.png",
+        "geometry_path": "faceplates-old/2.7.90/cisco-3850-12xs.json",
+        "geometry_sha256": "ecea0d2cd40b4d6ae561ededbf5e017debaa227eb1c8de5d27a640085e4394b1",
+        "path": "faceplates-old/2.7.90/cisco-3850-12xs.png",
+        "sha256": "990a72433510e64e164a55bf07fb814dd2d276fac256be726f530b53334b3dc9",
+        "version": "2.7.90"
+      },
+      {
+        "filename": "cisco-3850-12xs.png",
+        "geometry_path": "calibration/faceplate-cisco-3850-12xs.json",
+        "geometry_sha256": "ecea0d2cd40b4d6ae561ededbf5e017debaa227eb1c8de5d27a640085e4394b1",
+        "path": "faceplates/cisco-3850-12xs.png",
+        "sha256": "eba68a052bc0baff1a5af583eb869895e30c93a51d3836bc763baee1025eacde",
+        "version": "2.7.91"
+      }
+    ],
+    "cisco-sg200-26.png": [
+      {
+        "filename": "cisco-sg200-26.png",
+        "geometry_path": "calibration/faceplate-cisco-sg200-26.json",
+        "geometry_sha256": "8e864f01327b29fd68fdc7a4c19764cf9d4b131fd7f9417cea1640dfedca7d5d",
+        "path": "faceplates/cisco-sg200-26.png",
+        "sha256": "680a0d1f38f9455b5b172606960e8a5059be8afbad900f5ff9c48c8a05e39ebe",
+        "version": "2.7.81"
+      }
+    ],
+    "dell-28-rj45-2sfp.png": [
+      {
+        "filename": "dell-28-rj45-2sfp.png",
+        "geometry_path": "faceplates-old/2.6.5/dell-28-rj45-2sfp.json",
+        "geometry_sha256": "92befc0b749581fe808e7f844c79cbb03fc1d0410093be45faac3f82c23a9256",
+        "path": "faceplates-old/2.6.5/dell-28-rj45-2sfp.png",
+        "sha256": "075f0f6348d197bbf0a466b6ab9ee4b7b18b6147c31661eb3c2f64da29ef775c",
+        "version": "2.6.5"
+      },
+      {
+        "filename": "dell-28-rj45-2sfp.png",
+        "geometry_path": "calibration/faceplate-dell-28-rj45-2sfp.json",
+        "geometry_sha256": "6698ab9efb5424e40b4f570e3cd45ab9c3a87377f43b2df8a55a8a8f630dfcd4",
+        "path": "faceplates/dell-28-rj45-2sfp.png",
+        "sha256": "075f0f6348d197bbf0a466b6ab9ee4b7b18b6147c31661eb3c2f64da29ef775c",
+        "version": "2.6.6"
+      }
+    ],
+    "dell-4032f.png": [
+      {
+        "filename": "dell-4032f.png",
+        "geometry_path": "faceplates-old/2.7.49/dell-4032f.json",
+        "geometry_sha256": "da3a00c910f7967080335a22497beef06a76eb8a9a761dfc67a37e94d7a608c1",
+        "path": "faceplates-old/2.7.49/dell-4032f.png",
+        "sha256": "fe4228f396350a6223e4d0bcd83715c0a3487b414b10a83e1c88e56f14fa2eba",
+        "version": "2.7.49"
+      },
+      {
+        "filename": "dell-4032f.png",
+        "geometry_path": "faceplates-old/2.7.50/dell-4032f.json",
+        "geometry_sha256": "a7548e8ca2d3a271abcf113928ef77d8a8f9f15eabe8ab2b0576089c14bc11b3",
+        "path": "faceplates-old/2.7.50/dell-4032f.png",
+        "sha256": "fe4228f396350a6223e4d0bcd83715c0a3487b414b10a83e1c88e56f14fa2eba",
+        "version": "2.7.50"
+      },
+      {
+        "filename": "dell-4032f.png",
+        "geometry_path": "calibration/faceplate-dell-4032f.json",
+        "geometry_sha256": "71b4b4e35a32bd41c1c69234cea6008f573b6e279d40609f669a7d72e9e04d23",
+        "path": "faceplates/dell-4032f.png",
+        "sha256": "fe4228f396350a6223e4d0bcd83715c0a3487b414b10a83e1c88e56f14fa2eba",
+        "version": "2.7.51"
+      }
+    ],
+    "hp-1810-24g.png": [
+      {
+        "filename": "hp-1810-24g.png",
+        "geometry_path": "calibration/faceplate-hp-1810-24g.json",
+        "geometry_sha256": "e6edd963ceebc036581e999a4e45bb2572dfaf028b6c65b081dac18fe2d37eb0",
+        "path": "faceplates/hp-1810-24g.png",
+        "sha256": "af9a3b34e6c425746029771bb22f590217ed01b6a0952272d5be0a957bc082ca",
+        "version": "2.7.30"
+      }
+    ],
+    "hp-3500yl-48g.png": [
+      {
+        "filename": "hp-3500yl-48g.png",
+        "geometry_path": "calibration/faceplate-hp-3500yl-48g.json",
+        "geometry_sha256": "feffbe8a252703100550d77691ca7479cadd87cdb378a42588c8372a3f74230a",
+        "path": "faceplates/hp-3500yl-48g.png",
+        "sha256": "bb7d88a3b8b5faaa64557a12783bc1f4386ee488fcce175f0126a99272734c3d",
+        "version": "2.7.82"
+      }
+    ],
+    "submarine-48rj45-4sfp.png": [
+      {
+        "filename": "submarine-48rj45-4sfp.png",
+        "geometry_path": "faceplates-old/2.6.5/submarine-48rj45-4sfp.json",
+        "geometry_sha256": "ce893c58d24d838110e73b6ed4450992b1bbcca53f181e1bdb94a34be602c870",
+        "path": "faceplates-old/2.6.5/submarine-48rj45-4sfp.png",
+        "sha256": "e48f3fa8c50ebaea97cde23defe62f94e12ce5869d6428a3c42996ba95646ab4",
+        "version": "2.6.5"
+      },
+      {
+        "filename": "submarine-48rj45-4sfp.png",
+        "geometry_path": "faceplates-old/2.7.39/submarine-48rj45-4sfp.json",
+        "geometry_sha256": "d87250c33965d08a6db25eeb5f612f71957abcc7d6a08ad075f3c701a235b20e",
+        "path": "faceplates-old/2.7.39/submarine-48rj45-4sfp.png",
+        "sha256": "e48f3fa8c50ebaea97cde23defe62f94e12ce5869d6428a3c42996ba95646ab4",
+        "version": "2.7.39"
+      },
+      {
+        "filename": "submarine-48rj45-4sfp.png",
+        "geometry_path": "calibration/faceplate-submarine-48rj45-4sfp.json",
+        "geometry_sha256": "8ae1d73ff9720e181632d5bc88f32306e6c826f6ce35c61e74eb10a5400d6742",
+        "path": "faceplates/submarine-48rj45-4sfp.png",
+        "sha256": "e48f3fa8c50ebaea97cde23defe62f94e12ce5869d6428a3c42996ba95646ab4",
+        "version": "2.7.40"
+      }
+    ],
+    "unifi-16rj45-2sfp.png": [
+      {
+        "filename": "unifi-16rj45-2sfp.png",
+        "geometry_path": "calibration/faceplate-unifi-16rj45-2sfp.json",
+        "geometry_sha256": "abac1156c243989ebbf5b905467bea41f83656676b7cd0e39fe65b2ebd6c3500",
+        "path": "faceplates/unifi-16rj45-2sfp.png",
+        "sha256": "e79357ce053610cb7abe5432c2d90b90b1d32818b29b010954f53d6fbe11a669",
+        "version": "2.7.23"
+      }
+    ],
+    "unifi-24-rj45-2sfp-dark.png": [
+      {
+        "filename": "unifi-24-rj45-2sfp-dark.png",
+        "geometry_path": "faceplates-old/2.6.5/unifi-24-rj45-2sfp-dark.json",
+        "geometry_sha256": "59479f0917e8bc998b0e788a36e416a4344c474a73d9c9a0a3a69c9f9a7b8bd4",
+        "path": "faceplates-old/2.6.5/unifi-24-rj45-2sfp-dark.png",
+        "sha256": "43993a8b19c6330cfbe99f4f9ac1970ef72e16ce52497e2248a4bb628239b0ae",
+        "version": "2.6.5"
+      },
+      {
+        "filename": "unifi-24-rj45-2sfp-dark.png",
+        "geometry_path": "faceplates-old/2.6.14/unifi-24-rj45-2sfp-dark.json",
+        "geometry_sha256": "2e564d6ffa99b6821aa86f4dd9c1e4f4049a534d16f5cf8ceb67de3bab494bbf",
+        "path": "faceplates-old/2.6.14/unifi-24-rj45-2sfp-dark.png",
+        "sha256": "43993a8b19c6330cfbe99f4f9ac1970ef72e16ce52497e2248a4bb628239b0ae",
+        "version": "2.6.14"
+      },
+      {
+        "filename": "unifi-24-rj45-2sfp-dark.png",
+        "geometry_path": "calibration/faceplate-unifi-24-rj45-2sfp-dark.json",
+        "geometry_sha256": "67dec6839d2a54bb0bbbc51bebed3e6d5d8723f2af8667fa2e4aceaf7f48916c",
+        "path": "faceplates/unifi-24-rj45-2sfp-dark.png",
+        "sha256": "43993a8b19c6330cfbe99f4f9ac1970ef72e16ce52497e2248a4bb628239b0ae",
+        "version": "2.6.15"
+      }
+    ],
+    "unifi-24-rj45-2sfp-inline.png": [
+      {
+        "filename": "unifi-24-rj45-2sfp-inline.png",
+        "geometry_path": "calibration/faceplate-unifi-24-rj45-2sfp-inline.json",
+        "geometry_sha256": "5b9a1b42249c92fbf8ee43aaa4b6364390398963117366b35c8792b5d8348d88",
+        "path": "faceplates/unifi-24-rj45-2sfp-inline.png",
+        "sha256": "636fb15305026837df92cc69f68f4d7baa9e9a58233a3f479f83010c42083dcc",
+        "version": "2.6.25"
+      }
+    ],
+    "unifi-24-rj45-4sfp-inline.png": [
+      {
+        "filename": "unifi-24-rj45-4sfp-inline.png",
+        "geometry_path": "calibration/faceplate-unifi-24-rj45-4sfp-inline.json",
+        "geometry_sha256": "02eda2873235f8612bbb7660b32ec34d73c15bd43a2eac0b6275ade411a5adb7",
+        "path": "faceplates/unifi-24-rj45-4sfp-inline.png",
+        "sha256": "6aa66f1cbd5ee4a9c796a1d4b4b55b2cae4fd97f5ef0b83a34a75a1f68f1edca",
+        "version": "2.6.25"
+      }
+    ],
+    "unifi-24p-rj45-2sfp.png": [
+      {
+        "filename": "unifi-24p-rj45-2sfp.png",
+        "geometry_path": "faceplates-old/2.6.5/unifi-24p-rj45-2sfp.json",
+        "geometry_sha256": "06bc0f52f6eb5842a17965754e5f6cc6b5beafa09d9113829c047f561dddadc6",
+        "path": "faceplates-old/2.6.5/unifi-24p-rj45-2sfp.png",
+        "sha256": "3843544aedd63e8d591fec3c77741686ce2820a1d49ab464cee2b25f23c1f7b7",
+        "version": "2.6.5"
+      },
+      {
+        "filename": "unifi-24p-rj45-2sfp.png",
+        "geometry_path": "faceplates-old/2.6.14/unifi-24p-rj45-2sfp.json",
+        "geometry_sha256": "d28d132f0a0c485e17b1edc386fbb382e0a43e0b9f6e85077ff151c08c58dac4",
+        "path": "faceplates-old/2.6.14/unifi-24p-rj45-2sfp.png",
+        "sha256": "3843544aedd63e8d591fec3c77741686ce2820a1d49ab464cee2b25f23c1f7b7",
+        "version": "2.6.14"
+      },
+      {
+        "filename": "unifi-24p-rj45-2sfp.png",
+        "geometry_path": "calibration/faceplate-unifi-24p-rj45-2sfp.json",
+        "geometry_sha256": "0b1fa2b7f401a03851bca146f9bbc026999365fc51a55a15a8d46e4e875ce638",
+        "path": "faceplates/unifi-24p-rj45-2sfp.png",
+        "sha256": "3843544aedd63e8d591fec3c77741686ce2820a1d49ab464cee2b25f23c1f7b7",
+        "version": "2.6.15"
+      }
+    ],
+    "unifi-32sfp.png": [
+      {
+        "filename": "unifi-32sfp.png",
+        "geometry_path": "calibration/faceplate-unifi-32sfp.json",
+        "geometry_sha256": "2a804a7aa294da335608cc55c1cd6528cfe9e1602f4af52e161b0d88ed3e3e3c",
+        "path": "faceplates/unifi-32sfp.png",
+        "sha256": "3b212b725f07331e0cd0059a8910386f6ab7d5cfcd40f03a77c0a3ff59f5d357",
+        "version": "2.6.32"
+      }
+    ],
+    "unifi-3sfp.png": [
+      {
+        "filename": "unifi-3sfp.png",
+        "geometry_path": "calibration/faceplate-unifi-3sfp.json",
+        "geometry_sha256": "a899e6e6b1b7737fa55b87e0a39659adb92b29174c9f7d0676f41840b68728cc",
+        "path": "faceplates/unifi-3sfp.png",
+        "sha256": "c29601cbd4143e79d522226d5ee93f10864a77e4eca39551e5e84c154d95ca23",
+        "version": "2.7.23"
+      }
+    ],
+    "unifi-4-rj45-12sfp.png": [
+      {
+        "filename": "unifi-4-rj45-12sfp.png",
+        "geometry_path": "calibration/faceplate-unifi-4-rj45-12sfp.json",
+        "geometry_sha256": "ac3646575dd0b664c1ede3b1ccc7e28f44a7fbccf8c492ad114a902c3eab20bb",
+        "path": "faceplates/unifi-4-rj45-12sfp.png",
+        "sha256": "0d6c14587b4dff7c0a1b3b02c581d5f65c58b5c3067ba258ac7922873c3ef37d",
+        "version": "2.6.25"
+      }
+    ],
+    "unifi-5rj45.png": [
+      {
+        "filename": "unifi-5rj45.png",
+        "geometry_path": "faceplates-old/2.4.19/unifi-5rj45.json",
+        "geometry_sha256": "106ee19a55a67cf4dc2e122c1b421461ff991e6a7896fa723c63d40a98f6ecba",
+        "path": "faceplates-old/2.4.19/unifi-5rj45.png",
+        "sha256": "8c9bdeb091f477a497579b717fedfc0d87a96c013ddf1def7fb1973f1b896414",
+        "version": "2.4.19"
+      },
+      {
+        "filename": "unifi-5rj45.png",
+        "geometry_path": "faceplates-old/2.6.5/unifi-5rj45.json",
+        "geometry_sha256": "45f66ef98c3a514b4034b35c2ee89bd13ae7627e944fea5bdb4407384ddd0ff9",
+        "path": "faceplates-old/2.6.5/unifi-5rj45.png",
+        "sha256": "8c9bdeb091f477a497579b717fedfc0d87a96c013ddf1def7fb1973f1b896414",
+        "version": "2.6.5"
+      },
+      {
+        "filename": "unifi-5rj45.png",
+        "geometry_path": "calibration/faceplate-unifi-5rj45.json",
+        "geometry_sha256": "c8e1be8ba58c59d3f88a916f662f768310b09b9f2aa5187e2d74050f8a5b14fe",
+        "path": "faceplates/unifi-5rj45.png",
+        "sha256": "8c9bdeb091f477a497579b717fedfc0d87a96c013ddf1def7fb1973f1b896414",
+        "version": "2.6.6"
+      }
+    ],
+    "unifi-8-rj45-2sfp.png": [
+      {
+        "filename": "unifi-8-rj45-2sfp.png",
+        "geometry_path": "calibration/faceplate-unifi-8-rj45-2sfp.json",
+        "geometry_sha256": "c60e49bfb64b7af3fbffd8bb1d34d0fc1b768ce2bfb0acd4855065aaf86c47dc",
+        "path": "faceplates/unifi-8-rj45-2sfp.png",
+        "sha256": "0c4d0ec28e0de0e7792e2f3a48799f081b443380aa2c5060c5039219203a2b3c",
+        "version": "2.6.29"
+      }
+    ],
+    "unifi-8rj45.png": [
+      {
+        "filename": "unifi-8rj45.png",
+        "geometry_path": "faceplates-old/2.4.19/unifi-8rj45.json",
+        "geometry_sha256": "3e2a5d9183faba35035ba11ff33d6238d335751c4bf618b2f29a4f023551be78",
+        "path": "faceplates-old/2.4.19/unifi-8rj45.png",
+        "sha256": "c7a04169b5cf6834780a579285250ac00f97f56ac450eb757e1e0ba8dbfaf74f",
+        "version": "2.4.19"
+      },
+      {
+        "filename": "unifi-8rj45.png",
+        "geometry_path": "faceplates-old/2.6.5/unifi-8rj45.json",
+        "geometry_sha256": "5fa8b1fa8fc57bf55892813261d4453c3ca59250088931735cafdbdd88ef4d73",
+        "path": "faceplates-old/2.6.5/unifi-8rj45.png",
+        "sha256": "c7a04169b5cf6834780a579285250ac00f97f56ac450eb757e1e0ba8dbfaf74f",
+        "version": "2.6.5"
+      },
+      {
+        "filename": "unifi-8rj45.png",
+        "geometry_path": "calibration/faceplate-unifi-8rj45.json",
+        "geometry_sha256": "bb6fa8f346e8df9242b7e5a70e5589d1aef7542cec82f3f1f31401052910d946",
+        "path": "faceplates/unifi-8rj45.png",
+        "sha256": "c7a04169b5cf6834780a579285250ac00f97f56ac450eb757e1e0ba8dbfaf74f",
+        "version": "2.6.6"
+      }
+    ],
+    "unifi-9rj45-2sfp.png": [
+      {
+        "filename": "unifi-9rj45-2sfp.png",
+        "geometry_path": "calibration/faceplate-unifi-9rj45-2sfp.json",
+        "geometry_sha256": "f7e31d5e72eafac9fbde2a8d7f36708b246a4c3fb463ee2175df54bbd9c8b418",
+        "path": "faceplates/unifi-9rj45-2sfp.png",
+        "sha256": "a6abcd8ae0af97ad7b0a85015e61b5645927c4ca98d83edb437d31342e20cfbc",
+        "version": "2.7.23"
+      }
+    ],
+    "usw-flex-mini.png": [
+      {
+        "filename": "usw-flex-mini.png",
+        "geometry_path": "calibration/faceplate-usw-flex-mini.json",
+        "geometry_sha256": "496878e45ee262dc8eb3968d2a6a66085425bb3c5590bbb9bcaf8f9921fd9afc",
+        "path": "faceplates/usw-flex-mini.png",
+        "sha256": "1d0c11947bc391defd09e4ce14c32ba580dd2918b5be9ad273d67a14ec63ed34",
+        "version": "2.7.24"
+      }
+    ]
+  },
+  "schema": 1
+}

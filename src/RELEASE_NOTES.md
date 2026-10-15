@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.94
+
+This Local-only candidate caps the shipped stock faceplate archive to three distinct image-and-factory-geometry revisions per model, keeps unchanged-version artwork identities stable, and verifies locally preserved selected-old pairs. Saved per-switch Calibration remains authoritative; no public publication or owner HAOS modification is included.
+
 # Switch Vision Core v2.7.93
 
 Core now bundles each previous verified stock faceplate image together with its matching factory port/LED geometry, labelled with the outgoing Core release. Discovery Hub can preview and select Core-versioned artwork revisions for configured switches. New installations use current stock artwork; existing saved user Calibration remains independent and is not reset or overwritten. Installer 2.1.57 copies the bundled history without an update-order dependency. Previous Installer-history-only installations remain compatible where their verified originals are available. Local-first candidate, not a public release.
