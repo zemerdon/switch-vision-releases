@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.98
+
+Local-only Cisco Catalyst 3850-12XS artwork revision. Use the owner-supplied 2680 × 356 `cisco-3850-12xs.png` unchanged (new SHA-256 `bc34fc58e818014a3d1b031221e4aab87ae567654075f4f2011f695c23572d74`; outgoing stock SHA-256 `eba68a052bc0baff1a5af583eb869895e30c93a51d3836bc763baee1025eacde`). Preserve all twelve calibrated 10G SFP+ positions, native-image geometry, proven interface/telemetry mapping, saved Calibration and independent Native/Custom artwork selections. The Installer's SHA-pair history supports a per-switch Keep Current or explicit new-artwork choice without silently changing existing selections. No owner-HAOS installation, public release, forum write or mail send is implied.
+
 # Switch Vision Core v2.7.97
 
 Local-only fix: an explicitly confirmed reset now adopts the latest verified factory artwork and matching geometry for its switch or namespace. Existing selections remain untouched until consent. Previous release: SHA-driven faceplate revision support. Core ships only latest stock artwork and factory geometry, while Installer preserves verified old pairs locally when they change. A configured switch may keep its previous generic stock image when its model gains a dedicated faceplate and matching factory geometry; Discovery Hub offers an explicit per-switch approval. User Calibration and functional topology are unchanged. No public release or personal HAOS modification is included.

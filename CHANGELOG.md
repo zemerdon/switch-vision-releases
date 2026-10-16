@@ -1,3 +1,9 @@
+## v2.7.98 — Cisco 3850-12XS owner artwork refresh (Local)
+
+- Replace the stock `cisco-3850-12xs.png` with the owner's supplied 2680 × 356 revision (`bc34fc58e818014a3d1b031221e4aab87ae567654075f4f2011f695c23572d74`), preserving the exact image bytes including the test marking.
+- Preserve all twelve factory SFP port/LED positions, model topology, the existing native-image factory geometry and saved per-switch Calibration.
+- Allow the established Installer SHA-pair history and explicit Hub artwork approval flow to distinguish the prior artwork from this revision; no automatic reset, model promotion or public publication.
+
 ## v2.7.97 — Confirmed factory reset refreshes stock artwork (Local)
 
 - A confirmed Reset Current Switch now replaces that switch's historical faceplate pin with the latest SHA-verified factory image and geometry. Reset All does the same only within the approved Native/Custom scope.
