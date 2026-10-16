@@ -1,3 +1,9 @@
+## v2.8.1 — Cisco 3850-12XS stock faceplate artwork refresh (Local)
+
+- Replace `cisco-3850-12xs.png` with the exact owner-provided 2680 × 356 RGBA PNG (SHA-256 `a8ebdc68ddbb38d22bbeaf9f69476b620aa06d494f425dc20baf519b05758028`), preserving the submitted original untouched.
+- Keep the twelve SFP cage and port-label strip pixel-identical to the previous revision; leave its verified factory port/LED geometry and per-switch saved Calibration unchanged.
+- Installer retains earlier SHA-addressed stock artwork for explicit Native-only Hub adoption after the coordinated update; no automatic Calibration reset or model topology change.
+
 ## v2.8.0 — Calibration action tooltips (Local)
 
 - Add precise hover/focus descriptions to the seven Calibration action buttons: Test Mode, Cancel, Refresh Faceplate, Reset Current Faceplate, Reset Current Switch, Reset All Switches, and Save Profile.

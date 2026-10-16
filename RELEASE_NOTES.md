@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.1
+
+Switch Vision Local: adopt the new owner-supplied Cisco 3850-12XS stock faceplate image at its exact 2680 × 356 resolution. The twelve-SFP port/label strip and factory geometry remain unchanged, while historical stock artwork continues to be preserved for explicit Native-only Hub approval. The owner's source file and saved per-switch Calibration are not modified.
+
 # Switch Vision Core v2.8.0
 
 Adds clear tooltips to all seven sticky Calibration action buttons, including the exact scope and approval requirements of faceplate and switch resets. All existing Calibration and artwork selection actions remain functionally unchanged. This is the minor rollover following Core 2.7.99 per the established patch-99 ceiling.
