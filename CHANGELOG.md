@@ -1,3 +1,9 @@
+## v2.8.2 — Complete Hub-approved Native artwork reset (Local)
+
+- On a verified, explicit Native Hub Upgrade Faceplate approval, complete Core's established Reset Current Switch factory Calibration save and re-read the exact SHA-pinned stock artwork. The backend's original approval remains the single authoritative switch-scoped mutation; no second reset service call or Calibration system is introduced.
+- Reject mismatched approved SHA and avoid modifying the Custom scope. Preserve the existing manual Reset Current Switch event path and explicit per-switch approval, history and Calibration safeguards.
+- Add regression coverage for Native factory save, rejected SHA, normal reset compatibility and Custom isolation.
+
 ## v2.8.1 — Cisco 3850-12XS stock faceplate artwork refresh (Local)
 
 - Replace `cisco-3850-12xs.png` with the exact owner-provided 2680 × 356 RGBA PNG (SHA-256 `a8ebdc68ddbb38d22bbeaf9f69476b620aa06d494f425dc20baf519b05758028`), preserving the submitted original untouched.

@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.2
+
+Completes the existing Core factory reset/Calibration save after an explicitly approved Native dashboard faceplate upgrade in Discovery Hub. Refreshes the SHA-pinned artwork and factory Calibration without a second competing reset. Custom scopes and normal Calibration button functionality are unaffected.
+
 # Switch Vision Core v2.8.1
 
 Switch Vision Local: adopt the new owner-supplied Cisco 3850-12XS stock faceplate image at its exact 2680 × 356 resolution. The twelve-SFP port/label strip and factory geometry remain unchanged, while historical stock artwork continues to be preserved for explicit Native-only Hub approval. The owner's source file and saved per-switch Calibration are not modified.

@@ -203,7 +203,7 @@ UNIFI_DEVICE_WS_SCHEMA = {
 }
 
 PANEL_URL_PATH = "switch-vision"
-PANEL_VERSION = "2.8.1"
+PANEL_VERSION = "2.8.2"
 PANEL_JS_PATH = "/api/switch_vision/switch-vision-panel.js"
 PANEL_JS_URL = f"{PANEL_JS_PATH}?v={PANEL_VERSION}"
 ICONSET_JS_PATH = "/api/switch_vision/switch-vision-iconset.js"
@@ -2826,6 +2826,8 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
         hass.bus.async_fire(EVENT_CALIBRATION_UPDATED, {
             "profile": base, "profiles_changed": removed,
             "base_profile_name": base, "action": "reset_switch",
+            "stock_artwork_approved": base.startswith("native_"),
+            "approved_sha256": revision["sha256"],
             "removed": len(removed),
         })
         connection.send_result(msg["id"], {
