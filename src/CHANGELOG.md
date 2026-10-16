@@ -1,3 +1,10 @@
+## v2.8.0 — Calibration action tooltips (Local)
+
+- Add precise hover/focus descriptions to the seven Calibration action buttons: Test Mode, Cancel, Refresh Faceplate, Reset Current Faceplate, Reset Current Switch, Reset All Switches, and Save Profile.
+- Distinguish refreshing pixels without touching settings, resetting Calibration while preserving a chosen faceplate, restoring the current switch to latest verified factory artwork, and resetting all saved switches strictly within the current Native/Custom dashboard scope with two confirmations.
+- Keep all button handlers, confirmations, storage, reset semantics, artwork selection and per-switch Calibration unchanged. Use the existing HTML title tooltip pattern; no second tooltip/UI system.
+- Apply the standing patch-99 version rollover: Core 2.7.99 → 2.8.0.
+
 ## v2.7.99 — Accept legacy SHA-pinned faceplate approvals (Local)
 
 - Fix Hub Upgrade Faceplate rejecting an unchanged pre-versioned Cisco 3850-12XS artwork pin with `stale_choice`: Core now compares its saved filename and SHA, and only checks the expected version when a version was actually persisted.

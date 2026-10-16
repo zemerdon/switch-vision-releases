@@ -1,0 +1,34 @@
+# Switch Vision Discovery options example
+# One row per SNMP management target. Stack member prefixes are separate so
+# standalone switches do not expose stack-member fields.
+
+run_snmp_walks: "true"
+enable_switch_list: "true"
+
+switches:
+  - switch_name: 3650_STACK
+    display_name: 3650 Desktop Stack Member 1
+    switch_host: 192.168.1.102
+    sensor_prefix: sw5
+    snmp_community: readonly
+    walk_mode: targeted
+
+  - switch_name: 2960x_sw7
+    switch_host: 192.168.1.103
+    sensor_prefix: sw7
+    snmp_community: readonly
+    walk_mode: targeted
+
+stack_member_prefixes:
+  - switch_name: 3650_STACK
+    member: "1"
+    display_name: 3650 Desktop Stack Member 1
+    sensor_prefix: sw5
+  - switch_name: 3650_STACK
+    member: "2"
+    display_name: 3650 Desktop Stack Member 2
+    sensor_prefix: sw6
+
+parse_all_walks: "true"
+generate_snmp2mqtt: "true"
+clean_output_before_walk: "true"

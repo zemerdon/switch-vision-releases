@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.0
+
+Adds clear tooltips to all seven sticky Calibration action buttons, including the exact scope and approval requirements of faceplate and switch resets. All existing Calibration and artwork selection actions remain functionally unchanged. This is the minor rollover following Core 2.7.99 per the established patch-99 ceiling.
+
 # Switch Vision Core v2.7.99
 
 Local-only fix for the 3850 faceplate approval `stale_choice` failure. Older per-switch stock artwork choices were saved as filename/SHA pins without a revision version. Core's verified artwork list can resolve a historical version for display; this is not a changed saved selection. The approval transaction now accepts that legacy pin when filename and SHA still match, while enforcing exact-version concurrency for versioned pins and the existing verified factory-artwork/Calibration reset contract. No implicit artwork adoption or owner HAOS installation.
