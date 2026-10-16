@@ -6,6 +6,7 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src/custom_components/switch_vision"))
 from stock_artwork_selection import (apply_approved_switch_artwork,
+                                     expected_artwork_choice_matches,
                                      rebase_after_confirmed_factory_reset)
 
 
@@ -15,6 +16,28 @@ def revision(image: str, ver: str) -> dict:
 
 
 class StockArtworkSelectionTests(unittest.TestCase):
+    def test_legacy_sha_pin_accepts_verified_display_version_but_keeps_stale_guards(self):
+        """Regression: a 3850 pin predating versioned art must upgrade."""
+        original = "eba68a052bc0baff1a5af583eb869895e30c93a51d3836bc763baee1025eacde"
+        pinned = {"filename": "cisco-3850-12xs.png", "sha256": original,
+                  "eligible_faceplates": ["cisco-3850-12xs.png"]}
+        historical_display_version = "sha-a2834c0fffb3"
+        self.assertTrue(expected_artwork_choice_matches(
+            pinned, "cisco-3850-12xs.png", original, historical_display_version))
+        self.assertFalse(expected_artwork_choice_matches(
+            pinned, "cisco-3850-12xs.png", "0" * 64, historical_display_version))
+        self.assertFalse(expected_artwork_choice_matches(
+            pinned, "some-other-switch.png", original, historical_display_version))
+        self.assertFalse(expected_artwork_choice_matches(
+            None, "cisco-3850-12xs.png", original, historical_display_version))
+        # Once a switch has an explicitly selected revision, its version is
+        # authoritative; changed geometry with identical pixels is not stale-safe.
+        chosen = {**pinned, "version": "sha-exact-approved", "geometry_sha256": "a" * 64}
+        self.assertTrue(expected_artwork_choice_matches(
+            chosen, "cisco-3850-12xs.png", original, "sha-exact-approved"))
+        self.assertFalse(expected_artwork_choice_matches(
+            chosen, "cisco-3850-12xs.png", original, "sha-another-revision"))
+
     def test_exact_switch_reset_does_not_touch_neighbors_or_other_scopes(self):
         old = {"ports": {"1": {"center": [88, 23]}}, "custom": True}
         neighbor = {"ports": {"1": {"center": [16, 28]}}}

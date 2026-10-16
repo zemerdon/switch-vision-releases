@@ -203,7 +203,7 @@ UNIFI_DEVICE_WS_SCHEMA = {
 }
 
 PANEL_URL_PATH = "switch-vision"
-PANEL_VERSION = "2.7.98"
+PANEL_VERSION = "2.7.99"
 PANEL_JS_PATH = "/api/switch_vision/switch-vision-panel.js"
 PANEL_JS_URL = f"{PANEL_JS_PATH}?v={PANEL_VERSION}"
 ICONSET_JS_PATH = "/api/switch_vision/switch-vision-iconset.js"
@@ -2808,9 +2808,9 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
             state = await _load()
             pins = state.get("stock_artwork_choices")
             pin = pins.get(base) if isinstance(pins, dict) else None
-            if (not isinstance(pin, dict) or pin.get("filename") != previous_name
-                    or pin.get("sha256") != msg["expected_sha256"]
-                    or (msg.get("expected_version") and pin.get("version") != msg["expected_version"])):
+            if not _stock_selection.expected_artwork_choice_matches(
+                pin, previous_name, msg["expected_sha256"], msg.get("expected_version", ""),
+            ):
                 connection.send_error(msg["id"], "stale_choice", "The switch's artwork choice changed.")
                 return
             # One saved-state transaction: the exact switch's prior Calibration

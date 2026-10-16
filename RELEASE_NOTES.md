@@ -1,3 +1,7 @@
+# Switch Vision Core v2.7.99
+
+Local-only fix for the 3850 faceplate approval `stale_choice` failure. Older per-switch stock artwork choices were saved as filename/SHA pins without a revision version. Core's verified artwork list can resolve a historical version for display; this is not a changed saved selection. The approval transaction now accepts that legacy pin when filename and SHA still match, while enforcing exact-version concurrency for versioned pins and the existing verified factory-artwork/Calibration reset contract. No implicit artwork adoption or owner HAOS installation.
+
 # Switch Vision Core v2.7.98
 
 Local-only Cisco Catalyst 3850-12XS artwork revision. Use the owner-supplied 2680 × 356 `cisco-3850-12xs.png` unchanged (new SHA-256 `bc34fc58e818014a3d1b031221e4aab87ae567654075f4f2011f695c23572d74`; outgoing stock SHA-256 `eba68a052bc0baff1a5af583eb869895e30c93a51d3836bc763baee1025eacde`). Preserve all twelve calibrated 10G SFP+ positions, native-image geometry, proven interface/telemetry mapping, saved Calibration and independent Native/Custom artwork selections. The Installer's SHA-pair history supports a per-switch Keep Current or explicit new-artwork choice without silently changing existing selections. No owner-HAOS installation, public release, forum write or mail send is implied.

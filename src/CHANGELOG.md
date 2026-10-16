@@ -1,3 +1,9 @@
+## v2.7.99 — Accept legacy SHA-pinned faceplate approvals (Local)
+
+- Fix Hub Upgrade Faceplate rejecting an unchanged pre-versioned Cisco 3850-12XS artwork pin with `stale_choice`: Core now compares its saved filename and SHA, and only checks the expected version when a version was actually persisted.
+- Keep explicit admin consent, verified target stock image/factory geometry, model-scoped visual Calibration reset and strict stale protection for versioned pins. No automatic reset, physical switch changes or unrelated profile mutation.
+- Add regression for the real legacy 3850 SHA, changed selection SHA, wrong filename, missing pin and mismatched versioned revision.
+
 ## v2.7.98 — Cisco 3850-12XS owner artwork refresh (Local)
 
 - Replace the stock `cisco-3850-12xs.png` with the owner's supplied 2680 × 356 revision (`bc34fc58e818014a3d1b031221e4aab87ae567654075f4f2011f695c23572d74`), preserving the exact image bytes including the test marking.

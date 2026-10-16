@@ -11,6 +11,25 @@ import re
 from typing import Any
 
 
+def expected_artwork_choice_matches(
+    pin: Any, filename: str, sha256: str, expected_version: str = "",
+) -> bool:
+    """Compare the persisted pin, not an inferred display revision.
+
+    Legacy first-use pins contain filename and SHA but no version. Core's
+    verified list supplies an historical revision label for those pins; that
+    label is not a persisted choice change. An existing saved version remains
+    a concurrency guard, while filename/SHA always protect every selection.
+    """
+    if (not isinstance(pin, dict)
+            or pin.get("filename") != filename
+            or pin.get("sha256") != sha256):
+        return False
+    stored_version = str(pin.get("version") or "")
+    return not (expected_version and stored_version
+                and expected_version != stored_version)
+
+
 def apply_approved_switch_artwork(
     state: dict[str, Any], base: str, previous_name: str,
     name: str, revision: dict[str, Any],
