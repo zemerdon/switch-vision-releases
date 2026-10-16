@@ -1,3 +1,8 @@
+## v2.7.97 — Confirmed factory reset refreshes stock artwork (Local)
+
+- A confirmed Reset Current Switch now replaces that switch's historical faceplate pin with the latest SHA-verified factory image and geometry. Reset All does the same only within the approved Native/Custom scope.
+- Keep Current and routine saves remain unchanged. Unverified replacement pairs stop the reset before modifying persisted state, and the dashboard refreshes its cached artwork after a successful reset.
+
 ## v2.7.96 — Installer-owned SHA faceplate preservation (Local)
 
 - Stop bundling historical `faceplates-old` archives; Core ships current stock PNGs and their factory geometry only.

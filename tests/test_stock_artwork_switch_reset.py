@@ -5,7 +5,8 @@ from pathlib import Path
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src/custom_components/switch_vision"))
-from stock_artwork_selection import apply_approved_switch_artwork
+from stock_artwork_selection import (apply_approved_switch_artwork,
+                                     rebase_after_confirmed_factory_reset)
 
 
 def revision(image: str, ver: str) -> dict:
@@ -68,6 +69,57 @@ class StockArtworkSelectionTests(unittest.TestCase):
                                                   revision("dedicated.png", "sha-v2"))
                 self.assertEqual(data["profiles"]["native_SW3"], {"custom": 1})
                 self.assertEqual(data["stock_artwork_choices"]["native_SW3"]["filename"], "generic.png")
+
+
+    def test_confirmed_switch_factory_reset_rebases_only_one_sha(self):
+        latest = {"3850.png": {
+            "filename": "3850.png", "sha256": "a" * 64,
+            "geometry_sha256": "b" * 64, "version": "sha-" + "c" * 20,
+            "path": "faceplates/3850.png",
+        }}
+        state = {"stock_artwork_choices": {
+            "native_SW2": {"filename": "3850.png", "sha256": "d" * 64},
+            "custom_SW2": {"filename": "3850.png", "sha256": "e" * 64},
+            "native_SW3": {"filename": "3850.png", "sha256": "f" * 64},
+        }, "profiles": {"native_SW2": {"user": True}}}
+        changed = rebase_after_confirmed_factory_reset(
+            state, "switch", "native_SW2", "", latest, "3850.png"
+        )
+        self.assertEqual(changed, ["native_SW2"])
+        self.assertEqual(state["stock_artwork_choices"]["native_SW2"]["sha256"], "a" * 64)
+        self.assertEqual(state["stock_artwork_choices"]["native_SW2"]["geometry_sha256"], "b" * 64)
+        self.assertEqual(state["stock_artwork_choices"]["custom_SW2"]["sha256"], "e" * 64)
+        self.assertEqual(state["stock_artwork_choices"]["native_SW3"]["sha256"], "f" * 64)
+        self.assertEqual(state["profiles"]["native_SW2"], {"user": True})
+
+    def test_namespace_rebases_only_matching_pins(self):
+        latest = {"3850.png": {"filename": "3850.png", "sha256": "a" * 64,
+            "geometry_sha256": "b" * 64, "version": "sha-" + "c" * 20,
+            "path": "faceplates/3850.png"}}
+        state = {"stock_artwork_choices": {
+            "native_SW2": {"filename": "3850.png", "sha256": "d" * 64},
+            "native_SW3": {"filename": "3850.png", "sha256": "e" * 64},
+            "custom_SW2": {"filename": "3850.png", "sha256": "f" * 64},
+        }}
+        changed = rebase_after_confirmed_factory_reset(
+            state, "namespace", "", "native_", latest
+        )
+        self.assertEqual(changed, ["native_SW2", "native_SW3"])
+        self.assertEqual(state["stock_artwork_choices"]["native_SW3"]["sha256"], "a" * 64)
+        self.assertEqual(state["stock_artwork_choices"]["custom_SW2"]["sha256"], "f" * 64)
+
+    def test_missing_verified_latest_fails_without_mutating_any_pin(self):
+        state = {"stock_artwork_choices": {
+            "native_SW2": {"filename": "3850.png", "sha256": "d" * 64},
+            "native_SW3": {"filename": "missing.png", "sha256": "e" * 64},
+        }}
+        before = {name: dict(value) for name, value in state["stock_artwork_choices"].items()}
+        latest = {"3850.png": {"filename": "3850.png", "sha256": "a" * 64,
+            "geometry_sha256": "b" * 64, "version": "sha-" + "c" * 20,
+            "path": "faceplates/3850.png"}}
+        with self.assertRaises(ValueError):
+            rebase_after_confirmed_factory_reset(state, "namespace", "", "native_", latest)
+        self.assertEqual(state["stock_artwork_choices"], before)
 
 if __name__ == "__main__":
     unittest.main()

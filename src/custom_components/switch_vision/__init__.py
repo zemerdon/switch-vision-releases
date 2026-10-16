@@ -93,6 +93,8 @@ RESET_SCHEMA = vol.Schema(
         vol.Required("scope"): vol.In(["switch", "namespace", "native", "custom", "all"]),
         vol.Optional("base_profile"): vol.All(str, vol.Length(min=1)),
         vol.Optional("scope_prefix"): vol.All(str, vol.In(["native_", "custom_"])),
+        vol.Optional("latest_factory_artwork"): bool,
+        vol.Optional("factory_filename"): str,
     }
 )
 
@@ -201,7 +203,7 @@ UNIFI_DEVICE_WS_SCHEMA = {
 }
 
 PANEL_URL_PATH = "switch-vision"
-PANEL_VERSION = "2.7.96"
+PANEL_VERSION = "2.7.97"
 PANEL_JS_PATH = "/api/switch_vision/switch-vision-panel.js"
 PANEL_JS_URL = f"{PANEL_JS_PATH}?v={PANEL_VERSION}"
 ICONSET_JS_PATH = "/api/switch_vision/switch-vision-iconset.js"
@@ -2290,6 +2292,27 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
     async def handle_delete(call: ServiceCall) -> None:
         await _delete_calibration_profile(call.data["profile"])
 
+    def _verified_latest_reset_revisions() -> dict[str, dict[str, str]]:
+        """Return only manifest-matched current PNG + factory geometry pairs."""
+        manifest = _load_stock_asset_manifest()
+        expected = manifest.get("faceplates", {})
+        candidates = _faceplate_artwork.revision_index(_asset_root())
+        verified = {}
+        if not isinstance(expected, dict) or not isinstance(candidates, dict):
+            return verified
+        for name, rows in candidates.items():
+            if not isinstance(rows, list):
+                continue
+            for row in rows:
+                if (isinstance(row, dict)
+                        and row.get("filename") == name
+                        and row.get("path") == "faceplates/" + name
+                        and row.get("sha256") == expected.get(name)
+                        and row.get("version") and row.get("geometry_sha256")):
+                    verified[name] = row
+                    break
+        return verified
+
     async def handle_reset(call: ServiceCall) -> None:
         scope = str(call.data["scope"]).strip().lower()
         base_profile = _normalise_profile(call.data.get("base_profile", ""))
@@ -2302,12 +2325,23 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
             scope = "namespace"
         if base_profile:
             base_profile = _validate_profile_name(base_profile)
+        latest_factory = bool(call.data.get("latest_factory_artwork", False))
+        preferred = str(call.data.get("factory_filename") or "")
+        verified_latest = await hass.async_add_executor_job(_verified_latest_reset_revisions) if latest_factory else {}
 
         async with storage_lock:
             data = await _load()
             profiles = data.setdefault("profiles", {})
 
             active_profiles = data.setdefault("active_profiles", {})
+            if latest_factory:
+                try:
+                    _stock_selection.rebase_after_confirmed_factory_reset(
+                        data, scope, base_profile, scope_prefix,
+                        verified_latest, preferred,
+                    )
+                except ValueError as err:
+                    raise vol.Invalid(str(err)) from err
             if scope == "all":
                 matching = list(profiles)
                 profiles.clear()

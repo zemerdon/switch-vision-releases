@@ -1,6 +1,6 @@
-# Switch Vision Core v2.7.96
+# Switch Vision Core v2.7.97
 
-Local-only SHA-driven faceplate revision support. Core ships only latest stock artwork and factory geometry, while Installer preserves verified old pairs locally when they change. A configured switch may keep its previous generic stock image when its model gains a dedicated faceplate and matching factory geometry; Discovery Hub offers an explicit per-switch approval. User Calibration and functional topology are unchanged. No public release or personal HAOS modification is included.
+Local-only fix: an explicitly confirmed reset now adopts the latest verified factory artwork and matching geometry for its switch or namespace. Existing selections remain untouched until consent. Previous release: SHA-driven faceplate revision support. Core ships only latest stock artwork and factory geometry, while Installer preserves verified old pairs locally when they change. A configured switch may keep its previous generic stock image when its model gains a dedicated faceplate and matching factory geometry; Discovery Hub offers an explicit per-switch approval. User Calibration and functional topology are unchanged. No public release or personal HAOS modification is included.
 
 # Switch Vision Core v2.7.95
 
