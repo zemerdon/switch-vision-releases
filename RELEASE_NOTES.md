@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.4
+
+Local-only maintenance patch: optimize the full public attribution privacy scan across historical shipped device registries by cryptographically identifying byte-identical content. All archives are still read and verified; different or malformed contents and any leaked private attribution still fail, with regression tests for these cases. This change does not alter switch behavior, Calibration, faceplate assets, public release status or owner HAOS.
+
 # Switch Vision Core v2.8.3
 
 Restore the correct Native factory faceplate after a Hub-approved reset even if its dashboard card was disconnected when the event fired. Reattached cards refresh the approved Core stock-artwork SHA, clear deleted cached Calibration state, and continue using the existing model-aware factory geometry. Normal attached updates avoid duplicate profile fetches; manually edited, unsaved Calibration is preserved. This local development candidate is not publicly released.

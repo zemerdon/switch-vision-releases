@@ -1,4 +1,5 @@
 from pathlib import Path
+import hashlib
 import json
 import re
 import yaml
@@ -41,12 +42,23 @@ def test_all_public_device_registries_are_neutral() -> None:
         and path.suffix.lower() in {".json", ".yaml", ".yml"}
     ]
     assert registries
+    checked_content: set[tuple[str, bytes]] = set()
     for path in registries:
+        # Every archived registry is read and SHA-bound. Repeated byte-identical
+        # source/release snapshots need only one expensive recursive inspection;
+        # changed or unexpected historical bytes must still be parsed and
+        # rejected. Include the suffix so JSON/YAML parser semantics stay exact.
+        raw = path.read_bytes()
+        identity = (path.suffix.lower(), hashlib.sha256(raw).digest())
+        if identity in checked_content:
+            continue
+        source = raw.decode("utf-8")
         if path.suffix.lower() == ".json":
-            data = json.loads(path.read_text(encoding="utf-8"))
+            data = json.loads(source)
         else:
-            data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+            data = yaml.safe_load(source) or {}
         _assert_structured_private_refs_removed(data, path)
+        checked_content.add(identity)
 
 
 def test_public_release_history_has_no_private_submission_references() -> None:

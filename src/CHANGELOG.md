@@ -1,3 +1,9 @@
+## v2.8.4 — SHA-deduplicate historical registry privacy scans (Local)
+
+- Keep the Core public attribution/privacy check reading and hashing every supported-device registry across source and all bundled historical releases. Inspect byte-identical copies only once per parser format, without exempting changed, unsafe, malformed, or unexpected archived registries.
+- Add failure-path tests proving all archive files are read, unsafe changed releases still fail, and YAML/JSON content is validated under its own parser contract. Source-bound before/after standalone scan measurements on `sv-dev` were 75.85s and 23.44s respectively; the improvement is not a hardware/end-to-end claim.
+- Preserve deterministic Core build/version parity, release safety, existing historical assets and Local-only development scope. No public publication or HAOS installation is implied.
+
 ## v2.8.3 — Recover Native artwork after missed Hub events (Local)
 
 - Force a server-side Calibration and approved-stock-artwork revalidation whenever a Native or Custom card reconnects, including after the Hub approval event occurred while its dashboard was unmounted.
