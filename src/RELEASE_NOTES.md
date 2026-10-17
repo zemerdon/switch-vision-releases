@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.3
+
+Restore the correct Native factory faceplate after a Hub-approved reset even if its dashboard card was disconnected when the event fired. Reattached cards refresh the approved Core stock-artwork SHA, clear deleted cached Calibration state, and continue using the existing model-aware factory geometry. Normal attached updates avoid duplicate profile fetches; manually edited, unsaved Calibration is preserved. This local development candidate is not publicly released.
+
 # Switch Vision Core v2.8.2
 
 Completes the existing Core factory reset/Calibration save after an explicitly approved Native dashboard faceplate upgrade in Discovery Hub. Refreshes the SHA-pinned artwork and factory Calibration without a second competing reset. Custom scopes and normal Calibration button functionality are unaffected.

@@ -203,7 +203,7 @@ UNIFI_DEVICE_WS_SCHEMA = {
 }
 
 PANEL_URL_PATH = "switch-vision"
-PANEL_VERSION = "2.8.2"
+PANEL_VERSION = "2.8.3"
 PANEL_JS_PATH = "/api/switch_vision/switch-vision-panel.js"
 PANEL_JS_URL = f"{PANEL_JS_PATH}?v={PANEL_VERSION}"
 ICONSET_JS_PATH = "/api/switch_vision/switch-vision-iconset.js"

@@ -1,3 +1,9 @@
+## v2.8.3 — Recover Native artwork after missed Hub events (Local)
+
+- Force a server-side Calibration and approved-stock-artwork revalidation whenever a Native or Custom card reconnects, including after the Hub approval event occurred while its dashboard was unmounted.
+- Drop a previously cached Calibration only after Core explicitly confirms that the saved profile no longer exists; keep unsaved editor changes intact, and preserve the approved exact-SHA image pin and normal Custom isolation.
+- Add source-executed Node/JavaScript regression for cold mount and stale reattachment, verifying a single fetch per attachment and no repeated reads on ordinary card updates. No new Calibration system, owner HAOS installation, or public publication.
+
 ## v2.8.2 — Complete Hub-approved Native artwork reset (Local)
 
 - On a verified, explicit Native Hub Upgrade Faceplate approval, complete Core's established Reset Current Switch factory Calibration save and re-read the exact SHA-pinned stock artwork. The backend's original approval remains the single authoritative switch-scoped mutation; no second reset service call or Calibration system is introduced.
