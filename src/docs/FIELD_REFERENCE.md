@@ -237,12 +237,12 @@ Each RJ45 port can contain:
 | `hitbox` | RJ45 clickable width and height. |
 | `led_left` | Link/Speed LED position. |
 | `led_left_size` | Independent Link/Speed LED width and height envelope used by circle, rectangle, and triangle shapes. |
-| `led_left_shape` | Link/Speed LED shape for this port: `circle`, `rectangle`, `triangle_up`, or `triangle_down`. |
+| `led_left_shape` | Link/Speed LED shape for this port: `circle`, `rectangle`, `triangle_up`, `triangle_down`, `triangle_left`, or `triangle_right`. |
 | `led_right` | Activity LED position. |
 | `led_right_size` | Independent Activity LED width and height envelope used by circle, rectangle, and triangle shapes. |
-| `led_right_shape` | Activity LED shape for this port: `circle`, `rectangle`, `triangle_up`, or `triangle_down`. |
+| `led_right_shape` | Activity LED shape for this port: `circle`, `rectangle`, `triangle_up`, `triangle_down`, `triangle_left`, or `triangle_right`. |
 
-Link and Activity shapes are selected independently for each RJ45 or SFP/uplink entry. The triangle variants use a tall, narrow arrowhead-style geometry; `triangle_up` points upward and `triangle_down` points downward. Circle, rectangle, and triangle modes all consume the independent LED size fields and never resize the port hitbox. Circle mode derives one radius from the saved W/H envelope; untouched factory/default envelopes preserve the normal stock circle radius.
+Link and Activity shapes are selected independently for each RJ45 or SFP/uplink entry. The up/down triangle variants retain tall, narrow arrowheads; `triangle_left` and `triangle_right` use wide, low arrowheads that point horizontally. All directions use the same per-LED width/height controls. Circle, rectangle, and triangle modes all consume the independent LED size fields and never resize the port hitbox. Circle mode derives one radius from the saved W/H envelope; untouched factory/default envelopes preserve the normal stock circle radius.
 
 In Calibration, **Supported speed** and **Port Role** can be applied to one port/uplink or to grouped RJ45/SFP selections. Grouped selections show **Mixed** when their current values differ; choosing a value applies it only to the selected set.
 

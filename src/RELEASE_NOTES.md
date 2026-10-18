@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.5
+
+Local-only Calibration update: Link LED Shape and Activity LED Shape now support Triangle Left and Triangle Right, alongside Circle, Rectangle, Triangle Up and Triangle Down. The new horizontal arrowheads use the same independently saved per-port shape and size fields for RJ45 and SFP/uplinks, without changing LED telemetry, colours, visibility or Calibration profile compatibility. This change is not publicly released or installed on the owner's Home Assistant.
+
 # Switch Vision Core v2.8.4
 
 Local-only maintenance patch: optimize the full public attribution privacy scan across historical shipped device registries by cryptographically identifying byte-identical content. All archives are still read and verified; different or malformed contents and any leaked private attribution still fail, with regression tests for these cases. This change does not alter switch behavior, Calibration, faceplate assets, public release status or owner HAOS.

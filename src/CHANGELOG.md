@@ -1,3 +1,9 @@
+## v2.8.5 — Left and right Link/Activity LED triangles (Local)
+
+- Add Triangle Left and Triangle Right to both Link LED Shape and Activity LED Shape Calibration dropdowns for RJ45 and SFP/uplink ports.
+- Render horizontal arrowheads using existing per-port LED size and shape fields; preserve existing shapes, per-port persistence, grouped selection, colours, visibility and telemetry.
+- Add source-executed regression for dropdown choices and directional SVG geometry. Local-only; no public release or owner HAOS installation.
+
 ## v2.8.4 — SHA-deduplicate historical registry privacy scans (Local)
 
 - Keep the Core public attribution/privacy check reading and hashing every supported-device registry across source and all bundled historical releases. Inspect byte-identical copies only once per parser format, without exempting changed, unsafe, malformed, or unexpected archived registries.

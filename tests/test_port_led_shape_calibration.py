@@ -20,12 +20,15 @@ class PortLedShapeCalibrationTests(unittest.TestCase):
 
     def test_supported_shapes_include_tall_up_and_down_triangles(self) -> None:
         required = (
-            'const PORT_LED_SHAPES = Object.freeze(["circle", "rectangle", "triangle_up", "triangle_down"]);',
-            'const width = Math.max(2, Math.round(storedWidth * 0.6 * 10) / 10);',
-            'const height = Math.max(2, Math.round(storedHeight * 1.25 * 10) / 10);',
+            'const PORT_LED_SHAPES = Object.freeze(["circle", "rectangle", "triangle_up", "triangle_down", "triangle_left", "triangle_right"]);',
+            'const width = Math.max(2, Math.round(storedWidth * (sideways ? 1.25 : 0.6) * 10) / 10);',
+            'const height = Math.max(2, Math.round(storedHeight * (sideways ? 0.6 : 1.25) * 10) / 10);',
+            'const sideways = shape === "triangle_left" || shape === "triangle_right";',
             'shape === "triangle_down"',
             '[[x - halfWidth, y - halfHeight], [x + halfWidth, y - halfHeight], [x, y + halfHeight]]',
             '[[x, y - halfHeight], [x + halfWidth, y + halfHeight], [x - halfWidth, y + halfHeight]]',
+            '[[x - halfWidth, y], [x + halfWidth, y - halfHeight], [x + halfWidth, y + halfHeight]]',
+            '[[x + halfWidth, y], [x - halfWidth, y - halfHeight], [x - halfWidth, y + halfHeight]]',
         )
         for marker in required:
             self.assertIn(marker, self.source)
@@ -147,9 +150,45 @@ class PortLedShapeCalibrationTests(unittest.TestCase):
         )
         self.assertIn('for (const shapeField of ["led_left_shape", "led_right_shape"])', self.source)
         self.assertIn(
-            'expected circle, rectangle, triangle_up, or triangle_down.',
+            'expected circle, rectangle, triangle_up, triangle_down, triangle_left, or triangle_right.',
             self.source,
         )
+
+    def test_sideways_triangle_dropdowns_and_orientation(self) -> None:
+        start = self.source.index("const PORT_LED_SHAPES = Object.freeze(")
+        stop = self.source.index("\nfunction defaultPortLedRectangleSize", start)
+        helpers = self.source[start:stop]
+        start = self.source.index("function portLed(svg,")
+        stop = self.source.index("\nfunction sfpLedFallbackPoint", start)
+        render = self.source[start:stop]
+        harness = """
+const uiFromCalibration = () => ({});
+const layout = {ports:{r:3.1}};
+const normalisePortLedRectangleSize = (v) => v;
+const polygon = (_svg, points) => points;
+const applyPortLedColourOverride = (element) => element;
+""" + helpers + "\n" + render + """
+for (const shape of ["triangle_left", "triangle_right", "triangle_up", "triangle_down"]) {
+ const html = portLedShapeOptionsHtml(shape);
+ if (!html.includes('value="' + shape + '" selected')) throw new Error("missing dropdown "+shape);
+ if (normalisePortLedShape(shape) !== shape) throw new Error("shape rejected");
+}
+for (const [part,shape] of [["led_left","triangle_left"],["led_right","triangle_right"]]) {
+ const points = portLed(null,100,200,3,"cv-led-green",{},[16,10],part,shape);
+ if (portLedShapeKey(part) !== (part==="led_left"?"led_left_shape":"led_right_shape")) throw new Error("storage mismatch");
+ if (shape==="triangle_left" && !(points[0][0]<points[1][0] && points[0][0]<points[2][0])) throw new Error("left tip");
+ if (shape==="triangle_right" && !(points[0][0]>points[1][0] && points[0][0]>points[2][0])) throw new Error("right tip");
+ if (points[0][1]!==200 || Math.abs(points[0][0]-points[1][0])!==20 || Math.abs(points[1][1]-points[2][1])!==6) throw new Error("sideways envelope");
+}
+for (const shape of ["triangle_up","triangle_down"]) {
+ const points=portLed(null,100,200,3,"cv-led-green",{},[16,10],"led_left",shape);
+ const xs=points.map(p=>p[0]), ys=points.map(p=>p[1]);
+ if (Math.abs(Math.max(...xs)-Math.min(...xs)-9.6)>1e-8 || Math.abs(Math.max(...ys)-Math.min(...ys)-12.5)>1e-8) throw new Error("vertical shape drift");
+}
+if (normalisePortLedShape("invalid")!=="circle") throw new Error("invalid fallback");
+"""
+        result = subprocess.run(["node", "-e", harness], cwd=ROOT, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_circle_shape_consumes_saved_led_size(self) -> None:
         self.assertIn("function portLedCircleRadius(value, radius = layout.ports?.r)", self.source)
