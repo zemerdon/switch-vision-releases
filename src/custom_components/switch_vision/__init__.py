@@ -72,6 +72,7 @@ SAVE_SCHEMA = vol.Schema(
         # Native-panel cards bootstrap from a stable switch-scoped profile.
         # Mirroring is explicit so custom/manual YAML cards never inherit it.
         vol.Optional("mirror_to_base", default=False): bool,
+        vol.Optional("restore_exact_stock_pin", default=False): bool,
     }
 )
 
@@ -203,7 +204,7 @@ UNIFI_DEVICE_WS_SCHEMA = {
 }
 
 PANEL_URL_PATH = "switch-vision"
-PANEL_VERSION = "2.8.5"
+PANEL_VERSION = "2.8.6"
 PANEL_JS_PATH = "/api/switch_vision/switch-vision-panel.js"
 PANEL_JS_URL = f"{PANEL_JS_PATH}?v={PANEL_VERSION}"
 ICONSET_JS_PATH = "/api/switch_vision/switch-vision-iconset.js"
@@ -2160,7 +2161,9 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
         calibration.pop("mirrored_from_profile", None)
         # The stock version pin is trusted only when calculated server-side
         # from the currently installed, manifest-verified artwork.
-        calibration.pop(_faceplate_artwork.STOCK_SHA_FIELD, None)
+        restore_exact_pin = call.data.get("restore_exact_stock_pin", False) is True
+        if not restore_exact_pin:
+            calibration.pop(_faceplate_artwork.STOCK_SHA_FIELD, None)
         _validate_calibration(profile, calibration)
         try:
             stock_assets = _load_stock_asset_manifest()
@@ -2169,7 +2172,17 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
             )
         except (OSError, ValueError, KeyError):
             artwork_sha = ""
-        if artwork_sha:
+        if restore_exact_pin:
+            if _faceplate_artwork.STOCK_SHA_FIELD in calibration:
+                imported_pin = calibration[_faceplate_artwork.STOCK_SHA_FIELD]
+                if (
+                    not isinstance(imported_pin, str)
+                    or not re.fullmatch(r"[a-f0-9]{64}", imported_pin)
+                    or not artwork_sha
+                    or imported_pin != artwork_sha
+                ):
+                    raise vol.Invalid("restored stock faceplate SHA cannot be verified")
+        elif artwork_sha:
             calibration[_faceplate_artwork.STOCK_SHA_FIELD] = artwork_sha
             _validate_calibration(profile, calibration)
         activate_for_base = bool(call.data.get("mirror_to_base", False))

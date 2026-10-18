@@ -1,3 +1,7 @@
+## v2.8.6 — Exact Calibration backup restoration (Local)
+
+- Preserve imported stock SHA metadata exactly for trusted complete-backup restoration, rejecting unverifiable supplied hashes. Normal Calibration still uses the installed verified artwork SHA.
+
 ## v2.8.5 — Left and right Link/Activity LED triangles (Local)
 
 - Add Triangle Left and Triangle Right to both Link LED Shape and Activity LED Shape Calibration dropdowns for RJ45 and SFP/uplink ports.

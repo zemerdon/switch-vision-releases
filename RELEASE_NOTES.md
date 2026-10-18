@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.6
+
+Correct complete-backup Calibration restore: an administrator-only exact-restore option preserves the original presence or absence of stock-faceplate SHA metadata. Saved stock SHA values are accepted only when they match Core's verified current stock image. Ordinary user Calibration saves continue to recompute server-owned pins; other saved settings, LED types and artwork remain unchanged.
+
 # Switch Vision Core v2.8.5
 
 Local-only Calibration update: Link LED Shape and Activity LED Shape now support Triangle Left and Triangle Right, alongside Circle, Rectangle, Triangle Up and Triangle Down. The new horizontal arrowheads use the same independently saved per-port shape and size fields for RJ45 and SFP/uplinks, without changing LED telemetry, colours, visibility or Calibration profile compatibility. This change is not publicly released or installed on the owner's Home Assistant.
