@@ -204,7 +204,7 @@ UNIFI_DEVICE_WS_SCHEMA = {
 }
 
 PANEL_URL_PATH = "switch-vision"
-PANEL_VERSION = "2.8.6"
+PANEL_VERSION = "2.8.7"
 PANEL_JS_PATH = "/api/switch_vision/switch-vision-panel.js"
 PANEL_JS_URL = f"{PANEL_JS_PATH}?v={PANEL_VERSION}"
 ICONSET_JS_PATH = "/api/switch_vision/switch-vision-iconset.js"
@@ -675,7 +675,7 @@ async def async_switch_vision_app_states(hass: HomeAssistant) -> dict[str, dict[
 
     for key, base_slug in specs.items():
         slug = _resolve_switch_vision_app_slug(hass, base_slug)
-        state = {
+        states[key] = {
             "base_slug": base_slug,
             "slug": slug,
             "installed": False,
@@ -685,16 +685,23 @@ async def async_switch_vision_app_states(hass: HomeAssistant) -> dict[str, dict[
             "panel_path": f"/{slug}",
             "config_path": f"/config/app/{slug}/config",
         }
-        states[key] = state
-        if client is None:
+    if client is None:
+        return states
+
+    # These independent read-only Supervisor requests need not wait on each
+    # other. Keep the result ordering and per-app failure contracts unchanged.
+    infos = await asyncio.gather(
+        *(client.addons.addon_info(state["slug"]) for state in states.values()),
+        return_exceptions=True,
+    )
+    for state, info in zip(states.values(), infos):
+        if isinstance(info, SupervisorNotFoundError):
             continue
-        try:
-            info = await client.addons.addon_info(slug)
-        except SupervisorNotFoundError:
+        if isinstance(info, SupervisorError):
+            _LOGGER.debug("Could not read Switch Vision app %s state: %s", state["slug"], info)
             continue
-        except SupervisorError as err:
-            _LOGGER.debug("Could not read Switch Vision app %s state: %s", slug, err)
-            continue
+        if isinstance(info, BaseException):
+            raise info
         state.update(
             {
                 "installed": True,

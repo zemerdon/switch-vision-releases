@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.7
+
+Local-only management UI improvement: the four independent, read-only Supervisor app status requests run concurrently. Existing sidebar labels, app availability flags, missing-app behavior and permission boundaries remain unchanged. This does not stage or publish the Core update.
+
 # Switch Vision Core v2.8.6
 
 Correct complete-backup Calibration restore: an administrator-only exact-restore option preserves the original presence or absence of stock-faceplate SHA metadata. Saved stock SHA values are accepted only when they match Core's verified current stock image. Ordinary user Calibration saves continue to recompute server-owned pins; other saved settings, LED types and artwork remain unchanged.

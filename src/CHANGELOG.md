@@ -1,3 +1,7 @@
+## v2.8.7 — Parallel read-only Supervisor app status (Local)
+
+- Fetch Discovery, Installer, SNMP2MQTT and UniFi2MQTT app status concurrently when the Native management UI opens, rather than waiting for four independent Supervisor requests in sequence. Preserve app identity, sidebar navigation, missing-app handling and failure reporting; add source-executed concurrency and error regressions.
+
 ## v2.8.6 — Exact Calibration backup restoration (Local)
 
 - Preserve imported stock SHA metadata exactly for trusted complete-backup restoration, rejecting unverifiable supplied hashes. Normal Calibration still uses the installed verified artwork SHA.
