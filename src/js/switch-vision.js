@@ -6250,7 +6250,7 @@ function getEditableCalibrationTarget(cal, config) {
   }
 
   if (type === "ports") {
-    const allowed = ["center", "led_left", "led_right", "number", "entire"];
+    const allowed = ["center", "led_left", "led_right", ...SV_OPTIONAL_PORT_LED_PARTS, "number", "entire"];
     if (!allowed.includes(part)) part = "entire";
     const custom = target.selection === "custom" || String(rawId) === "custom";
     const parity = custom ? "custom" : (target.parity || (["odd", "even"].includes(String(rawId)) ? String(rawId) : "all"));
@@ -6302,11 +6302,13 @@ function getEditableCalibrationTarget(cal, config) {
     const id = String(Number(rawId));
     const item = cal.ports?.[id];
     if (!item) return null;
-    const allowed = ["center", "led_left", "led_right", "number", "entire"];
+    const allowed = ["center", "led_left", "led_right", ...SV_OPTIONAL_PORT_LED_PARTS, "number", "entire"];
     if (!allowed.includes(part)) part = "entire";
     const sizeKey = portLedSizeKey(part);
     const hitbox = sizeKey ? item[sizeKey] : (["center", "entire"].includes(part) ? item.hitbox : null);
-    return { type, id, key: id, item, part, point: item[part], hitbox };
+    return { type, id, key: id, item, part,
+      point: SV_OPTIONAL_PORT_LED_PARTS.includes(part) ? optionalPortLedPoint(item, part) : item[part],
+      hitbox: hitbox || (sizeKey ? defaultPortLedRectangleSize() : null) };
   }
 
   if (type === "sfp") {
@@ -6411,7 +6413,8 @@ function calibrationCoordinatePoints(cal, editable, createMissing = false) {
     if (!port) return null;
     if (["center", "entire"].includes(editable.part)) return port.center;
     if (editable.part === "number") return renderedPortNumberPoint(key, port.number);
-    return port[editable.part];
+    return SV_OPTIONAL_PORT_LED_PARTS.includes(editable.part)
+      ? optionalPortLedPoint(port, editable.part, createMissing) : port[editable.part];
   };
 
   const sfpPoint = (sfp) => {
@@ -6733,6 +6736,8 @@ function calibrationPartOptionsHtml(target, selectedPart) {
       option("entire", "Entire Port"),
       option("led_left", "Link/speed LED"),
       option("led_right", "Activity LED"),
+      option("led_power", "Power LED"),
+      option("led_poe", "PoE LED"),
       option("number", "Port Label")
     ].join("");
   }
@@ -10366,8 +10371,10 @@ ${portPresentationControls}
           movePoint(port.number, dx, dy);
           movePoint(port.led_left, dx, dy);
           movePoint(port.led_right, dx, dy);
+          for (const part of SV_OPTIONAL_PORT_LED_PARTS) movePoint(port[part], dx, dy);
         } else {
-          movePoint(port[editable.part], dx, dy);
+          movePoint(SV_OPTIONAL_PORT_LED_PARTS.includes(editable.part)
+            ? optionalPortLedPoint(port, editable.part, true) : port[editable.part], dx, dy);
         }
       }
       return true;
@@ -10405,6 +10412,7 @@ ${portPresentationControls}
       movePoint(editable.item.number, dx, dy);
       movePoint(editable.item.led_left, dx, dy);
       movePoint(editable.item.led_right, dx, dy);
+      for (const part of SV_OPTIONAL_PORT_LED_PARTS) movePoint(editable.item[part], dx, dy);
       return true;
     }
 
@@ -10422,7 +10430,9 @@ ${portPresentationControls}
     }
 
     if (editable.point) {
-      movePoint(editable.point, dx, dy);
+      const point = editable.type === "port" && SV_OPTIONAL_PORT_LED_PARTS.includes(editable.part)
+        ? optionalPortLedPoint(editable.item, editable.part, true) : editable.point;
+      movePoint(point, dx, dy);
       return true;
     }
 
@@ -10457,6 +10467,7 @@ ${portPresentationControls}
       movePoint(port.number, dx, dy);
       movePoint(port.led_left, dx, dy);
       movePoint(port.led_right, dx, dy);
+      for (const part of SV_OPTIONAL_PORT_LED_PARTS) movePoint(port[part], dx, dy);
       return true;
     };
     const moveEntireSfp = (sfp) => {
@@ -10500,7 +10511,8 @@ ${portPresentationControls}
           ? (moveEntirePort(port) || changed)
           : (editable.part === "number"
             ? (setPortNumberPoint(key, port.number) || changed)
-            : (setPoint(port[editable.part]) || changed));
+            : (setPoint(SV_OPTIONAL_PORT_LED_PARTS.includes(editable.part)
+              ? optionalPortLedPoint(port, editable.part, true) : port[editable.part]) || changed));
       }
       return changed;
     }
@@ -10539,7 +10551,8 @@ ${portPresentationControls}
 
     if (editable.type === "port" && editable.part === "entire") return moveEntirePort(editable.item);
     if (editable.type === "port" && editable.part === "number") return setPortNumberPoint(editable.key, editable.item?.number);
-    if (editable.type === "port") return setPoint(editable.item?.[editable.part]);
+    if (editable.type === "port") return setPoint(SV_OPTIONAL_PORT_LED_PARTS.includes(editable.part)
+      ? optionalPortLedPoint(editable.item, editable.part, true) : editable.item?.[editable.part]);
     if (editable.type === "sfp" && editable.part === "entire") return moveEntireSfp(editable.item);
     if (editable.type === "sfp") {
       const point = ["led_left", "led_right"].includes(editable.part)
