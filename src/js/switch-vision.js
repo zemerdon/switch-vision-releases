@@ -236,7 +236,6 @@ function normalisePortLedShape(value, fallback = "circle") {
 function portLedShapeKey(part) {
   if (part === "led_left") return "led_left_shape";
   if (part === "led_right") return "led_right_shape";
-  if (part === "led_power") return "led_power_shape";
   if (part === "led_poe") return "led_poe_shape";
   return "";
 }
@@ -282,7 +281,6 @@ function portLedCircleRadius(value, radius = layout.ports?.r) {
 function portLedSizeKey(part) {
   if (part === "led_left") return "led_left_size";
   if (part === "led_right") return "led_right_size";
-  if (part === "led_power") return "led_power_size";
   if (part === "led_poe") return "led_poe_size";
   return null;
 }
@@ -290,27 +288,24 @@ function portLedSizeKey(part) {
 // Optional per-RJ45 indicators are absent from factory geometry and legacy saves.
 // Selecting them previews a deterministic offset; only an explicit edit/show
 // creates persisted coordinates. No protected owner geometry is rewritten.
-const SV_OPTIONAL_PORT_LED_PARTS = Object.freeze(["led_power", "led_poe"]);
+const SV_OPTIONAL_PORT_LED_PARTS = Object.freeze(["led_poe"]);
 
 function optionalPortLedPoint(port, part, create = false) {
   if (!port || !SV_OPTIONAL_PORT_LED_PARTS.includes(part)) return null;
   if (Array.isArray(port[part]) && port[part].length === 2) return port[part];
   const center = Array.isArray(port.center) ? port.center : [0, 0];
-  const fallback = [Number(center[0] || 0) + (part === "led_power" ? -12 : 12), Number(center[1] || 0) + 26];
+  const fallback = [Number(center[0] || 0) + 12, Number(center[1] || 0) + 26];
   if (create) port[part] = fallback;
   return create ? port[part] : fallback;
 }
 
 function optionalPortLedClass(config, port, part, testMode = false) {
-  if (testMode) return part === "led_poe" ? "cv-led-poe" : "cv-led-green";
-  // A port-level reading must never be inferred from a switch-level PoE
-  // budget, an active link or a demo switch. The indexed UniFi source is
-  // already freshness-gated and resolves physical RJ45 mapping.
+  if (part !== "led_poe") return "cv-led-off";
+  if (testMode) return "cv-led-poe";
+  // A port-level PoE indicator must not be inferred from the switch budget
+  // or a link being active. Unknown/unavailable telemetry remains off.
   const data = unifiBoundAccessPort(config, port)?.poe;
-  if (!data || data.available !== true) return "cv-led-off";
-  if (part === "led_power") return String(data.state || "").toUpperCase() === "UP" ? "cv-led-green" : "cv-led-off";
-  if (part === "led_poe") return data.enabled === true ? "cv-led-poe" : "cv-led-off";
-  return "cv-led-off";
+  return data?.available === true && data.enabled === true ? "cv-led-poe" : "cv-led-off";
 }
 
 function portLedColourOverride(activeCalibration, part, uiOverride = null) {
@@ -5328,7 +5323,7 @@ function calibrationRenderSpaceData(source) {
     for (const item of Object.values(collection)) {
       if (!item || typeof item !== "object") continue;
       for (const key of ["center", "number", "label", "led_left", "led_right", ...(collectionName === "ports" ? SV_OPTIONAL_PORT_LED_PARTS : [])]) point(item[key]);
-      for (const key of ["hitbox", "led_left_size", "led_right_size", ...(collectionName === "ports" ? ["led_power_size", "led_poe_size"] : [])]) size(item[key]);
+      for (const key of ["hitbox", "led_left_size", "led_right_size", ...(collectionName === "ports" ? ["led_poe_size"] : [])]) size(item[key]);
     }
   }
 
@@ -5525,7 +5520,7 @@ function normaliseImportedFaceplateProfile(raw) {
 
 const SV_GEOMETRY_TRANSFER_TYPE = "switch-vision-geometry-profile-v1";
 const SV_FACEPLATE_TRANSFER_TYPE = "switch-vision-faceplate-profile-v2";
-const SV_GEOMETRY_ENTRY_KEYS = Object.freeze(["center", "number", "label", "led_left", "led_right", "led_power", "led_poe", "hitbox", "led_left_size", "led_right_size", "led_power_size", "led_poe_size", "led_left_shape", "led_right_shape", "led_power_shape", "led_poe_shape", "led_left_show", "led_right_show", "led_power_show", "led_poe_show", "number_show", "label_show", "supported_speed", "port_role"]);
+const SV_GEOMETRY_ENTRY_KEYS = Object.freeze(["center", "number", "label", "led_left", "led_right", "led_poe", "hitbox", "led_left_size", "led_right_size", "led_poe_size", "led_left_shape", "led_right_shape", "led_poe_shape", "led_left_show", "led_right_show", "led_poe_show", "number_show", "label_show", "supported_speed", "port_role"]);
 const SV_GEOMETRY_BOX_KEYS = Object.freeze(["x", "y", "width", "height"]);
 const SV_GEOMETRY_RENDER_COORDINATE_SPACE = "switch-vision-render-2048x448-v1";
 
@@ -5933,7 +5928,7 @@ function validateImportedCalibration(raw, currentCal = null, { preserveFaceplate
         for (const part of SV_OPTIONAL_PORT_LED_PARTS) {
           if (item[part] !== undefined && !calibrationCoordinateValid(item[part], { width, height })) errors.push(`Port ${key} has an invalid ${part} coordinate.`);
         }
-        for (const sizePart of ["led_left_size", "led_right_size", "led_power_size", "led_poe_size"]) {
+        for (const sizePart of ["led_left_size", "led_right_size", "led_poe_size"]) {
           if (item[sizePart] !== undefined && !calibrationCoordinateValid(item[sizePart], { width, height, size: true })) errors.push(`Port ${key} has an invalid ${sizePart} size.`);
         }
       } else {
@@ -5941,7 +5936,7 @@ function validateImportedCalibration(raw, currentCal = null, { preserveFaceplate
         if (item.label !== undefined && !calibrationCoordinateValid(item.label, { width, height })) errors.push(`${type} ${key} has an invalid or out-of-range label coordinate.`);
         if (item.hitbox !== undefined && !calibrationCoordinateValid(item.hitbox, { width, height, size: true })) errors.push(`${type} ${key} has an invalid hitbox size.`);
       }
-      for (const shapeField of ["led_left_shape", "led_right_shape", ...(type === "Port" ? ["led_power_shape", "led_poe_shape"] : [])]) {
+      for (const shapeField of ["led_left_shape", "led_right_shape", ...(type === "Port" ? ["led_poe_shape"] : [])]) {
         if (item[shapeField] !== undefined && !PORT_LED_SHAPES.includes(String(item[shapeField] || "").toLowerCase())) {
           errors.push(`${type} ${key} has an invalid ${shapeField}; expected circle, rectangle, triangle_up, triangle_down, triangle_left, or triangle_right.`);
         }
@@ -6736,7 +6731,6 @@ function calibrationPartOptionsHtml(target, selectedPart) {
       option("entire", "Entire Port"),
       option("led_left", "Link/speed LED"),
       option("led_right", "Activity LED"),
-      option("led_power", "Power LED"),
       option("led_poe", "PoE LED"),
       option("number", "Port Label")
     ].join("");
@@ -9680,17 +9674,9 @@ const testModeBadge = testModeUi.show !== false
     };
     const linkLedShapeState = selectedLedShapeState("led_left");
     const activityLedShapeState = selectedLedShapeState("led_right");
-    const powerLedShapeState = selectedLedShapeState("led_power");
     const poeLedShapeState = selectedLedShapeState("led_poe");
-    const visiblePowerLedCount = portNumberKeys.filter((key) => cal.ports?.[key]?.led_power_show === true).length;
     const visiblePoeLedCount = portNumberKeys.filter((key) => cal.ports?.[key]?.led_poe_show === true).length;
     const optionalPortLedControls = portNumberKeys.length ? `
-      <label class="cv-cal-led-shape-label" title="Per-port power delivered, using verified port readings. Test Mode previews this LED without a reading.">Power LED Shape
-        <select class="cv-cal-select" data-cv-field="power-led-shape">${portLedShapeOptionsHtml(powerLedShapeState.value, { mixed: powerLedShapeState.mixed })}</select>
-      </label>
-      <button type="button" data-cv-action="show-power-led">Show</button>
-      <button type="button" data-cv-action="hide-power-led">Hide</button>
-      <span class="cv-cal-current">${visibilitySummary(visiblePowerLedCount, portNumberKeys.length)}</span>
       <label class="cv-cal-led-shape-label" title="Per-port PoE enabled state, using verified port readings. Test Mode previews this LED without a reading.">PoE LED Shape
         <select class="cv-cal-select" data-cv-field="poe-led-shape">${portLedShapeOptionsHtml(poeLedShapeState.value, { mixed: poeLedShapeState.mixed })}</select>
       </label>
@@ -11382,7 +11368,7 @@ ${portPresentationControls}
         if (!count) return;
         this.markCalibrationDirty();
         this.setCalibrationSaveStatus(
-          `Set ${count} ${part === "led_right" ? "Activity" : part === "led_power" ? "Power" : part === "led_poe" ? "PoE" : "Link"} LED shape${count === 1 ? "" : "s"} to ${shape.replace("_", " ")}`,
+          `Set ${count} ${part === "led_right" ? "Activity" : part === "led_poe" ? "PoE" : "Link"} LED shape${count === 1 ? "" : "s"} to ${shape.replace("_", " ")}`,
           false
         );
         this.render();
@@ -11391,7 +11377,6 @@ ${portPresentationControls}
     };
     bindSelectedPortLedShape("link-led-shape", "led_left");
     bindSelectedPortLedShape("activity-led-shape", "led_right");
-    bindSelectedPortLedShape("power-led-shape", "led_power");
     bindSelectedPortLedShape("poe-led-shape", "led_poe");
 
     const bindPanelVisibilityControl = (field, panelKey, configKey) => {
@@ -11984,7 +11969,7 @@ ${portPresentationControls}
           return;
         }
 
-        if (["show-activity-led", "hide-activity-led", "show-link-led", "hide-link-led", "show-power-led", "hide-power-led", "show-poe-led", "hide-poe-led"].includes(action)) {
+        if (["show-activity-led", "hide-activity-led", "show-link-led", "hide-link-led", "show-poe-led", "hide-poe-led"].includes(action)) {
           const portKeys = editable?.type === "port_leds"
             ? calibrationLedGroupScope(cal, editable).portKeys
             : (editable?.type === "port"
@@ -11997,7 +11982,7 @@ ${portPresentationControls}
               : (editable?.type === "sfps" ? calibrationSfpKeysForEditable(cal, editable) : []));
           if (!portKeys.length && !sfpKeys.length) return;
           const show = action.startsWith("show-");
-          const optional = action.includes("power") ? "led_power" : (action.includes("poe") ? "led_poe" : null);
+          const optional = action.includes("poe") ? "led_poe" : null;
           const activity = action.includes("activity");
           const field = optional ? `${optional}_show` : (activity ? "led_right_show" : "led_left_show");
           for (const key of portKeys) {
@@ -12010,7 +11995,7 @@ ${portPresentationControls}
           }
           const count = portKeys.length + (optional ? 0 : sfpKeys.length);
           if (!count) return;
-          const label = optional === "led_power" ? "Power LED" : optional === "led_poe" ? "PoE LED" : activity ? "Activity LED" : "Link LED";
+          const label = optional === "led_poe" ? "PoE LED" : activity ? "Activity LED" : "Link LED";
           this.markCalibrationDirty();
           this.setCalibrationSaveStatus(`${show ? "Shown" : "Hidden"} ${count} ${label}${count === 1 ? "" : "s"}`, false);
           this.render();
