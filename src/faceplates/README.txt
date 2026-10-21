@@ -5,9 +5,10 @@ Switch Vision bundled faceplates
 - 24rj45-4sfp.png — 24-port, four-uplink faceplate; used by WS-C2960X-24PS-L
 - 24rj45-2sfp.png — bundled 24-port, two-uplink faceplate for future compatible profiles
 
-All faceplates use the standard Switch Vision 2048 x 448 canvas.
+Faceplates retain their shipped native PNG dimensions and native-image factory geometry; the renderer projects them responsively into Switch Vision.
 - submarine-48rj45-4sfp.png — alternative submarine-themed 48-port, four-uplink faceplate; bundled with its own faceplate-selection calibration defaults
-- c3560cg-8pc-s.png — dedicated slim 8-port / dual-purpose uplink faceplate; default for WS-C3560CG-8PC-S
+- c3560cg-8pc-s.png — original Cisco 3560CG-8PC-S 8-port / dual-purpose uplink faceplate; retained selectable alternative
+- c3560cg-8pc-s-compact.png — owner-supplied 2680 × 356 Compact faceplate; new exact-model default for WS-C3560CG-8PC-S with 8 fixed copper + 2 dual-purpose copper/SFP interfaces
 - cisco-3850-12xs.png — calibrated Cisco Catalyst 3850 12XS 12-SFP faceplate; selectable visual/profile only, with no automatic device-support mapping
 
 - unifi-24p-rj45-2sfp.png — default UniFi / Ubiquiti 24-RJ45 / 2-SFP faceplate for exact compatible layouts

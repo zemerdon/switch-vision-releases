@@ -481,8 +481,9 @@ devices:
   dashboard_support: true
   mapping_profile: cisco-3560cg-8pc-8p-2dual
   calibration_profile: cisco_3560cg_8pc
-  default_faceplate: faceplates/c3560cg-8pc-s.png
+  default_faceplate: faceplates/c3560cg-8pc-s-compact.png
   optional_faceplates:
+  - faceplates/c3560cg-8pc-s.png
   - faceplates/24rj45-2sfp.png
   validation:
     exact_model_detection: contribution_confirmed
@@ -493,13 +494,14 @@ devices:
     stack: not_applicable
   visuals:
     status: confirmed
-    recommended_faceplate: faceplates/c3560cg-8pc-s.png
+    recommended_faceplate: faceplates/c3560cg-8pc-s-compact.png
     optional_faceplates:
+    - faceplates/c3560cg-8pc-s.png
     - faceplates/24rj45-2sfp.png
     calibration_profile: cisco_3560cg_8pc
     canvas:
-      width: 2048
-      height: 329
+      width: 2680
+      height: 356
 - vendor: Cisco
   family: Catalyst 3850
   model: WS-C3850-12XS-E

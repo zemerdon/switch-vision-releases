@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.8
+
+Local-only Cisco Catalyst WS-C3560CG-8PC-S faceplate update: the exact model now defaults to the owner-provided 2680 × 356 Compact artwork and matching native-image factory geometry. Calibration displays the original Cisco Catalyst 3560CG-8PC-S faceplate and its Compact variant as separate selectable choices. The old image and saved per-switch Calibration remain intact; no automatic faceplate adoption, model-status promotion, port mapping change, public publication or owner Home Assistant installation occurs. The derived factory status panel was extended only enough to show its sixth row without clipping; owner input pixels and all port/SFP/LED placements are unchanged.
+
 # Switch Vision Core v2.8.7
 
 Local-only management UI improvement: the four independent, read-only Supervisor app status requests run concurrently. Existing sidebar labels, app availability flags, missing-app behavior and permission boundaries remain unchanged. This does not stage or publish the Core update.
