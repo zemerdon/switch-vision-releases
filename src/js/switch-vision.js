@@ -4475,7 +4475,8 @@ function calibrationOverlayPartActive(editable, itemType, itemKey, itemPart) {
     if (!selected) return false;
 
     if (targetPart === "entire") {
-      return ["center", "number", "led_left", "led_right", ...SV_OPTIONAL_PORT_LED_PARTS].includes(part);
+      if (SV_OPTIONAL_PORT_LED_PARTS.includes(part)) return true;
+      return ["center", "number", "led_left", "led_right"].includes(part);
     }
 
     return targetPart === part;
