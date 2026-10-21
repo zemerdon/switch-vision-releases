@@ -21,13 +21,13 @@
 
 - Add Triangle Left and Triangle Right to both Link LED Shape and Activity LED Shape Calibration dropdowns for RJ45 and SFP/uplink ports.
 - Render horizontal arrowheads using existing per-port LED size and shape fields; preserve existing shapes, per-port persistence, grouped selection, colours, visibility and telemetry.
-- Add source-executed regression for dropdown choices and directional SVG geometry. Local-only; no public release or owner HAOS installation.
+- Add source-executed regression for dropdown choices and directional SVG geometry. No user installation is performed by this source-level regression.
 
 ## v2.8.4 — SHA-deduplicate historical registry privacy scans
 
 - Keep the Core public attribution/privacy check reading and hashing every supported-device registry across source and all bundled historical releases. Inspect byte-identical copies only once per parser format, without exempting changed, unsafe, malformed, or unexpected archived registries.
 - Add failure-path tests proving all archive files are read, unsafe changed releases still fail, and YAML/JSON content is validated under its own parser contract. Source-bound before/after standalone scan measurements on `sv-dev` were 75.85s and 23.44s respectively; the improvement is not a hardware/end-to-end claim.
-- Preserve deterministic Core build/version parity, release safety, existing historical assets and Local-only development scope. No public publication or HAOS installation is implied.
+- Preserve deterministic Core build/version parity, release safety, existing historical assets and No owner Home Assistant installation is performed.
 
 ## v2.8.3 — Recover Native artwork after missed Hub events
 
@@ -213,7 +213,7 @@
 - Expand X/Y/W/H entry fields and connect their widths to the existing Number Input Width Calibration Theme setting.
 - Introduce independent Desktop/Mobile Hint Text font size and Regular/Bold weight for grey section descriptions and inline helpers.
 - Add safe combined RJ45/SFP Link+Activity LED selection for position and size editing, preserving the existing individual link/activity controls via dropdowns; keep target/part dropdown changes immediate.
-- Preserve existing saved profile geometry and normal dashboard behavior; Local-only candidate.
+- Preserve existing saved profile geometry and normal dashboard behavior;
 
 ## v2.7.73 — Independent Calibration label and heading typography
 
@@ -244,43 +244,43 @@
 
 - Add validated Core settings for independent Calibration-editor Desktop and Mobile appearance, grouped by workspace/sections, assets/selection, labels/fields, buttons/inputs and dropdown closed/open states.
 - Render safely bounded editor-only CSS, including configurable text weight, size, spacing, padding, dropdown dimensions, option row height and open-menu height. Use one accessible in-page dropdown on desktop/mobile while preserving the underlying native selection event contracts.
-- Do not change faceplate geometry, saved Calibration profiles, normal dashboards or protected contributor data. Local-only candidate.
+- Do not change faceplate geometry, saved Calibration profiles, normal dashboards or protected contributor data.
 
 ## v2.7.68 — Mobile-only compact Calibration dropdown menus
 
 - Use the approved compact scrollable dropdown menus at mobile viewport widths (760px or less) only; restore native desktop select/dropdown behavior on wider viewports.
 - Update picker presentation at breakpoint transitions while preserving the single shared Calibration engine, selected values, unsaved edits and stored profiles.
-- Keep approved mobile menu appearance, 16px closed-control sizes, 11px regular white labels, Quick Links and all unrelated behavior unchanged. Local-only candidate.
+- Keep approved mobile menu appearance, 16px closed-control sizes, 11px regular white labels, Quick Links and all unrelated behavior unchanged.
 
 ## v2.7.67 — Compact in-page Calibration dropdown menus
 
 - Replace Android's oversized native expanded select picker with a short scrollable in-page list (32px rows, 12px option text, maximum 320px height), retaining grouped options and disabled placeholders.
 - Keep closed 16px selectors, 11px regular-weight white text, selected values, existing native-select change handlers, arrow styling and profile behavior unchanged.
-- Add keyboard/outside-tap dismissal, menu cleanup across rerender/disconnect and focused option-selection regression coverage. Quick Links and all other Calibration functionality remain unchanged; Local-only candidate.
+- Add keyboard/outside-tap dismissal, menu cleanup across rerender/disconnect and focused option-selection regression coverage. Quick Links and all other Calibration functionality remain unchanged;
 
 ## v2.7.66 — 11px regular-weight white Calibration control text
 
 - Reduce regular-weight white text in Calibration dropdowns and neutral/white buttons from 12px to 11px.
 - Preserve 16px box heights, 12px line-height, all padding, widths and dropdown arrows; leave other text/colours unchanged.
-- No Quick Links, geometry, saved profiles or behaviour changes. Local-only staging; no public release.
+- No Quick Links, geometry, saved profiles or behaviour changes.
 
 ## v2.7.65 — Regular-weight Calibration dropdown and white button text
 
 - Remove bold from the white text in Calibration dropdowns and neutral/white buttons, including Misc Targets and Duplicate selected; retain normal 400 font weight.
 - Leave the approved 16px control height, 12px text size, padding, widths and painted dropdown arrows unchanged.
-- Retain bold field labels and B-format controls, coloured actions, Quick Links, saved calibration and behaviour; Local-only candidate.
+- Retain bold field labels and B-format controls, coloured actions, Quick Links, saved calibration and behaviour;
 
 ## v2.7.64 — 16px Calibration controls and dropdown sizing
 
 - Set Calibration blue dropdowns/buttons and grey inputs to 16px overall height with 12px text.
 - Apply 2px horizontal and 1px vertical text padding within 1px borders; reserve dropdown arrow clearance and override legacy 24px minimums.
-- Leave Quick Links, saved profiles, faceplate geometry and telemetry unchanged. Local-only candidate.
+- Leave Quick Links, saved profiles, faceplate geometry and telemetry unchanged.
 
 ## v2.7.63 — 18px Calibration controls with 1px padding
 
 - Reduce Calibration input, select, button and colour-swatch height from 20px to 18px.
 - Set text padding to 1px on all sides, except required native dropdown arrow clearance; retain 10px text, 12px line-height and existing widths.
-- Leave all Quick Links and calibration behaviour/profiles unchanged; Local-only candidate.
+- Leave all Quick Links and calibration behaviour/profiles unchanged;
 
 ## v2.7.62 — Compact Calibration control height
 
@@ -292,13 +292,13 @@
 
 - Use 3px padding between the text and outlines of Calibration grey inputs and blue controls, reserving the necessary right-hand clearance for native dropdown arrows.
 - Reduce common numeric, hex, swatch, text-label, coordinate and target-dropdown widths by roughly 10–15% while retaining 24px-height controls.
-- Preserve all Quick Selection links unchanged pending owner review, and preserve saved calibration profiles and faceplate behaviour. Stage locally only; no public release.
+- Preserve all Quick Selection links unchanged pending owner review, and preserve saved calibration profiles and faceplate behaviour.
 
 ## v2.7.60 — Compact Calibration targets and controls
 
 - Split Calibration Target into three focused dropdowns: Misc Targets, RJ45 Targets and SFP Targets, retaining the existing single active selection, part handling and saved-profile schema.
 - Compact editor controls to consistent input heights and reduced vertical padding; narrow numeric/hex boxes and colour swatches while retaining longer text-entry space where needed.
-- Local-only candidate; no public release, saved-calibration reset, forum or mail mutation.
+- No saved Calibration reset, forum write or mail action is performed.
 
 ## v2.7.59 — Optional LED outlines and bulk Status LED visibility
 
