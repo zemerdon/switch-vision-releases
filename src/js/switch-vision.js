@@ -9680,6 +9680,23 @@ const testModeBadge = testModeUi.show !== false
     };
     const linkLedShapeState = selectedLedShapeState("led_left");
     const activityLedShapeState = selectedLedShapeState("led_right");
+    const powerLedShapeState = selectedLedShapeState("led_power");
+    const poeLedShapeState = selectedLedShapeState("led_poe");
+    const visiblePowerLedCount = portNumberKeys.filter((key) => cal.ports?.[key]?.led_power_show === true).length;
+    const visiblePoeLedCount = portNumberKeys.filter((key) => cal.ports?.[key]?.led_poe_show === true).length;
+    const optionalPortLedControls = portNumberKeys.length ? `
+      <label class="cv-cal-led-shape-label" title="Per-port power delivered, using verified port readings. Test Mode previews this LED without a reading.">Power LED Shape
+        <select class="cv-cal-select" data-cv-field="power-led-shape">${portLedShapeOptionsHtml(powerLedShapeState.value, { mixed: powerLedShapeState.mixed })}</select>
+      </label>
+      <button type="button" data-cv-action="show-power-led">Show</button>
+      <button type="button" data-cv-action="hide-power-led">Hide</button>
+      <span class="cv-cal-current">${visibilitySummary(visiblePowerLedCount, portNumberKeys.length)}</span>
+      <label class="cv-cal-led-shape-label" title="Per-port PoE enabled state, using verified port readings. Test Mode previews this LED without a reading.">PoE LED Shape
+        <select class="cv-cal-select" data-cv-field="poe-led-shape">${portLedShapeOptionsHtml(poeLedShapeState.value, { mixed: poeLedShapeState.mixed })}</select>
+      </label>
+      <button type="button" data-cv-action="show-poe-led">Show</button>
+      <button type="button" data-cv-action="hide-poe-led">Hide</button>
+      <span class="cv-cal-current">${visibilitySummary(visiblePoeLedCount, portNumberKeys.length)}</span>` : "";
     const selectedPortLedControls = selectedPortCount ? `
       <label class="cv-cal-led-shape-label" title="Show or hide the selected port Link LED without changing its saved shape, calibration, or link/speed mapping.">Link LED Shape
         <select class="cv-cal-select" data-cv-field="link-led-shape">${portLedShapeOptionsHtml(linkLedShapeState.value, { mixed: linkLedShapeState.mixed })}</select>
@@ -9692,7 +9709,7 @@ const testModeBadge = testModeUi.show !== false
       </label>
       <button type="button" title="Show the selected port Activity LED." data-cv-action="show-activity-led">Show</button>
       <button type="button" title="Hide the selected port Activity LED while preserving its saved calibration and telemetry mapping." data-cv-action="hide-activity-led">Hide</button>
-      <span class="cv-cal-current">${visibilitySummary(visibleActivityLedCount, selectedPortCount)}</span>` : "";
+      <span class="cv-cal-current">${visibilitySummary(visibleActivityLedCount, selectedPortCount)}</span>${optionalPortLedControls}` : "";
     const portLabelStyleControl = `
       <label title="Choose how port labels are drawn: Static uses the saved label colour, Activity follows port activity, and Link speed follows the link/speed LED colour.">Port Label Style
         <select class="cv-cal-select" data-cv-field="port-number-mode">
@@ -11353,12 +11370,14 @@ ${portPresentationControls}
         for (const portKey of portKeys) {
           if (cal.ports?.[portKey]) cal.ports[portKey][key] = shape;
         }
-        for (const sfpKey of sfpKeys) {
+        if (!SV_OPTIONAL_PORT_LED_PARTS.includes(part)) for (const sfpKey of sfpKeys) {
           if (cal.sfp?.[sfpKey]) cal.sfp[sfpKey][key] = shape;
         }
+        const count = portKeys.length + (SV_OPTIONAL_PORT_LED_PARTS.includes(part) ? 0 : sfpKeys.length);
+        if (!count) return;
         this.markCalibrationDirty();
         this.setCalibrationSaveStatus(
-          `Set ${portKeys.length + sfpKeys.length} ${part === "led_right" ? "Activity" : "Link"} LED shape${portKeys.length + sfpKeys.length === 1 ? "" : "s"} to ${shape.replace("_", " ")}`,
+          `Set ${count} ${part === "led_right" ? "Activity" : part === "led_power" ? "Power" : part === "led_poe" ? "PoE" : "Link"} LED shape${count === 1 ? "" : "s"} to ${shape.replace("_", " ")}`,
           false
         );
         this.render();
@@ -11367,6 +11386,8 @@ ${portPresentationControls}
     };
     bindSelectedPortLedShape("link-led-shape", "led_left");
     bindSelectedPortLedShape("activity-led-shape", "led_right");
+    bindSelectedPortLedShape("power-led-shape", "led_power");
+    bindSelectedPortLedShape("poe-led-shape", "led_poe");
 
     const bindPanelVisibilityControl = (field, panelKey, configKey) => {
       const input = this.shadowRoot.querySelector(`[data-cv-field="${field}"]`);
@@ -11958,7 +11979,7 @@ ${portPresentationControls}
           return;
         }
 
-        if (["show-activity-led", "hide-activity-led", "show-link-led", "hide-link-led"].includes(action)) {
+        if (["show-activity-led", "hide-activity-led", "show-link-led", "hide-link-led", "show-power-led", "hide-power-led", "show-poe-led", "hide-poe-led"].includes(action)) {
           const portKeys = editable?.type === "port_leds"
             ? calibrationLedGroupScope(cal, editable).portKeys
             : (editable?.type === "port"
@@ -11971,16 +11992,20 @@ ${portPresentationControls}
               : (editable?.type === "sfps" ? calibrationSfpKeysForEditable(cal, editable) : []));
           if (!portKeys.length && !sfpKeys.length) return;
           const show = action.startsWith("show-");
+          const optional = action.includes("power") ? "led_power" : (action.includes("poe") ? "led_poe" : null);
           const activity = action.includes("activity");
-          const field = activity ? "led_right_show" : "led_left_show";
+          const field = optional ? `${optional}_show` : (activity ? "led_right_show" : "led_left_show");
           for (const key of portKeys) {
-            if (cal.ports?.[key]) cal.ports[key][field] = show;
+            if (!cal.ports?.[key]) continue;
+            if (optional && show) optionalPortLedPoint(cal.ports[key], optional, true);
+            cal.ports[key][field] = show;
           }
-          for (const key of sfpKeys) {
+          if (!optional) for (const key of sfpKeys) {
             if (cal.sfp?.[key]) cal.sfp[key][field] = show;
           }
-          const count = portKeys.length + sfpKeys.length;
-          const label = activity ? "Activity LED" : "Link LED";
+          const count = portKeys.length + (optional ? 0 : sfpKeys.length);
+          if (!count) return;
+          const label = optional === "led_power" ? "Power LED" : optional === "led_poe" ? "PoE LED" : activity ? "Activity LED" : "Link LED";
           this.markCalibrationDirty();
           this.setCalibrationSaveStatus(`${show ? "Shown" : "Hidden"} ${count} ${label}${count === 1 ? "" : "s"}`, false);
           this.render();
