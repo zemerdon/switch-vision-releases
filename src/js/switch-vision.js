@@ -9673,7 +9673,7 @@ const testModeBadge = testModeUi.show !== false
       const fallback = normalisePortLedShape(calibrationUi.port_led_shape || "circle");
       const shapes = [
         ...portNumberKeys.map((portKey) => normalisePortLedShape(cal.ports?.[portKey]?.[key], fallback)),
-        ...sfpLabelKeys.map((sfpKey) => normalisePortLedShape(cal.sfp?.[sfpKey]?.[key], fallback)),
+        ...(SV_OPTIONAL_PORT_LED_PARTS.includes(part) ? [] : sfpLabelKeys.map((sfpKey) => normalisePortLedShape(cal.sfp?.[sfpKey]?.[key], fallback))),
       ];
       const value = shapes[0] || fallback;
       return { value, mixed: shapes.some((shape) => shape !== value) };
@@ -10699,8 +10699,10 @@ ${portPresentationControls}
       for (const key of keys) {
         const port = cal.ports?.[key];
         if (!port) continue;
-        if (sizeKey) changed = resizeSize(port[sizeKey], 2) || changed;
-        else if (["center", "entire"].includes(editable.part)) changed = resizeSize(port.hitbox, 8) || changed;
+        if (sizeKey) {
+          if (!Array.isArray(port[sizeKey])) port[sizeKey] = [...defaultPortLedRectangleSize()];
+          changed = resizeSize(port[sizeKey], 2) || changed;
+        } else if (["center", "entire"].includes(editable.part)) changed = resizeSize(port.hitbox, 8) || changed;
       }
       return changed;
     }
@@ -10719,7 +10721,10 @@ ${portPresentationControls}
 
     if (editable.type === "port") {
       const sizeKey = portLedSizeKey(editable.part);
-      if (sizeKey) return resizeSize(editable.item?.[sizeKey], 2);
+      if (sizeKey) {
+        if (!Array.isArray(editable.item?.[sizeKey])) editable.item[sizeKey] = [...defaultPortLedRectangleSize()];
+        return resizeSize(editable.item[sizeKey], 2);
+      }
       if (["center", "entire"].includes(editable.part)) return resizeSize(editable.item?.hitbox, 8);
       return false;
     }
