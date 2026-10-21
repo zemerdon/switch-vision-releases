@@ -2,7 +2,7 @@
 
 - Add owner-supplied native 2680 × 356 `c3560cg-8pc-s-compact.png` as the reviewed default artwork for exact Cisco WS-C3560CG-8PC-S; preserve the old `c3560cg-8pc-s.png` as a selectable original, with user-facing catalog text unchanged except for the new ` Compact` suffix.
 - Translate owner Geometry Export v2 into native-image factory presentation while treating its SW1 / stock-48 export origin solely as capture metadata. Preserve eight fixed RJ45 plus two real dual-purpose copper/SFP logical positions; retain exact discovery mapping and Experimental evidence status.
-- Do not reset saved per-switch Native or Custom Calibration, alter the standard card renderer, change existing models' assigned artwork, perform any public release or mutate the owner-supplied originals.
+- Use a separate Compact factory profile so the Zyxel XS1930-10 and legacy Cisco profiles keep their original faceplate. Do not reset saved per-switch Native or Custom Calibration, alter the standard card renderer, change existing models' assigned artwork, perform any public release or mutate the owner-supplied originals.
 
 ## v2.8.7 — Parallel read-only Supervisor app status (Local)
 

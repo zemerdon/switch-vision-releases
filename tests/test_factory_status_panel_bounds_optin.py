@@ -106,11 +106,31 @@ class FactoryStatusPanelBoundsOptInTests(unittest.TestCase):
     def test_explicit_factory_opt_in_accepts_runtime_suppressed_rows(self) -> None:
         self.validate(synthetic_profile(allow_out_of_bounds_rows=True))
 
-    def test_dell_factory_profile_is_the_only_bundled_opt_in(self) -> None:
+    def test_only_reviewed_original_geometry_cases_have_factory_opt_in(self) -> None:
         dell = json.loads(DELL_PROFILE.read_text(encoding="utf-8"))
         self.assertIs(
             ((dell.get("ui") or {}).get("status_panel") or {}).get("allow_out_of_bounds_rows"),
             True,
+        )
+        # The exact owner-supplied Cisco geometry has a sixth visible row below
+        # the owner's own 121px panel. Respect the original dimensions rather
+        # than manufacturing a larger panel or moving the row.
+        cisco = ROOT / "src" / "calibration" / "faceplate-c3560cg-8pc-s-compact.json"
+        export = ROOT / "src" / "calibration" / "geometry-c3560cg-8pc-s-compact.json"
+        supplied = json.loads(export.read_text(encoding="utf-8"))["geometry"]
+        native = json.loads(cisco.read_text(encoding="utf-8"))
+        rendered = self.build.render_space_calibration(native)
+        self.assertEqual(native["profile"], "cisco_3560cg_8pc_compact")
+        self.assertTrue(native["ui"]["status_panel"]["allow_out_of_bounds_rows"])
+        self.assertAlmostEqual(
+            rendered["ui"]["status_panel"]["height"],
+            supplied["ui"]["status_panel"]["height"],
+            delta=2e-7,
+        )
+        self.assertAlmostEqual(
+            rendered["ui"]["status_panel"]["fields"]["row6_key"][1],
+            supplied["ui"]["status_panel"]["fields"]["row6_key"][1],
+            delta=2e-7,
         )
         opted_in = []
         for path in sorted((ROOT / "src" / "calibration").glob("faceplate-*.json")):
@@ -118,7 +138,10 @@ class FactoryStatusPanelBoundsOptInTests(unittest.TestCase):
             panel = ((data.get("ui") or {}).get("status_panel") or {})
             if panel.get("allow_out_of_bounds_rows") is True:
                 opted_in.append(path.name)
-        self.assertEqual(opted_in, ["faceplate-dell-28-rj45-2sfp.json"])
+        self.assertEqual(
+            opted_in,
+            ["faceplate-c3560cg-8pc-s-compact.json", "faceplate-dell-28-rj45-2sfp.json"],
+        )
 
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@
   "schema_version": 2,
   "schema": "switch-vision-interactive-calibration-v1",
   "model": "cisco-3560cg-8pc-8p-2dual",
-  "profile": "cisco_3560cg_8pc",
+  "profile": "cisco_3560cg_8pc_compact",
   "generated_by": "Switch Vision owner-supplied Cisco 3560CG Compact geometry",
   "image": {
     "file": "faceplates/c3560cg-8pc-s-compact.png",
@@ -482,11 +482,12 @@
       "height": 149.392857143
     },
     "status_panel": {
+      "allow_out_of_bounds_rows": true,
       "show": true,
       "x": 733.837104762,
       "y": 81.601980952,
       "width": 259.574857143,
-      "height": 119.196428571,
+      "height": 96.208152381,
       "font_family": "SwitchVisionCustom, Arial, Helvetica, sans-serif",
       "font_size": 15.892857143,
       "title_font_size": 12.714285714,

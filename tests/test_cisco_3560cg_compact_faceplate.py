@@ -49,7 +49,7 @@ class Cisco3560CGCompactFaceplateTests(unittest.TestCase):
         self.assertEqual(row["ports"]["uplinks"], 2)
         self.assertIn("dual-purpose", row["ports"]["uplink_type"])
         self.assertEqual(row["mapping_profile"], "cisco-3560cg-8pc-8p-2dual")
-        self.assertEqual(row["calibration_profile"], "cisco_3560cg_8pc")
+        self.assertEqual(row["calibration_profile"], "cisco_3560cg_8pc_compact")
         self.assertEqual(row["default_faceplate"], "faceplates/c3560cg-8pc-s-compact.png")
         self.assertEqual(
             row["optional_faceplates"],
@@ -75,7 +75,7 @@ class Cisco3560CGCompactFaceplateTests(unittest.TestCase):
         self.assertEqual(export["transfer_type"], "switch-vision-geometry-profile-v1")
         # Exported source_scope/model/SW1 are capture context, NEVER model identity.
         self.assertEqual(factory["model"], "cisco-3560cg-8pc-8p-2dual")
-        self.assertEqual(factory["profile"], "cisco_3560cg_8pc")
+        self.assertEqual(factory["profile"], "cisco_3560cg_8pc_compact")
         self.assertNotEqual(export["model"], factory["model"])
         self.assertNotEqual(export["source_profile"], factory["profile"])
         self.assertEqual(factory["image"]["file"], "faceplates/c3560cg-8pc-s-compact.png")
@@ -87,14 +87,17 @@ class Cisco3560CGCompactFaceplateTests(unittest.TestCase):
         render = render_space_calibration(factory)
         self.assertEqual((render["image"]["width"], render["image"]["height"]), (2048, 448))
         # Owner export's row 6 extends below its 121px status panel. Only the
-        # derived factory panel height grows; all owner port/LED coordinates remain exact.
-        self.assertAlmostEqual(render["ui"]["status_panel"]["height"], 150, delta=2e-7)
+        # Preserve even the owner's out-of-panel sixth status-row position.
+        # The existing factory opt-in uses the runtime's normal clipping
+        # behavior; it does not change any submitted geometry coordinate.
+        self.assertAlmostEqual(render["ui"]["status_panel"]["height"], 121.070933333, delta=2e-7)
+        self.assertTrue(factory["ui"]["status_panel"]["allow_out_of_bounds_rows"])
         self.assertEqual(source["ui"]["status_panel"]["height"], 121.070933333)
 
         def compare(left, right, path="geometry"):
             if isinstance(left, dict):
                 for k, value in left.items():
-                    if (path == "geometry.ui.faceplate" and k == "file") or (path == "geometry.ui.status_panel" and k == "height"):
+                    if path == "geometry.ui.faceplate" and k == "file":
                         continue
                     self.assertIn(k, right, path)
                     compare(value, right[k], path + "." + k)
@@ -119,7 +122,8 @@ class Cisco3560CGCompactFaceplateTests(unittest.TestCase):
         for rel in ("src/js/switch-vision.js", "src/custom_components/switch_vision/switch-vision-card.js"):
             content = (ROOT / rel).read_text(encoding="utf-8")
             self.assertIn('"c3560cg-8pc-s-compact.png": {"schema_version":2', content)
-            self.assertIn('cisco_3560cg_8pc:', content)
+            self.assertIn('cisco_3560cg_8pc_compact: "c3560cg-8pc-s-compact.png"', content)
+            self.assertIn('cisco_3560cg_8pc: "c3560cg-8pc-s.png"', content)
             self.assertIn(OLD_LABEL + " Compact", content)
 
 

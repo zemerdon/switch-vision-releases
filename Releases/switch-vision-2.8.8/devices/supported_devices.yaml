@@ -12,7 +12,7 @@ support_statuses:
 projection:
   schema: 1
   source_component: discovery
-  source_registry_sha256: 7b18655993829195eed9923f672eb751125132db48ed9b2827afa417895eb602
+  source_registry_sha256: 1403a24f2d5e724a9b557151b6d612e773b80c696483fcab0c15e85a2b8763a5
   device_field_allowlist:
   - vendor
   - family
@@ -480,7 +480,7 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: cisco-3560cg-8pc-8p-2dual
-  calibration_profile: cisco_3560cg_8pc
+  calibration_profile: cisco_3560cg_8pc_compact
   default_faceplate: faceplates/c3560cg-8pc-s-compact.png
   optional_faceplates:
   - faceplates/c3560cg-8pc-s.png
@@ -498,7 +498,7 @@ devices:
     optional_faceplates:
     - faceplates/c3560cg-8pc-s.png
     - faceplates/24rj45-2sfp.png
-    calibration_profile: cisco_3560cg_8pc
+    calibration_profile: cisco_3560cg_8pc_compact
     canvas:
       width: 2680
       height: 356
