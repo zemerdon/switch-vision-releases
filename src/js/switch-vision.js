@@ -236,6 +236,8 @@ function normalisePortLedShape(value, fallback = "circle") {
 function portLedShapeKey(part) {
   if (part === "led_left") return "led_left_shape";
   if (part === "led_right") return "led_right_shape";
+  if (part === "led_power") return "led_power_shape";
+  if (part === "led_poe") return "led_poe_shape";
   return "";
 }
 
@@ -280,7 +282,35 @@ function portLedCircleRadius(value, radius = layout.ports?.r) {
 function portLedSizeKey(part) {
   if (part === "led_left") return "led_left_size";
   if (part === "led_right") return "led_right_size";
+  if (part === "led_power") return "led_power_size";
+  if (part === "led_poe") return "led_poe_size";
   return null;
+}
+
+// Optional per-RJ45 indicators are absent from factory geometry and legacy saves.
+// Selecting them previews a deterministic offset; only an explicit edit/show
+// creates persisted coordinates. No protected owner geometry is rewritten.
+const SV_OPTIONAL_PORT_LED_PARTS = Object.freeze(["led_power", "led_poe"]);
+
+function optionalPortLedPoint(port, part, create = false) {
+  if (!port || !SV_OPTIONAL_PORT_LED_PARTS.includes(part)) return null;
+  if (Array.isArray(port[part]) && port[part].length === 2) return port[part];
+  const center = Array.isArray(port.center) ? port.center : [0, 0];
+  const fallback = [Number(center[0] || 0) + (part === "led_power" ? -12 : 12), Number(center[1] || 0) + 26];
+  if (create) port[part] = fallback;
+  return create ? port[part] : fallback;
+}
+
+function optionalPortLedClass(config, port, part, testMode = false) {
+  if (testMode) return part === "led_poe" ? "cv-led-poe" : "cv-led-green";
+  // A port-level reading must never be inferred from a switch-level PoE
+  // budget, an active link or a demo switch. The indexed UniFi source is
+  // already freshness-gated and resolves physical RJ45 mapping.
+  const data = unifiBoundAccessPort(config, port)?.poe;
+  if (!data || data.available !== true) return "cv-led-off";
+  if (part === "led_power") return String(data.state || "").toUpperCase() === "UP" ? "cv-led-green" : "cv-led-off";
+  if (part === "led_poe") return data.enabled === true ? "cv-led-poe" : "cv-led-off";
+  return "cv-led-off";
 }
 
 function portLedColourOverride(activeCalibration, part, uiOverride = null) {
@@ -3350,6 +3380,13 @@ if (
     if (port.led_right_shape !== undefined) port.led_right_shape = normalisePortLedShape(port.led_right_shape, cal.ui.port_led_shape);
     port.led_left_show = port.led_left_show !== false;
     port.led_right_show = port.led_right_show !== false;
+    // Keep absent optional LEDs absent; never activate them during migration.
+    for (const part of SV_OPTIONAL_PORT_LED_PARTS) {
+      const shapeKey = portLedShapeKey(part);
+      const sizeKey = portLedSizeKey(part);
+      if (port[shapeKey] !== undefined) port[shapeKey] = normalisePortLedShape(port[shapeKey], cal.ui.port_led_shape);
+      if (port[sizeKey] !== undefined) port[sizeKey] = normalisePortLedRectangleSize(port[sizeKey]);
+    }
     port.number_show = port.number_show !== false;
     port.supported_speed = normalisePortSupportedSpeed(port.supported_speed);
     port.port_role = normalisePortRole(port.port_role);
@@ -4414,7 +4451,7 @@ function calibrationOverlayPartActive(editable, itemType, itemKey, itemPart) {
     if (!selected) return false;
 
     if (targetPart === "entire") {
-      return ["center", "number", "led_left", "led_right"].includes(part);
+      return ["center", "number", "led_left", "led_right", ...SV_OPTIONAL_PORT_LED_PARTS].includes(part);
     }
 
     return targetPart === part;
@@ -4618,6 +4655,14 @@ function drawCalibrationOverlay(svg, { config, calibration }) {
           7.5,
           activityActive
         );
+      }
+
+      for (const part of SV_OPTIONAL_PORT_LED_PARTS) {
+        const active = calibrationOverlayPartActive(editable, "port", num, part);
+        if (active || port[`${part}_show`] === true) {
+          const point = optionalPortLedPoint(port, part, false);
+          drawRing(point[0], point[1], 7.5, active);
+        }
       }
 
       // Number positions are normally left uncluttered. Draw their
@@ -5124,6 +5169,13 @@ function drawPanel(svg, { hass, config, calibration, layout }) {
         portLedShapeForItem(port, "led_right", calibration)
       ) : null;
       if (activityLed) activityLed.dataset.cvActivityPort = String(n);
+      for (const part of SV_OPTIONAL_PORT_LED_PARTS) {
+        if (port[`${part}_show`] !== true) continue;
+        const point = optionalPortLedPoint(port, part, false);
+        portLed(svg, point[0], point[1], layout.ports.r,
+          optionalPortLedClass(config, n, part, calibrationTestMode), calibration,
+          port[portLedSizeKey(part)], part, portLedShapeForItem(port, part, calibration));
+      }
     }
 
     if (config.show_numbers && port.number_show !== false) {
@@ -5275,8 +5327,8 @@ function calibrationRenderSpaceData(source) {
     if (!collection || typeof collection !== "object") continue;
     for (const item of Object.values(collection)) {
       if (!item || typeof item !== "object") continue;
-      for (const key of ["center", "number", "label", "led_left", "led_right"]) point(item[key]);
-      for (const key of ["hitbox", "led_left_size", "led_right_size"]) size(item[key]);
+      for (const key of ["center", "number", "label", "led_left", "led_right", ...(collectionName === "ports" ? SV_OPTIONAL_PORT_LED_PARTS : [])]) point(item[key]);
+      for (const key of ["hitbox", "led_left_size", "led_right_size", ...(collectionName === "ports" ? ["led_power_size", "led_poe_size"] : [])]) size(item[key]);
     }
   }
 
@@ -5473,7 +5525,7 @@ function normaliseImportedFaceplateProfile(raw) {
 
 const SV_GEOMETRY_TRANSFER_TYPE = "switch-vision-geometry-profile-v1";
 const SV_FACEPLATE_TRANSFER_TYPE = "switch-vision-faceplate-profile-v2";
-const SV_GEOMETRY_ENTRY_KEYS = Object.freeze(["center", "number", "label", "led_left", "led_right", "hitbox", "led_left_size", "led_right_size", "led_left_shape", "led_right_shape", "led_left_show", "led_right_show", "number_show", "label_show", "supported_speed", "port_role"]);
+const SV_GEOMETRY_ENTRY_KEYS = Object.freeze(["center", "number", "label", "led_left", "led_right", "led_power", "led_poe", "hitbox", "led_left_size", "led_right_size", "led_power_size", "led_poe_size", "led_left_shape", "led_right_shape", "led_power_shape", "led_poe_shape", "led_left_show", "led_right_show", "led_power_show", "led_poe_show", "number_show", "label_show", "supported_speed", "port_role"]);
 const SV_GEOMETRY_BOX_KEYS = Object.freeze(["x", "y", "width", "height"]);
 const SV_GEOMETRY_RENDER_COORDINATE_SPACE = "switch-vision-render-2048x448-v1";
 
@@ -5878,7 +5930,10 @@ function validateImportedCalibration(raw, currentCal = null, { preserveFaceplate
           if (!calibrationCoordinateValid(item[part], { width, height })) errors.push(`Port ${key} has an invalid or out-of-range ${part} coordinate.`);
         }
         if (!calibrationCoordinateValid(item.hitbox, { width, height, size: true })) errors.push(`Port ${key} has an invalid hitbox size.`);
-        for (const sizePart of ["led_left_size", "led_right_size"]) {
+        for (const part of SV_OPTIONAL_PORT_LED_PARTS) {
+          if (item[part] !== undefined && !calibrationCoordinateValid(item[part], { width, height })) errors.push(`Port ${key} has an invalid ${part} coordinate.`);
+        }
+        for (const sizePart of ["led_left_size", "led_right_size", "led_power_size", "led_poe_size"]) {
           if (item[sizePart] !== undefined && !calibrationCoordinateValid(item[sizePart], { width, height, size: true })) errors.push(`Port ${key} has an invalid ${sizePart} size.`);
         }
       } else {
@@ -5886,7 +5941,7 @@ function validateImportedCalibration(raw, currentCal = null, { preserveFaceplate
         if (item.label !== undefined && !calibrationCoordinateValid(item.label, { width, height })) errors.push(`${type} ${key} has an invalid or out-of-range label coordinate.`);
         if (item.hitbox !== undefined && !calibrationCoordinateValid(item.hitbox, { width, height, size: true })) errors.push(`${type} ${key} has an invalid hitbox size.`);
       }
-      for (const shapeField of ["led_left_shape", "led_right_shape"]) {
+      for (const shapeField of ["led_left_shape", "led_right_shape", ...(type === "Port" ? ["led_power_shape", "led_poe_shape"] : [])]) {
         if (item[shapeField] !== undefined && !PORT_LED_SHAPES.includes(String(item[shapeField] || "").toLowerCase())) {
           errors.push(`${type} ${key} has an invalid ${shapeField}; expected circle, rectangle, triangle_up, triangle_down, triangle_left, or triangle_right.`);
         }
