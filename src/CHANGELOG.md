@@ -1,125 +1,130 @@
-## v2.8.8 — Cisco 3560CG Compact default artwork (Local)
+## v2.8.9 — Clear customer release history
+
+- Remove development-stage labels from earlier changelog headings and correct obsolete release-status text.
+- Keep all existing runtime, artwork, Calibration and telemetry functionality unchanged.
+
+## v2.8.8 — Cisco 3560CG Compact default artwork
 
 - Add owner-supplied native 2680 × 356 `c3560cg-8pc-s-compact.png` as the reviewed default artwork for exact Cisco WS-C3560CG-8PC-S; preserve the old `c3560cg-8pc-s.png` as a selectable original, with user-facing catalog text unchanged except for the new ` Compact` suffix.
 - Translate owner Geometry Export v2 into native-image factory presentation while treating its SW1 / stock-48 export origin solely as capture metadata. Preserve eight fixed RJ45 plus two real dual-purpose copper/SFP logical positions; retain exact discovery mapping and Experimental evidence status.
 - Use a separate Compact factory profile so the Zyxel XS1930-10 and legacy Cisco profiles keep their original faceplate. Do not reset saved per-switch Native or Custom Calibration, alter the standard card renderer, change existing models' assigned artwork, perform any public release or mutate the owner-supplied originals.
 
-## v2.8.7 — Parallel read-only Supervisor app status (Local)
+## v2.8.7 — Parallel read-only Supervisor app status
 
 - Fetch Discovery, Installer, SNMP2MQTT and UniFi2MQTT app status concurrently when the Native management UI opens, rather than waiting for four independent Supervisor requests in sequence. Preserve app identity, sidebar navigation, missing-app handling and failure reporting; add source-executed concurrency and error regressions.
 
-## v2.8.6 — Exact Calibration backup restoration (Local)
+## v2.8.6 — Exact Calibration backup restoration
 
 - Preserve imported stock SHA metadata exactly for trusted complete-backup restoration, rejecting unverifiable supplied hashes. Normal Calibration still uses the installed verified artwork SHA.
 
-## v2.8.5 — Left and right Link/Activity LED triangles (Local)
+## v2.8.5 — Left and right Link/Activity LED triangles
 
 - Add Triangle Left and Triangle Right to both Link LED Shape and Activity LED Shape Calibration dropdowns for RJ45 and SFP/uplink ports.
 - Render horizontal arrowheads using existing per-port LED size and shape fields; preserve existing shapes, per-port persistence, grouped selection, colours, visibility and telemetry.
-- Add source-executed regression for dropdown choices and directional SVG geometry. Local-only; no public release or owner HAOS installation.
+- Add source-executed regression for dropdown choices and directional SVG geometry. No user installation is performed by this source-level regression.
 
-## v2.8.4 — SHA-deduplicate historical registry privacy scans (Local)
+## v2.8.4 — SHA-deduplicate historical registry privacy scans
 
 - Keep the Core public attribution/privacy check reading and hashing every supported-device registry across source and all bundled historical releases. Inspect byte-identical copies only once per parser format, without exempting changed, unsafe, malformed, or unexpected archived registries.
 - Add failure-path tests proving all archive files are read, unsafe changed releases still fail, and YAML/JSON content is validated under its own parser contract. Source-bound before/after standalone scan measurements on `sv-dev` were 75.85s and 23.44s respectively; the improvement is not a hardware/end-to-end claim.
-- Preserve deterministic Core build/version parity, release safety, existing historical assets and Local-only development scope. No public publication or HAOS installation is implied.
+- Preserve deterministic Core build/version parity, release safety, existing historical assets and No owner Home Assistant installation is performed.
 
-## v2.8.3 — Recover Native artwork after missed Hub events (Local)
+## v2.8.3 — Recover Native artwork after missed Hub events
 
 - Force a server-side Calibration and approved-stock-artwork revalidation whenever a Native or Custom card reconnects, including after the Hub approval event occurred while its dashboard was unmounted.
 - Drop a previously cached Calibration only after Core explicitly confirms that the saved profile no longer exists; keep unsaved editor changes intact, and preserve the approved exact-SHA image pin and normal Custom isolation.
 - Add source-executed Node/JavaScript regression for cold mount and stale reattachment, verifying a single fetch per attachment and no repeated reads on ordinary card updates. No new Calibration system, owner HAOS installation, or public publication.
 
-## v2.8.2 — Complete Hub-approved Native artwork reset (Local)
+## v2.8.2 — Complete Hub-approved Native artwork reset
 
 - On a verified, explicit Native Hub Upgrade Faceplate approval, complete Core's established Reset Current Switch factory Calibration save and re-read the exact SHA-pinned stock artwork. The backend's original approval remains the single authoritative switch-scoped mutation; no second reset service call or Calibration system is introduced.
 - Reject mismatched approved SHA and avoid modifying the Custom scope. Preserve the existing manual Reset Current Switch event path and explicit per-switch approval, history and Calibration safeguards.
 - Add regression coverage for Native factory save, rejected SHA, normal reset compatibility and Custom isolation.
 
-## v2.8.1 — Cisco 3850-12XS stock faceplate artwork refresh (Local)
+## v2.8.1 — Cisco 3850-12XS stock faceplate artwork refresh
 
 - Replace `cisco-3850-12xs.png` with the exact owner-provided 2680 × 356 RGBA PNG (SHA-256 `a8ebdc68ddbb38d22bbeaf9f69476b620aa06d494f425dc20baf519b05758028`), preserving the submitted original untouched.
 - Keep the twelve SFP cage and port-label strip pixel-identical to the previous revision; leave its verified factory port/LED geometry and per-switch saved Calibration unchanged.
 - Installer retains earlier SHA-addressed stock artwork for explicit Native-only Hub adoption after the coordinated update; no automatic Calibration reset or model topology change.
 
-## v2.8.0 — Calibration action tooltips (Local)
+## v2.8.0 — Calibration action tooltips
 
 - Add precise hover/focus descriptions to the seven Calibration action buttons: Test Mode, Cancel, Refresh Faceplate, Reset Current Faceplate, Reset Current Switch, Reset All Switches, and Save Profile.
 - Distinguish refreshing pixels without touching settings, resetting Calibration while preserving a chosen faceplate, restoring the current switch to latest verified factory artwork, and resetting all saved switches strictly within the current Native/Custom dashboard scope with two confirmations.
 - Keep all button handlers, confirmations, storage, reset semantics, artwork selection and per-switch Calibration unchanged. Use the existing HTML title tooltip pattern; no second tooltip/UI system.
 - Apply the standing patch-99 version rollover: Core 2.7.99 → 2.8.0.
 
-## v2.7.99 — Accept legacy SHA-pinned faceplate approvals (Local)
+## v2.7.99 — Accept legacy SHA-pinned faceplate approvals
 
 - Fix Hub Upgrade Faceplate rejecting an unchanged pre-versioned Cisco 3850-12XS artwork pin with `stale_choice`: Core now compares its saved filename and SHA, and only checks the expected version when a version was actually persisted.
 - Keep explicit admin consent, verified target stock image/factory geometry, model-scoped visual Calibration reset and strict stale protection for versioned pins. No automatic reset, physical switch changes or unrelated profile mutation.
 - Add regression for the real legacy 3850 SHA, changed selection SHA, wrong filename, missing pin and mismatched versioned revision.
 
-## v2.7.98 — Cisco 3850-12XS owner artwork refresh (Local)
+## v2.7.98 — Cisco 3850-12XS owner artwork refresh
 
 - Replace the stock `cisco-3850-12xs.png` with the owner's supplied 2680 × 356 revision (`bc34fc58e818014a3d1b031221e4aab87ae567654075f4f2011f695c23572d74`), preserving the exact image bytes including the test marking.
 - Preserve all twelve factory SFP port/LED positions, model topology, the existing native-image factory geometry and saved per-switch Calibration.
 - Allow the established Installer SHA-pair history and explicit Hub artwork approval flow to distinguish the prior artwork from this revision; no automatic reset, model promotion or public publication.
 
-## v2.7.97 — Confirmed factory reset refreshes stock artwork (Local)
+## v2.7.97 — Confirmed factory reset refreshes stock artwork
 
 - A confirmed Reset Current Switch now replaces that switch's historical faceplate pin with the latest SHA-verified factory image and geometry. Reset All does the same only within the approved Native/Custom scope.
 - Keep Current and routine saves remain unchanged. Unverified replacement pairs stop the reset before modifying persisted state, and the dashboard refreshes its cached artwork after a successful reset.
 
-## v2.7.96 — Installer-owned SHA faceplate preservation (Local)
+## v2.7.96 — Installer-owned SHA faceplate preservation
 
 - Stop bundling historical `faceplates-old` archives; Core ships current stock PNGs and their factory geometry only.
 - Read validated Installer-preserved SHA image/geometry pairs for per-switch selection, with legacy versioned archives supported only during migration.
 - Preserve generic-stock selections when a model gains dedicated artwork and keep user-authored Calibration independent of stock revision changes.
 
-## v2.7.95 — Reproducible Core source-archive packaging (Local)
+## v2.7.95 — Reproducible Core source-archive packaging
 
 - Package the faceplate revision builder with the exact source archive and load it reliably in clean extracted-source regressions.
 - Keep all 2.7.94 bounded-revision, geometry, Calibration-isolation and archive-parity protections unchanged; 2.7.94 was not staged.
 
-## v2.7.94 — Three distinct faceplate revisions (Local)
+## v2.7.94 — Three distinct faceplate revisions
 
 - Limit each shipped stock faceplate to its latest distinct PNG/factory geometry pair and two preceding distinct pairs, without new revisions on routine Core releases.
 - Preserve per-switch older selected geometry when it rotates out of shipping and verify every generated archive member under exact release parity.
 - Do not change user Calibration, topology, or opt-in faceplate selections.
 
-## v2.7.93 — Versioned faceplates with paired factory geometry (Local)
+## v2.7.93 — Versioned faceplates with paired factory geometry
 
 - Bundle every verified historical faceplate and its matching factory port geometry from Core release history; retain current stock files and automatically derive past revisions when building.
 - Expose exact Core-version/image/geometry revisions through the trusted Core assets API and permit per-switch selection of any verified revision without changing saved user Calibration.
 - Render selected historical factory geometry only where no user-authored Calibration is active. Reject absent/tampered historical image/geometry pairs.
 
-## v2.7.92 — Direct faceplate migration (Local)
+## v2.7.92 — Direct faceplate migration
 
 - Reuse Installer's verified prior-artwork record for existing switches without a selection.
 - Preserve saved artwork decisions and Calibration.
 
-## v2.7.91 — Cisco 3850-12XS stock faceplate art refinement (Local)
+## v2.7.91 — Cisco 3850-12XS stock faceplate art refinement
 
 - Replace the stock `cisco-3850-12xs.png` with the owner's latest verified 2680 × 356 PNG, retaining the exact filename and all twelve factory SFP positions.
 - Advance the stock asset checksum to distinguish this image from the previous revision for the already-staged per-switch Keep Current / Upgrade Faceplate workflow.
 - Leave model telemetry, geometry, saved Calibration profiles and admin actions unchanged.
 
-## v2.7.90 — Opt-in faceplate artwork selection (Local)
+## v2.7.90 — Opt-in faceplate artwork selection
 
 - Persist one approved stock artwork SHA per switch and dashboard scope without relying on saved Calibration.
 - Keep displaying verified archived older stock pixels when the canonical stock filename changes contents, or even when a model recommendation is renamed.
 - Protect unapproved updates from being displayed until the artwork pin is resolved; reject missing/tampered history without substituting new pixels.
 - Add admin-only exact-SHA artwork approval without resetting per-switch Calibration, preserving native geometry and saved adjustments.
 
-## v2.7.89 — HP 3500yl optical refresh per-port cooldown (Local)
+## v2.7.89 — HP 3500yl optical refresh per-port cooldown
 
 - Apply the existing 30-second rate limit to the exact selected physical optical port, not every port on the switch. Refreshing rear A1 does not delay a later rear A4 refresh after the first operation finishes.
 - Preserve the single in-flight refresh lock per switch, admin-only explicit opt-in/write credentials, exact J8693A model and IF-index binding, live DOM(1) validation, fixed SNMP SET target/value, 30-second operation timeout and cooldown after stale/failed requests.
 - Add offline per-port/host concurrency, retry, time-edge and trust-order regressions. Do not change physical port mappings, faceplates, factory Calibration or Discovery telemetry.
 
-## v2.7.88 — Same-filename faceplate history support (Local)
+## v2.7.88 — Same-filename faceplate history support
 
 - Record a server-verified stock image SHA-256 whenever a Calibration profile is saved, without changing its geometry, filename or visual mapping.
 - Expose a previous artwork revision only when a retained historical PNG matches its expected SHA; support legacy pre-fingerprint profiles using the Installer's verified first retained stock version.
 - Preserve all saved profiles unless the owner explicitly invokes Reset Current Switch; no renderer changes or automatic resets.
 
-## v2.7.87 — Cisco Catalyst 3850-12XS artwork replacement (Local)
+## v2.7.87 — Cisco Catalyst 3850-12XS artwork replacement
 
 - Replace only the bundled `cisco-3850-12xs.png` artwork with the owner-provided 2680 × 356 PNG, preserving its source bytes and updating the stock-image SHA-256 fingerprint.
 - Keep the existing factory Calibration JSON, all 12 SFP port/LED hitboxes, native-image coordinates, exact-model mapping, telemetry and saved user preferences unchanged. No renderer or geometry migration.
@@ -148,19 +153,19 @@
 - Display an unknown state instead of falsely reporting Down when rear optical status telemetry is absent or unavailable.
 - Preserve confirmed Up/Down states, speed reporting, front shared-port mapping, supplied faceplate geometry and saved Calibration settings.
 
-## v2.7.82 — HP 3500yl-48G exact default artwork (Local)
+## v2.7.82 — HP 3500yl-48G exact default artwork
 
 - Register the unmodified owner-provided 6000 × 1600 HP 3500yl-48G PNG and its unmodified geometry export; use geometry only, ignoring the SW1 test-profile metadata.
 - Bind this dedicated native-image factory profile as the HP J8693A Switch 3500yl-48G default, with renderer round-trip and SHA-256 regressions guarding the 48 calibrated RJ45, four SFP and four rear SFP positions.
 - Preserve the existing 44 fixed and 4 dual-personality logical port identities, optical/PoE telemetry contract, source renderer and other models without modifying saved user calibration.
 
-## v2.7.81 — Cisco SG200-26 exact owner-supplied default faceplate (Local)
+## v2.7.81 — Cisco SG200-26 exact owner-supplied default faceplate
 
 - Make `cisco-sg200-26.png` the exclusive Cisco SG200-26 default faceplate, replacing the generic stock visual for this exact model without affecting other models.
 - Preserve owner-supplied PNG bytes and complete geometry JSON verbatim; carry all 26 RJ45 socket positions, two shared optical cage positions, seven status LEDs and calibrated UI fields into the dedicated factory profile without rescaling or moving coordinates.
 - Keep the existing 24 fixed RJ45 + two dual-personality 1G RJ45/SFP logical interface telemetry and discovery contract unchanged; source checksum and coordinate-equality regressions protect owner geometry.
 
-## v2.7.80 — Five Calibration selectors and visual selection restoration (Local)
+## v2.7.80 — Five Calibration selectors and visual selection restoration
 
 - Split quick selections into five independent compact dropdowns: Status Box 1, Status Box 2, RJ45, SFP, and rSFP. Preserve each existing target/part choice and add rear-port Odd/Even Ports, Link LEDs, Activity LEDs, and Labels using existing rSFP geometry only.
 - Restore yellow selected hitbox/LED/label feedback for entire SFP and rSFP groups and their Odd/Even or individual selections without changing saved Calibration data or hardware telemetry binding.
@@ -168,7 +173,7 @@
 - Use the user-facing name rSFP throughout Calibration while retaining legacy internal target identifiers for saved profile compatibility.
 - Extend existing Quick Selection theme scope to include the five-dropdown row; existing dropdown typography, sizing and appearance settings remain authoritative, with no unnecessary extra fields.
 
-## v2.7.79 — Compact Status Box dropdowns and rSFP control ordering (Local)
+## v2.7.79 — Compact Status Box dropdowns and rSFP control ordering
 
 - Replace both Status Box quick-action button groups with two compact dropdowns preserving all 24 original target/part selections and existing odd/even RJ45/SFP semantics.
 - Position Add rSFP after Add SFP and Remove All rSFP Ports after Remove All SFP Ports in the Port manager row.
@@ -176,132 +181,132 @@
 - Place Card Height and Custom Height alongside the asset controls after folder-scan status.
 - Remove the three redundant Calibration hints for Status LED visibility, link/activity colour scope, and Auto card height.
 
-## v2.7.78 — Revert shared Calibration label-column alignment (Local)
+## v2.7.78 — Revert shared Calibration label-column alignment
 
 - Undo the 2.7.77 fixed primary label-column layout and restore the proven 2.7.76 Calibration row spacing and first-control positions.
 - Keep the earlier rSFP selector beside SFP, content-aware Auto dropdown sizing, Status Box quick-action grouping, and Port Label / LED Shape control refinements.
 - Preserve user Calibration geometry, saved profiles, telemetry separation, and all other functionality.
 
-## v2.7.77 — Shared Calibration label-column alignment (Local)
+## v2.7.77 — Shared Calibration label-column alignment
 
 - Use the same first-control starting column as Status Boxes across Selection, Port Labels and LEDs, Position & Size, and other primary Calibration rows, with responsive stacking for narrow screens.
 - Align Card Height, Port manager, Misc Targets, rear SFP actions, RJ45 key, quick selectors, and Port Label Style without widening nested controls or breaking SFP/rSFP adjacency.
 - Preserve existing saved geometry, accessibility of the renamed first-column controls, and model-neutral rSFP/Discovery mapping contracts.
 
-## v2.7.76 — Calibration selector sizing and aligned quick controls (Local)
+## v2.7.76 — Calibration selector sizing and aligned quick controls
 
 - Put the independent rSFP Target beside the front SFP selector, keeping rear-port add/remove actions below without changing discovery/registry bindings or saved geometry.
 - Make Closed Dropdown Auto fit the selected label plus arrow by removing the fixed target-picker cap and letting target groups wrap when necessary; preserve explicit pixel overrides.
 - Align Odd/Even RJ45 quick actions under Status Box 1 and Odd/Even SFP actions under Status Box 2, including responsive stacking.
 - Tighten Port Label / Show spacing and keep Link LED Shape and Activity LED Shape labels intact on one line. Retain existing selection, shape, save and persistence behaviour.
 
-## v2.7.75 — Content-aware Calibration dropdown widths (Local)
+## v2.7.75 — Content-aware Calibration dropdown widths
 
 - Add model-neutral rear SFP (rSFP) Calibration positions, targeting, geometry and LED/label editing independent of front uplinks. Preserve existing profiles and permit explicit observed bindings, without deriving telemetry from vendor or model names.
 - Closed Dropdowns Control width Auto now fits the selected option text plus dropdown arrow, instead of using the longest available option.
 - Make Auto content-aware for closed dropdown selected labels, open dropdown option menus, and numeric/text Calibration input widths, preserving explicit desktop/mobile pixel overrides and compact target-picker caps.
 - Fix truncated Font and Port Status Output choices while keeping short Field choices compact. Restore Status Box 1 and Status Box 2 Quick Select groups side by side with aligned action columns and mobile stacking. Add an optional Custom Theme Calibration preview highlight colour role (#ff9f1c default), backward compatible with saved themes. No saved calibration geometry or normal dashboard changes.
 
-## v2.7.74 — Calibration workspace polish and combined LED groups (Local)
+## v2.7.74 — Calibration workspace polish and combined LED groups
 
 - Align Status Box 1/2 Quick Select controls; separate Port manager; remove redundant Direct text, vertical separators, and obsolete faceplate tip.
 - Expand X/Y/W/H entry fields and connect their widths to the existing Number Input Width Calibration Theme setting.
 - Introduce independent Desktop/Mobile Hint Text font size and Regular/Bold weight for grey section descriptions and inline helpers.
 - Add safe combined RJ45/SFP Link+Activity LED selection for position and size editing, preserving the existing individual link/activity controls via dropdowns; keep target/part dropdown changes immediate.
-- Preserve existing saved profile geometry and normal dashboard behavior; Local-only candidate.
+- Preserve existing saved profile geometry and normal dashboard behavior;
 
-## v2.7.73 — Independent Calibration label and heading typography (Local)
+## v2.7.73 — Independent Calibration label and heading typography
 
 - Separate field, group, subsection and section text size/weight from global control text in both Desktop and Mobile.
 - Preserve existing settings and Core Calibration behavior; constrain generated style rules to the Calibration editor.
 
-## v2.7.72 — Calibration Theme global sizing and density (Local)
+## v2.7.72 — Calibration Theme global sizing and density
 
 - Add bounded Desktop/Mobile row, button and input heights, line height, button width, row and label spacing, and input width controls, with values below and above current defaults.
 - Use minimum row heights to preserve mobile wrapping; leave stored switch Calibration profiles unchanged.
 
-## v2.7.72 — Global Calibration editor density adjustments (Local)
+## v2.7.72 — Global Calibration editor density adjustments
 
 - Add validated global Desktop/Mobile row-height, row-spacing, button/input minimum height, text line-height, label spacing, button minimum width, and text/number input width controls; preserve previous settings and independent open-menu option-height control.
 - Support values above and below actual compact Core defaults, let mobile rows expand for wrapping, and scope changes to the Calibration editor only.
 
-## v2.7.71 — Calibration Theme global settings (Local)
+## v2.7.71 — Calibration Theme global settings
 
 - Consolidate editor presentation into one global Desktop/Mobile preference group for shared typography, padding axes and spacing.
 - Maintain backwards-compatible saved detailed settings with explicit global-property precedence, preserving special closed/open dropdown dimensions and normal Calibration functionality.
 
-## v2.7.70 — Calibration Theme padding axes and exact-style preview (Local)
+## v2.7.70 — Calibration Theme padding axes and exact-style preview
 
 - Validate and apply separate horizontal and vertical padding in Calibration Theme for applicable controls, with backward compatibility for all-side padding and device-specific scope.
 - Ship the unmodified Core Calibration stylesheet and theme-rule generator to the Local Hub preview under exact Core-source parity checks. No saved profile or faceplate changes.
 
-## v2.7.69 — Calibration Theme desktop/mobile editor presentation (Local)
+## v2.7.69 — Calibration Theme desktop/mobile editor presentation
 
 - Add validated Core settings for independent Calibration-editor Desktop and Mobile appearance, grouped by workspace/sections, assets/selection, labels/fields, buttons/inputs and dropdown closed/open states.
 - Render safely bounded editor-only CSS, including configurable text weight, size, spacing, padding, dropdown dimensions, option row height and open-menu height. Use one accessible in-page dropdown on desktop/mobile while preserving the underlying native selection event contracts.
-- Do not change faceplate geometry, saved Calibration profiles, normal dashboards or protected contributor data. Local-only candidate.
+- Do not change faceplate geometry, saved Calibration profiles, normal dashboards or protected contributor data.
 
-## v2.7.68 — Mobile-only compact Calibration dropdown menus (Local)
+## v2.7.68 — Mobile-only compact Calibration dropdown menus
 
 - Use the approved compact scrollable dropdown menus at mobile viewport widths (760px or less) only; restore native desktop select/dropdown behavior on wider viewports.
 - Update picker presentation at breakpoint transitions while preserving the single shared Calibration engine, selected values, unsaved edits and stored profiles.
-- Keep approved mobile menu appearance, 16px closed-control sizes, 11px regular white labels, Quick Links and all unrelated behavior unchanged. Local-only candidate.
+- Keep approved mobile menu appearance, 16px closed-control sizes, 11px regular white labels, Quick Links and all unrelated behavior unchanged.
 
-## v2.7.67 — Compact in-page Calibration dropdown menus (Local)
+## v2.7.67 — Compact in-page Calibration dropdown menus
 
 - Replace Android's oversized native expanded select picker with a short scrollable in-page list (32px rows, 12px option text, maximum 320px height), retaining grouped options and disabled placeholders.
 - Keep closed 16px selectors, 11px regular-weight white text, selected values, existing native-select change handlers, arrow styling and profile behavior unchanged.
-- Add keyboard/outside-tap dismissal, menu cleanup across rerender/disconnect and focused option-selection regression coverage. Quick Links and all other Calibration functionality remain unchanged; Local-only candidate.
+- Add keyboard/outside-tap dismissal, menu cleanup across rerender/disconnect and focused option-selection regression coverage. Quick Links and all other Calibration functionality remain unchanged;
 
-## v2.7.66 — 11px regular-weight white Calibration control text (Local)
+## v2.7.66 — 11px regular-weight white Calibration control text
 
 - Reduce regular-weight white text in Calibration dropdowns and neutral/white buttons from 12px to 11px.
 - Preserve 16px box heights, 12px line-height, all padding, widths and dropdown arrows; leave other text/colours unchanged.
-- No Quick Links, geometry, saved profiles or behaviour changes. Local-only staging; no public release.
+- No Quick Links, geometry, saved profiles or behaviour changes.
 
-## v2.7.65 — Regular-weight Calibration dropdown and white button text (Local)
+## v2.7.65 — Regular-weight Calibration dropdown and white button text
 
 - Remove bold from the white text in Calibration dropdowns and neutral/white buttons, including Misc Targets and Duplicate selected; retain normal 400 font weight.
 - Leave the approved 16px control height, 12px text size, padding, widths and painted dropdown arrows unchanged.
-- Retain bold field labels and B-format controls, coloured actions, Quick Links, saved calibration and behaviour; Local-only candidate.
+- Retain bold field labels and B-format controls, coloured actions, Quick Links, saved calibration and behaviour;
 
-## v2.7.64 — 16px Calibration controls and dropdown sizing (Local)
+## v2.7.64 — 16px Calibration controls and dropdown sizing
 
 - Set Calibration blue dropdowns/buttons and grey inputs to 16px overall height with 12px text.
 - Apply 2px horizontal and 1px vertical text padding within 1px borders; reserve dropdown arrow clearance and override legacy 24px minimums.
-- Leave Quick Links, saved profiles, faceplate geometry and telemetry unchanged. Local-only candidate.
+- Leave Quick Links, saved profiles, faceplate geometry and telemetry unchanged.
 
-## v2.7.63 — 18px Calibration controls with 1px padding (Local)
+## v2.7.63 — 18px Calibration controls with 1px padding
 
 - Reduce Calibration input, select, button and colour-swatch height from 20px to 18px.
 - Set text padding to 1px on all sides, except required native dropdown arrow clearance; retain 10px text, 12px line-height and existing widths.
-- Leave all Quick Links and calibration behaviour/profiles unchanged; Local-only candidate.
+- Leave all Quick Links and calibration behaviour/profiles unchanged;
 
-## v2.7.62 — Compact Calibration control height (Local)
+## v2.7.62 — Compact Calibration control height
 
 - Reduce Calibration grey text/number/hex inputs, blue buttons and dropdowns from 24px to 20px with a 12px text line-height, retaining 10px text size and the 3px internal text padding.
 - Bring colour-swatch height to 20px and preserve 18px of dropdown arrow-side clearance; leave horizontal widths untouched.
 - Preserve all Quick Links, saved profiles, geometry and behaviour. Local staging only, no public publication.
 
-## v2.7.61 — Tight 3px Calibration control spacing (Local)
+## v2.7.61 — Tight 3px Calibration control spacing
 
 - Use 3px padding between the text and outlines of Calibration grey inputs and blue controls, reserving the necessary right-hand clearance for native dropdown arrows.
 - Reduce common numeric, hex, swatch, text-label, coordinate and target-dropdown widths by roughly 10–15% while retaining 24px-height controls.
-- Preserve all Quick Selection links unchanged pending owner review, and preserve saved calibration profiles and faceplate behaviour. Stage locally only; no public release.
+- Preserve all Quick Selection links unchanged pending owner review, and preserve saved calibration profiles and faceplate behaviour.
 
-## v2.7.60 — Compact Calibration targets and controls (Local)
+## v2.7.60 — Compact Calibration targets and controls
 
 - Split Calibration Target into three focused dropdowns: Misc Targets, RJ45 Targets and SFP Targets, retaining the existing single active selection, part handling and saved-profile schema.
 - Compact editor controls to consistent input heights and reduced vertical padding; narrow numeric/hex boxes and colour swatches while retaining longer text-entry space where needed.
-- Local-only candidate; no public release, saved-calibration reset, forum or mail mutation.
+- No saved Calibration reset, forum write or mail action is performed.
 
-## v2.7.59 — Optional LED outlines and bulk Status LED visibility (Local)
+## v2.7.59 — Optional LED outlines and bulk Status LED visibility
 
 - Remove the default black SVG stroke from all rendered LED overlays, keeping their existing shapes, positions, fills and telemetry unchanged. In Calibration → Port Labels and LEDs, add optional per-profile LED outlines with colour and a bounded 0.25–3.00 thickness input in 0.25 increments; existing saved profiles default to off.
 - Add Show All and Hide All immediately after the Status LED Text colour control. Both buttons use the existing per-profile status-LED hidden list, keep individual checkboxes functional, and do not change status LED styling or port calibration.
 - Local-first candidate only; public Core remains v2.7.58 until separately authorized.
 
-## v2.7.58 — HP 3500yl opt-in Port dB refresh (Local pilot)
+## v2.7.58 — HP 3500yl opt-in Port dB refresh
 
 - Retire the generic optional Avaya ERS 3524GT-PWR+ faceplate assignment, retaining the sole reviewed Avaya PNG and factory profile without rewriting user-saved calibrations.
 - Resolve the visible HP SFP click through Discovery's physical interface map before requesting optical refresh; do not dispatch a write from Calibration controls or copper port clicks.

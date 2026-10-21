@@ -1,10 +1,14 @@
+# Switch Vision Core v2.8.9
+
+Customer-facing changelog and release-note corrections: remove obsolete development-stage wording while retaining historical feature and compatibility details. No functional changes to dashboard, faceplate, Calibration, discovery integration or telemetry.
+
 # Switch Vision Core v2.8.8
 
-Local-only Cisco Catalyst WS-C3560CG-8PC-S faceplate update: the exact model now defaults to the owner-provided 2680 × 356 Compact artwork and matching native-image factory geometry. Calibration displays the original Cisco Catalyst 3560CG-8PC-S faceplate and its Compact variant as separate selectable choices. The old image and saved per-switch Calibration remain intact; no automatic faceplate adoption, model-status promotion, port mapping change, public publication or owner Home Assistant installation occurs. Owner PNG and geometry-export copies are preserved byte-for-byte; the existing renderer handles native-image coordinate conversion. The provided sixth status-row coordinate extends below its supplied status panel, so the derived factory retains those exact coordinates under the existing explicit out-of-bounds-row presentation opt-in instead of modifying panel size or row position.
+Cisco Catalyst WS-C3560CG-8PC-S faceplate update: the exact model now defaults to the owner-provided 2680 × 356 Compact artwork and matching native-image factory geometry. Calibration displays the original Cisco Catalyst 3560CG-8PC-S faceplate and its Compact variant as separate selectable choices. The old image and saved per-switch Calibration remain intact; no automatic faceplate adoption, model-status promotion, port mapping change, public publication or owner Home Assistant installation occurs. Owner PNG and geometry-export copies are preserved byte-for-byte; the existing renderer handles native-image coordinate conversion. The provided sixth status-row coordinate extends below its supplied status panel, so the derived factory retains those exact coordinates under the existing explicit out-of-bounds-row presentation opt-in instead of modifying panel size or row position.
 
 # Switch Vision Core v2.8.7
 
-Local-only management UI improvement: the four independent, read-only Supervisor app status requests run concurrently. Existing sidebar labels, app availability flags, missing-app behavior and permission boundaries remain unchanged. This does not stage or publish the Core update.
+management UI improvement: the four independent, read-only Supervisor app status requests run concurrently. Existing sidebar labels, app availability flags, missing-app behavior and permission boundaries remain unchanged.
 
 # Switch Vision Core v2.8.6
 
@@ -12,15 +16,15 @@ Correct complete-backup Calibration restore: an administrator-only exact-restore
 
 # Switch Vision Core v2.8.5
 
-Local-only Calibration update: Link LED Shape and Activity LED Shape now support Triangle Left and Triangle Right, alongside Circle, Rectangle, Triangle Up and Triangle Down. The new horizontal arrowheads use the same independently saved per-port shape and size fields for RJ45 and SFP/uplinks, without changing LED telemetry, colours, visibility or Calibration profile compatibility. This change is not publicly released or installed on the owner's Home Assistant.
+Calibration update: Link LED Shape and Activity LED Shape now support Triangle Left and Triangle Right, alongside Circle, Rectangle, Triangle Up and Triangle Down. The new horizontal arrowheads use the same independently saved per-port shape and size fields for RJ45 and SFP/uplinks, without changing LED telemetry, colours, visibility or Calibration profile compatibility.
 
 # Switch Vision Core v2.8.4
 
-Local-only maintenance patch: optimize the full public attribution privacy scan across historical shipped device registries by cryptographically identifying byte-identical content. All archives are still read and verified; different or malformed contents and any leaked private attribution still fail, with regression tests for these cases. This change does not alter switch behavior, Calibration, faceplate assets, public release status or owner HAOS.
+maintenance patch: optimize the full public attribution privacy scan across historical shipped device registries by cryptographically identifying byte-identical content. All archives are still read and verified; different or malformed contents and any leaked private attribution still fail, with regression tests for these cases. This change does not alter switch behavior, Calibration, faceplate assets, public release status or owner HAOS.
 
 # Switch Vision Core v2.8.3
 
-Restore the correct Native factory faceplate after a Hub-approved reset even if its dashboard card was disconnected when the event fired. Reattached cards refresh the approved Core stock-artwork SHA, clear deleted cached Calibration state, and continue using the existing model-aware factory geometry. Normal attached updates avoid duplicate profile fetches; manually edited, unsaved Calibration is preserved. This local development candidate is not publicly released.
+Restore the correct Native factory faceplate after a Hub-approved reset even if its dashboard card was disconnected when the event fired. Reattached cards refresh the approved Core stock-artwork SHA, clear deleted cached Calibration state, and continue using the existing model-aware factory geometry. Normal attached updates avoid duplicate profile fetches; manually edited, unsaved Calibration is preserved.
 
 # Switch Vision Core v2.8.2
 
@@ -28,7 +32,7 @@ Completes the existing Core factory reset/Calibration save after an explicitly a
 
 # Switch Vision Core v2.8.1
 
-Switch Vision Local: adopt the new owner-supplied Cisco 3850-12XS stock faceplate image at its exact 2680 × 356 resolution. The twelve-SFP port/label strip and factory geometry remain unchanged, while historical stock artwork continues to be preserved for explicit Native-only Hub approval. The owner's source file and saved per-switch Calibration are not modified.
+Adopt the new owner-supplied Cisco 3850-12XS stock faceplate image at its exact 2680 × 356 resolution. The twelve-SFP port/label strip and factory geometry remain unchanged, while historical stock artwork continues to be preserved for explicit Native-only Hub approval. The owner's source file and saved per-switch Calibration are not modified.
 
 # Switch Vision Core v2.8.0
 
@@ -36,27 +40,27 @@ Adds clear tooltips to all seven sticky Calibration action buttons, including th
 
 # Switch Vision Core v2.7.99
 
-Local-only fix for the 3850 faceplate approval `stale_choice` failure. Older per-switch stock artwork choices were saved as filename/SHA pins without a revision version. Core's verified artwork list can resolve a historical version for display; this is not a changed saved selection. The approval transaction now accepts that legacy pin when filename and SHA still match, while enforcing exact-version concurrency for versioned pins and the existing verified factory-artwork/Calibration reset contract. No implicit artwork adoption or owner HAOS installation.
+fix for the 3850 faceplate approval `stale_choice` failure. Older per-switch stock artwork choices were saved as filename/SHA pins without a revision version. Core's verified artwork list can resolve a historical version for display; this is not a changed saved selection. The approval transaction now accepts that legacy pin when filename and SHA still match, while enforcing exact-version concurrency for versioned pins and the existing verified factory-artwork/Calibration reset contract. No implicit artwork adoption or owner HAOS installation.
 
 # Switch Vision Core v2.7.98
 
-Local-only Cisco Catalyst 3850-12XS artwork revision. Use the owner-supplied 2680 × 356 `cisco-3850-12xs.png` unchanged (new SHA-256 `bc34fc58e818014a3d1b031221e4aab87ae567654075f4f2011f695c23572d74`; outgoing stock SHA-256 `eba68a052bc0baff1a5af583eb869895e30c93a51d3836bc763baee1025eacde`). Preserve all twelve calibrated 10G SFP+ positions, native-image geometry, proven interface/telemetry mapping, saved Calibration and independent Native/Custom artwork selections. The Installer's SHA-pair history supports a per-switch Keep Current or explicit new-artwork choice without silently changing existing selections. No owner-HAOS installation, public release, forum write or mail send is implied.
+Cisco Catalyst 3850-12XS artwork revision. Use the owner-supplied 2680 × 356 `cisco-3850-12xs.png` unchanged (new SHA-256 `bc34fc58e818014a3d1b031221e4aab87ae567654075f4f2011f695c23572d74`; outgoing stock SHA-256 `eba68a052bc0baff1a5af583eb869895e30c93a51d3836bc763baee1025eacde`). Preserve all twelve calibrated 10G SFP+ positions, native-image geometry, proven interface/telemetry mapping, saved Calibration and independent Native/Custom artwork selections. The Installer's SHA-pair history supports a per-switch Keep Current or explicit new-artwork choice without silently changing existing selections. No owner-HAOS installation, public release, forum write or mail send is implied.
 
 # Switch Vision Core v2.7.97
 
-Local-only fix: an explicitly confirmed reset now adopts the latest verified factory artwork and matching geometry for its switch or namespace. Existing selections remain untouched until consent. Previous release: SHA-driven faceplate revision support. Core ships only latest stock artwork and factory geometry, while Installer preserves verified old pairs locally when they change. A configured switch may keep its previous generic stock image when its model gains a dedicated faceplate and matching factory geometry; Discovery Hub offers an explicit per-switch approval. User Calibration and functional topology are unchanged. No public release or personal HAOS modification is included.
+fix: an explicitly confirmed reset now adopts the latest verified factory artwork and matching geometry for its switch or namespace. Existing selections remain untouched until consent. Previous release: SHA-driven faceplate revision support. Core ships only latest stock artwork and factory geometry, while Installer preserves verified old pairs locally when they change. A configured switch may keep its previous generic stock image when its model gains a dedicated faceplate and matching factory geometry; Discovery Hub offers an explicit per-switch approval. User Calibration and functional topology are unchanged.
 
 # Switch Vision Core v2.7.95
 
-Local-only corrective patch: include the trusted faceplate revision generator in Core source archives so isolated exact-source tests can import the builder. The three-pair faceplate cap, selected-old retention and unchanged Calibration contract remain in effect. No public release or personal HAOS changes.
+corrective patch: include the trusted faceplate revision generator in Core source archives so isolated exact-source tests can import the builder. The three-pair faceplate cap, selected-old retention and unchanged Calibration contract remain in effect.
 
 # Switch Vision Core v2.7.94
 
-This Local-only candidate caps the shipped stock faceplate archive to three distinct image-and-factory-geometry revisions per model, keeps unchanged-version artwork identities stable, and verifies locally preserved selected-old pairs. Saved per-switch Calibration remains authoritative; no public publication or owner HAOS modification is included.
+This update caps the shipped stock faceplate archive to three distinct image-and-factory-geometry revisions per model, keeps unchanged-version artwork identities stable, and verifies locally preserved selected-old pairs. Saved per-switch Calibration remains authoritative; no public publication or owner HAOS modification is included.
 
 # Switch Vision Core v2.7.93
 
-Core now bundles each previous verified stock faceplate image together with its matching factory port/LED geometry, labelled with the outgoing Core release. Discovery Hub can preview and select Core-versioned artwork revisions for configured switches. New installations use current stock artwork; existing saved user Calibration remains independent and is not reset or overwritten. Installer 2.1.57 copies the bundled history without an update-order dependency. Previous Installer-history-only installations remain compatible where their verified originals are available. Local-first candidate, not a public release.
+Core now bundles each previous verified stock faceplate image together with its matching factory port/LED geometry, labelled with the outgoing Core release. Discovery Hub can preview and select Core-versioned artwork revisions for configured switches. New installations use current stock artwork; existing saved user Calibration remains independent and is not reset or overwritten. Installer 2.1.57 copies the bundled history without an update-order dependency. Previous Installer-history-only installations remain compatible where their verified originals are available.
 
 # Switch Vision Core v2.7.92
 
@@ -64,7 +68,7 @@ Fix first-direct-upgrade stock faceplate consent. When Installer has saved a pri
 
 # Switch Vision Core v2.7.91
 
-Local-only follow-up owner-supplied Cisco Catalyst 3850-12XS artwork revision (`cisco-3850-12xs.png`, SHA-256 `eba68a052bc0baff1a5af583eb869895e30c93a51d3836bc763baee1025eacde`). The outgoing stock art was `990a72433510e64e164a55bf07fb814dd2d276fac256be726f530b53334b3dc9`. The filename, 2680 × 356 PNG dimensions, twelve SFP port positions, calibration geometry and device/telemetry contract remain unchanged. Existing installations with the previous verified selected revision may retain that stock artwork through Installer's holding directory and explicitly approve the new pixels in Hub; no automatic Calibration reset. A first migration without preserved originals cannot reconstruct old images. No public release or owner-HAOS installation is implied.
+follow-up owner-supplied Cisco Catalyst 3850-12XS artwork revision (`cisco-3850-12xs.png`, SHA-256 `eba68a052bc0baff1a5af583eb869895e30c93a51d3836bc763baee1025eacde`). The outgoing stock art was `990a72433510e64e164a55bf07fb814dd2d276fac256be726f530b53334b3dc9`. The filename, 2680 × 356 PNG dimensions, twelve SFP port positions, calibration geometry and device/telemetry contract remain unchanged. Existing installations with the previous verified selected revision may retain that stock artwork through Installer's holding directory and explicitly approve the new pixels in Hub; no automatic Calibration reset. A first migration without preserved originals cannot reconstruct old images.
 
 # Switch Vision Core v2.7.90
 
@@ -76,11 +80,11 @@ Local Core optical diagnostic safety refinement for HP J8693A 3500yl-48G. The 30
 
 # Switch Vision Core v2.7.88
 
-Local-only safe same-filename faceplate upgrade metadata. Factory filenames and all geometry remain unchanged; each newly saved Calibration records its manifest-verified stock-art SHA-256. Core exposes a prior image version only when Installer retained verified old pixels in a separate history area, allowing Hub to show a truthful old/new comparison even for identical stock filenames. Legacy profiles use the earliest verified retained original when available. No automatic Calibration reset, new SNMP calls or renderer changes. Installer 2.1.54 and Discovery / Hub 3.0.58 provide the corresponding history preservation and comparison.
+safe same-filename faceplate upgrade metadata. Factory filenames and all geometry remain unchanged; each newly saved Calibration records its manifest-verified stock-art SHA-256. Core exposes a prior image version only when Installer retained verified old pixels in a separate history area, allowing Hub to show a truthful old/new comparison even for identical stock filenames. Legacy profiles use the earliest verified retained original when available. No automatic Calibration reset, new SNMP calls or renderer changes. Installer 2.1.54 and Discovery / Hub 3.0.58 provide the corresponding history preservation and comparison.
 
 # Switch Vision Core v2.7.87
 
-Local-only Cisco Catalyst 3850-12XS faceplate artwork refresh. The owner-supplied 2680 × 356 `cisco-3850-12xs.png` replaces the bundled stock PNG at the same native dimensions. The 12 existing optical-port positions, factory Calibration geometry and controls, model/telemetry contract, native renderer and saved per-switch calibrations are unchanged. The new image has a refreshed integrity fingerprint for model-aware faceplate upgrade comparison; it does not automatically reset existing saved profiles. No public publication is implied.
+Cisco Catalyst 3850-12XS faceplate artwork refresh. The owner-supplied 2680 × 356 `cisco-3850-12xs.png` replaces the bundled stock PNG at the same native dimensions. The 12 existing optical-port positions, factory Calibration geometry and controls, model/telemetry contract, native renderer and saved per-switch calibrations are unchanged. The new image has a refreshed integrity fingerprint for model-aware faceplate upgrade comparison; it does not automatically reset existing saved profiles.
 
 # Switch Vision Core v2.7.86
 
@@ -100,101 +104,101 @@ Rear optical port details now distinguish missing or unavailable status telemetr
 
 # Switch Vision Core v2.7.82
 
-Local-only HP J8693A 3500yl-48G exact default faceplate. The source PNG (6000 × 1600) and geometry export are copied byte-for-byte; only their existing geometry collection is imported, not the unrelated SW1 test calibration identity. The reviewed native-image renderer transform round-trips the supplied 48-port, four SFP and four rear SFP calibration geometry without manual repositioning. This exact model now selects its own faceplate and factory profile by default, retaining the established 44 fixed RJ45 plus 4 shared RJ45/SFP hardware, SNMP mapping, status and other model defaults. No renderer changes or saved user calibration migration.
+HP J8693A 3500yl-48G exact default faceplate. The source PNG (6000 × 1600) and geometry export are copied byte-for-byte; only their existing geometry collection is imported, not the unrelated SW1 test calibration identity. The reviewed native-image renderer transform round-trips the supplied 48-port, four SFP and four rear SFP calibration geometry without manual repositioning. This exact model now selects its own faceplate and factory profile by default, retaining the established 44 fixed RJ45 plus 4 shared RJ45/SFP hardware, SNMP mapping, status and other model defaults. No renderer changes or saved user calibration migration.
 
 # Switch Vision Core v2.7.81
 
-Local-only SG200-26 default artwork. The owner-supplied original `cisco-sg200-26.png` and exported geometry are preserved byte-for-byte and mapped to a dedicated SG200-26 factory calibration profile, without manually changing coordinates or image size. This is the sole stock default for this exact model. Its 26 physical RJ45 sockets and two shared SFP cages are drawn as supplied, while the reviewed 26 logical/telemetry interface contract remains unchanged. Other models and the old stock generic profile are untouched.
+SG200-26 default artwork. The owner-supplied original `cisco-sg200-26.png` and exported geometry are preserved byte-for-byte and mapped to a dedicated SG200-26 factory calibration profile, without manually changing coordinates or image size. This is the sole stock default for this exact model. Its 26 physical RJ45 sockets and two shared SFP cages are drawn as supplied, while the reviewed 26 logical/telemetry interface contract remains unchanged. Other models and the old stock generic profile are untouched.
 
 # Switch Vision Core v2.7.80
 
-Local-only Calibration UI polish. Five independently grouped Status Box 1, Status Box 2, RJ45, SFP and rSFP dropdowns replace the mixed selections, including full rear-port Odd/Even geometry selections. Correct SFP and rSFP entire-part yellow selection outlines and retain all existing geometry/label/LED operations. Move Port Label Style before B on the Port labels row, remove the redundant suffix hint, and standardize visible rSFP naming. Saved calibration profiles, sensor mapping ownership and existing UI/Calibration theme controls are preserved.
+Calibration UI polish. Five independently grouped Status Box 1, Status Box 2, RJ45, SFP and rSFP dropdowns replace the mixed selections, including full rear-port Odd/Even geometry selections. Correct SFP and rSFP entire-part yellow selection outlines and retain all existing geometry/label/LED operations. Move Port Label Style before B on the Port labels row, remove the redundant suffix hint, and standardize visible rSFP naming. Saved calibration profiles, sensor mapping ownership and existing UI/Calibration theme controls are preserved.
 
 # Switch Vision Core v2.7.79
 
-Local-only Calibration layout refinement. Status Box 1 and 2 each have a compact dropdown containing the same twelve quick selections formerly shown as buttons. rSFP add/remove-all actions now sit in the Port manager at their requested positions; target pickers appear in front SFP/Part then rSFP/Part order. Card Height and Custom Height controls move alongside the Assets row after folder scanning, and redundant Status LED, link/activity colour, and card-height hints are removed. The earlier model-neutral rear-port geometry, Auto picker sizing, LED labels, saved profile data and actual telemetry mappings are unchanged.
+Calibration layout refinement. Status Box 1 and 2 each have a compact dropdown containing the same twelve quick selections formerly shown as buttons. rSFP add/remove-all actions now sit in the Port manager at their requested positions; target pickers appear in front SFP/Part then rSFP/Part order. Card Height and Custom Height controls move alongside the Assets row after folder scanning, and redundant Status LED, link/activity colour, and card-height hints are removed. The earlier model-neutral rear-port geometry, Auto picker sizing, LED labels, saved profile data and actual telemetry mappings are unchanged.
 
 # Switch Vision Core v2.7.78
 
-Local-only rollback of the common first-column alignment introduced in 2.7.77. The Calibration layout now uses the previous 2.7.76 row arrangement. The independent rSFP controls, Auto selected-text dropdown sizing, Status Box 1/2 quick selection, compact Port Label actions, Link LED Shape and Activity LED Shape labels, and all saved Calibration profiles remain available and unchanged.
+rollback of the common first-column alignment introduced in 2.7.77. The Calibration layout now uses the previous 2.7.76 row arrangement. The independent rSFP controls, Auto selected-text dropdown sizing, Status Box 1/2 quick selection, compact Port Label actions, Link LED Shape and Activity LED Shape labels, and all saved Calibration profiles remain available and unchanged.
 
 # Switch Vision Core v2.7.77
 
-Local-only Calibration layout refinement. Primary control rows now reserve a consistent label column matching Status Boxes so Selection, Card Height, Port manager, quick selection, Position & Size and Port Labels and LEDs begin their controls at the same horizontal position. Nested Port Label Show/Hide and Link/Activity LED Shape groups remain compact and SFP/rSFP targets stay adjacent. Narrow viewports stack first-column labels above controls to avoid clipping. The faceplate, model/telemetry mappings and saved Calibration profiles are unchanged.
+Calibration layout refinement. Primary control rows now reserve a consistent label column matching Status Boxes so Selection, Card Height, Port manager, quick selection, Position & Size and Port Labels and LEDs begin their controls at the same horizontal position. Nested Port Label Show/Hide and Link/Activity LED Shape groups remain compact and SFP/rSFP targets stay adjacent. Narrow viewports stack first-column labels above controls to avoid clipping. The faceplate, model/telemetry mappings and saved Calibration profiles are unchanged.
 
 # Switch Vision Core v2.7.76
 
-Local-only Calibration layout repair. rSFP Target now sits beside front SFP Targets, with independent controls preserved. Closed dropdown Auto sizing is no longer capped at 185 px and keeps selected text and arrow readable, wrapping target groups at narrower widths. Status Box 1 quick actions align above Odd/Even RJ45 controls, while Status Box 2 aligns above Odd/Even SFP; the Port Label and Show controls sit closer together, and Link LED Shape / Activity LED Shape read as single-line labels. The underlying geometry, model-neutral rSFP telemetry contract and saved Calibration profiles remain unchanged.
+Calibration layout repair. rSFP Target now sits beside front SFP Targets, with independent controls preserved. Closed dropdown Auto sizing is no longer capped at 185 px and keeps selected text and arrow readable, wrapping target groups at narrower widths. Status Box 1 quick actions align above Odd/Even RJ45 controls, while Status Box 2 aligns above Odd/Even SFP; the Port Label and Show controls sit closer together, and Link LED Shape / Activity LED Shape read as single-line labels. The underlying geometry, model-neutral rSFP telemetry contract and saved Calibration profiles remain unchanged.
 
 # Switch Vision Core v2.7.75
 
-Local-only Calibration usability fix: Closed Dropdowns Control width Auto sizes each closed picker to its selected label plus arrow. Long values such as Custom / IntelOne and Status Box 1 remain readable, while shorter values such as ROLE stay compact. Auto also fits open dropdown menu options and numeric/text input values; all explicit pixel widths remain available. Status Box 1 and Status Box 2 Quick Select groups sit on the same desktop line, with aligned action columns and mobile stacking. Custom Theme gains a Calibration preview highlight colour role with a backward-compatible orange default. Existing selections, popup behavior and saved Calibration profiles are unchanged.
+Calibration usability fix: Closed Dropdowns Control width Auto sizes each closed picker to its selected label plus arrow. Long values such as Custom / IntelOne and Status Box 1 remain readable, while shorter values such as ROLE stay compact. Auto also fits open dropdown menu options and numeric/text input values; all explicit pixel widths remain available. Status Box 1 and Status Box 2 Quick Select groups sit on the same desktop line, with aligned action columns and mobile stacking. Custom Theme gains a Calibration preview highlight colour role with a backward-compatible orange default. Existing selections, popup behavior and saved Calibration profiles are unchanged.
 
 This Local candidate also adds independent rear SFP (rSFP) Calibration positions and geometry. Rear optical positions may be present without active interfaces or telemetry; any live bindings are supplied explicitly by the discovery/registry layer, never guessed from model names. Existing saved profiles remain readable.
 
 # Switch Vision Core v2.7.74
 
-Local-only Calibration workspace refinement. Hint Text can be sized and weighted separately for desktop and mobile, X/Y/W/H inputs are readable and controlled by Number Input Width, and Status Box quick selections align. Port manager has its own row; redundant separators, Direct text, and faceplate help copy are removed. Quick Select now provides All / RJ45 / SFP Link+Activity LED groups for joint geometry edits while existing individual LED targets remain in dropdowns. Target and Part dropdown selection remains immediate and saved switch calibrations are untouched.
+Calibration workspace refinement. Hint Text can be sized and weighted separately for desktop and mobile, X/Y/W/H inputs are readable and controlled by Number Input Width, and Status Box quick selections align. Port manager has its own row; redundant separators, Direct text, and faceplate help copy are removed. Quick Select now provides All / RJ45 / SFP Link+Activity LED groups for joint geometry edits while existing individual LED targets remain in dropdowns. Target and Part dropdown selection remains immediate and saved switch calibrations are untouched.
 
 # Switch Vision Core v2.7.73
 
-Local-only Calibration Theme typography refinement. Field labels, group labels, subsection headings and section headings each gain independent Desktop/Mobile font size and Regular/Bold choices. Global control typography no longer overrides these semantic roles. Existing per-section saved settings and switch calibration/faceplate geometry are preserved. Hub now previews each setting immediately below its dropdown using corresponding Core Calibration elements.
+Calibration Theme typography refinement. Field labels, group labels, subsection headings and section headings each gain independent Desktop/Mobile font size and Regular/Bold choices. Global control typography no longer overrides these semantic roles. Existing per-section saved settings and switch calibration/faceplate geometry are preserved. Hub now previews each setting immediately below its dropdown using corresponding Core Calibration elements.
 
 # Switch Vision Core v2.7.72
 
-Local-only Calibration Theme density controls. Add separate Desktop/Mobile global controls for responsive minimum row height, button and input height, text line height, minimum button width, row spacing, label spacing, and text/number input width, with values below and above current Core defaults. Preserve saved detailed styling, independent open-menu option height and all calibration/faceplate geometry; no public release.
+Calibration Theme density controls. Add separate Desktop/Mobile global controls for responsive minimum row height, button and input height, text line height, minimum button width, row spacing, label spacing, and text/number input width, with values below and above current Core defaults. Preserve saved detailed styling, independent open-menu option height and all calibration/faceplate geometry;
 
 # Switch Vision Core v2.7.72
 
-Local-only Calibration Theme density controls. Expand the one-panel global Desktop/Mobile editor settings with minimum row, button and input heights, text line height, minimum button width, space between rows, label spacing, and text/number input widths. Preserve compact options both below and above existing defaults; row heights remain responsive minimums to avoid clipping. No switch calibration/faceplate geometry, ordinary dashboard or public release change.
+Calibration Theme density controls. Expand the one-panel global Desktop/Mobile editor settings with minimum row, button and input heights, text line height, minimum button width, space between rows, label spacing, and text/number input widths. Preserve compact options both below and above existing defaults; row heights remain responsive minimums to avoid clipping. No switch calibration/faceplate geometry, ordinary dashboard or public release change.
 
 # Switch Vision Core v2.7.71
 
-Local-only Calibration Theme simplification. Add a single device-specific global presentation setting across applicable Calibration controls: text size, bold/regular weight, all-side/horizontal/vertical padding and spacing. Preserve existing detailed saved values for compatibility, but explicit global fields win when supplied. Dropdown-specific dimensions remain separate. No switch profile geometry, faceplate calibration or normal dashboard changes; no public release.
+Calibration Theme simplification. Add a single device-specific global presentation setting across applicable Calibration controls: text size, bold/regular weight, all-side/horizontal/vertical padding and spacing. Preserve existing detailed saved values for compatibility, but explicit global fields win when supplied. Dropdown-specific dimensions remain separate. No switch profile geometry, faceplate calibration or normal dashboard changes;
 
 # Switch Vision Core v2.7.70
 
-Local-only Calibration Theme refinement. All applicable Calibration editor sections now support independent horizontal and vertical padding for Desktop and Mobile. Existing all-side padding remains a backward-compatible fallback, and previously saved Calibration and faceplate geometry are unchanged. The Hub preview uses the actual Core Calibration stylesheet and style-rule generator, with read-only samples of the corresponding Calibration controls. No public release or personal HAOS update.
+Calibration Theme refinement. All applicable Calibration editor sections now support independent horizontal and vertical padding for Desktop and Mobile. Existing all-side padding remains a backward-compatible fallback, and previously saved Calibration and faceplate geometry are unchanged. The Hub preview uses the actual Core Calibration stylesheet and style-rule generator, with read-only samples of the corresponding Calibration controls.
 
 # Switch Vision Core v2.7.69
 
-Local-only Calibration Theme support. Core now stores independent Desktop and Mobile editor appearance settings from Switch Vision Hub, covering section-specific typography, bold/regular weight, spacing and padding. Closed dropdowns and opened in-page menus are independently configurable on both device classes. The existing saved switch geometry, faceplate calibration, profile selection and dashboard presentation are unchanged; no public release implied.
+Calibration Theme support. Core now stores independent Desktop and Mobile editor appearance settings from Switch Vision Hub, covering section-specific typography, bold/regular weight, spacing and padding. Closed dropdowns and opened in-page menus are independently configurable on both device classes. The existing saved switch geometry, faceplate calibration, profile selection and dashboard presentation are unchanged;
 
 # Switch Vision Core v2.7.68
 
-Local-only responsive Calibration picker refinement: preserve the owner-approved compact in-page dropdown menus on mobile (viewport width up to 760px), while restoring desktop browsers' native opened dropdown selection behavior above 760px. The 16px closed controls, 11px regular-weight white text, mobile 32px option rows and maximum 320px popup height remain unchanged. Calibration uses the same selection handlers, model/port state, unsaved work and saved profiles on either device. Crossing the mobile/desktop breakpoint refreshes presentation without duplicating editor logic; event listeners are cleaned on disconnect. Quick Links and all unrelated Calibration features remain unchanged. No public release or personal Home Assistant installation.
+responsive Calibration picker refinement: preserve the owner-approved compact in-page dropdown menus on mobile (viewport width up to 760px), while restoring desktop browsers' native opened dropdown selection behavior above 760px. The 16px closed controls, 11px regular-weight white text, mobile 32px option rows and maximum 320px popup height remain unchanged. Calibration uses the same selection handlers, model/port state, unsaved work and saved profiles on either device. Crossing the mobile/desktop breakpoint refreshes presentation without duplicating editor logic; event listeners are cleaned on disconnect. Quick Links and all unrelated Calibration features remain unchanged.
 
 # Switch Vision Core v2.7.67
 
-Local-only Calibration menu usability update: replace Android's oversized native full-screen option picker with a compact in-page dropdown for Calibration selectors, preserving the existing closed 16px boxes and 11px regular-weight white text. The opened popup displays 12px option text in 32px rows with a scrollable 320px maximum height and optgroup headings. Original hidden native selects still own values and dispatch the same change events; retain target selection, part/options, disabled states, saved profiles, Quick Links and device behavior. Outside-tap/Escape/keyboard dismissal and render/disconnect cleanup are covered by regression tests. No public release or personal HAOS installation.
+Calibration menu usability update: replace Android's oversized native full-screen option picker with a compact in-page dropdown for Calibration selectors, preserving the existing closed 16px boxes and 11px regular-weight white text. The opened popup displays 12px option text in 32px rows with a scrollable 320px maximum height and optgroup headings. Original hidden native selects still own values and dispatch the same change events; retain target selection, part/options, disabled states, saved profiles, Quick Links and device behavior. Outside-tap/Escape/keyboard dismissal and render/disconnect cleanup are covered by regression tests.
 
 # Switch Vision Core v2.7.66
 
-Local-only Calibration typography refinement: use 11px regular-weight white text on the existing Calibration target/part dropdowns and neutral/white buttons (including Select Misc target and Duplicate selected). Preserve the approved 16px control height, 12px line-height, 1px vertical and 2px horizontal padding, field widths and dropdown arrows. Keep other inputs, labels, bold-format toggles, coloured warning/danger/purple controls, Quick Links, saved profiles, geometry and telemetry unchanged.
+Calibration typography refinement: use 11px regular-weight white text on the existing Calibration target/part dropdowns and neutral/white buttons (including Select Misc target and Duplicate selected). Preserve the approved 16px control height, 12px line-height, 1px vertical and 2px horizontal padding, field widths and dropdown arrows. Keep other inputs, labels, bold-format toggles, coloured warning/danger/purple controls, Quick Links, saved profiles, geometry and telemetry unchanged.
 
 # Switch Vision Core v2.7.65
 
-Local-only Calibration typography refinement: keep the 16px control height, 12px font size, field widths, borders, arrow rendering, and existing layout exactly as in v2.7.64. Display white text in Calibration dropdowns and neutral/white action buttons at normal font weight (400) instead of bold. Preserve bold field labels and intentional B-format toggles; leave coloured warning, danger and purple actions, Quick Links behaviour, saved profiles, faceplate geometry and telemetry unchanged.
+Calibration typography refinement: keep the 16px control height, 12px font size, field widths, borders, arrow rendering, and existing layout exactly as in v2.7.64. Display white text in Calibration dropdowns and neutral/white action buttons at normal font weight (400) instead of bold. Preserve bold field labels and intentional B-format toggles; leave coloured warning, danger and purple actions, Quick Links behaviour, saved profiles, faceplate geometry and telemetry unchanged.
 
 # Switch Vision Core v2.7.64
 
-Local-only Calibration controls: 16px overall box height with 12px font, 12px line-height, 1px vertical and 2px horizontal text padding. All dropdowns override legacy minimums and use a consistent arrow. Quick Links, saved calibration and telemetry remain unchanged.
+Calibration controls: 16px overall box height with 12px font, 12px line-height, 1px vertical and 2px horizontal text padding. All dropdowns override legacy minimums and use a consistent arrow. Quick Links, saved calibration and telemetry remain unchanged.
 
 # Switch Vision Core v2.7.63
 
-Local-only Calibration compact-control refinement: reduce the grey input, blue button and dropdown controls and colour swatches from 20px to 18px high, and apply 1px text padding on all four sides of text and buttons. Dropdowns reserve their existing arrow-side clearance. Preserve 10px text size, 12px line-height, existing field widths, Quick Links, profile formats and faceplate behaviour; no public release.
+Calibration compact-control refinement: reduce the grey input, blue button and dropdown controls and colour swatches from 20px to 18px high, and apply 1px text padding on all four sides of text and buttons. Dropdowns reserve their existing arrow-side clearance. Preserve 10px text size, 12px line-height, existing field widths, Quick Links, profile formats and faceplate behaviour;
 
 # Switch Vision Core v2.7.62
 
-Local-only Calibration UI refinement: reduce grey input fields, blue buttons and dropdowns from 24px to 20px tall, with 10px text, 12px line-height and existing 3px insets. Preserve existing compact widths, the dropdown arrow clearance and all Quick Links, including parity and custom-port controls. No calibration-profile schema, saved geometry, faceplate rendering, device telemetry or behaviour change.
+Calibration UI refinement: reduce grey input fields, blue buttons and dropdowns from 24px to 20px tall, with 10px text, 12px line-height and existing 3px insets. Preserve existing compact widths, the dropdown arrow clearance and all Quick Links, including parity and custom-port controls. No calibration-profile schema, saved geometry, faceplate rendering, device telemetry or behaviour change.
 
 # Switch Vision Core v2.7.61
 
-Local-only Calibration refinement: reduce editable grey input and blue button/select text insets to 3px per side (preserving dropdown arrow clearance); further compact hex, numeric, label, colour swatch, coordinate and target-select widths by approximately 10–15% where practical. Maintain the existing 24px control-height contract, Quick Selection buttons, all saved calibration values and functional target behaviour without changing the calibration profile schema or device telemetry.
+Calibration refinement: reduce editable grey input and blue button/select text insets to 3px per side (preserving dropdown arrow clearance); further compact hex, numeric, label, colour swatch, coordinate and target-select widths by approximately 10–15% where practical. Maintain the existing 24px control-height contract, Quick Selection buttons, all saved calibration values and functional target behaviour without changing the calibration profile schema or device telemetry.
 
 # Switch Vision Core v2.7.60
 
-Local-only Calibration layout cleanup: replace the single Target dropdown with Misc Targets, RJ45 Targets and SFP Targets, all preserving the existing active target and calibration profile format. Standardise input heights, reduce vertical padding, and shorten numeric, hex colour, colour swatch and port-metadata editors. No changes to faceplate geometry, telemetry or persisted calibration values.
+Calibration layout cleanup: replace the single Target dropdown with Misc Targets, RJ45 Targets and SFP Targets, all preserving the existing active target and calibration profile format. Standardise input heights, reduce vertical padding, and shorten numeric, hex colour, colour swatch and port-metadata editors. No changes to faceplate geometry, telemetry or persisted calibration values.
 
 # Switch Vision Core v2.7.59
 
@@ -218,7 +222,7 @@ Adds an optional selectable Avaya ERS 3524GT-PWR+ faceplate with its owner-calib
 
 # Switch Vision Core v2.7.54
 
-ROLE is now selectable, hideable and reorderable in Calibration's Port Status Box Field dropdown for both RJ45 and SFP ports. Existing recognized uplinks keep their visible ROLE row unless it is hidden or moved. This Local-only candidate also retains the SFP range selection and PORT ID caption from the previous versions.
+ROLE is now selectable, hideable and reorderable in Calibration's Port Status Box Field dropdown for both RJ45 and SFP ports. Existing recognized uplinks keep their visible ROLE row unless it is hidden or moved. This version also retains the SFP range selection and PORT ID caption from the previous versions.
 
 # Switch Vision Core v2.7.53
 

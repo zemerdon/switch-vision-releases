@@ -12,6 +12,7 @@ if not re.fullmatch(r"\d+\.\d+\.\d+", version):
 
 release_notes = (ROOT / "RELEASE_NOTES.md").read_text(encoding="utf-8")
 changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+assert not re.search(r"(?mi)^#{1,4} [^\n]*\((?:Local|Local pilot)\)\s*$", changelog), "Development-stage label in customer changelog heading"
 
 release_heading = next(
     (line.strip() for line in release_notes.splitlines() if line.strip()), ""
