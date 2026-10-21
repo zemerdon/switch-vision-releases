@@ -12,7 +12,7 @@ support_statuses:
 projection:
   schema: 1
   source_component: discovery
-  source_registry_sha256: 66e454e4f1bfb1c57529457c88d7293bb75760f673f5fc65d37fff316aa6d276
+  source_registry_sha256: 7b18655993829195eed9923f672eb751125132db48ed9b2827afa417895eb602
   device_field_allowlist:
   - vendor
   - family
