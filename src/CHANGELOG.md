@@ -1,3 +1,9 @@
+## v2.8.10 — Optional per-port PoE LED Calibration
+
+- Add an independent per-RJ45 PoE LED shape, visibility, position and size in existing Calibration controls, without creating new quick-select options or changing saved/factory defaults.
+- Light the LED only for confirmed active per-port delivery from mapped SNMP PoE status/positive measured power or fresh UniFi API port PoE state; keep unknown, inactive and unavailable telemetry off. Test Mode previews geometry without live readings.
+- Preserve Link and Activity indicators, system-level PoE LEDs, existing faceplates and previous saved Calibration.
+
 ## v2.8.9 — Clear customer release history
 
 - Remove development-stage labels from earlier changelog headings and correct obsolete release-status text.

@@ -1,4 +1,4 @@
-const SV_VERSION = "2.8.9";
+const SV_VERSION = "2.8.10";
 const calibration = {"schema_version":1,"schema":"switch-vision-interactive-calibration-v1","model":"cisco-3650-48p-4-uplink","generated_by":`Switch Vision v${SV_VERSION}`,"image":{"file":"faceplates/48rj45-4sfp.png","width":2048,"height":448,"master":"switch-master-v4.0","alpha_min":0,"alpha_max":255},"ports":{"1":{"center":[176,245],"number":[176,181],"led_left":[154,221],"led_right":[199,221],"hitbox":[34,56]},"2":{"center":[177,338],"number":[176,409],"led_left":[153,365],"led_right":[200,365],"hitbox":[34,56]},"3":{"center":[236,245],"number":[237,181],"led_left":[213,221],"led_right":[259,221],"hitbox":[34,56]},"4":{"center":[237,337],"number":[237,409],"led_left":[213,365],"led_right":[259,365],"hitbox":[34,56]},"5":{"center":[294,245],"number":[296,181],"led_left":[273,221],"led_right":[319,221],"hitbox":[34,56]},"6":{"center":[297,337],"number":[297,409],"led_left":[273,365],"led_right":[319,365],"hitbox":[34,56]},"7":{"center":[355,245],"number":[356,181],"led_left":[333,221],"led_right":[379,221],"hitbox":[34,56]},"8":{"center":[357,337],"number":[357,409],"led_left":[333,365],"led_right":[379,365],"hitbox":[34,56]},"9":{"center":[414,245],"number":[415,181],"led_left":[393,221],"led_right":[440,221],"hitbox":[34,56]},"10":{"center":[416,337],"number":[415,409],"led_left":[393,365],"led_right":[439,365],"hitbox":[34,56]},"11":{"center":[474,245],"number":[475,181],"led_left":[453,221],"led_right":[499,221],"hitbox":[34,56]},"12":{"center":[476,336],"number":[476,409],"led_left":[453,365],"led_right":[499,365],"hitbox":[34,56]},"13":{"center":[550,245],"number":[551,181],"led_left":[524,221],"led_right":[570,221],"hitbox":[34,56]},"14":{"center":[549,337],"number":[551,409],"led_left":[524,365],"led_right":[571,365],"hitbox":[34,56]},"15":{"center":[610,245],"number":[611,181],"led_left":[584,221],"led_right":[631,221],"hitbox":[34,56]},"16":{"center":[608,336],"number":[612,409],"led_left":[584,365],"led_right":[631,365],"hitbox":[34,56]},"17":{"center":[669,245],"number":[670,181],"led_left":[644,221],"led_right":[690,221],"hitbox":[34,56]},"18":{"center":[668,337],"number":[670,409],"led_left":[644,365],"led_right":[690,365],"hitbox":[34,56]},"19":{"center":[729,245],"number":[729,181],"led_left":[704,221],"led_right":[750,221],"hitbox":[34,56]},"20":{"center":[728,337],"number":[729,409],"led_left":[704,365],"led_right":[750,365],"hitbox":[34,56]},"21":{"center":[788,245],"number":[790,181],"led_left":[764,221],"led_right":[810,221],"hitbox":[34,56]},"22":{"center":[788,337],"number":[790,409],"led_left":[764,365],"led_right":[810,365],"hitbox":[34,56]},"23":{"center":[848,245],"number":[849,181],"led_left":[824,221],"led_right":[870,221],"hitbox":[34,56]},"24":{"center":[850,337],"number":[849,409],"led_left":[824,365],"led_right":[870,365],"hitbox":[34,56]},"25":{"center":[923,245],"number":[925,181],"led_left":[904,221],"led_right":[949,221],"hitbox":[34,56]},"26":{"center":[925,336],"number":[925,409],"led_left":[903,365],"led_right":[950,365],"hitbox":[34,56]},"27":{"center":[983,245],"number":[985,181],"led_left":[963,221],"led_right":[1009,221],"hitbox":[34,56]},"28":{"center":[984,336],"number":[985,409],"led_left":[963,365],"led_right":[1009,365],"hitbox":[34,56]},"29":{"center":[1043,245],"number":[1043,181],"led_left":[1023,221],"led_right":[1069,221],"hitbox":[34,56]},"30":{"center":[1045,337],"number":[1043,409],"led_left":[1023,365],"led_right":[1069,365],"hitbox":[34,56]},"31":{"center":[1105,245],"number":[1104,181],"led_left":[1083,221],"led_right":[1129,221],"hitbox":[34,56]},"32":{"center":[1104,337],"number":[1104,409],"led_left":[1083,365],"led_right":[1129,365],"hitbox":[34,56]},"33":{"center":[1162,245],"number":[1163,181],"led_left":[1143,221],"led_right":[1189,221],"hitbox":[34,56]},"34":{"center":[1164,337],"number":[1163,409],"led_left":[1143,365],"led_right":[1189,365],"hitbox":[34,56]},"35":{"center":[1225,245],"number":[1221,181],"led_left":[1203,221],"led_right":[1249,221],"hitbox":[34,56]},"36":{"center":[1223,337],"number":[1221,409],"led_left":[1203,365],"led_right":[1249,365],"hitbox":[34,56]},"37":{"center":[1297,245],"number":[1298,181],"led_left":[1273,221],"led_right":[1319,221],"hitbox":[34,56]},"38":{"center":[1298,337],"number":[1298,409],"led_left":[1273,365],"led_right":[1318,365],"hitbox":[34,56]},"39":{"center":[1355,245],"number":[1357,181],"led_left":[1333,221],"led_right":[1379,221],"hitbox":[34,56]},"40":{"center":[1358,337],"number":[1357,409],"led_left":[1332,365],"led_right":[1379,365],"hitbox":[34,56]},"41":{"center":[1416,245],"number":[1418,181],"led_left":[1393,221],"led_right":[1439,221],"hitbox":[34,56]},"42":{"center":[1417,337],"number":[1418,409],"led_left":[1393,365],"led_right":[1438,365],"hitbox":[34,56]},"43":{"center":[1475,245],"number":[1476,181],"led_left":[1453,221],"led_right":[1499,221],"hitbox":[34,56]},"44":{"center":[1477,336],"number":[1476,409],"led_left":[1453,365],"led_right":[1499,365],"hitbox":[34,56]},"45":{"center":[1534,245],"number":[1535,181],"led_left":[1513,221],"led_right":[1559,221],"hitbox":[34,56]},"46":{"center":[1537,337],"number":[1535,409],"led_left":[1513,365],"led_right":[1559,365],"hitbox":[34,56]},"47":{"center":[1594,245],"number":[1595,181],"led_left":[1573,221],"led_right":[1618,221],"hitbox":[34,56]},"48":{"center":[1596,337],"number":[1595,409],"led_left":[1572,365],"led_right":[1618,365],"hitbox":[34,56]}},"sfp":{"G1":{"center":[1710,246],"hitbox":[94,48]},"G2":{"center":[1835,246],"hitbox":[94,48]},"G3/TE3":{"center":[1711,341],"hitbox":[94,48]},"G4/TE4":{"center":[1836,341],"hitbox":[94,48]}},"status_leds":{"STAT":[674,84],"SYST":[674,149],"DUPLX":[852,84],"ACTV":[852,149],"SPEED":[1026,84],"STACK":[1204,84],"PoE":[1369,84]},"ui":{"logo":{"show":true,"file":"sv-logo.png","source":"default","x":143,"y":-1,"width":187,"height":188},"status_panel":{"show":true,"x":338,"y":30,"width":313,"height":132,"font_family":"SwitchVisionCustom, Arial, Helvetica, sans-serif","font_size":16,"title_font_size":16,"font_weight":"bold","text_color":"#ffffff","label_color":"#eef2f4","title_color":"#f4f6f7","background_color":"rgba(0,0,0,.06)","border_color":"rgba(245,248,250,.75)","border_show":true,"field_order":{"switch":["model","ip","cpu","temp","poe","uptime","vendor","os","firmware","serial","stack","fans","psu"],"port":["vlan","desc","link","rx","tx"],"sfp":["vlan","desc","link","rx","tx"]},"hidden_fields":{"switch":["vendor","os","firmware","serial","stack","fans","psu"],"port":[],"sfp":[]},"fields":{"title":[152.5,18],"row1_key":[19,39],"row1_value":[107,39],"row2_key":[19,58],"row2_value":[107,58],"row3_key":[19,78],"row3_value":[107,78],"row4_key":[19,97],"row4_value":[107,97],"row5_key":[19,116],"row5_value":[107,116],"row6_key":[19,135],"row6_value":[107,135]}},"faceplate":{"show":true,"file":"__default__","fit":"fill","opacity":1},"calibration_button":{"show":true,"x":1888,"y":14,"width":138,"height":34,"anchor":"top_right"},"status_panel_2":{"show":true,"x":1605,"y":25,"width":278,"height":55,"font_family":"SwitchVisionCustom, Arial, Helvetica, sans-serif","font_size":16,"title_font_size":16,"font_weight":"bold","text_color":"#ffffff","label_color":"#eef2f4","title_color":"#f4f6f7","background_color":"rgba(0,0,0,.06)","border_color":"rgba(245,248,250,.75)","border_show":true,"title_mode":"custom","title_field":"model","custom_title":"","field_order":{"switch":["vendor","uptime","model","ip","cpu","temp","poe","os","firmware","serial","stack","fans","psu"],"port":["vlan","desc","link","rx","tx"],"sfp":["vlan","desc","link","rx","tx"]},"hidden_fields":{"switch":["model","ip","cpu","temp","poe","os","firmware","serial","stack","fans","psu"],"port":[],"sfp":[]},"fields":{"title":[152.5,23],"row1_key":[24,55],"row1_value":[112,55],"row2_key":[24,72],"row2_value":[112,72],"row3_key":[24,89],"row3_value":[112,89],"row4_key":[24,106],"row4_value":[112,106],"row5_key":[24,123],"row5_value":[112,123],"row6_key":[24,140],"row6_value":[112,140]}}},"stack":{"enabled":false,"stack_id":"","uptime_source":"","members":{}},"management":{"switch_ip":""},"profile":"default_cisco_48_port"};
 const calibration2960X24 = {"schema":"switch-vision-interactive-calibration-v1","model":"cisco-2960x-24p-4-uplink","generated_by":"Switch Vision v1.8.9","image":{"file":"faceplates/24rj45-4sfp.png","width":2048,"height":448,"master":"switch-master-v4.0","alpha_min":0,"alpha_max":255},"ports":{"1":{"center":[926,245],"number":[926,181],"led_left":[907,221],"led_right":[942,221],"hitbox":[34,56]},"2":{"center":[927,338],"number":[926,409],"led_left":[906,365],"led_right":[943,365],"hitbox":[34,56]},"3":{"center":[986,245],"number":[987,181],"led_left":[966,221],"led_right":[1002,221],"hitbox":[34,56]},"4":{"center":[987,337],"number":[987,409],"led_left":[966,365],"led_right":[1002,365],"hitbox":[34,56]},"5":{"center":[1044,245],"number":[1046,181],"led_left":[1026,221],"led_right":[1062,221],"hitbox":[34,56]},"6":{"center":[1047,337],"number":[1047,409],"led_left":[1026,365],"led_right":[1062,365],"hitbox":[34,56]},"7":{"center":[1105,245],"number":[1106,181],"led_left":[1086,221],"led_right":[1122,221],"hitbox":[34,56]},"8":{"center":[1107,337],"number":[1107,409],"led_left":[1086,365],"led_right":[1122,365],"hitbox":[34,56]},"9":{"center":[1164,245],"number":[1165,181],"led_left":[1146,221],"led_right":[1183,221],"hitbox":[34,56]},"10":{"center":[1166,337],"number":[1165,409],"led_left":[1146,365],"led_right":[1182,365],"hitbox":[34,56]},"11":{"center":[1224,245],"number":[1225,181],"led_left":[1206,221],"led_right":[1242,221],"hitbox":[34,56]},"12":{"center":[1226,336],"number":[1226,409],"led_left":[1206,365],"led_right":[1242,365],"hitbox":[34,56]},"13":{"center":[1300,245],"number":[1301,181],"led_left":[1277,221],"led_right":[1313,221],"hitbox":[34,56]},"14":{"center":[1299,337],"number":[1301,409],"led_left":[1277,365],"led_right":[1314,365],"hitbox":[34,56]},"15":{"center":[1360,245],"number":[1361,181],"led_left":[1337,221],"led_right":[1374,221],"hitbox":[34,56]},"16":{"center":[1358,336],"number":[1362,409],"led_left":[1337,365],"led_right":[1374,365],"hitbox":[34,56]},"17":{"center":[1419,245],"number":[1420,181],"led_left":[1397,221],"led_right":[1433,221],"hitbox":[34,56]},"18":{"center":[1418,337],"number":[1420,409],"led_left":[1397,365],"led_right":[1433,365],"hitbox":[34,56]},"19":{"center":[1479,245],"number":[1479,181],"led_left":[1457,221],"led_right":[1493,221],"hitbox":[34,56]},"20":{"center":[1478,337],"number":[1479,409],"led_left":[1457,365],"led_right":[1493,365],"hitbox":[34,56]},"21":{"center":[1538,245],"number":[1540,181],"led_left":[1517,221],"led_right":[1553,221],"hitbox":[34,56]},"22":{"center":[1538,337],"number":[1540,409],"led_left":[1517,365],"led_right":[1553,365],"hitbox":[34,56]},"23":{"center":[1598,245],"number":[1599,181],"led_left":[1577,221],"led_right":[1613,221],"hitbox":[34,56]},"24":{"center":[1600,337],"number":[1599,409],"led_left":[1577,365],"led_right":[1613,365],"hitbox":[34,56]}},"sfp":{"G1":{"center":[1710,246],"hitbox":[94,48],"label":[1709,188]},"G2":{"center":[1835,246],"hitbox":[94,48],"label":[1838,188]},"G3":{"center":[1711,341],"hitbox":[94,48],"label":[1710,402]},"G4":{"center":[1836,341],"hitbox":[94,48],"label":[1839,402]}},"status_leds":{"STAT":[674,84],"SYST":[674,149],"DUPLX":[852,84],"ACTV":[852,149],"SPEED":[1026,84],"STACK":[1204,84],"PoE":[1369,84]},"ui":{"logo":{"show":true,"file":"sv-logo.png","source":"default","x":143,"y":-1,"width":187,"height":188},"status_panel":{"show":true,"x":338,"y":30,"width":313,"height":132,"font_family":"SwitchVisionCustom, Arial, Helvetica, sans-serif","font_size":16,"title_font_size":16,"font_weight":"bold","text_color":"#ffffff","label_color":"#eef2f4","title_color":"#f4f6f7","background_color":"rgba(0,0,0,.06)","border_color":"rgba(245,248,250,.75)","border_show":true,"field_order":{"switch":["model","ip","cpu","temp","poe","uptime","vendor","os","firmware","serial","stack","fans","psu"],"port":["vlan","desc","link","rx","tx"],"sfp":["vlan","desc","link","rx","tx"]},"hidden_fields":{"switch":["vendor","os","firmware","serial","stack","fans","psu"],"port":[],"sfp":[]},"fields":{"row1_key":[19,39],"row1_value":[107,39],"row2_key":[19,58],"row2_value":[107,58],"row3_key":[19,78],"row3_value":[107,78],"row4_key":[19,97],"row4_value":[107,97],"row5_key":[19,116],"row5_value":[107,116],"row6_key":[19,135],"row6_value":[107,135]}},"faceplate":{"show":true,"file":"24rj45-4sfp.png","fit":"fill","opacity":1},"calibration_button":{"show":true,"x":1888,"y":14,"width":138,"height":34,"anchor":"top_right"},"status_panel_2":{"show":true,"x":1605,"y":25,"width":278,"height":55,"font_family":"SwitchVisionCustom, Arial, Helvetica, sans-serif","font_size":16,"title_font_size":16,"font_weight":"bold","text_color":"#ffffff","label_color":"#eef2f4","title_color":"#f4f6f7","background_color":"rgba(0,0,0,.06)","border_color":"rgba(245,248,250,.75)","border_show":true,"title_mode":"custom","title_field":"model","custom_title":"","field_order":{"switch":["vendor","uptime","model","ip","cpu","temp","poe","os","firmware","serial","stack","fans","psu"],"port":["vlan","desc","link","rx","tx"],"sfp":["vlan","desc","link","rx","tx"]},"hidden_fields":{"switch":["model","ip","cpu","temp","poe","os","firmware","serial","stack","fans","psu"],"port":[],"sfp":[]},"fields":{"row1_key":[24,55],"row1_value":[112,55],"row2_key":[24,72],"row2_value":[112,72],"row3_key":[24,89],"row3_value":[112,89],"row4_key":[24,106],"row4_value":[112,106],"row5_key":[24,123],"row5_value":[112,123],"row6_key":[24,140],"row6_value":[112,140]}}},"stack":{"enabled":false,"stack_id":"","uptime_source":"","members":{}},"management":{"switch_ip":""},"profile":"cisco_2960x_24p"};
 const calibration2960S48 = {"schema_version":1,"schema":"switch-vision-interactive-calibration-v1","model":"cisco-2960s-48p-2x10g","generated_by":"Switch Vision v1.8.9","image":{"file":"faceplates/48rj45-2sfp.png","width":2048,"height":448,"master":"switch-master-v4.0","alpha_min":0,"alpha_max":255},"ports":{"1":{"center":[176,245],"number":[176,181],"led_left":[154,221],"led_right":[199,221],"hitbox":[34,56]},"2":{"center":[177,338],"number":[176,409],"led_left":[153,365],"led_right":[200,365],"hitbox":[34,56]},"3":{"center":[236,245],"number":[237,181],"led_left":[213,221],"led_right":[259,221],"hitbox":[34,56]},"4":{"center":[237,337],"number":[237,409],"led_left":[213,365],"led_right":[259,365],"hitbox":[34,56]},"5":{"center":[294,245],"number":[296,181],"led_left":[273,221],"led_right":[319,221],"hitbox":[34,56]},"6":{"center":[297,337],"number":[297,409],"led_left":[273,365],"led_right":[319,365],"hitbox":[34,56]},"7":{"center":[355,245],"number":[356,181],"led_left":[333,221],"led_right":[379,221],"hitbox":[34,56]},"8":{"center":[357,337],"number":[357,409],"led_left":[333,365],"led_right":[379,365],"hitbox":[34,56]},"9":{"center":[414,245],"number":[415,181],"led_left":[393,221],"led_right":[440,221],"hitbox":[34,56]},"10":{"center":[416,337],"number":[415,409],"led_left":[393,365],"led_right":[439,365],"hitbox":[34,56]},"11":{"center":[474,245],"number":[475,181],"led_left":[453,221],"led_right":[499,221],"hitbox":[34,56]},"12":{"center":[476,336],"number":[476,409],"led_left":[453,365],"led_right":[499,365],"hitbox":[34,56]},"13":{"center":[550,245],"number":[551,181],"led_left":[524,221],"led_right":[570,221],"hitbox":[34,56]},"14":{"center":[549,337],"number":[551,409],"led_left":[524,365],"led_right":[571,365],"hitbox":[34,56]},"15":{"center":[610,245],"number":[611,181],"led_left":[584,221],"led_right":[631,221],"hitbox":[34,56]},"16":{"center":[608,336],"number":[612,409],"led_left":[584,365],"led_right":[631,365],"hitbox":[34,56]},"17":{"center":[669,245],"number":[670,181],"led_left":[644,221],"led_right":[690,221],"hitbox":[34,56]},"18":{"center":[668,337],"number":[670,409],"led_left":[644,365],"led_right":[690,365],"hitbox":[34,56]},"19":{"center":[729,245],"number":[729,181],"led_left":[704,221],"led_right":[750,221],"hitbox":[34,56]},"20":{"center":[728,337],"number":[729,409],"led_left":[704,365],"led_right":[750,365],"hitbox":[34,56]},"21":{"center":[788,245],"number":[790,181],"led_left":[764,221],"led_right":[810,221],"hitbox":[34,56]},"22":{"center":[788,337],"number":[790,409],"led_left":[764,365],"led_right":[810,365],"hitbox":[34,56]},"23":{"center":[848,245],"number":[849,181],"led_left":[824,221],"led_right":[870,221],"hitbox":[34,56]},"24":{"center":[850,337],"number":[849,409],"led_left":[824,365],"led_right":[870,365],"hitbox":[34,56]},"25":{"center":[923,245],"number":[925,181],"led_left":[904,221],"led_right":[949,221],"hitbox":[34,56]},"26":{"center":[925,336],"number":[925,409],"led_left":[903,365],"led_right":[950,365],"hitbox":[34,56]},"27":{"center":[983,245],"number":[985,181],"led_left":[963,221],"led_right":[1009,221],"hitbox":[34,56]},"28":{"center":[984,336],"number":[985,409],"led_left":[963,365],"led_right":[1009,365],"hitbox":[34,56]},"29":{"center":[1043,245],"number":[1043,181],"led_left":[1023,221],"led_right":[1069,221],"hitbox":[34,56]},"30":{"center":[1045,337],"number":[1043,409],"led_left":[1023,365],"led_right":[1069,365],"hitbox":[34,56]},"31":{"center":[1105,245],"number":[1104,181],"led_left":[1083,221],"led_right":[1129,221],"hitbox":[34,56]},"32":{"center":[1104,337],"number":[1104,409],"led_left":[1083,365],"led_right":[1129,365],"hitbox":[34,56]},"33":{"center":[1162,245],"number":[1163,181],"led_left":[1143,221],"led_right":[1189,221],"hitbox":[34,56]},"34":{"center":[1164,337],"number":[1163,409],"led_left":[1143,365],"led_right":[1189,365],"hitbox":[34,56]},"35":{"center":[1225,245],"number":[1221,181],"led_left":[1203,221],"led_right":[1249,221],"hitbox":[34,56]},"36":{"center":[1223,337],"number":[1221,409],"led_left":[1203,365],"led_right":[1249,365],"hitbox":[34,56]},"37":{"center":[1297,245],"number":[1298,181],"led_left":[1273,221],"led_right":[1319,221],"hitbox":[34,56]},"38":{"center":[1298,337],"number":[1298,409],"led_left":[1273,365],"led_right":[1318,365],"hitbox":[34,56]},"39":{"center":[1355,245],"number":[1357,181],"led_left":[1333,221],"led_right":[1379,221],"hitbox":[34,56]},"40":{"center":[1358,337],"number":[1357,409],"led_left":[1332,365],"led_right":[1379,365],"hitbox":[34,56]},"41":{"center":[1416,245],"number":[1418,181],"led_left":[1393,221],"led_right":[1439,221],"hitbox":[34,56]},"42":{"center":[1417,337],"number":[1418,409],"led_left":[1393,365],"led_right":[1438,365],"hitbox":[34,56]},"43":{"center":[1475,245],"number":[1476,181],"led_left":[1453,221],"led_right":[1499,221],"hitbox":[34,56]},"44":{"center":[1477,336],"number":[1476,409],"led_left":[1453,365],"led_right":[1499,365],"hitbox":[34,56]},"45":{"center":[1534,245],"number":[1535,181],"led_left":[1513,221],"led_right":[1559,221],"hitbox":[34,56]},"46":{"center":[1537,337],"number":[1535,409],"led_left":[1513,365],"led_right":[1559,365],"hitbox":[34,56]},"47":{"center":[1594,245],"number":[1595,181],"led_left":[1573,221],"led_right":[1618,221],"hitbox":[34,56]},"48":{"center":[1596,337],"number":[1595,409],"led_left":[1572,365],"led_right":[1618,365],"hitbox":[34,56]}},"sfp":{"TE1":{"center":[1712,285],"hitbox":[94,48],"label":[1709,228]},"TE2":{"center":[1837,285],"hitbox":[94,48],"label":[1838,228]}},"status_leds":{"STAT":[674,84],"SYST":[674,149],"DUPLX":[852,84],"ACTV":[852,149],"SPEED":[1026,84],"STACK":[1204,84],"PoE":[1369,84]},"ui":{"logo":{"show":true,"file":"sv-logo.png","source":"default","x":143,"y":-1,"width":187,"height":188},"status_panel":{"show":true,"x":338,"y":30,"width":313,"height":132,"font_family":"SwitchVisionCustom, Arial, Helvetica, sans-serif","font_size":16,"title_font_size":16,"font_weight":"bold","text_color":"#ffffff","label_color":"#eef2f4","title_color":"#f4f6f7","background_color":"rgba(0,0,0,.06)","border_color":"rgba(245,248,250,.75)","border_show":true,"field_order":{"switch":["model","ip","cpu","temp","poe","uptime","vendor","os","firmware","serial","stack","fans","psu"],"port":["vlan","desc","link","rx","tx"],"sfp":["vlan","desc","link","rx","tx"]},"hidden_fields":{"switch":["vendor","os","firmware","serial","stack","fans","psu"],"port":[],"sfp":[]},"fields":{"row1_key":[19,39],"row1_value":[107,39],"row2_key":[19,58],"row2_value":[107,58],"row3_key":[19,78],"row3_value":[107,78],"row4_key":[19,97],"row4_value":[107,97],"row5_key":[19,116],"row5_value":[107,116],"row6_key":[19,135],"row6_value":[107,135]}},"faceplate":{"show":true,"file":"48rj45-2sfp.png","fit":"fill","opacity":1},"calibration_button":{"show":true,"x":1888,"y":14,"width":138,"height":34,"anchor":"top_right"},"status_panel_2":{"show":true,"x":1605,"y":25,"width":278,"height":55,"font_family":"SwitchVisionCustom, Arial, Helvetica, sans-serif","font_size":16,"title_font_size":16,"font_weight":"bold","text_color":"#ffffff","label_color":"#eef2f4","title_color":"#f4f6f7","background_color":"rgba(0,0,0,.06)","border_color":"rgba(245,248,250,.75)","border_show":true,"title_mode":"custom","title_field":"model","custom_title":"","field_order":{"switch":["vendor","uptime","model","ip","cpu","temp","poe","os","firmware","serial","stack","fans","psu"],"port":["vlan","desc","link","rx","tx"],"sfp":["vlan","desc","link","rx","tx"]},"hidden_fields":{"switch":["model","ip","cpu","temp","poe","os","firmware","serial","stack","fans","psu"],"port":[],"sfp":[]},"fields":{"row1_key":[24,55],"row1_value":[112,55],"row2_key":[24,72],"row2_value":[112,72],"row3_key":[24,89],"row3_value":[112,89],"row4_key":[24,106],"row4_value":[112,106],"row5_key":[24,123],"row5_value":[112,123],"row6_key":[24,140],"row6_value":[112,140]}}},"stack":{"enabled":false,"stack_id":"","uptime_source":"","members":{}},"management":{"switch_ip":""},"profile":"cisco_2960s_48p"};
@@ -236,6 +236,7 @@ function normalisePortLedShape(value, fallback = "circle") {
 function portLedShapeKey(part) {
   if (part === "led_left") return "led_left_shape";
   if (part === "led_right") return "led_right_shape";
+  if (part === "led_poe") return "led_poe_shape";
   return "";
 }
 
@@ -280,7 +281,60 @@ function portLedCircleRadius(value, radius = layout.ports?.r) {
 function portLedSizeKey(part) {
   if (part === "led_left") return "led_left_size";
   if (part === "led_right") return "led_right_size";
+  if (part === "led_poe") return "led_poe_size";
   return null;
+}
+
+// Optional per-RJ45 indicators are absent from factory geometry and legacy saves.
+// Selecting them previews a deterministic offset; only an explicit edit/show
+// creates persisted coordinates. No protected owner geometry is rewritten.
+const SV_OPTIONAL_PORT_LED_PARTS = Object.freeze(["led_poe"]);
+
+function optionalPortLedPoint(port, part, create = false) {
+  if (!port || !SV_OPTIONAL_PORT_LED_PARTS.includes(part)) return null;
+  if (Array.isArray(port[part]) && port[part].length === 2) return port[part];
+  const center = Array.isArray(port.center) ? port.center : [0, 0];
+  const fallback = [Number(center[0] || 0) + 12, Number(center[1] || 0) + 26];
+  if (create) port[part] = fallback;
+  return create ? port[part] : fallback;
+}
+
+function snmpPortPoeActive(hass, config, port) {
+  // Resolve the exact same physical-to-entity mapping used by the existing
+  // per-port Status Box. Never use aggregate power or link state.
+  const logical = Number(mappedPortNumber(config, port));
+  if (!Number.isInteger(logical) || logical < 1) return false;
+  const member = normalizeEntityPrefix(config);
+  const status = firstEntityValue(hass, [
+    configuredEntity(config, port, "poe_status"),
+    configuredEntity(config, port, "poe_status_code"),
+    `sensor.${member}_port_${logical}_poe_status`,
+    `sensor.${member}_port_${logical}_poe_status_code`
+  ]);
+  if (status !== null) return poePortStatusLabel(status) === "ACTIVE";
+  // Some devices expose measured power without the detection-status row.
+  // A strict positive watts reading is direct delivery evidence; an unknown,
+  // missing or zero reading must not turn the LED on.
+  const power = firstEntityValue(hass, [
+    configuredEntity(config, port, "poe_power"),
+    `sensor.${member}_port_${logical}_poe_power`
+  ]);
+  if (power === null || !/^\d+(?:\.\d+)?(?:\s*(?:w|watts))?$/i.test(power)) return false;
+  return Number.parseFloat(power) > 0;
+}
+
+function optionalPortLedClass(hass, config, port, part, testMode = false) {
+  if (part !== "led_poe") return "cv-led-off";
+  if (testMode) return "cv-led-poe";
+  // A UniFi binding is authoritative for the matched RJ45 port; a stale
+  // snapshot or unknown state cannot light the indicator. Enabled alone is
+  // not evidence that PoE is currently being delivered.
+  if (hasUnifiBinding(config)) {
+    const data = unifiBoundAccessPort(config, port)?.poe;
+    return data?.available === true && String(data.state || "").toUpperCase() === "UP"
+      ? "cv-led-poe" : "cv-led-off";
+  }
+  return snmpPortPoeActive(hass, config, port) ? "cv-led-poe" : "cv-led-off";
 }
 
 function portLedColourOverride(activeCalibration, part, uiOverride = null) {
@@ -3350,6 +3404,13 @@ if (
     if (port.led_right_shape !== undefined) port.led_right_shape = normalisePortLedShape(port.led_right_shape, cal.ui.port_led_shape);
     port.led_left_show = port.led_left_show !== false;
     port.led_right_show = port.led_right_show !== false;
+    // Keep absent optional LEDs absent; never activate them during migration.
+    for (const part of SV_OPTIONAL_PORT_LED_PARTS) {
+      const shapeKey = portLedShapeKey(part);
+      const sizeKey = portLedSizeKey(part);
+      if (port[shapeKey] !== undefined) port[shapeKey] = normalisePortLedShape(port[shapeKey], cal.ui.port_led_shape);
+      if (port[sizeKey] !== undefined) port[sizeKey] = normalisePortLedRectangleSize(port[sizeKey]);
+    }
     port.number_show = port.number_show !== false;
     port.supported_speed = normalisePortSupportedSpeed(port.supported_speed);
     port.port_role = normalisePortRole(port.port_role);
@@ -4414,7 +4475,7 @@ function calibrationOverlayPartActive(editable, itemType, itemKey, itemPart) {
     if (!selected) return false;
 
     if (targetPart === "entire") {
-      return ["center", "number", "led_left", "led_right"].includes(part);
+      return ["center", "number", "led_left", "led_right", ...SV_OPTIONAL_PORT_LED_PARTS].includes(part);
     }
 
     return targetPart === part;
@@ -4618,6 +4679,14 @@ function drawCalibrationOverlay(svg, { config, calibration }) {
           7.5,
           activityActive
         );
+      }
+
+      for (const part of SV_OPTIONAL_PORT_LED_PARTS) {
+        const active = calibrationOverlayPartActive(editable, "port", num, part);
+        if (active || port[`${part}_show`] === true) {
+          const point = optionalPortLedPoint(port, part, false);
+          drawRing(point[0], point[1], 7.5, active);
+        }
       }
 
       // Number positions are normally left uncluttered. Draw their
@@ -5124,6 +5193,13 @@ function drawPanel(svg, { hass, config, calibration, layout }) {
         portLedShapeForItem(port, "led_right", calibration)
       ) : null;
       if (activityLed) activityLed.dataset.cvActivityPort = String(n);
+      for (const part of SV_OPTIONAL_PORT_LED_PARTS) {
+        if (port[`${part}_show`] !== true) continue;
+        const point = optionalPortLedPoint(port, part, false);
+        portLed(svg, point[0], point[1], layout.ports.r,
+          optionalPortLedClass(hass, config, n, part, calibrationTestMode), calibration,
+          port[portLedSizeKey(part)], part, portLedShapeForItem(port, part, calibration));
+      }
     }
 
     if (config.show_numbers && port.number_show !== false) {
@@ -5275,8 +5351,8 @@ function calibrationRenderSpaceData(source) {
     if (!collection || typeof collection !== "object") continue;
     for (const item of Object.values(collection)) {
       if (!item || typeof item !== "object") continue;
-      for (const key of ["center", "number", "label", "led_left", "led_right"]) point(item[key]);
-      for (const key of ["hitbox", "led_left_size", "led_right_size"]) size(item[key]);
+      for (const key of ["center", "number", "label", "led_left", "led_right", ...(collectionName === "ports" ? SV_OPTIONAL_PORT_LED_PARTS : [])]) point(item[key]);
+      for (const key of ["hitbox", "led_left_size", "led_right_size", ...(collectionName === "ports" ? ["led_poe_size"] : [])]) size(item[key]);
     }
   }
 
@@ -5473,7 +5549,7 @@ function normaliseImportedFaceplateProfile(raw) {
 
 const SV_GEOMETRY_TRANSFER_TYPE = "switch-vision-geometry-profile-v1";
 const SV_FACEPLATE_TRANSFER_TYPE = "switch-vision-faceplate-profile-v2";
-const SV_GEOMETRY_ENTRY_KEYS = Object.freeze(["center", "number", "label", "led_left", "led_right", "hitbox", "led_left_size", "led_right_size", "led_left_shape", "led_right_shape", "led_left_show", "led_right_show", "number_show", "label_show", "supported_speed", "port_role"]);
+const SV_GEOMETRY_ENTRY_KEYS = Object.freeze(["center", "number", "label", "led_left", "led_right", "hitbox", "led_left_size", "led_right_size", "led_left_shape", "led_right_shape", "led_left_show", "led_right_show", "number_show", "label_show", "supported_speed", "port_role", "led_poe", "led_poe_size", "led_poe_shape", "led_poe_show"]);
 const SV_GEOMETRY_BOX_KEYS = Object.freeze(["x", "y", "width", "height"]);
 const SV_GEOMETRY_RENDER_COORDINATE_SPACE = "switch-vision-render-2048x448-v1";
 
@@ -5878,7 +5954,10 @@ function validateImportedCalibration(raw, currentCal = null, { preserveFaceplate
           if (!calibrationCoordinateValid(item[part], { width, height })) errors.push(`Port ${key} has an invalid or out-of-range ${part} coordinate.`);
         }
         if (!calibrationCoordinateValid(item.hitbox, { width, height, size: true })) errors.push(`Port ${key} has an invalid hitbox size.`);
-        for (const sizePart of ["led_left_size", "led_right_size"]) {
+        for (const part of SV_OPTIONAL_PORT_LED_PARTS) {
+          if (item[part] !== undefined && !calibrationCoordinateValid(item[part], { width, height })) errors.push(`Port ${key} has an invalid ${part} coordinate.`);
+        }
+        for (const sizePart of ["led_left_size", "led_right_size", "led_poe_size"]) {
           if (item[sizePart] !== undefined && !calibrationCoordinateValid(item[sizePart], { width, height, size: true })) errors.push(`Port ${key} has an invalid ${sizePart} size.`);
         }
       } else {
@@ -5890,6 +5969,10 @@ function validateImportedCalibration(raw, currentCal = null, { preserveFaceplate
         if (item[shapeField] !== undefined && !PORT_LED_SHAPES.includes(String(item[shapeField] || "").toLowerCase())) {
           errors.push(`${type} ${key} has an invalid ${shapeField}; expected circle, rectangle, triangle_up, triangle_down, triangle_left, or triangle_right.`);
         }
+      }
+      if (type === "Port" && item.led_poe_shape !== undefined &&
+          !PORT_LED_SHAPES.includes(String(item.led_poe_shape || "").toLowerCase())) {
+        errors.push(`Port ${key} has an invalid led_poe_shape; expected an existing port LED shape.`);
       }
     }
   };
@@ -6195,7 +6278,7 @@ function getEditableCalibrationTarget(cal, config) {
   }
 
   if (type === "ports") {
-    const allowed = ["center", "led_left", "led_right", "number", "entire"];
+    const allowed = ["center", "led_left", "led_right", ...SV_OPTIONAL_PORT_LED_PARTS, "number", "entire"];
     if (!allowed.includes(part)) part = "entire";
     const custom = target.selection === "custom" || String(rawId) === "custom";
     const parity = custom ? "custom" : (target.parity || (["odd", "even"].includes(String(rawId)) ? String(rawId) : "all"));
@@ -6247,11 +6330,13 @@ function getEditableCalibrationTarget(cal, config) {
     const id = String(Number(rawId));
     const item = cal.ports?.[id];
     if (!item) return null;
-    const allowed = ["center", "led_left", "led_right", "number", "entire"];
+    const allowed = ["center", "led_left", "led_right", ...SV_OPTIONAL_PORT_LED_PARTS, "number", "entire"];
     if (!allowed.includes(part)) part = "entire";
     const sizeKey = portLedSizeKey(part);
     const hitbox = sizeKey ? item[sizeKey] : (["center", "entire"].includes(part) ? item.hitbox : null);
-    return { type, id, key: id, item, part, point: item[part], hitbox };
+    return { type, id, key: id, item, part,
+      point: SV_OPTIONAL_PORT_LED_PARTS.includes(part) ? optionalPortLedPoint(item, part) : item[part],
+      hitbox: hitbox || (sizeKey ? defaultPortLedRectangleSize() : null) };
   }
 
   if (type === "sfp") {
@@ -6356,7 +6441,8 @@ function calibrationCoordinatePoints(cal, editable, createMissing = false) {
     if (!port) return null;
     if (["center", "entire"].includes(editable.part)) return port.center;
     if (editable.part === "number") return renderedPortNumberPoint(key, port.number);
-    return port[editable.part];
+    return SV_OPTIONAL_PORT_LED_PARTS.includes(editable.part)
+      ? optionalPortLedPoint(port, editable.part, createMissing) : port[editable.part];
   };
 
   const sfpPoint = (sfp) => {
@@ -6678,6 +6764,7 @@ function calibrationPartOptionsHtml(target, selectedPart) {
       option("entire", "Entire Port"),
       option("led_left", "Link/speed LED"),
       option("led_right", "Activity LED"),
+      option("led_poe", "PoE LED"),
       option("number", "Port Label")
     ].join("");
   }
@@ -9613,13 +9700,22 @@ const testModeBadge = testModeUi.show !== false
       const fallback = normalisePortLedShape(calibrationUi.port_led_shape || "circle");
       const shapes = [
         ...portNumberKeys.map((portKey) => normalisePortLedShape(cal.ports?.[portKey]?.[key], fallback)),
-        ...sfpLabelKeys.map((sfpKey) => normalisePortLedShape(cal.sfp?.[sfpKey]?.[key], fallback)),
+        ...(SV_OPTIONAL_PORT_LED_PARTS.includes(part) ? [] : sfpLabelKeys.map((sfpKey) => normalisePortLedShape(cal.sfp?.[sfpKey]?.[key], fallback))),
       ];
       const value = shapes[0] || fallback;
       return { value, mixed: shapes.some((shape) => shape !== value) };
     };
     const linkLedShapeState = selectedLedShapeState("led_left");
     const activityLedShapeState = selectedLedShapeState("led_right");
+    const poeLedShapeState = selectedLedShapeState("led_poe");
+    const visiblePoeLedCount = portNumberKeys.filter((key) => cal.ports?.[key]?.led_poe_show === true).length;
+    const optionalPortLedControls = portNumberKeys.length ? `
+      <label class="cv-cal-led-shape-label" title="Per-port PoE enabled state, using verified port readings. Test Mode previews this LED without a reading.">PoE LED Shape
+        <select class="cv-cal-select" data-cv-field="poe-led-shape">${portLedShapeOptionsHtml(poeLedShapeState.value, { mixed: poeLedShapeState.mixed })}</select>
+      </label>
+      <button type="button" data-cv-action="show-poe-led">Show</button>
+      <button type="button" data-cv-action="hide-poe-led">Hide</button>
+      <span class="cv-cal-current">${visibilitySummary(visiblePoeLedCount, portNumberKeys.length)}</span>` : "";
     const selectedPortLedControls = selectedPortCount ? `
       <label class="cv-cal-led-shape-label" title="Show or hide the selected port Link LED without changing its saved shape, calibration, or link/speed mapping.">Link LED Shape
         <select class="cv-cal-select" data-cv-field="link-led-shape">${portLedShapeOptionsHtml(linkLedShapeState.value, { mixed: linkLedShapeState.mixed })}</select>
@@ -9632,7 +9728,7 @@ const testModeBadge = testModeUi.show !== false
       </label>
       <button type="button" title="Show the selected port Activity LED." data-cv-action="show-activity-led">Show</button>
       <button type="button" title="Hide the selected port Activity LED while preserving its saved calibration and telemetry mapping." data-cv-action="hide-activity-led">Hide</button>
-      <span class="cv-cal-current">${visibilitySummary(visibleActivityLedCount, selectedPortCount)}</span>` : "";
+      <span class="cv-cal-current">${visibilitySummary(visibleActivityLedCount, selectedPortCount)}</span>${optionalPortLedControls}` : "";
     const portLabelStyleControl = `
       <label title="Choose how port labels are drawn: Static uses the saved label colour, Activity follows port activity, and Link speed follows the link/speed LED colour.">Port Label Style
         <select class="cv-cal-select" data-cv-field="port-number-mode">
@@ -10311,8 +10407,10 @@ ${portPresentationControls}
           movePoint(port.number, dx, dy);
           movePoint(port.led_left, dx, dy);
           movePoint(port.led_right, dx, dy);
+          for (const part of SV_OPTIONAL_PORT_LED_PARTS) movePoint(port[part], dx, dy);
         } else {
-          movePoint(port[editable.part], dx, dy);
+          movePoint(SV_OPTIONAL_PORT_LED_PARTS.includes(editable.part)
+            ? optionalPortLedPoint(port, editable.part, true) : port[editable.part], dx, dy);
         }
       }
       return true;
@@ -10350,6 +10448,7 @@ ${portPresentationControls}
       movePoint(editable.item.number, dx, dy);
       movePoint(editable.item.led_left, dx, dy);
       movePoint(editable.item.led_right, dx, dy);
+      for (const part of SV_OPTIONAL_PORT_LED_PARTS) movePoint(editable.item[part], dx, dy);
       return true;
     }
 
@@ -10367,7 +10466,9 @@ ${portPresentationControls}
     }
 
     if (editable.point) {
-      movePoint(editable.point, dx, dy);
+      const point = editable.type === "port" && SV_OPTIONAL_PORT_LED_PARTS.includes(editable.part)
+        ? optionalPortLedPoint(editable.item, editable.part, true) : editable.point;
+      movePoint(point, dx, dy);
       return true;
     }
 
@@ -10402,6 +10503,7 @@ ${portPresentationControls}
       movePoint(port.number, dx, dy);
       movePoint(port.led_left, dx, dy);
       movePoint(port.led_right, dx, dy);
+      for (const part of SV_OPTIONAL_PORT_LED_PARTS) movePoint(port[part], dx, dy);
       return true;
     };
     const moveEntireSfp = (sfp) => {
@@ -10445,7 +10547,8 @@ ${portPresentationControls}
           ? (moveEntirePort(port) || changed)
           : (editable.part === "number"
             ? (setPortNumberPoint(key, port.number) || changed)
-            : (setPoint(port[editable.part]) || changed));
+            : (setPoint(SV_OPTIONAL_PORT_LED_PARTS.includes(editable.part)
+              ? optionalPortLedPoint(port, editable.part, true) : port[editable.part]) || changed));
       }
       return changed;
     }
@@ -10484,7 +10587,8 @@ ${portPresentationControls}
 
     if (editable.type === "port" && editable.part === "entire") return moveEntirePort(editable.item);
     if (editable.type === "port" && editable.part === "number") return setPortNumberPoint(editable.key, editable.item?.number);
-    if (editable.type === "port") return setPoint(editable.item?.[editable.part]);
+    if (editable.type === "port") return setPoint(SV_OPTIONAL_PORT_LED_PARTS.includes(editable.part)
+      ? optionalPortLedPoint(editable.item, editable.part, true) : editable.item?.[editable.part]);
     if (editable.type === "sfp" && editable.part === "entire") return moveEntireSfp(editable.item);
     if (editable.type === "sfp") {
       const point = ["led_left", "led_right"].includes(editable.part)
@@ -10614,8 +10718,10 @@ ${portPresentationControls}
       for (const key of keys) {
         const port = cal.ports?.[key];
         if (!port) continue;
-        if (sizeKey) changed = resizeSize(port[sizeKey], 2) || changed;
-        else if (["center", "entire"].includes(editable.part)) changed = resizeSize(port.hitbox, 8) || changed;
+        if (sizeKey) {
+          if (!Array.isArray(port[sizeKey])) port[sizeKey] = [...defaultPortLedRectangleSize()];
+          changed = resizeSize(port[sizeKey], 2) || changed;
+        } else if (["center", "entire"].includes(editable.part)) changed = resizeSize(port.hitbox, 8) || changed;
       }
       return changed;
     }
@@ -10634,7 +10740,10 @@ ${portPresentationControls}
 
     if (editable.type === "port") {
       const sizeKey = portLedSizeKey(editable.part);
-      if (sizeKey) return resizeSize(editable.item?.[sizeKey], 2);
+      if (sizeKey) {
+        if (!Array.isArray(editable.item?.[sizeKey])) editable.item[sizeKey] = [...defaultPortLedRectangleSize()];
+        return resizeSize(editable.item[sizeKey], 2);
+      }
       if (["center", "entire"].includes(editable.part)) return resizeSize(editable.item?.hitbox, 8);
       return false;
     }
@@ -11285,12 +11394,14 @@ ${portPresentationControls}
         for (const portKey of portKeys) {
           if (cal.ports?.[portKey]) cal.ports[portKey][key] = shape;
         }
-        for (const sfpKey of sfpKeys) {
+        if (!SV_OPTIONAL_PORT_LED_PARTS.includes(part)) for (const sfpKey of sfpKeys) {
           if (cal.sfp?.[sfpKey]) cal.sfp[sfpKey][key] = shape;
         }
+        const count = portKeys.length + (SV_OPTIONAL_PORT_LED_PARTS.includes(part) ? 0 : sfpKeys.length);
+        if (!count) return;
         this.markCalibrationDirty();
         this.setCalibrationSaveStatus(
-          `Set ${portKeys.length + sfpKeys.length} ${part === "led_right" ? "Activity" : "Link"} LED shape${portKeys.length + sfpKeys.length === 1 ? "" : "s"} to ${shape.replace("_", " ")}`,
+          `Set ${count} ${part === "led_right" ? "Activity" : part === "led_poe" ? "PoE" : "Link"} LED shape${count === 1 ? "" : "s"} to ${shape.replace("_", " ")}`,
           false
         );
         this.render();
@@ -11299,6 +11410,7 @@ ${portPresentationControls}
     };
     bindSelectedPortLedShape("link-led-shape", "led_left");
     bindSelectedPortLedShape("activity-led-shape", "led_right");
+    bindSelectedPortLedShape("poe-led-shape", "led_poe");
 
     const bindPanelVisibilityControl = (field, panelKey, configKey) => {
       const input = this.shadowRoot.querySelector(`[data-cv-field="${field}"]`);
@@ -11890,7 +12002,7 @@ ${portPresentationControls}
           return;
         }
 
-        if (["show-activity-led", "hide-activity-led", "show-link-led", "hide-link-led"].includes(action)) {
+        if (["show-activity-led", "hide-activity-led", "show-link-led", "hide-link-led", "show-poe-led", "hide-poe-led"].includes(action)) {
           const portKeys = editable?.type === "port_leds"
             ? calibrationLedGroupScope(cal, editable).portKeys
             : (editable?.type === "port"
@@ -11903,16 +12015,24 @@ ${portPresentationControls}
               : (editable?.type === "sfps" ? calibrationSfpKeysForEditable(cal, editable) : []));
           if (!portKeys.length && !sfpKeys.length) return;
           const show = action.startsWith("show-");
+          const optional = action.includes("poe") ? "led_poe" : null;
           const activity = action.includes("activity");
           const field = activity ? "led_right_show" : "led_left_show";
           for (const key of portKeys) {
-            if (cal.ports?.[key]) cal.ports[key][field] = show;
+            if (!cal.ports?.[key]) continue;
+            if (optional) {
+              if (show) optionalPortLedPoint(cal.ports[key], optional, true);
+              cal.ports[key][`${optional}_show`] = show;
+            } else {
+              cal.ports[key][field] = show;
+            }
           }
-          for (const key of sfpKeys) {
+          if (!optional) for (const key of sfpKeys) {
             if (cal.sfp?.[key]) cal.sfp[key][field] = show;
           }
-          const count = portKeys.length + sfpKeys.length;
-          const label = activity ? "Activity LED" : "Link LED";
+          const count = portKeys.length + (optional ? 0 : sfpKeys.length);
+          if (!count) return;
+          const label = optional === "led_poe" ? "PoE LED" : activity ? "Activity LED" : "Link LED";
           this.markCalibrationDirty();
           this.setCalibrationSaveStatus(`${show ? "Shown" : "Hidden"} ${count} ${label}${count === 1 ? "" : "s"}`, false);
           this.render();

@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.10
+
+Optional per-port PoE LED Calibration: choose an independent shape, position, size and visibility for each RJ45 port alongside the existing Link and Activity indicators. Live PoE lights only from confirmed per-port SNMP detection status/positive measured power or fresh mapped UniFi API active-delivery readings; unknown and unavailable states remain off. Test Mode previews the LED. Existing system PoE, faceplates, Link/Activity and saved Calibration remain unchanged by default. Historical customer-facing changelog cleanup from 2.8.9 is retained.
+
 # Switch Vision Core v2.8.9
 
 Customer-facing changelog and release-note corrections: remove obsolete development-stage wording while retaining historical feature and compatibility details. No functional changes to dashboard, faceplate, Calibration, discovery integration or telemetry.
