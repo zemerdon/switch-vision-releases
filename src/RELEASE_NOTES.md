@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.13
+
+Calibration displays Port Status Box 1 Output and Port Status Box 2 Output side by side when enough space is available, retaining their separate Connector, Field, Move up/down and Show/Hide controls. On narrow screens, the full groups stack rather than squeezing the controls. Saved calibrations and field behaviour remain unchanged.
+
 # Switch Vision Core v2.8.12
 
 Calibration improvements: the Part dropdown now displays the chosen value immediately. Port Status Box 1 Output and Port Status Box 2 Output have separate Connector (RJ45/SFP), Field, Move up/down and Show/Hide controls, replacing the old shared Port Status Output destination dropdown. Both boxes can show independently selected information for the same active port. Existing saved profiles keep their prior routing until the new output controls are edited and saved; field ordering, visibility, faceplates and other Calibration settings are preserved.

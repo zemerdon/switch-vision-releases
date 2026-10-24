@@ -1,3 +1,7 @@
+## v2.8.13 — Side-by-side Port Status Box output controls
+
+- Place Port Status Box 1 Output and Box 2 Output controls on the same horizontal row in wide Calibration editors, wrapping the complete groups on narrow layouts without changing independently saved Connector, Field, ordering or visibility settings.
+
 ## v2.8.12 — Independent Port Status Box output configuration
 
 - Replace the single Port Status Output destination dropdown with independent Port Status Box 1 Output and Port Status Box 2 Output controls. Each box can edit its own RJ45/SFP Connector field lists, field order and Show/Hide settings, while both use the same selected port.

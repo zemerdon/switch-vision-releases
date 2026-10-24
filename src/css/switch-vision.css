@@ -425,6 +425,19 @@
 .cv-cal-style-row select,.cv-cal-status-row select,.cv-cal-switch-stack-row select,
 .cv-cal-switch-stack-row input.cv-cal-input{min-height:28px;box-sizing:border-box}
 .cv-cal-status-row button{min-width:50px}
+/* Two Port Status Box Output groups share a line when the editor is wide
+   enough; narrow cards wrap whole groups instead of crushing the controls. */
+.cv-cal-dual-port-status-outputs{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:stretch;
+  gap:6px 10px;
+}
+.cv-cal-dual-port-status-outputs > .cv-cal-status-row{
+  flex:1 1 540px;
+  min-width:0;
+  margin-bottom:0;
+}
 .cv-cal-switch-stack-row{align-items:center}
 .cv-cal-switch-stack-row .cv-cal-ip-input{width:150px}
 .cv-cal-switch-stack-row .cv-cal-entity-input{width:210px}

@@ -107,6 +107,28 @@ const run=async (name,n)=>{
         self.assertEqual(result.returncode, 0, result.stderr or result.stdout)
         self.assertIn("contract: PASS", result.stdout)
 
+    def test_two_output_rows_share_responsive_horizontal_layout(self):
+        source = SOURCE.read_text(encoding="utf-8")
+        css = (ROOT / "src/css/switch-vision.css").read_text(encoding="utf-8")
+        # The two existing rows are grouped under one shared layout wrapper,
+        # not duplicated controls or coupled per-box configuration.
+        self.assertIn(
+            '<div class="cv-cal-dual-port-status-outputs">\n'
+            '        ${portStatusRowControlsHtml}\n'
+            '      </div>', source,
+        )
+        self.assertIn(
+            '.cv-cal-dual-port-status-outputs{\n'
+            '  display:flex;\n'
+            '  flex-wrap:wrap;', css,
+        )
+        self.assertIn(
+            '.cv-cal-dual-port-status-outputs > .cv-cal-status-row{\n'
+            '  flex:1 1 540px;\n'
+            '  min-width:0;', css,
+        )
+        self.assertEqual(source.count('data-cv-panel="${panelNumber}"'), 5)
+
 
 if __name__ == "__main__":
     unittest.main()
