@@ -438,6 +438,11 @@
   min-width:0;
   margin-bottom:0;
 }
+/* Non-target Port Status Output controls stay visible but cannot be edited. */
+.cv-cal-dual-port-status-outputs > .cv-cal-port-output-row.is-inactive{
+  opacity:.42;
+  filter:grayscale(.75);
+}
 .cv-cal-switch-stack-row{align-items:center}
 .cv-cal-switch-stack-row .cv-cal-ip-input{width:150px}
 .cv-cal-switch-stack-row .cv-cal-entity-input{width:210px}

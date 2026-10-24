@@ -1,3 +1,8 @@
+## v2.8.14 — Configurable Port Status Output routing
+
+- Restore Port Status Output destination selection with Box 1, Box 2 and Both. Keep both independent per-box RJ45/SFP field controls; grey out and disable controls belonging to an inactive destination.
+- Honor the chosen destination for one selected port, preserving existing single-box choices and migrating earlier dual-output profiles to Both. Saved field layouts and geometry remain unchanged.
+
 ## v2.8.13 — Side-by-side Port Status Box output controls
 
 - Place Port Status Box 1 Output and Box 2 Output controls on the same horizontal row in wide Calibration editors, wrapping the complete groups on narrow layouts without changing independently saved Connector, Field, ordering or visibility settings.
