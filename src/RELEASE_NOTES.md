@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.11
+
+Calibration display fix: choosing a Part now immediately updates the visible dropdown label, including Custom ports > Part. The native choice remains available to Select without prematurely applying a different calibration target or altering saved settings. All other Calibration controls retain their existing behavior.
+
 # Switch Vision Core v2.8.10
 
 Optional per-port PoE LED Calibration: choose an independent shape, position, size and visibility for each RJ45 port alongside the existing Link and Activity indicators. Live PoE lights only from confirmed per-port SNMP detection status/positive measured power or fresh mapped UniFi API active-delivery readings; unknown and unavailable states remain off. Test Mode previews the LED. Existing system PoE, faceplates, Link/Activity and saved Calibration remain unchanged by default. Historical customer-facing changelog cleanup from 2.8.9 is retained.

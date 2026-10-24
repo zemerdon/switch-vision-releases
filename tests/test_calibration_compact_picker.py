@@ -130,6 +130,8 @@ assert.equal(menu.children.find(x=>x.textContent==="Select Misc target").disable
 assert.ok(menu.children.some(x=>x.textContent==="Status Box 1 fields"));
 menu.children.find(x=>x.textContent==="Logo").fire("click");
 assert.equal(select.value,"logo");
+assert.equal(trigger.textContent,"Logo");
+assert.equal(trigger.getAttribute("aria-label"),"Misc Targets: Logo");
 assert.equal(changes,1);
 assert.equal(menu.removed,true);
 assert.equal(trigger.getAttribute("aria-expanded"),"false");

@@ -1,3 +1,7 @@
+## v2.8.11 — Calibration Part dropdown display synchronization
+
+- Update the visible Calibration dropdown label and accessible name immediately when a new Part is chosen, including Custom ports > Part. Keep the selected Part pending until Select is pressed; preserve all existing targeting and Calibration save behavior.
+
 ## v2.8.10 — Optional per-port PoE LED Calibration
 
 - Add an independent per-RJ45 PoE LED shape, visibility, position and size in existing Calibration controls, without creating new quick-select options or changing saved/factory defaults.
