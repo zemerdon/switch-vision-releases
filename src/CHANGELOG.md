@@ -1,3 +1,8 @@
+## v2.8.12 — Independent Port Status Box output configuration
+
+- Replace the single Port Status Output destination dropdown with independent Port Status Box 1 Output and Port Status Box 2 Output controls. Each box can edit its own RJ45/SFP Connector field lists, field order and Show/Hide settings, while both use the same selected port.
+- Keep legacy saved single-box routing until an output field is edited and saved, preserving existing panel layouts. Retain the Calibration Part dropdown label synchronization introduced in v2.8.11.
+
 ## v2.8.11 — Calibration Part dropdown display synchronization
 
 - Update the visible Calibration dropdown label and accessible name immediately when a new Part is chosen, including Custom ports > Part. Keep the selected Part pending until Select is pressed; preserve all existing targeting and Calibration save behavior.

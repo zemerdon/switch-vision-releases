@@ -89,7 +89,10 @@ assert(statusPanelFieldSelection({},"sfp",generic,1).includes("rx_power"));
     def test_independent_port_calibration_controls_and_legacy_rendering(self):
         s = SOURCE.read_text(encoding="utf-8")
         self.assertIn('data-cv-field="port-status-row-type"', s)
-        self.assertIn('this._portStatusRowType === "sfp" ? "sfp" : "port"', s)
+        self.assertIn('this._portStatusRowTypes?.[panelNumber] === "sfp" ? "sfp" : "port"', s)
+        self.assertIn('Port Status Box ${panelNumber} Output', s)
+        self.assertIn('const panelNumber = Number(button.getAttribute("data-cv-panel"));', s)
+        self.assertNotIn('data-cv-field="port-status-output"', s)
         self.assertIn('panel.field_order[rowType] = order;', s)
         self.assertIn('panel.hidden_fields[rowType] = [...hidden]', s)
         self.assertIn('optics.available && isDellN2128OpticalModel(config)', s)

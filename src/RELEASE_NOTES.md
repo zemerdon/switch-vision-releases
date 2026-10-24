@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.12
+
+Calibration improvements: the Part dropdown now displays the chosen value immediately. Port Status Box 1 Output and Port Status Box 2 Output have separate Connector (RJ45/SFP), Field, Move up/down and Show/Hide controls, replacing the old shared Port Status Output destination dropdown. Both boxes can show independently selected information for the same active port. Existing saved profiles keep their prior routing until the new output controls are edited and saved; field ordering, visibility, faceplates and other Calibration settings are preserved.
+
 # Switch Vision Core v2.8.11
 
 Calibration display fix: choosing a Part now immediately updates the visible dropdown label, including Custom ports > Part. The native choice remains available to Select without prematurely applying a different calibration target or altering saved settings. All other Calibration controls retain their existing behavior.
