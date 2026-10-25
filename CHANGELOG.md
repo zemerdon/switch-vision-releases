@@ -1,3 +1,9 @@
+## v2.8.17 — Calibration status controls on two rows and arrow buttons
+
+- Put each Status Box Border switch and border-colour picker at the start of a second horizontal row, followed by the existing field order and Show/Hide controls; keep each style row intact.
+- Replace every Calibration Move up/down control for Status Box 1, Status Box 2 and Port Status outputs with ↑/↓ arrow buttons, retaining their actions and accessible labels.
+- Preserve saved Calibration values, field order, visibility, colour, border state, and switch rendering.
+
 ## v2.8.16 — Calibration control layout and optional Status LEDs
 
 - Keep Status Box 1 and Status Box 2 style and field controls on a single horizontal row each, with horizontal scrolling where the Calibration editor is narrower.

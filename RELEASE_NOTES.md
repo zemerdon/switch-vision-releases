@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.17
+
+Calibration now starts each Status Box's Border and field-order controls on a second horizontal row, easing crowded editors. All Status Box and Port Status field move actions use accessible up/down arrow buttons. Saved calibration settings and behaviour are unchanged.
+
 # Switch Vision Core v2.8.16
 
 Calibration arranges the full Status Box 1 and Box 2 styling/field controls on one horizontal row per box. Port Status Output appears before Connector in the first Port Status Box Output row; selected Port Label Show/Hide moves to the start of the Port labels row. Status LEDs are selected from a dropdown with separate Show, Hide, Add and Remove actions. A new or factory-reset Calibration begins with all Status LEDs removed, ready for individual addition. Previously saved profiles keep their existing LED membership, visibility and geometry; no port telemetry or faceplate changes are made.

@@ -218,15 +218,22 @@ assert.strictEqual(JSON.stringify(fresh.ports), originalPorts);
         result = subprocess.run(["node", "-e", js], text=True, capture_output=True, timeout=10)
         self.assertEqual(result.returncode, 0, result.stderr)
 
-    def test_status_box_style_and_field_controls_share_one_horizontal_track(self) -> None:
+    def test_status_box_border_and_field_controls_start_on_second_track(self) -> None:
         start = self.source.index('data-cv-section="status-boxes"')
         end = self.source.index('data-cv-section="switch-stack"', start)
         section = self.source[start:end]
-        self.assertEqual(section.count("cv-cal-status-combined-row"), 2)
+        self.assertEqual(section.count("cv-cal-status-combined-row"), 4)
+        self.assertEqual(section.count("cv-cal-status-border-row"), 2)
+        self.assertIn("Box 1 border", section)
+        self.assertIn("Box 2 border", section)
         first = section[section.index("Status Box 1 style"):section.index("Status Box 2 style")]
         second = section[section.index("Status Box 2 style"):section.index("cv-cal-dual-port-status-outputs")]
+        self.assertLess(first.index('data-cv-field="status-box-color-show"'), first.index('cv-cal-status-border-row'))
+        self.assertLess(first.index('cv-cal-status-border-row'), first.index('data-cv-field="status-border-show"'))
         self.assertIn('data-cv-field="status-row-field"', first)
         self.assertIn('data-cv-action="status-row-toggle"', first)
+        self.assertLess(second.index('data-cv-field="status2-box-color-show"'), second.index('cv-cal-status-border-row'))
+        self.assertLess(second.index('cv-cal-status-border-row'), second.index('data-cv-field="status2-border-show"'))
         self.assertIn('data-cv-field="status2-row-field"', second)
         self.assertIn('data-cv-action="status2-row-toggle"', second)
         self.assertNotIn('class="cv-cal-tools-row cv-cal-status-row"', first)
@@ -236,6 +243,16 @@ assert.strictEqual(JSON.stringify(fresh.ports), originalPorts);
         track = css[css.index(".cv-cal-status-combined-row{"):css.index(".cv-cal-inline-separator{")]
         self.assertIn("flex-wrap:nowrap", track)
         self.assertIn("overflow-x:auto", track)
+
+    def test_all_calibration_move_controls_have_accessible_arrow_labels(self) -> None:
+        section = self.source
+        for action in ("status-row", "status2-row", "port-status-row"):
+            for direction, symbol in (("up", "↑"), ("down", "↓")):
+                self.assertIn(f'data-cv-action="{action}-{direction}"', section)
+                self.assertIn(f'aria-label="Move {direction}"', section)
+                self.assertIn(f'>{symbol}</button>', section)
+        self.assertNotIn('>Move up</button>', section)
+        self.assertNotIn('>Move down</button>', section)
 
     def test_port_status_output_picker_precedes_connector_in_details_row(self) -> None:
         start = self.source.index("const portStatusOutputPickerHtml")

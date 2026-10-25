@@ -438,8 +438,8 @@
   min-width:0;
   margin-bottom:0;
 }
-/* Combined Status Box styling and field editing stays on one horizontal
-   track, with horizontal scrolling if the card is narrower than its controls. */
+/* Each Status Box uses separate horizontal style and border/field tracks;
+   preserve horizontal scrolling if the card is narrower than the controls. */
 .cv-cal-status-combined-row{
   flex-wrap:nowrap;
   overflow-x:auto;
