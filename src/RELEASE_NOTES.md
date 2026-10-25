@@ -1,4 +1,4 @@
-# Switch Vision Core v2.8.14
+# Switch Vision Core v2.8.15
 
 Calibration now offers independently configurable Port Status Box 1 and Box 2 fields for the selected RJ45 or SFP port, including Connector selection, field order and Show/Hide. The Port Status Output setting routes selected-port details to Box 1, Box 2 or Both; an inactive destination keeps its normal switch summary and its selected-port controls are disabled. The two editing groups appear side by side on wide screens and stack on narrower displays. Selecting a Calibration Part immediately updates its visible dropdown label while preserving the existing Select-to-apply behaviour. Previously saved single- and dual-box routing, field layouts, faceplates and calibration geometry remain intact.
 

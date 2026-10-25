@@ -1,4 +1,4 @@
-## v2.8.14 — Port Status Box routing and Calibration improvements
+## v2.8.15 — Port Status Box routing and Calibration improvements
 
 - Configure RJ45/SFP port details independently in Port Status Box 1 and Box 2, including Connector, Field, Move up/down and Show/Hide. Port Status Output selects Box 1, Box 2 or Both; the other destination keeps its switch summary with inactive selected-port controls disabled.
 - Display both output-control groups side by side on wide screens or stacked on narrow screens. Update the Calibration Part dropdown label immediately without applying a different target before Select.
