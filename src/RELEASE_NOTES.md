@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.19
+
+Fixes missing faceplate Status LEDs caused by Calibration's empty-by-default editor selection. Stock indicators remain visible before any deliberate LED edits, and older starter profiles automatically recover their LED display without modifying saved data. Explicit Add/Remove and Show/Hide controls still work, including on existing custom profiles; port LEDs, faceplate images and calibrated geometry are preserved.
+
 # Switch Vision Core v2.8.18
 
 Calibration layout refinement: shorter Status Box headings, adjacent Port Status Output groups, and the selected Port Label Show button immediately after its label. The redundant outline hint is removed, while Link, Activity and PoE LED Shape controls now flow after Thickness with responsive wrapping. No saved Calibration values, visibility, routing, geometry or faceplates are changed.

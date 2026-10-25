@@ -1,3 +1,8 @@
+## v2.8.19 — Restore stock faceplate Status LEDs
+
+- Keep original faceplate Status LED indicators visible when a new or factory-reset Calibration opens with an empty Status LED Add/Remove list. Only deliberate member edits change which LEDs are rendered; Show/Hide remains independent.
+- Recover stock LED display from previously auto-saved starter profiles that unintentionally hid every LED, without rewriting the user's stored Calibration. Preserve deliberate existing visibility and membership edits, MODE behavior, and all port indicators.
+
 ## v2.8.18 — Compact Calibration control placement
 
 - Remove redundant “style” from both Status Box headings, and align Port Status Box 2 Output immediately after Box 1’s Hide control when space permits.

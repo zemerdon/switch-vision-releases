@@ -76,7 +76,8 @@ class CalibrationStatusLedLayoutTests(unittest.TestCase):
         helper_end = self.source.index("let activeCalibrationUiRenderPass", helper_start)
         helper = self.source[helper_start:helper_end]
         self.assertIn("next.ui.status_leds.added = [];", helper)
-        self.assertIn("next.ui.status_leds.hidden = Object.keys(next.status_leds || {});", helper)
+        self.assertIn("next.ui.status_leds.hidden = [];", helper)
+        self.assertIn("delete next.ui.status_leds.membership_edited;", helper)
 
         opening = self.source[
             self.source.index("attachCalibrationButtonHandler()"):
@@ -171,17 +172,17 @@ assert.strictEqual("added" in old.ui.status_leds, false);
 const fresh = JSON.parse(JSON.stringify(old));
 applyNewCalibrationStatusLedDefaults(fresh);
 assert.deepStrictEqual(fresh.ui.status_leds.added, []);
-assert.deepStrictEqual(fresh.ui.status_leds.hidden, ["MODE", "STAT", "PoE"]);
+assert.deepStrictEqual(fresh.ui.status_leds.hidden, []);
 assert.strictEqual(calibrationStatusLedIsAdded(fresh, "STAT"), false);
 assert.strictEqual(setCalibrationStatusLedVisible(fresh, "STAT", true), false);
 assert.strictEqual(setCalibrationStatusLedAdded(fresh, "STAT", true), true);
 assert.deepStrictEqual(fresh.ui.status_leds.added, ["STAT"]);
-assert.deepStrictEqual(fresh.ui.status_leds.hidden, ["MODE", "PoE"]);
+assert.deepStrictEqual(fresh.ui.status_leds.hidden, []);
 assert.strictEqual(setCalibrationStatusLedVisible(fresh, "STAT", false), true);
-assert.deepStrictEqual(fresh.ui.status_leds.hidden, ["MODE", "STAT", "PoE"]);
+assert.deepStrictEqual(fresh.ui.status_leds.hidden, ["STAT"]);
 setAllCalibrationStatusLedsVisible(fresh, true);
 assert.deepStrictEqual(fresh.ui.status_leds.added, ["STAT"]);
-assert.deepStrictEqual(fresh.ui.status_leds.hidden, ["MODE", "PoE"]);
+assert.deepStrictEqual(fresh.ui.status_leds.hidden, []);
 assert.strictEqual(setCalibrationStatusLedAdded(fresh, "STAT", false), true);
 assert.deepStrictEqual(fresh.ui.status_leds.added, []);
 assert.deepStrictEqual(fresh.status_leds.STAT, [3,4]);
@@ -190,6 +191,73 @@ assert.strictEqual(JSON.stringify(fresh.ports), originalPorts);
 """
         result = subprocess.run(["node", "-e", js], text=True, capture_output=True, timeout=10)
         self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_stock_faceplates_survive_empty_editor_and_legacy_auto_hidden_profiles(self) -> None:
+        helper = self.source[
+            self.source.index("function calibrationStatusLedNames"):
+            self.source.index("let activeCalibrationUiRenderPass")
+        ]
+        renderer = self.source[
+            self.source.index("function statusLedIsHidden"):
+            self.source.index("function drawPanel", self.source.index("function statusLedIsHidden"))
+        ]
+        js = "const ensureCalibrationUi = (cal) => cal;\nconst uiFromCalibration = (cal) => cal.ui;\n" + helper + renderer + """
+const assert = require("assert");
+const profile = {
+  status_leds: { MODE:[1,2], STAT:[3,4], PoE:[5,6] },
+  ui: { status_leds: { hidden: [] } }
+};
+for (const name of Object.keys(profile.status_leds)) {
+  assert.strictEqual(statusLedIsHidden(profile, name), false);
+}
+applyNewCalibrationStatusLedDefaults(profile);
+assert.deepStrictEqual(profile.ui.status_leds.added, []);
+assert.deepStrictEqual(profile.ui.status_leds.hidden, []);
+for (const name of Object.keys(profile.status_leds)) {
+  assert.strictEqual(statusLedIsHidden(profile, name), false);
+}
+
+// A starter automatically saved by 2.8.16–2.8.18 must still display stock LEDs.
+const oldStarter = structuredClone(profile);
+oldStarter.ui.status_leds.hidden = ["MODE", "STAT", "PoE"];
+for (const name of Object.keys(oldStarter.status_leds)) {
+  assert.strictEqual(statusLedIsHidden(oldStarter, name), false);
+}
+assert.deepStrictEqual(oldStarter.ui.status_leds.hidden, ["MODE", "STAT", "PoE"]);
+
+// Pre-existing explicit visibility choices remain effective.
+const oldCustom = structuredClone(profile);
+delete oldCustom.ui.status_leds.added;
+oldCustom.ui.status_leds.hidden = ["PoE"];
+assert.strictEqual(statusLedIsHidden(oldCustom, "STAT"), false);
+assert.strictEqual(statusLedIsHidden(oldCustom, "PoE"), true);
+
+// Existing profiles with deliberately added LEDs retain their membership.
+oldCustom.ui.status_leds.added = ["STAT"];
+assert.strictEqual(statusLedIsHidden(oldCustom, "STAT"), false);
+assert.strictEqual(statusLedIsHidden(oldCustom, "PoE"), true);
+assert.strictEqual(statusLedIsHidden(oldCustom, "MODE"), false);
+
+// New deliberate Add/Hide/Remove actions explicitly override the stock view.
+setCalibrationStatusLedAdded(profile, "STAT", true);
+assert.strictEqual(profile.ui.status_leds.membership_edited, true);
+assert.strictEqual(statusLedIsHidden(profile, "STAT"), false);
+assert.strictEqual(statusLedIsHidden(profile, "PoE"), true);
+assert.strictEqual(statusLedIsHidden(profile, "MODE"), false);
+setCalibrationStatusLedVisible(profile, "STAT", false);
+assert.strictEqual(statusLedIsHidden(profile, "STAT"), true);
+setCalibrationStatusLedVisible(profile, "STAT", true);
+assert.strictEqual(statusLedIsHidden(profile, "STAT"), false);
+setCalibrationStatusLedAdded(profile, "STAT", false);
+assert.strictEqual(statusLedIsHidden(profile, "STAT"), true);
+assert.strictEqual(statusLedIsHidden(profile, "MODE"), false);
+applyNewCalibrationStatusLedDefaults(profile);
+assert.strictEqual("membership_edited" in profile.ui.status_leds, false);
+assert.strictEqual(statusLedIsHidden(profile, "STAT"), false);
+"""
+        result = subprocess.run(["node", "-e", js], text=True, capture_output=True, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("if (statusLedIsHidden(calibration, name)) continue;", self.source)
 
     def test_status_box_border_and_field_controls_start_on_second_track(self) -> None:
         start = self.source.index('data-cv-section="status-boxes"')
