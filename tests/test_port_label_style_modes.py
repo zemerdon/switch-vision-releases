@@ -36,14 +36,15 @@ class PortLabelStyleModeTests(unittest.TestCase):
         labels = self.source[labels_start:labels_end]
 
         self.assertNotIn('Port Label Style', selection)
-        self.assertIn('${portPresentationControls}', labels)
-        self.assertIn('cv-cal-port-presentation-row', self.source)
+        self.assertIn('${selectedPortLedControls}', labels)
+        self.assertIn('cv-cal-led-outline-row', labels)
         self.assertIn('Port Label Style', self.source)
         self.assertIn('data-cv-field="port-number-mode"', self.source)
         row = labels.split('cv-cal-port-label-style', 1)[1].split('</div>', 1)[0]
         self.assertLess(row.index('${portLabelStyleControl}'), row.index('data-cv-action="toggle-port-label-bold"'))
-        presentation = self.source.split('const portPresentationControls =', 1)[1].split('const isPortLedSize', 1)[0]
-        self.assertNotIn('${portLabelStyleControl}', presentation)
+        outline = labels.split('cv-cal-led-outline-row', 1)[1].split('</div>', 1)[0]
+        self.assertIn('${selectedPortLedControls}', outline)
+        self.assertNotIn('${portLabelStyleControl}', outline)
         self.assertNotIn('Blank removes the SFP/uplink suffix', labels)
         self.assertIn('value="static"', self.source)
         self.assertIn('value="activity"', self.source)

@@ -154,8 +154,9 @@ const run=async (name,n)=>{
         )
         self.assertIn(
             '.cv-cal-dual-port-status-outputs > .cv-cal-status-row{\n'
-            '  flex:1 1 540px;\n'
-            '  min-width:0;', css,
+            '  flex:0 1 auto;\n'
+            '  min-width:0;\n'
+            '  max-width:100%;', css,
         )
         self.assertEqual(source.count('data-cv-panel="${panelNumber}"'), 5)
         self.assertIn('data-cv-field="port-status-output"', source)

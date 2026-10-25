@@ -29,52 +29,25 @@ class CalibrationStatusLedLayoutTests(unittest.TestCase):
     def test_card_sources_remain_exact_mirrors(self) -> None:
         self.assertEqual(CARD.read_bytes(), MIRROR.read_bytes())
 
-    def test_labels_leds_order_is_status_then_port_leds_then_compact_presentation(self) -> None:
+    def test_led_shapes_follow_thickness_in_one_responsive_row(self) -> None:
         start = self.source.index('<details class="cv-cal-section" data-cv-section="labels-leds"')
         end = self.source.index('data-cv-section="status-boxes"', start)
         section = self.source[start:end]
+        self.assertLess(section.index('cv-cal-status-led-visibility'), section.index('cv-cal-port-led-shape'))
+        self.assertLess(section.index('cv-cal-port-led-shape'), section.index('cv-cal-led-outline-row'))
+        self.assertLess(section.index('cv-cal-led-outline-row'), section.index('cv-cal-port-label-style'))
+        outline = section[section.index('cv-cal-led-outline-row'):section.index('cv-cal-port-label-style')]
+        self.assertLess(outline.index('data-cv-field="led-outline-thickness"'), outline.index('${selectedPortLedControls}'))
+        self.assertNotIn('Off by default.', section)
+        self.assertNotIn('portPresentationControls', self.source)
+        for marker in ('>Link LED Shape', 'data-cv-field="link-led-shape"',
+                       '>Activity LED Shape', 'data-cv-field="activity-led-shape"',
+                       '>PoE LED Shape', 'data-cv-field="poe-led-shape"'):
+            self.assertIn(marker, self.source)
 
-        self.assertLess(
-            section.index('cv-cal-status-led-visibility'),
-            section.index('cv-cal-port-led-shape'),
-        )
-        self.assertLess(
-            section.index('cv-cal-port-led-shape'),
-            section.index('${portPresentationControls}'),
-        )
-        self.assertLess(
-            section.index('${portPresentationControls}'),
-            section.index('cv-cal-port-label-style'),
-        )
-
-    def test_port_label_and_led_shape_controls_share_one_responsive_row(self) -> None:
-        block_start = self.source.index('const selectedPortLedControls')
-        block_end = self.source.index('const isPortLedSize', block_start)
-        block = self.source[block_start:block_end]
-
-        self.assertIn(
-            'const portPresentationControls = \x60<div class="cv-cal-tools-row cv-cal-style-row cv-cal-port-presentation-row">',
-            block,
-        )
-        for marker in (
-            'Port Label Style',
-            'data-cv-action="show-number-label"',
-            'data-cv-action="hide-number-label"',
-            '>Link LED Shape',
-            'data-cv-field="link-led-shape"',
-            '>Activity LED Shape',
-            'data-cv-field="activity-led-shape"',
-        ):
-            self.assertIn(marker, block)
-
-        self.assertNotIn(
-            'const selectedPortLedControls = selectedPortCount ? \x60<div class="cv-cal-tools-row',
-            block,
-        )
-        self.assertNotIn(
-            'const selectedNumberLabelVisibilityControls = numberLabelCount ? \x60<div class="cv-cal-tools-row',
-            block,
-        )
+        css = (ROOT / 'src' / 'css' / 'switch-vision.css').read_text(encoding='utf-8')
+        self.assertIn('.cv-cal-led-outline-row > .cv-cal-led-shape-label', css)
+        self.assertNotIn('.cv-cal-led-outline-row{overflow-x:auto', css)
 
     def test_factory_and_generic_defaults_do_not_hide_status_leds(self) -> None:
         self.assertIn(
@@ -226,8 +199,10 @@ assert.strictEqual(JSON.stringify(fresh.ports), originalPorts);
         self.assertEqual(section.count("cv-cal-status-border-row"), 2)
         self.assertIn("Box 1 border", section)
         self.assertIn("Box 2 border", section)
-        first = section[section.index("Status Box 1 style"):section.index("Status Box 2 style")]
-        second = section[section.index("Status Box 2 style"):section.index("cv-cal-dual-port-status-outputs")]
+        first = section[section.index('>Status Box 1</span>'):section.index('>Status Box 2</span>')]
+        second = section[section.index('>Status Box 2</span>'):section.index('cv-cal-dual-port-status-outputs')]
+        self.assertNotIn('Status Box 1 style', section)
+        self.assertNotIn('Status Box 2 style', section)
         self.assertLess(first.index('data-cv-field="status-box-color-show"'), first.index('cv-cal-status-border-row'))
         self.assertLess(first.index('cv-cal-status-border-row'), first.index('data-cv-field="status-border-show"'))
         self.assertIn('data-cv-field="status-row-field"', first)
@@ -270,12 +245,20 @@ assert.strictEqual(JSON.stringify(fresh.ports), originalPorts);
         start = self.source.index('class="cv-cal-port-label-style"') if 'class="cv-cal-port-label-style"' in self.source else self.source.index("cv-cal-port-label-style")
         section = self.source[start:self.source.index('data-cv-field="port-number-font-size"', start)]
         self.assertLess(section.index("${selectedNumberLabelVisibilityControls}"), section.index("${portLabelStyleControl}"))
-        presentation = self.source[
-            self.source.index("const portPresentationControls"):
-            self.source.index("const isPortLedSize", self.source.index("const portPresentationControls"))
-        ]
-        self.assertIn("${selectedPortLedControls}", presentation)
-        self.assertNotIn("${selectedNumberLabelVisibilityControls}${selectedPortLedControls}", presentation)
+        self.assertIn('cv-cal-port-label-target', self.source)
+        css = (ROOT / 'src' / 'css' / 'switch-vision.css').read_text(encoding='utf-8')
+        target_style = css[css.index('.cv-cal-port-label-style > .cv-cal-port-label-target'):]
+        self.assertIn('flex: 0 0 auto', target_style)
+        self.assertIn('min-width: 0', target_style)
+
+    def test_port_status_output_groups_follow_one_another_without_expanding_gap(self) -> None:
+        css = (ROOT / 'src' / 'css' / 'switch-vision.css').read_text(encoding='utf-8')
+        start = css.index('.cv-cal-dual-port-status-outputs > .cv-cal-status-row{')
+        block = css[start:css.index('}', start)]
+        self.assertIn('flex:0 1 auto', block)
+        self.assertIn('max-width:100%', block)
+        self.assertNotIn('flex:1 1', block)
+
 
 
 if __name__ == "__main__":

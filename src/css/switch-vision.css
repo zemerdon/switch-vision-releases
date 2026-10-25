@@ -434,8 +434,9 @@
   gap:6px 10px;
 }
 .cv-cal-dual-port-status-outputs > .cv-cal-status-row{
-  flex:1 1 540px;
+  flex:0 1 auto;
   min-width:0;
+  max-width:100%;
   margin-bottom:0;
 }
 /* Each Status Box uses separate horizontal style and border/field tracks;
@@ -878,14 +879,15 @@
   /* Auto fits the complete selected value, not a fixed target-picker cap. */
   max-width: 100%;
 }
-/* These labels are small inline groups, not 96px-wide section headings. */
-.cv-cal-tools .cv-cal-port-presentation-row > .cv-cal-quick-label {
+/* The selected Port Label is its Show/Hide control name, not a full-width heading. */
+.cv-cal-tools .cv-cal-port-label-style > .cv-cal-port-label-target {
   flex: 0 0 auto;
   min-width: 0;
   margin-right: 0;
   white-space: nowrap;
 }
-.cv-cal-tools .cv-cal-port-presentation-row > .cv-cal-led-shape-label {
+/* LED Shape controls flow immediately after Thickness, wrapping when needed. */
+.cv-cal-tools .cv-cal-led-outline-row > .cv-cal-led-shape-label {
   white-space: nowrap;
 }
 /* The control arrow requires a reserved gutter even with a global theme padding. */

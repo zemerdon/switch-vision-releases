@@ -142,8 +142,8 @@ console.log("Calibration grouped targets: PASS");
         for text, field in (("Link LED Shape", "link-led-shape"), ("Activity LED Shape", "activity-led-shape")):
             self.assertIn(f'>{text}', block)
             self.assertIn(f'data-cv-field="{field}"', block)
-        self.assertIn('.cv-cal-port-presentation-row > .cv-cal-quick-label', css)
-        self.assertIn('.cv-cal-port-presentation-row > .cv-cal-led-shape-label', css)
+        self.assertIn('.cv-cal-port-label-style > .cv-cal-port-label-target', css)
+        self.assertIn('.cv-cal-led-outline-row > .cv-cal-led-shape-label', css)
         self.assertIn('white-space: nowrap;', css)
 
     def test_compact_size_rules(self) -> None:

@@ -1,3 +1,9 @@
+## v2.8.18 — Compact Calibration control placement
+
+- Remove redundant “style” from both Status Box headings, and align Port Status Box 2 Output immediately after Box 1’s Hide control when space permits.
+- Keep Port Label Show directly beside its control name, remove the LED outline thickness hint, and flow Link, Activity and PoE LED Shape controls directly after Thickness with responsive wrapping and no forced horizontal scrollbar.
+- Preserve all saved Calibration settings, status/port LED behaviour, routing and faceplates.
+
 ## v2.8.17 — Calibration status controls on two rows and arrow buttons
 
 - Put each Status Box Border switch and border-colour picker at the start of a second horizontal row, followed by the existing field order and Show/Hide controls; keep each style row intact.

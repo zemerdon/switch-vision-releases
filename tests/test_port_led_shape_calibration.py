@@ -62,8 +62,8 @@ class PortLedShapeCalibrationTests(unittest.TestCase):
         labels_end = self.source.index('data-cv-section="status-boxes"', labels_start)
         labels = self.source[labels_start:labels_end]
 
-        self.assertIn('${portPresentationControls}', labels)
-        self.assertIn('cv-cal-port-presentation-row', self.source)
+        self.assertIn('${selectedPortLedControls}', labels)
+        self.assertIn('cv-cal-led-outline-row', labels)
         self.assertIn('Port Label Style', self.source)
         self.assertIn('data-cv-field="link-led-shape"', self.source)
         self.assertIn('data-cv-field="activity-led-shape"', self.source)

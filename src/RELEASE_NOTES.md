@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.18
+
+Calibration layout refinement: shorter Status Box headings, adjacent Port Status Output groups, and the selected Port Label Show button immediately after its label. The redundant outline hint is removed, while Link, Activity and PoE LED Shape controls now flow after Thickness with responsive wrapping. No saved Calibration values, visibility, routing, geometry or faceplates are changed.
+
 # Switch Vision Core v2.8.17
 
 Calibration now starts each Status Box's Border and field-order controls on a second horizontal row, easing crowded editors. All Status Box and Port Status field move actions use accessible up/down arrow buttons. Saved calibration settings and behaviour are unchanged.
