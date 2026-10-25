@@ -1,20 +1,8 @@
-## v2.8.14 — Configurable Port Status Output routing
+## v2.8.14 — Port Status Box routing and Calibration improvements
 
-- Restore Port Status Output destination selection with Box 1, Box 2 and Both. Keep both independent per-box RJ45/SFP field controls; grey out and disable controls belonging to an inactive destination.
-- Honor the chosen destination for one selected port, preserving existing single-box choices and migrating earlier dual-output profiles to Both. Saved field layouts and geometry remain unchanged.
-
-## v2.8.13 — Side-by-side Port Status Box output controls
-
-- Place Port Status Box 1 Output and Box 2 Output controls on the same horizontal row in wide Calibration editors, wrapping the complete groups on narrow layouts without changing independently saved Connector, Field, ordering or visibility settings.
-
-## v2.8.12 — Independent Port Status Box output configuration
-
-- Replace the single Port Status Output destination dropdown with independent Port Status Box 1 Output and Port Status Box 2 Output controls. Each box can edit its own RJ45/SFP Connector field lists, field order and Show/Hide settings, while both use the same selected port.
-- Keep legacy saved single-box routing until an output field is edited and saved, preserving existing panel layouts. Retain the Calibration Part dropdown label synchronization introduced in v2.8.11.
-
-## v2.8.11 — Calibration Part dropdown display synchronization
-
-- Update the visible Calibration dropdown label and accessible name immediately when a new Part is chosen, including Custom ports > Part. Keep the selected Part pending until Select is pressed; preserve all existing targeting and Calibration save behavior.
+- Configure RJ45/SFP port details independently in Port Status Box 1 and Box 2, including Connector, Field, Move up/down and Show/Hide. Port Status Output selects Box 1, Box 2 or Both; the other destination keeps its switch summary with inactive selected-port controls disabled.
+- Display both output-control groups side by side on wide screens or stacked on narrow screens. Update the Calibration Part dropdown label immediately without applying a different target before Select.
+- Preserve existing single- and dual-box saved profiles, custom field order, visibility, geometry and faceplates.
 
 ## v2.8.10 — Optional per-port PoE LED Calibration
 

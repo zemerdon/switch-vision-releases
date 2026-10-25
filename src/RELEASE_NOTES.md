@@ -1,18 +1,6 @@
 # Switch Vision Core v2.8.14
 
-Calibration restores a Port Status Output dropdown with Box 1, Box 2, or Both. Only selected destinations show the current port's fields; the other box retains its normal switch-summary behavior, and its Port Status Output controls are visibly greyed out and disabled. Both allows independent field lists in both status boxes for the same selected port. Existing profiles, including prior dual-output selections, retain their intended routing without changing saved field layouts or geometry.
-
-# Switch Vision Core v2.8.13
-
-Calibration displays Port Status Box 1 Output and Port Status Box 2 Output side by side when enough space is available, retaining their separate Connector, Field, Move up/down and Show/Hide controls. On narrow screens, the full groups stack rather than squeezing the controls. Saved calibrations and field behaviour remain unchanged.
-
-# Switch Vision Core v2.8.12
-
-Calibration improvements: the Part dropdown now displays the chosen value immediately. Port Status Box 1 Output and Port Status Box 2 Output have separate Connector (RJ45/SFP), Field, Move up/down and Show/Hide controls, replacing the old shared Port Status Output destination dropdown. Both boxes can show independently selected information for the same active port. Existing saved profiles keep their prior routing until the new output controls are edited and saved; field ordering, visibility, faceplates and other Calibration settings are preserved.
-
-# Switch Vision Core v2.8.11
-
-Calibration display fix: choosing a Part now immediately updates the visible dropdown label, including Custom ports > Part. The native choice remains available to Select without prematurely applying a different calibration target or altering saved settings. All other Calibration controls retain their existing behavior.
+Calibration now offers independently configurable Port Status Box 1 and Box 2 fields for the selected RJ45 or SFP port, including Connector selection, field order and Show/Hide. The Port Status Output setting routes selected-port details to Box 1, Box 2 or Both; an inactive destination keeps its normal switch summary and its selected-port controls are disabled. The two editing groups appear side by side on wide screens and stack on narrower displays. Selecting a Calibration Part immediately updates its visible dropdown label while preserving the existing Select-to-apply behaviour. Previously saved single- and dual-box routing, field layouts, faceplates and calibration geometry remain intact.
 
 # Switch Vision Core v2.8.10
 
