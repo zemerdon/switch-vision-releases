@@ -98,22 +98,17 @@ class CalibrationStatusLedLayoutTests(unittest.TestCase):
                 f"{name} must retain its factory Status LED presentation",
             )
 
-    def test_new_calibration_session_starts_status_led_checkboxes_unticked(self) -> None:
+    def test_new_calibration_session_starts_with_all_status_leds_removed(self) -> None:
         helper_start = self.source.index("function applyNewCalibrationStatusLedDefaults")
         helper_end = self.source.index("let activeCalibrationUiRenderPass", helper_start)
         helper = self.source[helper_start:helper_end]
-        self.assertIn(
-            "next.ui.status_leds.hidden = Object.keys(next.status_leds || {})",
-            helper,
-        )
-        self.assertIn(
-            '.filter((name) => String(name).toUpperCase() !== "MODE");',
-            helper,
-        )
+        self.assertIn("next.ui.status_leds.added = [];", helper)
+        self.assertIn("next.ui.status_leds.hidden = Object.keys(next.status_leds || {});", helper)
 
-        open_start = self.source.index("attachCalibrationButtonHandler()")
-        open_end = self.source.index("      this.config = {", open_start)
-        opening = self.source[open_start:open_end]
+        opening = self.source[
+            self.source.index("attachCalibrationButtonHandler()"):
+            self.source.index("      this.config = {", self.source.index("attachCalibrationButtonHandler()"))
+        ]
         self.assertIn("info.exists !== true", opening)
         self.assertIn("info.invalid !== true", opening)
         self.assertIn("!this._profileLoadError", opening)
@@ -121,31 +116,47 @@ class CalibrationStatusLedLayoutTests(unittest.TestCase):
             "if (openingNewCalibration) applyNewCalibrationStatusLedDefaults(this._calibrationWorking);",
             opening,
         )
+        self.assertIn("applyNewCalibrationStatusLedDefaults(starter);", self.source)
+        self.assertIn("return applyNewCalibrationStatusLedDefaults(next);", self.source)
 
-        checkbox_start = self.source.index("const hiddenStatusLeds = new Set")
-        checkbox_end = self.source.index("const customFontValue", checkbox_start)
-        checkbox = self.source[checkbox_start:checkbox_end]
-        self.assertIn('hidden ? "" : "checked"', checkbox)
+        picker = self.source[
+            self.source.index("const statusLedNames = calibrationStatusLedNames(cal);"):
+            self.source.index("const customFontValue", self.source.index("const statusLedNames = calibrationStatusLedNames(cal);"))
+        ]
+        self.assertIn("const statusLedOptionsHtml", picker)
+        self.assertIn(' (removed)', picker)
+        for marker in (
+            'data-cv-field="status-led-selected"',
+            'data-cv-action="show-status-led"',
+            'data-cv-action="hide-status-led"',
+            'data-cv-action="add-status-led"',
+            'data-cv-action="remove-status-led"',
+        ):
+            self.assertIn(marker, self.source)
+        self.assertNotIn('data-cv-status-led=', self.source)
 
-    def test_existing_saved_status_led_visibility_remains_authoritative(self) -> None:
-        open_start = self.source.index("attachCalibrationButtonHandler()")
-        open_end = self.source.index("      this.config = {", open_start)
-        opening = self.source[open_start:open_end]
+    def test_existing_saved_status_led_visibility_and_membership_remain_authoritative(self) -> None:
+        opening = self.source[
+            self.source.index("attachCalibrationButtonHandler()"):
+            self.source.index("      this.config = {", self.source.index("attachCalibrationButtonHandler()"))
+        ]
         self.assertIn("const openingNewCalibration = Boolean(", opening)
-        self.assertIn("info.exists !== true", opening)
-        self.assertNotIn(
-            "applyNewCalibrationStatusLedDefaults(this._profileCalibration)",
-            opening,
-        )
+        self.assertNotIn("applyNewCalibrationStatusLedDefaults(this._profileCalibration)", opening)
 
-        ensure_start = self.source.index("function ensureCalibrationUi(cal)")
-        ensure_end = self.source.index("function applyNewCalibrationStatusLedDefaults", ensure_start)
-        ensure = self.source[ensure_start:ensure_end]
-        self.assertIn(
-            "Array.isArray(cal.ui.status_leds.hidden) ? cal.ui.status_leds.hidden : []",
-            ensure,
-        )
-        self.assertNotIn("Object.keys(cal.status_leds || {})", ensure)
+        ensure = self.source[
+            self.source.index("function ensureCalibrationUi(cal)"):
+            self.source.index("function calibrationStatusLedNames", self.source.index("function ensureCalibrationUi(cal)"))
+        ]
+        self.assertIn("Array.isArray(cal.ui.status_leds.hidden) ? cal.ui.status_leds.hidden : []", ensure)
+        self.assertIn("if (Array.isArray(cal.ui.status_leds.added))", ensure)
+        self.assertIn("delete cal.ui.status_leds.added;", ensure)
+
+        helper = self.source[
+            self.source.index("function calibrationStatusLedIsAdded"):
+            self.source.index("function setCalibrationStatusLedAdded")
+        ]
+        self.assertIn("if (!Array.isArray(added)) return true;", helper)
+        self.assertIn("Saved legacy profiles retain their original LEDs", helper)
 
     def test_show_hide_all_buttons_follow_status_led_text_colour(self) -> None:
         start = self.source.index('<details class="cv-cal-section" data-cv-section="labels-leds"')
@@ -161,38 +172,93 @@ class CalibrationStatusLedLayoutTests(unittest.TestCase):
         self.assertIn('Object.keys(cal.status_leds || {}).length ? "" : "disabled"', html)
         self.assertNotIn('data-cv-action="show-all-status-leds"', self.source[:start])
 
-    def test_buttons_modify_existing_profile_hidden_list_and_save(self) -> None:
-        function_start = self.source.index("function setAllCalibrationStatusLedsVisible(cal, visible)")
-        function_end = self.source.index("let activeCalibrationUiRenderPass", function_start)
-        helper = self.source[function_start:function_end]
-        self.assertIn('cal.ui.status_leds.hidden = visible ? [] : Object.keys(cal.status_leds || {})', helper)
-
-        listener_start = self.source.index('for (const [action, visible] of [["show-all-status-leds", true], ["hide-all-status-leds", false]])')
-        listener_end = self.source.index('const statusLedFontSelect', listener_start)
-        listener = self.source[listener_start:listener_end]
-        for marker in ("setAllCalibrationStatusLedsVisible(cal, visible)", "this.markCalibrationDirty()", "this.render()"):
-            self.assertIn(marker, listener)
-        self.assertIn('data-cv-status-led', self.source)
-
-        js = """const ensureCalibrationUi = (cal) => cal;
-""" + helper + """
+    def test_dropdown_membership_and_visibility_are_independent_and_reversible(self) -> None:
+        helper = self.source[
+            self.source.index("function calibrationStatusLedNames"):
+            self.source.index("let activeCalibrationUiRenderPass")
+        ]
+        js = "const ensureCalibrationUi = (cal) => cal;\n" + helper + """
 const assert = require("assert");
-const cal = {
+const old = {
   status_leds: { MODE:[1,2], STAT:[3,4], PoE:[5,6] },
-  ui: { status_leds: { hidden:["STAT"], text_color:"#ff00ff", font_size:17 } },
+  ui: { status_leds: { hidden:["PoE"], text_color:"#ff00ff", font_size:17 } },
   ports: { "1":{ center:[10,20] } }
 };
-const beforePorts = JSON.stringify(cal.ports);
-setAllCalibrationStatusLedsVisible(cal, false);
-assert.deepStrictEqual(cal.ui.status_leds.hidden, ["MODE","STAT","PoE"]);
-assert.deepStrictEqual(cal.ui.status_leds.font_size, 17);
-setAllCalibrationStatusLedsVisible(cal, true);
-assert.deepStrictEqual(cal.ui.status_leds.hidden, []);
-assert.strictEqual(cal.ui.status_leds.text_color, "#ff00ff");
-assert.strictEqual(JSON.stringify(cal.ports), beforePorts);
+const originalPorts = JSON.stringify(old.ports);
+assert.strictEqual(calibrationStatusLedIsAdded(old, "STAT"), true);
+assert.strictEqual(calibrationStatusLedIsAdded(old, "PoE"), true);
+setAllCalibrationStatusLedsVisible(old, false);
+assert.deepStrictEqual(old.ui.status_leds.hidden, ["MODE", "STAT", "PoE"]);
+setAllCalibrationStatusLedsVisible(old, true);
+assert.deepStrictEqual(old.ui.status_leds.hidden, []);
+assert.strictEqual(old.ui.status_leds.text_color, "#ff00ff");
+assert.strictEqual(JSON.stringify(old.ports), originalPorts);
+assert.strictEqual("added" in old.ui.status_leds, false);
+
+const fresh = JSON.parse(JSON.stringify(old));
+applyNewCalibrationStatusLedDefaults(fresh);
+assert.deepStrictEqual(fresh.ui.status_leds.added, []);
+assert.deepStrictEqual(fresh.ui.status_leds.hidden, ["MODE", "STAT", "PoE"]);
+assert.strictEqual(calibrationStatusLedIsAdded(fresh, "STAT"), false);
+assert.strictEqual(setCalibrationStatusLedVisible(fresh, "STAT", true), false);
+assert.strictEqual(setCalibrationStatusLedAdded(fresh, "STAT", true), true);
+assert.deepStrictEqual(fresh.ui.status_leds.added, ["STAT"]);
+assert.deepStrictEqual(fresh.ui.status_leds.hidden, ["MODE", "PoE"]);
+assert.strictEqual(setCalibrationStatusLedVisible(fresh, "STAT", false), true);
+assert.deepStrictEqual(fresh.ui.status_leds.hidden, ["MODE", "STAT", "PoE"]);
+setAllCalibrationStatusLedsVisible(fresh, true);
+assert.deepStrictEqual(fresh.ui.status_leds.added, ["STAT"]);
+assert.deepStrictEqual(fresh.ui.status_leds.hidden, ["MODE", "PoE"]);
+assert.strictEqual(setCalibrationStatusLedAdded(fresh, "STAT", false), true);
+assert.deepStrictEqual(fresh.ui.status_leds.added, []);
+assert.deepStrictEqual(fresh.status_leds.STAT, [3,4]);
+assert.strictEqual(setCalibrationStatusLedAdded(fresh, "MISSING", true), false);
+assert.strictEqual(JSON.stringify(fresh.ports), originalPorts);
 """
         result = subprocess.run(["node", "-e", js], text=True, capture_output=True, timeout=10)
         self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_status_box_style_and_field_controls_share_one_horizontal_track(self) -> None:
+        start = self.source.index('data-cv-section="status-boxes"')
+        end = self.source.index('data-cv-section="switch-stack"', start)
+        section = self.source[start:end]
+        self.assertEqual(section.count("cv-cal-status-combined-row"), 2)
+        first = section[section.index("Status Box 1 style"):section.index("Status Box 2 style")]
+        second = section[section.index("Status Box 2 style"):section.index("cv-cal-dual-port-status-outputs")]
+        self.assertIn('data-cv-field="status-row-field"', first)
+        self.assertIn('data-cv-action="status-row-toggle"', first)
+        self.assertIn('data-cv-field="status2-row-field"', second)
+        self.assertIn('data-cv-action="status2-row-toggle"', second)
+        self.assertNotIn('class="cv-cal-tools-row cv-cal-status-row"', first)
+        self.assertNotIn('class="cv-cal-tools-row cv-cal-status-row"', second)
+
+        css = (ROOT / "src" / "css" / "switch-vision.css").read_text(encoding="utf-8")
+        track = css[css.index(".cv-cal-status-combined-row{"):css.index(".cv-cal-inline-separator{")]
+        self.assertIn("flex-wrap:nowrap", track)
+        self.assertIn("overflow-x:auto", track)
+
+    def test_port_status_output_picker_precedes_connector_in_details_row(self) -> None:
+        start = self.source.index("const portStatusOutputPickerHtml")
+        end = self.source.index("const status1TitleOptions", start)
+        block = self.source[start:end]
+        self.assertLess(block.index('data-cv-field="port-status-output"'), block.index('data-cv-field="port-status-row-type"'))
+        self.assertIn("panelNumber === 1 ? portStatusOutputPickerHtml", block)
+        self.assertIn("cv-cal-port-output-details", block)
+        self.assertIn('data-cv-panel="${panelNumber}" ${disabled}', block)
+        section = self.source[self.source.index('data-cv-section="status-boxes"'):
+                              self.source.index('data-cv-section="switch-stack"')]
+        self.assertNotIn('<span class="cv-cal-quick-label">Port Status Box Output</span>', section)
+
+    def test_port_label_visibility_is_first_on_label_style_row(self) -> None:
+        start = self.source.index('class="cv-cal-port-label-style"') if 'class="cv-cal-port-label-style"' in self.source else self.source.index("cv-cal-port-label-style")
+        section = self.source[start:self.source.index('data-cv-field="port-number-font-size"', start)]
+        self.assertLess(section.index("${selectedNumberLabelVisibilityControls}"), section.index("${portLabelStyleControl}"))
+        presentation = self.source[
+            self.source.index("const portPresentationControls"):
+            self.source.index("const isPortLedSize", self.source.index("const portPresentationControls"))
+        ]
+        self.assertIn("${selectedPortLedControls}", presentation)
+        self.assertNotIn("${selectedNumberLabelVisibilityControls}${selectedPortLedControls}", presentation)
 
 
 if __name__ == "__main__":

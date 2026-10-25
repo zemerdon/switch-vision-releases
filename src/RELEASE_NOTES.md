@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.16
+
+Calibration arranges the full Status Box 1 and Box 2 styling/field controls on one horizontal row per box. Port Status Output appears before Connector in the first Port Status Box Output row; selected Port Label Show/Hide moves to the start of the Port labels row. Status LEDs are selected from a dropdown with separate Show, Hide, Add and Remove actions. A new or factory-reset Calibration begins with all Status LEDs removed, ready for individual addition. Previously saved profiles keep their existing LED membership, visibility and geometry; no port telemetry or faceplate changes are made.
+
 # Switch Vision Core v2.8.15
 
 Calibration now offers independently configurable Port Status Box 1 and Box 2 fields for the selected RJ45 or SFP port, including Connector selection, field order and Show/Hide. The Port Status Output setting routes selected-port details to Box 1, Box 2 or Both; an inactive destination keeps its normal switch summary and its selected-port controls are disabled. The two editing groups appear side by side on wide screens and stack on narrower displays. Selecting a Calibration Part immediately updates its visible dropdown label while preserving the existing Select-to-apply behaviour. Previously saved single- and dual-box routing, field layouts, faceplates and calibration geometry remain intact.

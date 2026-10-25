@@ -59,7 +59,7 @@ const fields=value=>Array.isArray(value)?[...value]:null;
 const editor={config:{port_status_1_selected_field:"vlan",port_status_2_selected_field:"role"},
   _portStatusRowTypes:{1:"port",2:"port"},renderCount:0,dirtyCount:0,
   render(){this.renderCount++;},markCalibrationDirty(){this.dirtyCount++;}};
-const markup = between("    const portStatusRowControlsHtml = [1, 2].map(", "    const status1TitleOptions =");
+const markup = between("    const portStatusOutputPickerHtml =", "    const status1TitleOptions =");
 const build=new Function("statusUi","status2Ui","STATUS_PANEL_ROW_DEFS",
   "normaliseStatusPanelFieldOrder","fieldListFromValue","juniperModeOption",
   "isDellN2128OpticalModel","SFP_OPTICAL_FIELDS","htmlEscape","outputSelection",
@@ -72,8 +72,9 @@ const renderControls=(mode)=>{
 const html=renderControls("status_box_2");
 assert(html.includes("Port Status Box 1 Output"));
 assert(html.includes("Port Status Box 2 Output"));
+assert(html.indexOf('data-cv-field="port-status-output"') < html.indexOf('data-cv-field="port-status-row-type"'), "Output picker precedes first Connector");
 assert(!html.includes("Port Status Output"));
-const rowFlags=(value)=>[...value.matchAll(/cv-cal-port-output-row(?: is-inactive)?" aria-disabled="(true|false)"/g)].map(x=>x[1]);
+const rowFlags=(value)=>[...value.matchAll(/cv-cal-port-output-details(?: is-inactive)?" aria-disabled="(true|false)"/g)].map(x=>x[1]);
 assert.deepEqual(rowFlags(html),["true","false"]);
 assert.equal((html.match(/ disabled(?=>)/g)||[]).length,5,"inactive box has two disabled dropdowns and three disabled buttons");
 assert.deepEqual(rowFlags(renderControls("status_box_1")),["false","true"]);
@@ -160,13 +161,14 @@ const run=async (name,n)=>{
         self.assertIn('data-cv-field="port-status-output"', source)
         for value in ("status_box_1", "status_box_2", "both"):
             self.assertIn(f'<option value="{value}"', source)
-        self.assertIn('cv-cal-port-output-row${enabled ? "" : " is-inactive"}', source)
+        self.assertIn('cv-cal-port-output-details${enabled ? "" : " is-inactive"}', source)
         self.assertIn('aria-disabled="${!enabled}"', source)
         self.assertIn('data-cv-field="port-status-row-field" data-cv-panel="${panelNumber}" ${disabled}', source)
         self.assertIn('data-cv-action="port-status-row-toggle" data-cv-panel="${panelNumber}" ${disabled}', source)
         self.assertIn('trigger.disabled = select.disabled;', source)
         self.assertEqual(source.count('!statusPanelDisplaysSelectedPort(cal, panelNumber)) return;'), 3)
-        self.assertIn('.cv-cal-dual-port-status-outputs > .cv-cal-port-output-row.is-inactive{', css)
+        self.assertIn('.cv-cal-port-output-details.is-inactive{', css)
+        self.assertIn('.cv-cal-port-output-picker{flex:0 0 auto}', css)
 
 
 if __name__ == "__main__":

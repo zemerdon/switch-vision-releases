@@ -438,8 +438,38 @@
   min-width:0;
   margin-bottom:0;
 }
-/* Non-target Port Status Output controls stay visible but cannot be edited. */
-.cv-cal-dual-port-status-outputs > .cv-cal-port-output-row.is-inactive{
+/* Combined Status Box styling and field editing stays on one horizontal
+   track, with horizontal scrolling if the card is narrower than its controls. */
+.cv-cal-status-combined-row{
+  flex-wrap:nowrap;
+  overflow-x:auto;
+  align-items:center;
+  max-width:100%;
+  white-space:nowrap;
+  scrollbar-width:thin;
+}
+.cv-cal-status-combined-row > .cv-cal-quick-label{flex:0 0 112px;min-width:112px}
+.cv-cal-status-combined-row > label,
+.cv-cal-status-combined-row > button,
+.cv-cal-status-combined-row > .cv-cal-colour-field{flex:0 0 auto}
+.cv-cal-inline-separator{
+  display:inline-block;
+  flex:0 0 1px;
+  min-width:1px;
+  height:24px;
+  background:rgba(130,170,200,.3);
+}
+/* Output is first in Box 1's details row; only the inactive destination's
+   own connector/field actions are dimmed, never the routing picker. */
+.cv-cal-port-output-picker{flex:0 0 auto}
+.cv-cal-port-output-details{
+  display:inline-flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:4px 8px;
+  min-width:0;
+}
+.cv-cal-port-output-details.is-inactive{
   opacity:.42;
   filter:grayscale(.75);
 }

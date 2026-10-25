@@ -1,3 +1,9 @@
+## v2.8.16 — Calibration control layout and optional Status LEDs
+
+- Keep Status Box 1 and Status Box 2 style and field controls on a single horizontal row each, with horizontal scrolling where the Calibration editor is narrower.
+- Put Port Status Output first in the Port Status Box 1 Output controls, before Connector; put the selected Port Label Show/Hide controls first on the Port labels style row.
+- Replace separate Status LED checkboxes with an LED selector and Show, Hide, Add and Remove actions. New or factory-reset calibration profiles start with every Status LED removed; manually adding one restores its existing calibrated position. Preserve Status LEDs, visibility and geometry in previously saved profiles.
+
 ## v2.8.15 — Port Status Box routing and Calibration improvements
 
 - Configure RJ45/SFP port details independently in Port Status Box 1 and Box 2, including Connector, Field, Move up/down and Show/Hide. Port Status Output selects Box 1, Box 2 or Both; the other destination keeps its switch summary with inactive selected-port controls disabled.
