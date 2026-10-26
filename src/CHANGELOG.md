@@ -1,3 +1,9 @@
+## v2.8.20 — Honour factory Status LED visibility
+
+- Keep each faceplate's factory Status LED visibility when creating or resetting Calibration, including model-specific faceplates that intentionally hide the generic indicators.
+- Correct previously saved starter profiles without changing their data: restore intended stock LEDs, hide unwanted model-specific overlays, and preserve deliberate user Add/Remove/Show/Hide choices and original geometry.
+- On live cards, leave unverified chassis STAT/SYST/ACTV indicators off instead of implying green hardware health. Keep demo previews, supported stack/PoE indications, and port Link/Activity/PoE behaviour.
+
 ## v2.8.19 — Calibration controls and reliable faceplate Status LEDs
 
 - Configure selected RJ45/SFP details independently in Port Status Box 1, Box 2 or Both, with per-box connector, field ordering and Show/Hide actions. Keep inactive boxes on their normal switch summary.

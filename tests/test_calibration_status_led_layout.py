@@ -76,7 +76,7 @@ class CalibrationStatusLedLayoutTests(unittest.TestCase):
         helper_end = self.source.index("let activeCalibrationUiRenderPass", helper_start)
         helper = self.source[helper_start:helper_end]
         self.assertIn("next.ui.status_leds.added = [];", helper)
-        self.assertIn("next.ui.status_leds.hidden = [];", helper)
+        self.assertNotIn("next.ui.status_leds.hidden = [];", helper)
         self.assertIn("delete next.ui.status_leds.membership_edited;", helper)
 
         opening = self.source[
@@ -201,7 +201,7 @@ assert.strictEqual(JSON.stringify(fresh.ports), originalPorts);
             self.source.index("function statusLedIsHidden"):
             self.source.index("function drawPanel", self.source.index("function statusLedIsHidden"))
         ]
-        js = "const ensureCalibrationUi = (cal) => cal;\nconst uiFromCalibration = (cal) => cal.ui;\n" + helper + renderer + """
+        js = "const ensureCalibrationUi = (cal) => cal;\nconst uiFromCalibration = (cal) => cal.ui;\nconst faceplateFactoryCalibrationForFile = () => ({ ui: { status_leds: { hidden: [] } } });\n" + helper + renderer + """
 const assert = require("assert");
 const profile = {
   status_leds: { MODE:[1,2], STAT:[3,4], PoE:[5,6] },
@@ -258,6 +258,132 @@ assert.strictEqual(statusLedIsHidden(profile, "STAT"), false);
         result = subprocess.run(["node", "-e", js], text=True, capture_output=True, timeout=10)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("if (statusLedIsHidden(calibration, name)) continue;", self.source)
+
+    def test_all_bundled_faceplates_honour_factory_led_visibility(self) -> None:
+        # Exercise actual authored JSON: the old stock-only regression missed
+        # the deliberately hidden LEDs on dedicated model faceplates.
+        factories = {}
+        cases = []
+        for path in sorted(CALIBRATION.glob("faceplate-*.json")):
+            factory = json.loads(path.read_text(encoding="utf-8"))
+            filename = Path(factory["image"]["file"]).name
+            names = list(factory.get("status_leds", {}))
+            hidden = list(factory.get("ui", {}).get("status_leds", {}).get("hidden", []))
+            factories[filename] = {"ui": {"status_leds": {"hidden": hidden}}}
+            cases.append({"file": filename, "names": names, "hidden": hidden})
+        self.assertGreaterEqual(len(cases), 27)
+        self.assertTrue(any(case["hidden"] for case in cases))
+        self.assertTrue(any(case["names"] and not case["hidden"] for case in cases))
+
+        helper = self.source[
+            self.source.index("function calibrationStatusLedNames"):
+            self.source.index("let activeCalibrationUiRenderPass")
+        ]
+        renderer = self.source[
+            self.source.index("function statusLedIsHidden"):
+            self.source.index("function drawPanel", self.source.index("function statusLedIsHidden"))
+        ]
+        js = (
+            "const ensureCalibrationUi = (cal) => cal;\n"
+            "const uiFromCalibration = (cal) => cal.ui;\n"
+            "const factories = " + json.dumps(factories) + ";\n"
+            "const cases = " + json.dumps(cases) + ";\n"
+            "const faceplateFactoryCalibrationForFile = (file) => "
+            "factories[String(file || '').split('/').pop()] || null;\n"
+            + helper + renderer + """
+const assert = require("assert");
+for (const fixture of cases) {
+  const coordinates = Object.fromEntries(fixture.names.map((name) => [name, [10, 20]]));
+  const expectedHidden = new Set(fixture.hidden.map((name) => name.toUpperCase()));
+  const factory = {
+    image: { file: "faceplates/" + fixture.file },
+    status_leds: coordinates,
+    ui: { status_leds: { hidden: [...fixture.hidden] } }
+  };
+
+  // Opening Calibration must keep each faceplate's authored visibility.
+  applyNewCalibrationStatusLedDefaults(factory);
+  assert.deepStrictEqual(factory.ui.status_leds.added, []);
+  assert.deepStrictEqual(factory.ui.status_leds.hidden, fixture.hidden, fixture.file);
+  for (const name of fixture.names) {
+    assert.strictEqual(statusLedIsHidden(factory, name),
+      expectedHidden.has(name.toUpperCase()), "new: " + fixture.file + " " + name);
+  }
+
+  // Repair already-saved 2.8.19 starters whose hidden array was cleared.
+  const clearedStarter = structuredClone(factory);
+  clearedStarter.ui.status_leds.hidden = [];
+  for (const name of fixture.names) {
+    assert.strictEqual(statusLedIsHidden(clearedStarter, name),
+      expectedHidden.has(name.toUpperCase()), "2.8.19: " + fixture.file + " " + name);
+  }
+
+  // Repair older auto-hidden starters without hiding the intended stock LEDs.
+  const oldStarter = structuredClone(factory);
+  oldStarter.ui.status_leds.hidden = [...fixture.names];
+  for (const name of fixture.names) {
+    assert.strictEqual(statusLedIsHidden(oldStarter, name),
+      expectedHidden.has(name.toUpperCase()), "2.8.16: " + fixture.file + " " + name);
+  }
+
+  // Deliberate saved visibility overrides must remain authoritative.
+  const explicitVisible = structuredClone(factory);
+  delete explicitVisible.ui.status_leds.added;
+  explicitVisible.ui.status_leds.hidden = [];
+  for (const name of fixture.names) {
+    assert.strictEqual(statusLedIsHidden(explicitVisible, name), false,
+      "saved show: " + fixture.file + " " + name);
+  }
+  const explicitHidden = structuredClone(factory);
+  delete explicitHidden.ui.status_leds.added;
+  explicitHidden.ui.status_leds.hidden = [...fixture.names];
+  for (const name of fixture.names) {
+    assert.strictEqual(statusLedIsHidden(explicitHidden, name), true,
+      "saved hide: " + fixture.file + " " + name);
+  }
+
+  // A deliberate Add must override even a factory-hidden indicator.
+  if (fixture.names.length) {
+    const edited = structuredClone(factory);
+    const selected = fixture.names[0];
+    assert.strictEqual(setCalibrationStatusLedAdded(edited, selected, true), true);
+    assert.strictEqual(statusLedIsHidden(edited, selected), false,
+      "manual add: " + fixture.file);
+    for (const name of fixture.names.slice(1)) {
+      assert.strictEqual(statusLedIsHidden(edited, name), true,
+        "manual membership: " + fixture.file + " " + name);
+    }
+  }
+}
+// Unknown/custom artwork has no stock authority: do not auto-revive an
+// explicitly hidden LED under the old starter signature.
+const unknown = {
+  image: { file: "faceplates/custom-owner.png" },
+  status_leds: { STAT: [10, 20] },
+  ui: { status_leds: { added: [], hidden: ["STAT"] } }
+};
+assert.strictEqual(statusLedIsHidden(unknown, "STAT"), true);
+"""
+        )
+        result = subprocess.run(["node", "-e", js], text=True, capture_output=True, timeout=20)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_live_chassis_leds_do_not_invent_green_telemetry(self) -> None:
+        start = self.source.index("function statusLedClass(")
+        end = self.source.index("const portActivityState", start)
+        js = self.source[start:end] + """
+const assert = require("assert");
+for (const name of ["MODE", "STAT", "SYST", "ACTV", "DUPLX", "SPEED"]) {
+  assert.strictEqual(statusLedClass(name, false), "cv-led-off", name);
+}
+assert.strictEqual(statusLedClass("STAT", true), "cv-led-green");
+assert.strictEqual(statusLedClass("PoE", false, { poeActive: true }), "cv-led-poe");
+assert.strictEqual(statusLedClass("PoE", false), "cv-led-off");
+assert.strictEqual(statusLedClass("STACK", false, { stackActive: true }), "cv-led-blue");
+assert.strictEqual(statusLedClass("STACK", false), "cv-led-off");
+"""
+        result = subprocess.run(["node", "-e", js], text=True, capture_output=True, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_status_box_border_and_field_controls_start_on_second_track(self) -> None:
         start = self.source.index('data-cv-section="status-boxes"')

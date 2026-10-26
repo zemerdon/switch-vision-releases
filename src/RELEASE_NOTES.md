@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.20
+
+Status LEDs now follow each faceplate's factory visibility, including after new Calibration setup, reset, and older automatically saved profiles. Dedicated model artwork no longer gains the generic seven-LED overlay, while stock faceplates keep their intended layout and deliberate user LED choices remain effective. Live chassis indicators no longer imply healthy green status when telemetry is unavailable. Faceplate artwork, coordinates, ports, Link/Activity/PoE and stack behavior are preserved.
+
 # Switch Vision Core v2.8.19
 
 Calibration now routes selected RJ45/SFP port details independently to Status Box 1, Box 2 or Both, with separate connector/field ordering and visibility controls. The editor has more compact Status Box styling, arrow reordering, streamlined Port Label/Output placement, responsive Link/Activity/PoE LED Shape controls, and a Status LED dropdown with individual Show, Hide, Add and Remove actions.
