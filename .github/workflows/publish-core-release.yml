@@ -103,6 +103,16 @@ jobs:
       - name: Install build dependency
         run: python3 -m pip install --disable-pip-version-check PyYAML
 
+      - name: Provision pinned Chromium for required browser regression
+        shell: bash
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: /opt/switch-vision-release-lab/playwright-browsers
+        run: |
+          set -euo pipefail
+          sudo install -d -o "$(id -un)" -g "$(id -gn)" "$PLAYWRIGHT_BROWSERS_PATH"
+          npx --yes playwright@1.55.0 install --with-deps chromium
+          test -x "$(find "$PLAYWRIGHT_BROWSERS_PATH" -path '*/chrome-linux/headless_shell' -type f -print -quit)"
+
       - name: Build and validate exact target
         shell: bash
         env:
