@@ -1,4 +1,4 @@
-## v2.8.22 — Honour faceplate LEDs and refine Calibration tools
+## v2.8.23 — Honour faceplate LEDs and refine Calibration tools
 
 - Honour each faceplate's factory Status LED visibility in new, reset and older automatically saved Calibration profiles. Keep model-specific overlays hidden where intended, preserve deliberate user LED changes and geometry, and keep unverified chassis indicators off.
 - Rename LED Test Mode to Test Mode 1 (force visible LEDs on), and add temporary Test Mode 2 (force visible Status/Link/Activity/PoE LEDs off); leaving test mode restores live readings without saving LED overrides.

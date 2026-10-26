@@ -1,4 +1,4 @@
-# Switch Vision Core v2.8.22
+# Switch Vision Core v2.8.23
 
 Faceplate Status LEDs now honour factory visibility on new, reset and older automatically saved Calibration profiles. Dedicated faceplates do not gain an unwanted generic LED overlay, and live chassis status remains off when telemetry cannot confirm it. User-defined LED choices, artwork and port geometry remain intact.
 
