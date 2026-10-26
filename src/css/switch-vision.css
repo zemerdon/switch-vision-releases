@@ -390,6 +390,9 @@
 .cv-cal-state-dot.is-dirty{background:#ffb321;box-shadow:0 0 8px rgba(255,179,33,.65)}
 .cv-cal-tools button.cv-cal-primary{border-color:rgba(41,168,255,.85);background:rgba(41,168,255,.2);color:#eef7ff}
 .cv-cal-tools button.cv-cal-warning{border-color:rgba(255,166,0,.72);background:rgba(255,166,0,.12);color:#ffc266}
+.cv-cal-tools button.cv-cal-orange-alt{border-color:rgba(255,106,49,.86);background:rgba(221,77,22,.18);color:#ffad82}
+.cv-cal-tools button.cv-cal-success{border-color:rgba(81,221,124,.78);background:rgba(36,151,72,.16);color:#a5f5ba}
+.cv-cal-tools button.cv-cal-pink{border-color:rgba(255,99,179,.82);background:rgba(220,54,138,.18);color:#ffb0da}
 .cv-cal-tools button.cv-cal-purple,.cv-cal-sticky-buttons button.cv-cal-purple{border-color:rgba(176,92,255,.78);background:rgba(138,43,226,.18);color:#d6a8ff}
 .cv-confirm-backdrop{position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,.72);backdrop-filter:blur(3px)}
 .cv-confirm-dialog{box-sizing:border-box;width:min(760px,calc(100vw - 48px));max-height:min(78vh,760px);display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(76,173,255,.55);border-radius:14px;background:#111a24;color:#eef7ff;box-shadow:0 24px 80px rgba(0,0,0,.72)}
@@ -494,6 +497,8 @@
 .cv-cal-colour-controls button{min-height:28px;padding:4px 8px}
 .cv-cal-colour-popover{position:absolute;z-index:40;left:0;top:calc(100% + 6px);box-sizing:border-box;width:224px;padding:9px;border:1px solid rgba(41,168,255,.55);border-radius:7px;background:rgba(5,10,16,.98);box-shadow:0 8px 24px rgba(0,0,0,.58);line-height:1.2}
 .cv-cal-colour-popover[hidden]{display:none!important}
+/* Keep Status Box colour pickers above their horizontally scrolling rows. */
+.cv-cal-colour-popover.cv-cal-colour-popover-viewport{position:fixed;z-index:1000;width:min(224px,calc(100vw - 16px));max-height:calc(100vh - 16px);overflow-y:auto}
 .cv-cal-colour-sv{position:relative;display:block;width:100%;height:112px;border:1px solid rgba(255,255,255,.18);border-radius:5px;cursor:crosshair;touch-action:none;background:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,hsl(var(--cv-picker-hue),100%,50%))}
 .cv-cal-colour-marker{position:absolute;width:10px;height:10px;border:2px solid #fff;border-radius:50%;box-sizing:border-box;transform:translate(-50%,-50%);box-shadow:0 0 0 1px rgba(0,0,0,.9),0 0 4px rgba(0,0,0,.75);pointer-events:none}
 .cv-cal-colour-slider-label{display:grid!important;grid-template-columns:58px 1fr;align-items:center;gap:7px!important;margin-top:7px}
@@ -824,7 +829,7 @@
 
 /* Calibration white text: 11px regular weight in selects and neutral buttons only. */
 .cv-cal-tools select.cv-cal-select,
-.cv-cal-tools button:not(.cv-cal-toggle):not(.cv-cal-bold-toggle):not(.cv-cal-warning):not(.cv-cal-danger):not(.cv-cal-purple) {
+.cv-cal-tools button:not(.cv-cal-toggle):not(.cv-cal-bold-toggle):not(.cv-cal-primary):not(.cv-cal-warning):not(.cv-cal-orange-alt):not(.cv-cal-success):not(.cv-cal-pink):not(.cv-cal-danger):not(.cv-cal-purple) {
   font-size: 11px;
   font-weight: 400;
 }

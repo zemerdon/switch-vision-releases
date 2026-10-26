@@ -7,7 +7,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = (ROOT / "src/js/switch-vision.js").read_text(encoding="utf-8")
 
 EXPECTED = {
-    "toggle-led-test-mode": ("Toggle LED Test Mode", "Does not save or change Calibration"),
+    "toggle-led-test-mode": ("Toggle LED Test Mode 1", "Does not save or change Calibration"),
+    "toggle-led-test-mode-off": ("Toggle LED Test Mode 2", "Does not save or change Calibration"),
     "cancel-calibration": ("Close Calibration", "discard unsaved edits"),
     "refresh-faceplate": ("Reload the faceplate image", "without changing its selected artwork"),
     "reset-current-faceplate": ("Keep the selected faceplate artwork", "factory defaults"),

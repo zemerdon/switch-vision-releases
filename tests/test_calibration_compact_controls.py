@@ -179,7 +179,7 @@ console.log("Calibration grouped targets: PASS");
 
     def test_white_select_and_button_text_uses_regular_weight(self) -> None:
         css = CSS.read_text(encoding="utf-8")
-        selector = ".cv-cal-tools select.cv-cal-select,\n.cv-cal-tools button:not(.cv-cal-toggle):not(.cv-cal-bold-toggle):not(.cv-cal-warning):not(.cv-cal-danger):not(.cv-cal-purple) {"
+        selector = ".cv-cal-tools select.cv-cal-select,\n.cv-cal-tools button:not(.cv-cal-toggle):not(.cv-cal-bold-toggle):not(.cv-cal-primary):not(.cv-cal-warning):not(.cv-cal-orange-alt):not(.cv-cal-success):not(.cv-cal-pink):not(.cv-cal-danger):not(.cv-cal-purple) {"
         self.assertIn(selector, css)
         rule = css.split(selector, 1)[1].split("}", 1)[0]
         self.assertIn("font-size: 11px;", rule)

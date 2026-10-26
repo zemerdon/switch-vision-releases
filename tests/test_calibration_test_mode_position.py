@@ -37,8 +37,8 @@ def main() -> int:
     handler_start = source.index("  attachCalibrationButtonHandler() {")
     handler_end = source.index("\n  baseCalibrationData() {", handler_start)
     handler = source[handler_start:handler_end]
-    assert "calibration_test_mode: this.config?.calibration_test_mode === true" in handler
-    assert "return config?.calibration_test_mode === true;" in source
+    assert "calibration_test_mode: calibrationTestModeValue(this.config) || false" in handler
+    assert 'return calibrationTestModeValue(config) !== "";' in source
     cancel_start = source.index('if (action === "cancel-calibration")')
     cancel_end = source.index('if (action === "refresh-assets")', cancel_start)
     cancel_block = source[cancel_start:cancel_end]

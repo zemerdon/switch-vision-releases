@@ -1,8 +1,9 @@
-## v2.8.20 — Honour factory Status LED visibility
+## v2.8.21 — Honour faceplate LEDs and refine Calibration tools
 
-- Keep each faceplate's factory Status LED visibility when creating or resetting Calibration, including model-specific faceplates that intentionally hide the generic indicators.
-- Correct previously saved starter profiles without changing their data: restore intended stock LEDs, hide unwanted model-specific overlays, and preserve deliberate user Add/Remove/Show/Hide choices and original geometry.
-- On live cards, leave unverified chassis STAT/SYST/ACTV indicators off instead of implying green hardware health. Keep demo previews, supported stack/PoE indications, and port Link/Activity/PoE behaviour.
+- Honour each faceplate's factory Status LED visibility in new, reset and older automatically saved Calibration profiles. Keep model-specific overlays hidden where intended, preserve deliberate user LED changes and geometry, and keep unverified chassis indicators off.
+- Rename LED Test Mode to Test Mode 1 (force visible LEDs on), and add temporary Test Mode 2 (force visible Status/Link/Activity/PoE LEDs off); leaving test mode restores live readings without saving LED overrides.
+- Unify bold coloured Calibration action buttons: Cancel first in red, Refresh green, faceplate/all reset red, current-switch reset pink, Save Profile blue, and two distinct orange test modes.
+- Fix Status Box colour pickers hidden by horizontally scrolling controls. Preserve factory transparent box backgrounds and translucent borders when resetting either Status Box colour; leave unrelated colours and saved settings unchanged.
 
 ## v2.8.19 — Calibration controls and reliable faceplate Status LEDs
 

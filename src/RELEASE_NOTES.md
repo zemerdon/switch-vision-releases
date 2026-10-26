@@ -1,6 +1,8 @@
-# Switch Vision Core v2.8.20
+# Switch Vision Core v2.8.21
 
-Status LEDs now follow each faceplate's factory visibility, including after new Calibration setup, reset, and older automatically saved profiles. Dedicated model artwork no longer gains the generic seven-LED overlay, while stock faceplates keep their intended layout and deliberate user LED choices remain effective. Live chassis indicators no longer imply healthy green status when telemetry is unavailable. Faceplate artwork, coordinates, ports, Link/Activity/PoE and stack behavior are preserved.
+Faceplate Status LEDs now honour factory visibility on new, reset and older automatically saved Calibration profiles. Dedicated faceplates do not gain an unwanted generic LED overlay, and live chassis status remains off when telemetry cannot confirm it. User-defined LED choices, artwork and port geometry remain intact.
+
+Calibration adds Test Mode 1 (force visible LEDs on) and Test Mode 2 (force them off), with clearer coloured action buttons and Cancel at the left. Status Box colour pickers now open above their scrolling control rows; Reset preserves factory transparent backgrounds and translucent borders. Both test modes are temporary and leave saved settings unchanged.
 
 # Switch Vision Core v2.8.19
 
