@@ -1,0 +1,515 @@
+{
+  "schema": "switch-vision-interactive-calibration-v1",
+  "model": "cisco-3560cg-8pc-8p-2dual",
+  "generated_by": "Switch Vision v1.9.71",
+  "image": {
+    "file": "faceplates/c3560cg-8pc-s.png",
+    "width": 2048,
+    "height": 329,
+    "master": "c3560cg-8pc-s-native",
+    "alpha_min": 0,
+    "alpha_max": 255
+  },
+  "ports": {
+    "1": {
+      "center": [
+        926,
+        245
+      ],
+      "number": [
+        926,
+        181
+      ],
+      "led_left": [
+        907,
+        221
+      ],
+      "led_right": [
+        942,
+        221
+      ],
+      "hitbox": [
+        34,
+        56
+      ]
+    },
+    "2": {
+      "center": [
+        927,
+        338
+      ],
+      "number": [
+        926,
+        409
+      ],
+      "led_left": [
+        906,
+        365
+      ],
+      "led_right": [
+        943,
+        365
+      ],
+      "hitbox": [
+        34,
+        56
+      ]
+    },
+    "3": {
+      "center": [
+        986,
+        245
+      ],
+      "number": [
+        987,
+        181
+      ],
+      "led_left": [
+        966,
+        221
+      ],
+      "led_right": [
+        1002,
+        221
+      ],
+      "hitbox": [
+        34,
+        56
+      ]
+    },
+    "4": {
+      "center": [
+        987,
+        337
+      ],
+      "number": [
+        987,
+        409
+      ],
+      "led_left": [
+        966,
+        365
+      ],
+      "led_right": [
+        1002,
+        365
+      ],
+      "hitbox": [
+        34,
+        56
+      ]
+    },
+    "5": {
+      "center": [
+        1044,
+        245
+      ],
+      "number": [
+        1046,
+        181
+      ],
+      "led_left": [
+        1026,
+        221
+      ],
+      "led_right": [
+        1062,
+        221
+      ],
+      "hitbox": [
+        34,
+        56
+      ]
+    },
+    "6": {
+      "center": [
+        1047,
+        337
+      ],
+      "number": [
+        1047,
+        409
+      ],
+      "led_left": [
+        1026,
+        365
+      ],
+      "led_right": [
+        1062,
+        365
+      ],
+      "hitbox": [
+        34,
+        56
+      ]
+    },
+    "7": {
+      "center": [
+        1105,
+        245
+      ],
+      "number": [
+        1106,
+        181
+      ],
+      "led_left": [
+        1086,
+        221
+      ],
+      "led_right": [
+        1122,
+        221
+      ],
+      "hitbox": [
+        34,
+        56
+      ]
+    },
+    "8": {
+      "center": [
+        1107,
+        337
+      ],
+      "number": [
+        1107,
+        409
+      ],
+      "led_left": [
+        1086,
+        365
+      ],
+      "led_right": [
+        1122,
+        365
+      ],
+      "hitbox": [
+        34,
+        56
+      ]
+    }
+  },
+  "sfp": {
+    "G1": {
+      "center": [
+        1712,
+        285
+      ],
+      "hitbox": [
+        94,
+        48
+      ],
+      "label": [
+        1712,
+        228
+      ]
+    },
+    "G2": {
+      "center": [
+        1837,
+        285
+      ],
+      "hitbox": [
+        94,
+        48
+      ],
+      "label": [
+        1837,
+        228
+      ]
+    }
+  },
+  "status_leds": {
+    "STAT": [
+      674,
+      84
+    ],
+    "SYST": [
+      674,
+      149
+    ],
+    "DUPLX": [
+      852,
+      84
+    ],
+    "ACTV": [
+      852,
+      149
+    ],
+    "SPEED": [
+      1026,
+      84
+    ],
+    "STACK": [
+      1204,
+      84
+    ],
+    "PoE": [
+      1369,
+      84
+    ]
+  },
+  "ui": {
+    "logo": {
+      "show": true,
+      "file": "sv-logo.png",
+      "source": "default",
+      "x": 143,
+      "y": -1,
+      "width": 187,
+      "height": 188
+    },
+    "status_panel": {
+      "show": true,
+      "x": 338,
+      "y": 30,
+      "width": 313,
+      "height": 132,
+      "font_family": "SwitchVisionCustom, Arial, Helvetica, sans-serif",
+      "font_size": 16,
+      "title_font_size": 16,
+      "font_weight": "bold",
+      "text_color": "#ffffff",
+      "label_color": "#eef2f4",
+      "title_color": "#f4f6f7",
+      "background_color": "rgba(0,0,0,.06)",
+      "border_color": "rgba(245,248,250,.75)",
+      "border_show": true,
+      "field_order": {
+        "switch": [
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "uptime",
+          "vendor",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx"
+        ],
+        "sfp": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx"
+        ]
+      },
+      "hidden_fields": {
+        "switch": [
+          "vendor",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [],
+        "sfp": []
+      },
+      "fields": {
+        "row1_key": [
+          19,
+          39
+        ],
+        "row1_value": [
+          107,
+          39
+        ],
+        "row2_key": [
+          19,
+          58
+        ],
+        "row2_value": [
+          107,
+          58
+        ],
+        "row3_key": [
+          19,
+          78
+        ],
+        "row3_value": [
+          107,
+          78
+        ],
+        "row4_key": [
+          19,
+          97
+        ],
+        "row4_value": [
+          107,
+          97
+        ],
+        "row5_key": [
+          19,
+          116
+        ],
+        "row5_value": [
+          107,
+          116
+        ],
+        "row6_key": [
+          19,
+          135
+        ],
+        "row6_value": [
+          107,
+          135
+        ]
+      }
+    },
+    "faceplate": {
+      "show": true,
+      "file": "c3560cg-8pc-s.png",
+      "fit": "fill",
+      "opacity": 1
+    },
+    "calibration_button": {
+      "show": true,
+      "x": 1888,
+      "y": 14,
+      "width": 138,
+      "height": 34,
+      "anchor": "top_right"
+    },
+    "status_panel_2": {
+      "show": true,
+      "x": 1605,
+      "y": 25,
+      "width": 278,
+      "height": 55,
+      "font_family": "SwitchVisionCustom, Arial, Helvetica, sans-serif",
+      "font_size": 16,
+      "title_font_size": 16,
+      "font_weight": "bold",
+      "text_color": "#ffffff",
+      "label_color": "#eef2f4",
+      "title_color": "#f4f6f7",
+      "background_color": "rgba(0,0,0,.06)",
+      "border_color": "rgba(245,248,250,.75)",
+      "border_show": true,
+      "title_mode": "custom",
+      "title_field": "model",
+      "custom_title": "",
+      "field_order": {
+        "switch": [
+          "vendor",
+          "uptime",
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx"
+        ],
+        "sfp": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx"
+        ]
+      },
+      "hidden_fields": {
+        "switch": [
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [],
+        "sfp": []
+      },
+      "fields": {
+        "row1_key": [
+          24,
+          55
+        ],
+        "row1_value": [
+          112,
+          55
+        ],
+        "row2_key": [
+          24,
+          72
+        ],
+        "row2_value": [
+          112,
+          72
+        ],
+        "row3_key": [
+          24,
+          89
+        ],
+        "row3_value": [
+          112,
+          89
+        ],
+        "row4_key": [
+          24,
+          106
+        ],
+        "row4_value": [
+          112,
+          106
+        ],
+        "row5_key": [
+          24,
+          123
+        ],
+        "row5_value": [
+          112,
+          123
+        ],
+        "row6_key": [
+          24,
+          140
+        ],
+        "row6_value": [
+          112,
+          140
+        ]
+      }
+    }
+  },
+  "stack": {
+    "enabled": false,
+    "stack_id": "",
+    "uptime_source": "",
+    "members": {}
+  },
+  "management": {
+    "switch_ip": ""
+  },
+  "profile": "cisco_3560cg_8pc"
+}

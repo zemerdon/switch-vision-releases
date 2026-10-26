@@ -175,8 +175,8 @@ class RenderStabilityContractTests(unittest.TestCase):
         self.assertIn("{ visualOnly: true }", self.source)
         self.assertIn('input.addEventListener("input", (event) => commit(event, true));', self.source)
 
-    @unittest.skipUnless(CHROMIUM is not None, "maintained Chromium runtime unavailable")
     def test_browser_runtime_regressions(self) -> None:
+        self.assertIsNotNone(CHROMIUM, "Core release tests require the maintained Chromium runtime; provision pinned Playwright Chromium before validation")
         source = self.source.replace("</script>", "<\\/script>")
         harness = r"""
 window.requestAnimationFrame = (cb) => setTimeout(() => cb(performance.now()), 0);
@@ -306,7 +306,74 @@ function scenarioNaturalActivityPattern() {
   }
 }
 async function scenarioColour() {
-  const conn = immediateConnection(); const card = document.createElement('switch-vision-3650'); card.setConfig({member:'SW1', selected_switch:'SW1', calibration_profile_load:false, calibration_profile_auto_load:false, calibration_mode:true, calibration_controls:true, demo:true, port_count:48, sfp_port_count:4}); document.body.appendChild(card); card.hass = makeHass({}, conn); await sleep(40); let renders=0, redraws=0; const r=card.render.bind(card), d=card.redrawSwitchSvg.bind(card); card.render=(...args)=>{renders++;return r(...args)}; card.redrawSwitchSvg=(...args)=>{redraws++;return d(...args)}; const hue=card.shadowRoot.querySelector('[data-cv-colour-hue]'); const original=hue; for(let i=0;i<10;i++){hue.value=String(i*31);hue.dispatchEvent(new Event('input',{bubbles:true}));} const immediate={renders,redraws,same:original===card.shadowRoot.querySelector('[data-cv-colour-hue]')}; await sleep(25); const after={renders,redraws,same:original===card.shadowRoot.querySelector('[data-cv-colour-hue]'),dirty:card._calibrationDirty}; card.remove(); return {immediate,after};
+  const conn = immediateConnection();
+  const card = document.createElement('switch-vision-3650');
+  card.setConfig({member:'SW1', selected_switch:'SW1', calibration_profile_load:false, calibration_profile_auto_load:false, calibration_mode:true, calibration_controls:true, demo:true, port_count:48, sfp_port_count:4});
+  document.body.appendChild(card);
+  card.hass = makeHass({}, conn);
+  await sleep(40);
+  let renders = 0, redraws = 0;
+  const r = card.render.bind(card), d = card.redrawSwitchSvg.bind(card);
+  card.render = (...args) => {renders++;return r(...args)};
+  card.redrawSwitchSvg = (...args) => {redraws++;return d(...args)};
+  const hue = card.shadowRoot.querySelector('[data-cv-colour-hue]');
+  const original = hue;
+  for (let i = 0; i < 10; i++) {
+    hue.value = String(i * 31);
+    hue.dispatchEvent(new Event('input', {bubbles:true}));
+  }
+  const immediate = {renders, redraws, same:original === card.shadowRoot.querySelector('[data-cv-colour-hue]')};
+  await sleep(25);
+  const after = {renders, redraws, same:original === card.shadowRoot.querySelector('[data-cv-colour-hue]'), dirty:card._calibrationDirty};
+
+  const checkStatusPicker = async (field, currentColour) => {
+    // The disposable file:// fixture cannot resolve the HAOS /local CSS URL.
+    const style = document.createElement('style');
+    style.textContent = window.__cvTestCss;
+    card.shadowRoot.appendChild(style);
+    const control = card.shadowRoot.querySelector('[data-cv-colour-control="' + field + '"]');
+    if (!control) throw new Error('Status Box picker missing: ' + field);
+    control.querySelector('[data-cv-colour-open]').click();
+    await sleep(10);
+    const popover = control._cvColourPopover || control.querySelector('[data-cv-colour-popover]');
+    const bounds = popover.getBoundingClientRect();
+    const hit = card.shadowRoot.elementFromPoint(bounds.left + 20, bounds.top + 20);
+    const hittable = hit === popover || popover.contains(hit);
+    const opened = !popover.hidden && hittable &&
+      getComputedStyle(popover).position === 'fixed' &&
+      bounds.width > 0 && bounds.height > 0 &&
+      bounds.left >= 0 && bounds.top >= 0 &&
+      bounds.right <= window.innerWidth + 1 &&
+      bounds.bottom <= window.innerHeight + 1;
+    const ancestors = [];
+    for (let parent = popover.parentElement; parent && ancestors.length < 12; parent = parent.parentElement) {
+      const computed = getComputedStyle(parent), box = parent.getBoundingClientRect();
+      ancestors.push({tag:parent.tagName, className:String(parent.className || '').slice(0,85), transform:computed.transform, filter:computed.filter, backdrop:computed.backdropFilter, contain:computed.contain, overflowX:computed.overflowX, box:[Math.round(box.left),Math.round(box.top)]});
+    }
+    const visual = {hidden:popover.hidden, connected:popover.isConnected, popoverOpen:popover.matches(':popover-open'), display:getComputedStyle(popover).display, visibility:getComputedStyle(popover).visibility, size:[getComputedStyle(popover).width,getComputedStyle(popover).height], offsets:[popover.offsetWidth,popover.offsetHeight], hiddenAttribute:popover.hasAttribute('hidden'), position:getComputedStyle(popover).position, style:[popover.style.left,popover.style.top], bounds:[bounds.left,bounds.top,bounds.right,bounds.bottom], viewport:[window.innerWidth,window.innerHeight], classes:popover.className, sheetRules:style.sheet?.cssRules?.length || 0, hittable, hitTag:hit?.tagName || null, hitClass:String(hit?.className || '').slice(0,100), ancestors};
+    const hex = control.querySelector('[data-cv-colour-hex]');
+    hex.value = '#234567';
+    hex.dispatchEvent(new Event('input', {bubbles:true}));
+    await sleep(15);
+    const hexEdited = currentColour(card.calibrationData()) === '#234567';
+    const brightness = popover.querySelector('[data-cv-colour-brightness]');
+    brightness.value = '35';
+    brightness.dispatchEvent(new Event('input', {bubbles:true}));
+    await sleep(15);
+    const brightnessEdited = /^#[0-9a-f]{6}$/i.test(currentColour(card.calibrationData())) &&
+      currentColour(card.calibrationData()) !== '#234567';
+    popover.querySelector('[data-cv-colour-done]').click();
+    const doneRestored = popover.hidden && popover.parentElement === control;
+    control.querySelector('[data-cv-colour-open]').click();
+    await sleep(10);
+    (control._cvColourPopover || control.querySelector('[data-cv-colour-popover]')).querySelector('[data-cv-colour-reset]').click();
+    await sleep(15);
+    return {opened, hexEdited, brightnessEdited, doneRestored, factoryColour:currentColour(card.calibrationData()), visual};
+  };
+  const status1 = await checkStatusPicker('status-box-color', cal => cal.ui.status_panel.background_color);
+  const status2 = await checkStatusPicker('status2-border-color', cal => cal.ui.status_panel_2.border_color);
+  card.remove();
+  return {immediate, after, status1, status2};
 }
 async function scenarioFaceplateHeight() {
   const conn = immediateConnection();
@@ -521,7 +588,7 @@ async function scenarioCalibrationBehaviorContracts() {
   renderCal = calibrationRenderSpaceData(card.calibrationData());
   const duringLed = circleFor(renderCal.ports['1'].led_left);
   const duringTest = {
-    enabled:card.config.calibration_test_mode === true,
+    enabled:calibrationTestModeValue(card.config) === 'on',
     ledClass:duringLed?.getAttribute('class') || '',
   };
 
@@ -550,7 +617,7 @@ async function scenarioCalibrationBehaviorContracts() {
   await sleep(80);
   const afterActivityTickLed = circleFor(afterDoneActivityPoint);
   const afterDone = {
-    enabled:card.config.calibration_test_mode === true,
+    enabled:calibrationTestModeValue(card.config) === 'on',
     controls:card.config.calibration_controls === true,
     mode:card.config.calibration_mode === true,
     ledClass:afterDoneLed?.getAttribute('class') || '',
@@ -564,18 +631,43 @@ async function scenarioCalibrationBehaviorContracts() {
   card.shadowRoot.querySelector('[data-cv-action="toggle-calibration"]').click();
   await sleep(80);
   const reopened = {
-    enabled:card.config.calibration_test_mode === true,
+    enabled:calibrationTestModeValue(card.config) === 'on',
     controls:card.config.calibration_controls === true,
     mode:card.config.calibration_mode === true,
   };
   card.shadowRoot.querySelector('[data-cv-action="cancel-calibration"]').click();
   await sleep(40);
   const afterCancel = {
-    enabled:card.config.calibration_test_mode === true,
+    enabled:calibrationTestModeValue(card.config) === 'on',
     controls:card.config.calibration_controls === true,
     mode:card.config.calibration_mode === true,
   };
-  const testMode = {duringTest, afterDone, reopened, afterCancel};
+  // Drive both labelled buttons through the browser DOM. The modes must
+  // be mutually exclusive, affect the actual LEDs and not mark Calibration dirty.
+  card.shadowRoot.querySelector('[data-cv-action="toggle-calibration"]').click();
+  await sleep(35);
+  const dirtyBeforeButtons = card._calibrationDirty;
+  card.shadowRoot.querySelector('[data-cv-action="toggle-led-test-mode-off"]').click();
+  await sleep(35);
+  renderCal = calibrationRenderSpaceData(card.calibrationData());
+  const offButton = {
+    mode:calibrationTestModeValue(card.config),
+    ledClass:circleFor(renderCal.ports['1'].led_left)?.getAttribute('class') || '',
+    label:card.shadowRoot.querySelector('[data-cv-action="toggle-led-test-mode-off"]')?.textContent?.trim() || '',
+  };
+  card.shadowRoot.querySelector('[data-cv-action="toggle-led-test-mode"]').click();
+  await sleep(35);
+  renderCal = calibrationRenderSpaceData(card.calibrationData());
+  const onButton = {
+    mode:calibrationTestModeValue(card.config),
+    ledClass:circleFor(renderCal.ports['1'].led_left)?.getAttribute('class') || '',
+    label:card.shadowRoot.querySelector('[data-cv-action="toggle-led-test-mode"]')?.textContent?.trim() || '',
+  };
+  card.shadowRoot.querySelector('[data-cv-action="toggle-led-test-mode"]').click();
+  await sleep(35);
+  const buttonExit = {mode:calibrationTestModeValue(card.config), dirty:card._calibrationDirty === dirtyBeforeButtons};
+  card.shadowRoot.querySelector('[data-cv-action="cancel-calibration"]').click();
+  const testMode = {duringTest, afterDone, reopened, afterCancel, offButton, onButton, buttonExit};
 
   card.remove();
   return {circle, mixed, metadata, testMode};
@@ -681,7 +773,8 @@ async function scenarioNativeFontControls() {
 }
 (async () => { try { const result = {live:await scenarioLiveGate(), subscriptions:await scenarioSubscriptions(), profile:await scenarioProfileRace(), calibration:await scenarioCalibrationStability(), activity:await scenarioActivity(), activityTargets:scenarioActivityTargetScheduling(), naturalActivity:scenarioNaturalActivityPattern(), colour:await scenarioColour(), faceplateHeight:await scenarioFaceplateHeight(), calibrationBehavior:await scenarioCalibrationBehaviorContracts(), faceplateTopology:await scenarioFaceplateOwnsVisualTopology(), nativeFonts:await scenarioNativeFontControls()}; document.getElementById('result').textContent = JSON.stringify(result); } catch (err) { document.getElementById('result').textContent = JSON.stringify({error:String(err), stack:err?.stack||''}); } })();
 """
-        document = '<!doctype html><html><body><pre id="result">pending</pre><script>' + source + '</script><script>' + harness + '</script></body></html>'
+        css_payload = json.dumps(self.css).replace("</", "<\\/")
+        document = '<!doctype html><html><body><pre id="result">pending</pre><script>window.__cvTestCss=' + css_payload + ';</script><script>' + source + '</script><script>' + harness + '</script></body></html>'
         with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False, encoding="utf-8") as handle:
             handle.write(document)
             fixture = Path(handle.name)
@@ -722,6 +815,9 @@ async function scenarioNativeFontControls() {
         self.assertEqual(payload["calibrationBehavior"]["testMode"]["afterDone"], {"enabled":True, "controls":False, "mode":False, "ledClass":"cv-led-green", "activityLedClass":"cv-led-amber", "activityAfterTickClass":"cv-led-amber", "activityTimer":False, "badgeActive":True, "extraSfpVisible":2})
         self.assertEqual(payload["calibrationBehavior"]["testMode"]["reopened"], {"enabled":True, "controls":True, "mode":True})
         self.assertEqual(payload["calibrationBehavior"]["testMode"]["afterCancel"], {"enabled":False, "controls":False, "mode":False})
+        self.assertEqual(payload["calibrationBehavior"]["testMode"]["offButton"], {"mode":"off", "ledClass":"cv-led-off", "label":"Test Mode 2: ON"})
+        self.assertEqual(payload["calibrationBehavior"]["testMode"]["onButton"], {"mode":"on", "ledClass":"cv-led-green", "label":"Test Mode 1: ON"})
+        self.assertEqual(payload["calibrationBehavior"]["testMode"]["buttonExit"], {"mode":"", "dirty":True})
         self.assertEqual(payload["faceplateTopology"]["dell"], {"ports": 0, "sfp": 26})
         self.assertEqual(payload["faceplateTopology"]["c3850"], {"ports": 0, "sfp": 4})
         self.assertEqual(payload["faceplateTopology"]["c3650"], {"ports": 1, "sfp": 1})
@@ -747,6 +843,11 @@ async function scenarioNativeFontControls() {
         self.assertEqual(payload["colour"]["after"]["redraws"], 1)
         self.assertTrue(payload["colour"]["after"]["same"])
         self.assertTrue(payload["colour"]["after"]["dirty"])
+        for box in ("status1", "status2"):
+            for check in ("opened", "hexEdited", "brightnessEdited", "doneRestored"):
+                self.assertTrue(payload["colour"][box][check], (box, check, payload["colour"][box]))
+        self.assertEqual(payload["colour"]["status1"]["factoryColour"], "transparent")
+        self.assertEqual(payload["colour"]["status2"]["factoryColour"], "rgba(245,248,250,.75)")
         self.assertIsNone(payload["faceplateHeight"]["automatic"]["maxHeight"])
         self.assertEqual(payload["faceplateHeight"]["automatic"]["preset"], "auto")
         self.assertEqual(payload["faceplateHeight"]["compact"]["maxHeight"], 115)
