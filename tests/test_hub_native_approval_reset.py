@@ -1,4 +1,4 @@
-"""Native Hub artwork approval completes the existing factory-reset save, once.
+"""Native and Custom Hub approval reloads Core's exact saved factory, once.
 
 The browser-side test executes the actual Switch Vision card event handler with
 minimal fake Home Assistant services. Nothing is written to live HAOS.
@@ -9,8 +9,10 @@ import subprocess
 root = Path(__file__).resolve().parents[1]
 frontend = root / "src/js/switch-vision.js"
 backend = (root / "src/custom_components/switch_vision/__init__.py").read_text()
-assert '"stock_artwork_approved": base.startswith("native_")' in backend
+assert '"stock_artwork_approved": True' in backend
 assert '"approved_sha256": revision["sha256"]' in backend
+assert "state, base, previous_name, name, revision, _validate_calibration," in backend
+assert "except (ValueError, vol.Invalid) as err:" in backend
 
 node = r"""
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
@@ -19,7 +21,7 @@ const start=js.indexOf('  async handleCalibrationUpdateEvent(event) {');
 const end=js.indexOf('\n  scheduleCalibrationSubscriptionRetry()',start);
 assert(start>0&&end>start);
 const Card=vm.runInNewContext('class Card {'+js.slice(start,end)+'}\nCard',{
-  calibrationControlsEnabled:()=>false,
+  calibrationControlsEnabled:cfg=>cfg?.testEditor===true,
   cloneCalibrationData:structuredClone,
   console:{error(){}}
 });
@@ -28,8 +30,8 @@ function fixture(base='native_SW3',pinSha=approved) {
   const card=new Card(),trace=[];
   card.config={}; card._calibrationWorking={old:true};
   card._profileCalibration={old:true};
-  card.calibrationUpdateAppliesToThisCard=()=>({
-    applies:base==='native_SW3', profile:base, baseProfile:base,
+  card.calibrationUpdateAppliesToThisCard=data=>({
+    applies:data.profile===base, profile:base, baseProfile:base,
     changedProfiles:[],mine:base,myBase:base
   });
   card.invalidateProfileLoad=()=>trace.push('invalidate');
@@ -46,6 +48,7 @@ function fixture(base='native_SW3',pinSha=approved) {
     trace.push('clear');
     if (next) assert.equal(next.geometry,'factory');
     card._profileCalibration=null;
+    card._calibrationWorking=next ? structuredClone(next) : null;
   };
   card.saveCalibrationProfile=()=>{throw Error('client must not rewrite approved Core factory')};
   card.render=()=>trace.push('render');
@@ -80,6 +83,17 @@ const event={data:{profile:'native_SW3',base_profile_name:'native_SW3',
   const custom=fixture('custom_SW3');
   await custom.card.handleCalibrationUpdateEvent(event);
   assert.deepEqual(custom.trace,[]);
+
+  // The manual Custom picker targets its own switch and must replace the
+  // editor's working factory with Core's verified saved geometry too.
+  const customApproval=fixture('custom_SW3');
+  customApproval.card.config={testEditor:true};
+  await customApproval.card.handleCalibrationUpdateEvent({data:{
+    profile:'custom_SW3',base_profile_name:'custom_SW3',
+    action:'reset_switch',stock_artwork_approved:true,approved_sha256:approved}});
+  assert.deepEqual(customApproval.trace,['invalidate','refresh','clear','load','render']);
+  assert.equal(customApproval.card._profileCalibration.geometry,'verified Core factory');
+  assert.equal(customApproval.card._calibrationWorking.geometry,'verified Core factory');
 
   // Existing ordinary Reset Current Switch event keeps its previous path.
   const legacy=fixture();

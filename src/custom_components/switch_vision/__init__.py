@@ -204,7 +204,7 @@ UNIFI_DEVICE_WS_SCHEMA = {
 }
 
 PANEL_URL_PATH = "switch-vision"
-PANEL_VERSION = "2.8.26"
+PANEL_VERSION = "2.8.27"
 PANEL_JS_PATH = "/api/switch_vision/switch-vision-panel.js"
 PANEL_JS_URL = f"{PANEL_JS_PATH}?v={PANEL_VERSION}"
 ICONSET_JS_PATH = "/api/switch_vision/switch-vision-iconset.js"
@@ -2837,16 +2837,16 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
             # cannot survive alongside its newly selected factory pair.
             try:
                 removed = _stock_selection.apply_approved_switch_artwork(
-                    state, base, previous_name, name, revision,
+                    state, base, previous_name, name, revision, _validate_calibration,
                 )
-            except ValueError as err:
+            except (ValueError, vol.Invalid) as err:
                 connection.send_error(msg["id"], "invalid_artwork", str(err))
                 return
             await _save(state)
         hass.bus.async_fire(EVENT_CALIBRATION_UPDATED, {
             "profile": base, "profiles_changed": removed,
             "base_profile_name": base, "action": "reset_switch",
-            "stock_artwork_approved": base.startswith("native_"),
+            "stock_artwork_approved": True,
             "approved_sha256": revision["sha256"],
             "removed": len(removed),
         })

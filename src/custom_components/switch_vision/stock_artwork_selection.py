@@ -9,7 +9,7 @@ from __future__ import annotations
 from copy import deepcopy
 from pathlib import Path
 import re
-from typing import Any
+from typing import Any, Callable
 
 
 def expected_artwork_choice_matches(
@@ -34,6 +34,7 @@ def expected_artwork_choice_matches(
 def apply_approved_switch_artwork(
     state: dict[str, Any], base: str, previous_name: str,
     name: str, revision: dict[str, Any],
+    validate_factory: Callable[[str, dict[str, Any]], Any],
 ) -> list[str]:
     """Replace exactly one switch's saved Calibration and stock selection."""
     if (not isinstance(base, str)
@@ -74,6 +75,10 @@ def apply_approved_switch_artwork(
         "user_topology_authoritative": False,
         "stock_faceplate_sha256": revision["sha256"],
     })
+    # A SHA match proves byte identity, not that a historical JSON revision is
+    # a loadable Calibration. Run Core's complete saved-profile validator before
+    # removing any old profiles or changing the approved artwork pin.
+    validate_factory(base, prepared_factory)
 
     profiles = state.setdefault("profiles", {})
     active_profiles = state.setdefault("active_profiles", {})

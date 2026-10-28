@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.27
+
+Faceplate approval now verifies that the selected SHA-paired factory geometry is a complete, loadable Calibration before committing the selected switch's reset. Native upgrades and Custom faceplate selections both reload Core's saved factory geometry, including any open Calibration editor. A dashboard that missed an approval event reloads the persisted factory on reconnection. Unrelated switches and Custom profiles remain unchanged.
+
 # Switch Vision Core v2.8.26
 
 The Hub's Upgrade Faceplate action now completes the selected Native switch's factory Calibration reset in Core. The new image and its verified factory geometry are saved together before the Hub reports approval, even when the Native dashboard is closed. Open Native cards reload that saved factory on the update event. This removes the need to press Reset Selected Switch after approving an upgraded stock faceplate. Other switches and custom faceplate configurations are unchanged.

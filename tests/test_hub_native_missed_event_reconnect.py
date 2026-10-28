@@ -1,7 +1,7 @@
 """Exercise real card reconnect/profile-load methods after a missed Hub event.
 
 No Home Assistant network calls are made. A fake server responds with the
-persisted approved stock pin and no old Calibration, as Core's approval stores.
+persisted approved stock pin and the exact new factory Calibration saved by Core.
 """
 from pathlib import Path
 import subprocess
@@ -27,10 +27,22 @@ const Card=vm.runInNewContext('class Card {\n'+parts.join('\n')+'\n}\nCard',{
  window:{addEventListener(){}},
  calibrationControlsEnabled:()=>false,
  stableCalibrationSwitchKey:()=> 'SW3',
+ validateImportedCalibration:raw=>({valid:true,calibration:raw}),
+ cloneCalibrationData:value=>structuredClone(value),
+ exactModelVisualRecommendation:()=>null,
+ factoryMigrationForStoredCalibration:()=>null,
  console:{error(){},debug(){}}
 });
 const currentSha='b'.repeat(64);
 const oldSha='a'.repeat(64);
+const persistedFactory={
+  schema:'switch-vision-interactive-calibration-v1',
+  profile_name:'native_SW3',
+  image:{file:'faceplates/model.png',width:6000,height:900},
+  ports:{'1':{center:[123,456]}},sfp:{SFP1:{center:[789,456]}},
+  status_leds:{SYSTEM:[400,40]},
+  ui:{faceplate:{file:'__default__',source:'default',show:true}}
+};
 async function checkReconnect({alreadyLoaded,previousConnection}) {
  let wsCalls=0;
  const card=new Card();
@@ -40,7 +52,7 @@ async function checkReconnect({alreadyLoaded,previousConnection}) {
    wsCalls++; assert.equal(request.type,'switch_vision/get_calibration');
    assert.equal(request.profile,'native_SW3');
    assert.equal(request.stock_faceplate,'model.png');
-   return {exists:false,calibration:null,
+   return {exists:true,calibration:persistedFactory,
       stock_artwork:{filename:'model.png',path:'faceplates/model.png',sha256:currentSha}};
  }};
  card._profileLoadGeneration=0;
@@ -55,6 +67,8 @@ async function checkReconnect({alreadyLoaded,previousConnection}) {
  card.baseCalibrationProfileName=()=> 'native_SW3';
  card.recommendedFaceplateFilename=()=> 'model.png';
  card.render=()=>{};
+ card.baseCalibrationData=()=>({});
+ card.detectedExactModel=()=>'';
  card.subscribeCalibrationUpdates=()=>{};
  card.subscribeUiSettingsUpdates=()=>{};
  card.maybeLoadGlobalUiSettings=()=>{};
@@ -66,9 +80,11 @@ async function checkReconnect({alreadyLoaded,previousConnection}) {
  card.connectedCallback();
  await new Promise(setImmediate);
  assert.equal(wsCalls,1,'reconnected card must re-query server after missed approval');
- assert.equal(card._profileCalibration,null,'reconnected card must not retain deleted Calibration');
+ assert.equal(card._profileCalibration?.image?.width,6000,'reconnected card must load Core-saved factory');
+ assert.equal(card._profileCalibration?.ports?.['1']?.center?.[0],123,'must load new port geometry');
+ assert.equal(card._profileCalibration?.ui?.faceplate?.file,'__default__','must use approved stock selection');
  assert.equal(card._stockArtworkChoice.sha256,currentSha,'must use approved server SHA');
- assert.equal(card._profileLoadInfo.exists,false,'removed profile remains absent');
+ assert.equal(card._profileLoadInfo.exists,true,'approved factory remains durably saved');
  card.maybeLoadCalibrationProfile();
  await new Promise(setImmediate);
  assert.equal(wsCalls,1,'ordinary attached updates must not repeat the profile query');

@@ -1,6 +1,7 @@
 """Exact switch-only, explicitly approved stock faceplate + Calibration reset."""
 from __future__ import annotations
 import sys
+from copy import deepcopy
 from pathlib import Path
 import unittest
 
@@ -18,8 +19,17 @@ def revision(image: str, ver: str) -> dict:
                 "image": {"file": "faceplates/" + image, "width": 6000, "height": 900},
                 "ports": {"1": {"center": [123, 456]}},
                 "sfp": {"SFP1": {"center": [789, 456]}},
+                "status_leds": {"SYSTEM": [400, 40]},
                 "ui": {"faceplate": {"file": image, "source": "custom", "show": True}},
             }}
+
+
+def validate_factory(base: str, calibration: dict) -> dict:
+    """Represent Core's required full validation callback in isolated tests."""
+    if (calibration.get("profile_name") != base
+            or not isinstance(calibration.get("status_leds"), dict)):
+        raise ValueError("Invalid factory Calibration: status_leds required")
+    return calibration
 
 
 class StockArtworkSelectionTests(unittest.TestCase):
@@ -61,7 +71,7 @@ class StockArtworkSelectionTests(unittest.TestCase):
             "native_SW30": {"filename": "generic.png", "sha256": "d" * 64},
         }}
         removed = apply_approved_switch_artwork(data, "native_SW3", "generic.png",
-                                                 "dedicated.png", revision("dedicated.png", "sha-v2"))
+                                                 "dedicated.png", revision("dedicated.png", "sha-v2"), validate_factory)
         self.assertEqual(set(removed), {"native_SW3", "native_SW3__faceplate__manual"})
         # The approved geometry is durable even with no Native card mounted.
         approved = data["profiles"]["native_SW3"]
@@ -85,7 +95,7 @@ class StockArtworkSelectionTests(unittest.TestCase):
         # the newer dedicated option from this particular switch's picker.
         apply_approved_switch_artwork(
             data, "native_SW3", "dedicated.png", "generic.png",
-            revision("generic.png", "sha-v1"),
+            revision("generic.png", "sha-v1"), validate_factory,
         )
         self.assertEqual(data["stock_artwork_choices"]["native_SW3"]["eligible_faceplates"],
                          ["dedicated.png", "generic.png"])
@@ -104,7 +114,7 @@ class StockArtworkSelectionTests(unittest.TestCase):
                             "native_SW3": {"filename": "generic.png", "sha256": "a" * 64}}}
                 with self.assertRaises(ValueError):
                     apply_approved_switch_artwork(data, base, former, name,
-                                                  revision("dedicated.png", "sha-v2"))
+                                                  revision("dedicated.png", "sha-v2"), validate_factory)
                 self.assertEqual(data["profiles"]["native_SW3"], {"custom": 1})
                 self.assertEqual(data["stock_artwork_choices"]["native_SW3"]["filename"], "generic.png")
 
@@ -120,9 +130,29 @@ class StockArtworkSelectionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "factory geometry"):
             apply_approved_switch_artwork(
                 state, "native_SW3", "generic.png", "dedicated.png", unpaired,
+                validate_factory,
             )
         self.assertEqual(state["profiles"]["native_SW3"], {"owner": "unchanged"})
         self.assertEqual(state["stock_artwork_choices"]["native_SW3"]["sha256"], "c" * 64)
+
+    def test_incomplete_sha_verified_geometry_fails_before_any_switch_change(self):
+        """Verified bytes without a required field are not a usable factory."""
+        state = {
+            "profiles": {"native_SW3": {"saved": "user-custom-layout"}},
+            "active_profiles": {"native_SW3": "native_SW3__faceplate__old"},
+            "stock_artwork_choices": {"native_SW3": {
+                "filename": "generic.png", "sha256": "c" * 64,
+            }},
+        }
+        before = deepcopy(state)
+        incomplete = revision("dedicated.png", "sha-v2")
+        incomplete["geometry"].pop("status_leds")
+        with self.assertRaisesRegex(ValueError, "status_leds required"):
+            apply_approved_switch_artwork(
+                state, "native_SW3", "generic.png", "dedicated.png",
+                incomplete, validate_factory,
+            )
+        self.assertEqual(state, before)
 
     def test_confirmed_switch_factory_reset_rebases_only_one_sha(self):
         latest = {"3850.png": {

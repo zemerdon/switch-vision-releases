@@ -1,3 +1,8 @@
+## v2.8.27 — Complete verified Hub faceplate upgrades
+
+- Validate the full Core Calibration profile before an approved stock revision can replace a switch's saved layout or SHA-pinned artwork. Reject incomplete historical factory geometry without changing the switch.
+- Reload the saved verified factory for both Native upgrades and the switch-scoped Custom faceplate picker, including the editor's working layout. Strengthen missed-event reconnect and approval rejection regressions.
+
 ## v2.8.26 — Apply Hub-approved stock faceplate immediately
 
 - On an approved Hub faceplate upgrade, atomically save the exact SHA-verified factory Calibration for that switch in Core alongside the pinned artwork selection. This completes the reset even if no Native dashboard card is open to receive the update event.
