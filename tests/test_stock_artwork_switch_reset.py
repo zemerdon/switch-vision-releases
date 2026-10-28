@@ -12,7 +12,14 @@ from stock_artwork_selection import (apply_approved_switch_artwork,
 
 def revision(image: str, ver: str) -> dict:
     return {"filename": image, "sha256": "a" * 64, "geometry_sha256": "b" * 64,
-            "version": ver}
+            "version": ver, "geometry": {
+                "schema": "switch-vision-interactive-calibration-v1",
+                "profile": "stock_48rj45_4sfp",
+                "image": {"file": "faceplates/" + image, "width": 6000, "height": 900},
+                "ports": {"1": {"center": [123, 456]}},
+                "sfp": {"SFP1": {"center": [789, 456]}},
+                "ui": {"faceplate": {"file": image, "source": "custom", "show": True}},
+            }}
 
 
 class StockArtworkSelectionTests(unittest.TestCase):
@@ -56,7 +63,15 @@ class StockArtworkSelectionTests(unittest.TestCase):
         removed = apply_approved_switch_artwork(data, "native_SW3", "generic.png",
                                                  "dedicated.png", revision("dedicated.png", "sha-v2"))
         self.assertEqual(set(removed), {"native_SW3", "native_SW3__faceplate__manual"})
-        self.assertNotIn("native_SW3", data["profiles"])
+        # The approved geometry is durable even with no Native card mounted.
+        approved = data["profiles"]["native_SW3"]
+        self.assertEqual(approved["ports"]["1"]["center"], [123, 456])
+        self.assertEqual(approved["sfp"]["SFP1"]["center"], [789, 456])
+        self.assertEqual(approved["image"]["file"], "faceplates/dedicated.png")
+        self.assertEqual(approved["ui"]["faceplate"]["file"], "__default__")
+        self.assertEqual(approved["ui"]["faceplate"]["source"], "default")
+        self.assertEqual(approved["stock_faceplate_sha256"], "a" * 64)
+        self.assertEqual(approved["profile_name"], "native_SW3")
         self.assertNotIn("native_SW3", data["active_profiles"])
         self.assertIs(data["profiles"]["native_SW30"], neighbor)
         self.assertEqual(data["profiles"]["custom_SW3"], {"custom": True})
@@ -93,6 +108,21 @@ class StockArtworkSelectionTests(unittest.TestCase):
                 self.assertEqual(data["profiles"]["native_SW3"], {"custom": 1})
                 self.assertEqual(data["stock_artwork_choices"]["native_SW3"]["filename"], "generic.png")
 
+    def test_missing_verified_factory_fails_without_mutating_calibration(self):
+        state = {
+            "profiles": {"native_SW3": {"owner": "unchanged"}},
+            "stock_artwork_choices": {
+                "native_SW3": {"filename": "generic.png", "sha256": "c" * 64},
+            },
+        }
+        unpaired = revision("dedicated.png", "sha-v2")
+        unpaired.pop("geometry")
+        with self.assertRaisesRegex(ValueError, "factory geometry"):
+            apply_approved_switch_artwork(
+                state, "native_SW3", "generic.png", "dedicated.png", unpaired,
+            )
+        self.assertEqual(state["profiles"]["native_SW3"], {"owner": "unchanged"})
+        self.assertEqual(state["stock_artwork_choices"]["native_SW3"]["sha256"], "c" * 64)
 
     def test_confirmed_switch_factory_reset_rebases_only_one_sha(self):
         latest = {"3850.png": {

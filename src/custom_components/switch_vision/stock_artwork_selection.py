@@ -6,6 +6,7 @@ Home Assistant storage dict. Caller saves it once under the storage lock.
 """
 from __future__ import annotations
 
+from copy import deepcopy
 from pathlib import Path
 import re
 from typing import Any
@@ -45,6 +46,34 @@ def apply_approved_switch_artwork(
         raise ValueError("Invalid switch artwork identity.")
     if not isinstance(revision, dict) or revision.get("filename") != name:
         raise ValueError("The selected factory revision is inconsistent.")
+    # The chosen geometry was already byte-verified against Core's local
+    # revision manifest. Persist that exact factory here, in the approval's
+    # single storage transaction: an unmounted Native card cannot receive an
+    # event and must not be required to finish the approved reset later.
+    factory = revision.get("geometry")
+    image = factory.get("image") if isinstance(factory, dict) else None
+    ui = factory.get("ui") if isinstance(factory, dict) else None
+    faceplate_ui = ui.get("faceplate") if isinstance(ui, dict) else None
+    if (not isinstance(factory, dict)
+            or factory.get("schema") != "switch-vision-interactive-calibration-v1"
+            or not isinstance(image, dict)
+            or image.get("file") != "faceplates/" + name
+            or not isinstance(factory.get("ports"), dict)
+            or not isinstance(factory.get("sfp"), dict)
+            or not isinstance(faceplate_ui, dict)):
+        raise ValueError("The selected factory geometry is unavailable or inconsistent.")
+    prepared_factory = deepcopy(factory)
+    prepared_factory["ui"]["faceplate"].update({
+        "file": "__default__", "source": "default", "show": True,
+    })
+    prepared_factory.update({
+        "profile_name": base,
+        "base_profile_name": base,
+        "profile_scope": "Switch default",
+        "faceplate_file": "__default__",
+        "user_topology_authoritative": False,
+        "stock_faceplate_sha256": revision["sha256"],
+    })
 
     profiles = state.setdefault("profiles", {})
     active_profiles = state.setdefault("active_profiles", {})
@@ -71,6 +100,8 @@ def apply_approved_switch_artwork(
 
     for profile in removed:
         profiles.pop(profile, None)
+    # The verified factory is now durable before any browser event is sent.
+    profiles[base] = prepared_factory
     active_profiles.pop(base, None)
     pins[base] = {
         "filename": name,

@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.26
+
+The Hub's Upgrade Faceplate action now completes the selected Native switch's factory Calibration reset in Core. The new image and its verified factory geometry are saved together before the Hub reports approval, even when the Native dashboard is closed. Open Native cards reload that saved factory on the update event. This removes the need to press Reset Selected Switch after approving an upgraded stock faceplate. Other switches and custom faceplate configurations are unchanged.
+
 # Switch Vision Core v2.8.25
 
 The generic stock 48 RJ45 / 4 SFP faceplate now uses the new compact artwork and matching owner-calibrated factory geometry. Existing model mappings and saved Calibration remain intact. On an affected switch, the existing faceplate upgrade workflow offers the changed artwork/geometry pair with a preview and a choice to keep the current faceplate or explicitly accept a reset to the new factory layout.

@@ -1,3 +1,8 @@
+## v2.8.26 — Apply Hub-approved stock faceplate immediately
+
+- On an approved Hub faceplate upgrade, atomically save the exact SHA-verified factory Calibration for that switch in Core alongside the pinned artwork selection. This completes the reset even if no Native dashboard card is open to receive the update event.
+- Make Native reload the approved saved factory instead of reconstructing and writing potentially outdated fallback geometry in the browser. Keep other switches and custom faceplate profiles unchanged.
+
 ## v2.8.25 — Compact stock 48-port faceplate
 
 - Replace the generic stock 48 × RJ45 / 4 × SFP artwork and its paired factory Calibration geometry with the owner-supplied compact design. Preserve exact port, SFP, LED and Status Box placements from the supplied export.
