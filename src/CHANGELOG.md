@@ -1,3 +1,8 @@
+## v2.8.24 — Adjustable Status Box border thickness
+
+- Add independent border thickness controls after Hide in Status Box 1 and Status Box 2 Calibration rows, matching LED outline adjustments (0.25–3.00 px in 0.25 px steps).
+- Apply the saved border width directly to each box outline. Preserve the existing 1.5 px appearance in older profiles, keep settings when borders are hidden, and leave LED outline settings unchanged.
+
 ## v2.8.23 — Honour faceplate LEDs and refine Calibration tools
 
 - Honour each faceplate's factory Status LED visibility in new, reset and older automatically saved Calibration profiles. Keep model-specific overlays hidden where intended, preserve deliberate user LED changes and geometry, and keep unverified chassis indicators off.

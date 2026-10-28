@@ -375,6 +375,47 @@ async function scenarioColour() {
   card.remove();
   return {immediate, after, status1, status2};
 }
+async function scenarioStatusBorderThickness() {
+  const conn = immediateConnection();
+  const card = document.createElement('switch-vision-3650');
+  card.setConfig({member:'SWBORDER', selected_switch:'SWBORDER', calibration_profile_load:false, calibration_profile_auto_load:false, calibration_mode:true, calibration_controls:true, demo:true, port_count:48, sfp_port_count:4});
+  document.body.appendChild(card);
+  card.hass = makeHass({}, conn);
+  await sleep(40);
+  const field = (name) => card.shadowRoot.querySelector('[data-cv-field="' + name + '"]');
+  const outlineWidths = () => [...card.shadowRoot.querySelectorAll('.cv-status-panel-border')].map((border) => Number(border.getAttribute('stroke-width')));
+  const ordered = (name, action) => {
+    const input = field(name);
+    const row = input?.closest('.cv-cal-status-border-row');
+    const hide = row?.querySelector('[data-cv-action="' + action + '"]');
+    return Boolean(hide && (hide.compareDocumentPosition(input) & Node.DOCUMENT_POSITION_FOLLOWING));
+  };
+  const before = {first:field('status-border-width')?.value, second:field('status2-border-width')?.value, widths:outlineWidths(),
+    order1:ordered('status-border-width','status-row-toggle'), order2:ordered('status2-border-width','status2-row-toggle')};
+  const change = async (name, value) => {
+    const input = field(name);
+    input.value = value;
+    input.dispatchEvent(new Event('change', {bubbles:true}));
+    await sleep(35);
+  };
+  await change('status-border-width','0.75');
+  await change('status2-border-width','2.25');
+  const changed = {first:card.calibrationData().ui.status_panel.border_width,
+    second:card.calibrationData().ui.status_panel_2.border_width, widths:outlineWidths(), dirty:card._calibrationDirty};
+  const show = field('status-border-show');
+  show.checked = false;
+  show.dispatchEvent(new Event('change', {bubbles:true}));
+  await sleep(35);
+  const hidden = {disabled:field('status-border-width')?.disabled, stored:card.calibrationData().ui.status_panel.border_width,
+    widths:outlineWidths()};
+  const reenable = field('status-border-show');
+  reenable.checked = true;
+  reenable.dispatchEvent(new Event('change', {bubbles:true}));
+  await sleep(35);
+  const restored = {value:field('status-border-width')?.value, widths:outlineWidths()};
+  card.remove();
+  return {before,changed,hidden,restored};
+}
 async function scenarioFaceplateHeight() {
   const conn = immediateConnection();
   const makeCard = async (member) => {
@@ -771,7 +812,7 @@ async function scenarioNativeFontControls() {
   card.remove();
   return {initial, after, stored, rendered};
 }
-(async () => { try { const result = {live:await scenarioLiveGate(), subscriptions:await scenarioSubscriptions(), profile:await scenarioProfileRace(), calibration:await scenarioCalibrationStability(), activity:await scenarioActivity(), activityTargets:scenarioActivityTargetScheduling(), naturalActivity:scenarioNaturalActivityPattern(), colour:await scenarioColour(), faceplateHeight:await scenarioFaceplateHeight(), calibrationBehavior:await scenarioCalibrationBehaviorContracts(), faceplateTopology:await scenarioFaceplateOwnsVisualTopology(), nativeFonts:await scenarioNativeFontControls()}; document.getElementById('result').textContent = JSON.stringify(result); } catch (err) { document.getElementById('result').textContent = JSON.stringify({error:String(err), stack:err?.stack||''}); } })();
+(async () => { try { const result = {live:await scenarioLiveGate(), subscriptions:await scenarioSubscriptions(), profile:await scenarioProfileRace(), calibration:await scenarioCalibrationStability(), activity:await scenarioActivity(), activityTargets:scenarioActivityTargetScheduling(), naturalActivity:scenarioNaturalActivityPattern(), colour:await scenarioColour(), statusBorder:await scenarioStatusBorderThickness(), faceplateHeight:await scenarioFaceplateHeight(), calibrationBehavior:await scenarioCalibrationBehaviorContracts(), faceplateTopology:await scenarioFaceplateOwnsVisualTopology(), nativeFonts:await scenarioNativeFontControls()}; document.getElementById('result').textContent = JSON.stringify(result); } catch (err) { document.getElementById('result').textContent = JSON.stringify({error:String(err), stack:err?.stack||''}); } })();
 """
         css_payload = json.dumps(self.css).replace("</", "<\\/")
         document = '<!doctype html><html><body><pre id="result">pending</pre><script>window.__cvTestCss=' + css_payload + ';</script><script>' + source + '</script><script>' + harness + '</script></body></html>'
@@ -836,6 +877,10 @@ async function scenarioNativeFontControls() {
         self.assertGreaterEqual(payload["naturalActivity"]["medium"]["transitions"], 4)
         self.assertGreaterEqual(payload["naturalActivity"]["medium"]["uniqueGaps"], 2)
         self.assertNotEqual(payload["naturalActivity"]["medium"]["signature"], payload["naturalActivity"]["mediumPeer"]["signature"])
+        self.assertEqual(payload["statusBorder"]["before"], {"first":"1.50", "second":"1.50", "widths":[1.5,1.5], "order1":True, "order2":True})
+        self.assertEqual(payload["statusBorder"]["changed"], {"first":0.75, "second":2.25, "widths":[0.75,2.25], "dirty":True})
+        self.assertEqual(payload["statusBorder"]["hidden"], {"disabled":True, "stored":0.75, "widths":[2.25]})
+        self.assertEqual(payload["statusBorder"]["restored"], {"value":"0.75", "widths":[0.75,2.25]})
         self.assertEqual(payload["colour"]["immediate"]["renders"], 0)
         self.assertEqual(payload["colour"]["immediate"]["redraws"], 0)
         self.assertTrue(payload["colour"]["immediate"]["same"])

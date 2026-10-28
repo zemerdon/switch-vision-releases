@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.24
+
+Calibration adds separate Status Box 1 and Status Box 2 border thickness inputs after each row's Hide button. Each accepts 0.25–3.00 px in 0.25 px steps, as on LED outlines. The existing 1.5 px appearance remains the default for old profiles. Saved border widths remain intact when the border is hidden.
+
 # Switch Vision Core v2.8.23
 
 Faceplate Status LEDs now honour factory visibility on new, reset and older automatically saved Calibration profiles. Dedicated faceplates do not gain an unwanted generic LED overlay, and live chassis status remains off when telemetry cannot confirm it. User-defined LED choices, artwork and port geometry remain intact.
