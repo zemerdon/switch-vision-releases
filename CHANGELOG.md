@@ -1,3 +1,8 @@
+## v2.8.25 — Compact stock 48-port faceplate
+
+- Replace the generic stock 48 × RJ45 / 4 × SFP artwork and its paired factory Calibration geometry with the owner-supplied compact design. Preserve exact port, SFP, LED and Status Box placements from the supplied export.
+- Keep the existing stock filename and model mappings; new stock defaults use the updated SHA-paired artwork and factory geometry while saved per-switch Calibration remains unchanged until an explicit faceplate upgrade is accepted.
+
 ## v2.8.24 — Adjustable Status Box border thickness
 
 - Add independent border thickness controls after Hide in Status Box 1 and Status Box 2 Calibration rows, matching LED outline adjustments (0.25–3.00 px in 0.25 px steps).

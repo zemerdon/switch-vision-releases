@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.25
+
+The generic stock 48 RJ45 / 4 SFP faceplate now uses the new compact artwork and matching owner-calibrated factory geometry. Existing model mappings and saved Calibration remain intact. On an affected switch, the existing faceplate upgrade workflow offers the changed artwork/geometry pair with a preview and a choice to keep the current faceplate or explicitly accept a reset to the new factory layout.
+
 # Switch Vision Core v2.8.24
 
 Calibration adds separate Status Box 1 and Status Box 2 border thickness inputs after each row's Hide button. Each accepts 0.25–3.00 px in 0.25 px steps, as on LED outlines. The existing 1.5 px appearance remains the default for old profiles. Saved border widths remain intact when the border is hidden.

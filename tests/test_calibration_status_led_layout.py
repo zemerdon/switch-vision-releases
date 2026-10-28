@@ -11,12 +11,11 @@ CARD = ROOT / "src" / "custom_components" / "switch_vision" / "switch-vision-car
 MIRROR = ROOT / "src" / "js" / "switch-vision.js"
 CALIBRATION = ROOT / "src" / "calibration"
 
-FACTORY_PROFILES_REVERTED_FROM_2737 = (
+FACTORY_PROFILES_WITH_VISIBLE_STATUS_LEDS = (
     "faceplate-c3560cg-8pc-s.json",
     "faceplate-stock-24rj45-2sfp.json",
     "faceplate-stock-24rj45-4sfp.json",
     "faceplate-stock-48rj45-2sfp.json",
-    "faceplate-stock-48rj45-4sfp.json",
     "faceplate-submarine-48rj45-4sfp.json",
 )
 
@@ -49,7 +48,7 @@ class CalibrationStatusLedLayoutTests(unittest.TestCase):
         self.assertIn('.cv-cal-led-outline-row > .cv-cal-led-shape-label', css)
         self.assertNotIn('.cv-cal-led-outline-row{overflow-x:auto', css)
 
-    def test_factory_and_generic_defaults_do_not_hide_status_leds(self) -> None:
+    def test_factory_defaults_follow_authoritative_status_led_visibility(self) -> None:
         self.assertIn(
             'status_leds: { hidden: [], text_color: "#eef7ff"',
             self.source,
@@ -63,13 +62,30 @@ class CalibrationStatusLedLayoutTests(unittest.TestCase):
             self.source,
         )
 
-        for name in FACTORY_PROFILES_REVERTED_FROM_2737:
+        for name in FACTORY_PROFILES_WITH_VISIBLE_STATUS_LEDS:
             profile = json.loads((CALIBRATION / name).read_text(encoding="utf-8"))
             self.assertEqual(
                 profile["ui"]["status_leds"]["hidden"],
                 [],
                 f"{name} must retain its factory Status LED presentation",
             )
+
+        # This owner-supplied stock revision deliberately hides the seven
+        # factory indicators. Preserve the supplied selection byte-for-byte.
+        stock = json.loads(
+            (CALIBRATION / "faceplate-stock-48rj45-4sfp.json").read_text(encoding="utf-8")
+        )
+        owner = json.loads(
+            (CALIBRATION / "geometry-stock-48rj45-4sfp-compact.json").read_text(
+                encoding="utf-8"
+            )
+        )["geometry"]
+        self.assertEqual(
+            stock["ui"]["status_leds"]["hidden"], owner["ui"]["status_leds"]["hidden"]
+        )
+        self.assertEqual(
+            set(stock["ui"]["status_leds"]["hidden"]), set(stock["status_leds"])
+        )
 
     def test_new_calibration_session_starts_with_all_status_leds_removed(self) -> None:
         helper_start = self.source.index("function applyNewCalibrationStatusLedDefaults")

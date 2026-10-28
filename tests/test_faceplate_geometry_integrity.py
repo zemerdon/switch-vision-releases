@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import hashlib
 import importlib.util
 import json
 import re
@@ -180,53 +179,35 @@ def test_pro_max_keeps_original_standard_24_plus_2_geometry() -> None:
 
 
 def test_stock_48_port_factory_presentation_contract() -> None:
-    expected_fonts = {
-        "port_number_font_size": 13.0,
-        "sfp_label_font_size": 13.5,
-        "status_led_font_size": 16.5,
-    }
-
-    for filename in ("48rj45-2sfp.png", "48rj45-4sfp.png"):
-        payload = faceplate_calibrations()[filename]
-        rendered = _CANVAS.render_space_calibration(payload)
-        ui = rendered.get("ui") or {}
-        status_leds = ui.get("status_leds") or {}
-        assert ui.get("port_number_font_size") == expected_fonts["port_number_font_size"], filename
-        assert ui.get("sfp_label_font_size") == expected_fonts["sfp_label_font_size"], filename
-        assert status_leds.get("font_size") == expected_fonts["status_led_font_size"], filename
-
-    four = _CANVAS.render_space_calibration(faceplate_calibrations()["48rj45-4sfp.png"])
-    assert list(four.get("sfp") or {}) == ["G1", "G2", "G3/TE3", "G4/TE4"]
-    assert four["sfp"]["G1"]["label"] == [1709, 188]
-    assert four["sfp"]["G2"]["label"] == [1838, 188]
-    assert four["sfp"]["G3/TE3"]["label"] == [1710, 402]
-    assert four["sfp"]["G4/TE4"]["label"] == [1839, 402]
-    assert all(item.get("label_show") is True for item in four["sfp"].values())
-
-    owner_ui = json.loads(json.dumps(four.get("ui") or {}))
-    if isinstance(owner_ui.get("faceplate"), dict):
-        owner_ui["faceplate"].pop("file", None)
-        owner_ui["faceplate"].pop("source", None)
-    owner_geometry = {
-        "image": {
-            "width": 2048,
-            "height": 448,
-            "coordinate_space": "switch-vision-render-2048x448-v1",
-        },
-        "ports": four.get("ports") or {},
-        "sfp": four.get("sfp") or {},
-        "status_leds": four.get("status_leds") or {},
-        "ui": owner_ui,
-    }
-    canonical = json.dumps(
-        owner_geometry,
-        sort_keys=True,
-        separators=(",", ":"),
-    ).encode("utf-8")
-    assert hashlib.sha256(canonical).hexdigest() == (
-        "3069b582f48b4a8906907d37ef0b617fe7fdbdfb4bd4aeecc09a43e3f9a59b03"
+    # The original 48 RJ45 / 2 SFP stock artwork and factory defaults are unchanged.
+    two = _CANVAS.render_space_calibration(
+        faceplate_calibrations()["48rj45-2sfp.png"]
     )
+    two_ui = two.get("ui") or {}
+    assert two_ui.get("port_number_font_size") == 13.0
+    assert two_ui.get("sfp_label_font_size") == 13.5
+    assert (two_ui.get("status_leds") or {}).get("font_size") == 16.5
 
+    # The 48 RJ45 / 4 SFP stock replacement retains the owner's new values.
+    four = _CANVAS.render_space_calibration(
+        faceplate_calibrations()["48rj45-4sfp.png"]
+    )
+    owner = json.loads(
+        (CALIBRATIONS / "geometry-stock-48rj45-4sfp-compact.json").read_text(
+            encoding="utf-8"
+        )
+    )["geometry"]
+    assert list(four["ports"]) == [str(i) for i in range(1, 49)]
+    assert list(four["sfp"]) == ["SFP1", "SFP2", "SFP3", "SFP4"]
+    assert four["ui"]["port_number_font_size"] == owner["ui"]["port_number_font_size"]
+    assert four["ui"]["sfp_label_font_size"] == owner["ui"]["sfp_label_font_size"]
+    assert four["ui"]["status_leds"]["font_size"] == owner["ui"]["status_leds"]["font_size"]
+    assert {
+        key: port["label"] for key, port in four["sfp"].items()
+    } == {
+        key: port["label"] for key, port in owner["sfp"].items()
+    }
+    assert all(port.get("label_show") is True for port in four["sfp"].values())
 
 if __name__ == "__main__":
     test_all_shipped_faceplates_own_valid_native_geometry()
