@@ -1,3 +1,8 @@
+## v2.8.28 — Compact stock 48 RJ45 / 2 SFP faceplate
+
+- Replace the default 48 RJ45 / 2 SFP stock artwork with the supplied 6000 × 900 compact PNG and matching factory Geometry. Preserve the source export's port, SFP, status LED and visual-control coordinates in native image space.
+- Keep the established stock filename and model mappings. Existing switch-specific Calibration remains unchanged until the user approves the verified replacement through Hub.
+
 ## v2.8.27 — Complete verified Hub faceplate upgrades
 
 - Validate the full Core Calibration profile before an approved stock revision can replace a switch's saved layout or SHA-pinned artwork. Reject incomplete historical factory geometry without changing the switch.

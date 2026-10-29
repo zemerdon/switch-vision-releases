@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.28
+
+The stock 48 RJ45 / 2 SFP faceplate now uses a compact 6000 × 900 image and its matching factory Calibration. Its 48 ports, two SFP uplinks, LEDs and visual controls follow the supplied Geometry. The existing stock filename and model mappings remain unchanged. Saved switch-specific Calibration stays in place until a user approves the new faceplate through the normal upgrade workflow.
+
 # Switch Vision Core v2.8.27
 
 Faceplate approval now verifies that the selected SHA-paired factory geometry is a complete, loadable Calibration before committing the selected switch's reset. Native upgrades and Custom faceplate selections both reload Core's saved factory geometry, including any open Calibration editor. A dashboard that missed an approval event reloads the persisted factory on reconnection. Unrelated switches and Custom profiles remain unchanged.

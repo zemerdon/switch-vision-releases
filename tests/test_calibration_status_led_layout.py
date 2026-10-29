@@ -15,7 +15,6 @@ FACTORY_PROFILES_WITH_VISIBLE_STATUS_LEDS = (
     "faceplate-c3560cg-8pc-s.json",
     "faceplate-stock-24rj45-2sfp.json",
     "faceplate-stock-24rj45-4sfp.json",
-    "faceplate-stock-48rj45-2sfp.json",
     "faceplate-submarine-48rj45-4sfp.json",
 )
 
@@ -72,20 +71,21 @@ class CalibrationStatusLedLayoutTests(unittest.TestCase):
 
         # This owner-supplied stock revision deliberately hides the seven
         # factory indicators. Preserve the supplied selection byte-for-byte.
-        stock = json.loads(
-            (CALIBRATION / "faceplate-stock-48rj45-4sfp.json").read_text(encoding="utf-8")
-        )
-        owner = json.loads(
-            (CALIBRATION / "geometry-stock-48rj45-4sfp-compact.json").read_text(
-                encoding="utf-8"
+        for suffix in ("2sfp", "4sfp"):
+            stock = json.loads(
+                (CALIBRATION / f"faceplate-stock-48rj45-{suffix}.json").read_text(encoding="utf-8")
             )
-        )["geometry"]
-        self.assertEqual(
-            stock["ui"]["status_leds"]["hidden"], owner["ui"]["status_leds"]["hidden"]
-        )
-        self.assertEqual(
-            set(stock["ui"]["status_leds"]["hidden"]), set(stock["status_leds"])
-        )
+            owner = json.loads(
+                (CALIBRATION / f"geometry-stock-48rj45-{suffix}-compact.json").read_text(
+                    encoding="utf-8"
+                )
+            )["geometry"]
+            self.assertEqual(
+                stock["ui"]["status_leds"]["hidden"], owner["ui"]["status_leds"]["hidden"]
+            )
+            self.assertEqual(
+                set(stock["ui"]["status_leds"]["hidden"]), set(stock["status_leds"])
+            )
 
     def test_new_calibration_session_starts_with_all_status_leds_removed(self) -> None:
         helper_start = self.source.index("function applyNewCalibrationStatusLedDefaults")
