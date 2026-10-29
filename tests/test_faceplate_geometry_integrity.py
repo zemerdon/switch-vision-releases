@@ -179,14 +179,24 @@ def test_pro_max_keeps_original_standard_24_plus_2_geometry() -> None:
 
 
 def test_stock_48_port_factory_presentation_contract() -> None:
-    # The original 48 RJ45 / 2 SFP stock artwork and factory defaults are unchanged.
+    # The new default 48 RJ45 / 2 SFP compact stock geometry must use
+    # the owner's supplied label and LED values, not the retired stock layout.
     two = _CANVAS.render_space_calibration(
         faceplate_calibrations()["48rj45-2sfp.png"]
     )
-    two_ui = two.get("ui") or {}
-    assert two_ui.get("port_number_font_size") == 13.0
-    assert two_ui.get("sfp_label_font_size") == 13.5
-    assert (two_ui.get("status_leds") or {}).get("font_size") == 16.5
+    two_owner = json.loads(
+        (CALIBRATIONS / "geometry-stock-48rj45-2sfp-compact.json").read_text(
+            encoding="utf-8"
+        )
+    )["geometry"]
+    assert list(two["ports"]) == [str(i) for i in range(1, 49)]
+    assert list(two["sfp"]) == ["SFP1", "SFP2"]
+    for key in ("port_number_font_size", "sfp_label_font_size"):
+        assert two["ui"][key] == two_owner["ui"][key]
+    assert two["ui"]["status_leds"]["font_size"] == two_owner["ui"]["status_leds"]["font_size"]
+    assert {key: port["label"] for key, port in two["sfp"].items()} == {
+        key: port["label"] for key, port in two_owner["sfp"].items()
+    }
 
     # The 48 RJ45 / 4 SFP stock replacement retains the owner's new values.
     four = _CANVAS.render_space_calibration(
