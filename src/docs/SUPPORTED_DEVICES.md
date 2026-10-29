@@ -12,11 +12,11 @@ Only exact model identifiers are listed. Support for one SKU does not imply supp
 | Sirivision | SR-S25G | `SR-S25G3420F` | 16 | 4 10G SFP+ | No | No | `faceplates/24rj45-4sfp.png` | `stock_24rj45_4sfp` | Real Hardware Indexes 17 20 Confirmed | Experimental | v2.3.36 |
 | Cisco | Catalyst 3650 | `WS-C3650-48PD-E` | 48 | 2 Gigabit SFP + 2 10G SFP+ | Yes | Yes | `faceplates/48rj45-4sfp.png` | `default_cisco_48_port` | Confirmed | Confirmed | v1.8.0 |
 | Cisco | Catalyst 3650 | `WS-C3650-48PD-L` | 48 | 2 Gigabit SFP + 2 10G SFP+ | Yes | Yes | `faceplates/48rj45-4sfp.png` | `default_cisco_48_port` | Confirmed | Confirmed | v1.8.0 |
-| Cisco | Catalyst 2960X | `WS-C2960X-48FPD-L` | 48 | 2 10G SFP+ | Yes | No | `faceplates/48rj45-2sfp.png` | `cisco_2960s_48p` | Confirmed | Confirmed | v1.8.26 |
+| Cisco | Catalyst 2960X | `WS-C2960X-48FPD-L` | 48 | 2 10G SFP+ | Yes | No | `faceplates/48rj45-2sfp-compact.png` | `stock_48rj45_2sfp_compact` | Confirmed | Confirmed | v1.8.26 |
 | Cisco | Catalyst 2960X | `WS-C2960X-24PS-L` | 24 | 4 Gigabit SFP | Yes | No | `faceplates/24rj45-4sfp.png` | `cisco_2960x_24p` | Confirmed | Community Validated | v3.0.0 |
 | Cisco | Catalyst 2960X | `WS-C2960X-24TS-L` | 24 | 4 Gigabit SFP | No | Yes | `faceplates/24rj45-4sfp.png` | `cisco_2960x_24p` | Pending | Experimental | v1.8.25 |
 | Cisco | Catalyst 2960X | `WS-C2960XR-48LPS-I` | 48 | 4 Gigabit SFP | Yes | Yes | `faceplates/48rj45-4sfp.png` | `default_cisco_48_port` | Contribution Confirmed Gi1 0 49 52 1G Sfp | Experimental | v2.4.42 |
-| Cisco | Catalyst 2960S | `WS-C2960S-48FPD-L` | 48 | 2 10G SFP+ | Yes | No | `faceplates/48rj45-2sfp.png` | `cisco_2960s_48p` | Confirmed | Confirmed | v1.8.26 |
+| Cisco | Catalyst 2960S | `WS-C2960S-48FPD-L` | 48 | 2 10G SFP+ | Yes | No | `faceplates/48rj45-2sfp-compact.png` | `stock_48rj45_2sfp_compact` | Confirmed | Confirmed | v1.8.26 |
 | Cisco | Catalyst 3560-C | `WS-C3560CG-8PC-S` | 8 | 2 Gigabit SFP | Yes | No | `faceplates/c3560cg-8pc-s-compact.png` | `cisco_3560cg_8pc_compact` | Pending | Experimental | v1.8.24 |
 | Cisco | Catalyst 3850 | `WS-C3850-12XS-E` | 0 | 12 10G SFP+ | No | No | `faceplates/cisco-3850-12xs.png` | `cisco_3850_12xs` | Community Confirmed Te Member 0 1 12 Link Speed Activity | Community Validated | v2.4.5 |
 | Juniper | EX3300 | `EX3300-48P` | 48 | 4 10G SFP+ | Yes | No | `faceplates/48rj45-4sfp.png` | `default_cisco_48_port` | Confirmed | Confirmed | v1.8.26 |
@@ -56,7 +56,7 @@ Only exact model identifiers are listed. Support for one SKU does not imply supp
 | Ubiquiti | UniFi Dream Machine Pro Max | `UDM Pro Max` | 9 | 2 10G SFP+ | No | No | `faceplates/unifi-9rj45-2sfp.png` | `unifi_9_rj45_2sfp` | Community Api Ports 10 11 10G Sfp Plus Confirmed Pending Rendered Validation | Experimental | v2.4.14 |
 | Ubiquiti | UniFi Switch Pro XG | `USW Pro XG 24 PoE` | 24 | 2 25G SFP28 | Yes | No | `faceplates/unifi-24-rj45-2sfp-inline.png` | `unifi_24_rj45_2sfp_inline` | Community Api Ports 25 26 25G Sfp28 Confirmed Pending Rendered Validation | Experimental | v2.4.14 |
 | MikroTik | CRS328 | `CRS328-24P-4S+RM` | 24 | 4 10G SFP+ | Yes | No | `faceplates/24rj45-4sfp.png` | `stock_24rj45_4sfp` | Contribution Confirmed Four Sfp Plus Positions Live Link Pending | Experimental | v2.3.21 |
-| Dell | PowerConnect 5500 | `PowerConnect 5548P` | 48 | 2 10G SFP+ | Yes | No | `faceplates/48rj45-2sfp.png` | `stock_48rj45_2sfp` | Real Hardware Interface Map Confirmed | Experimental | v2.3.24 |
+| Dell | PowerConnect 5500 | `PowerConnect 5548P` | 48 | 2 10G SFP+ | Yes | No | `faceplates/48rj45-2sfp-compact.png` | `stock_48rj45_2sfp_compact` | Real Hardware Interface Map Confirmed | Experimental | v2.3.24 |
 | Zyxel | GS1900 | `GS1900-24E` | 24 | 0 none | No | No | `faceplates/24rj45-2sfp.png` | `stock_24rj45_2sfp` | Not Applicable | Experimental | v2.4.47 |
 | Cisco | Catalyst 3750X | `WS-C3750X-48P` | 48 | 2 Gigabit SFP + 2 10G SFP+ | Yes | Yes | `faceplates/48rj45-4sfp.png` | `default_cisco_48_port` | Real Hardware Alias Dedup Mapping Confirmed | Experimental | v2.3.24 |
 | Cisco | Catalyst 3750X | `WS-C3750X-48P-S` | 48 | 2 Gigabit SFP + 2 10G SFP+ | Yes | Yes | `faceplates/48rj45-4sfp.png` | `default_cisco_48_port` | Real Hardware C3Kx Alias Dedup Mapping Confirmed | Experimental | v2.4.47 |

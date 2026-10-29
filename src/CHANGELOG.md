@@ -1,3 +1,8 @@
+## v2.8.29 — Separate original and compact 48 RJ45 / 2 SFP faceplates
+
+- Restore the original 48rj45-2sfp artwork and factory Geometry as a selectable alternative. Register the owner-supplied 6000 × 900 compact artwork and its exact paired Geometry separately as 48rj45-2sfp-compact.
+- Set compact as the default for the supported 48 RJ45 / 2 SFP model contracts without changing their physical port mappings. Preserve saved per-switch Calibration until a verified user-approved upgrade.
+
 ## v2.8.28 — Compact stock 48 RJ45 / 2 SFP faceplate
 
 - Replace the default 48 RJ45 / 2 SFP stock artwork with the supplied 6000 × 900 compact PNG and matching factory Geometry. Preserve the source export's port, SFP, status LED and visual-control coordinates in native image space.

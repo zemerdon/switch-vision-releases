@@ -12,9 +12,11 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from faceplate_native_canvas import png_dimensions, render_space_calibration
 
-ART = ROOT / "src/faceplates/48rj45-2sfp.png"
+ART = ROOT / "src/faceplates/48rj45-2sfp-compact.png"
+LEGACY_ART = ROOT / "src/faceplates/48rj45-2sfp.png"
+LEGACY_FACTORY = ROOT / "src/calibration/faceplate-stock-48rj45-2sfp.json"
 OWNER = ROOT / "src/calibration/geometry-stock-48rj45-2sfp-compact.json"
-FACTORY = ROOT / "src/calibration/faceplate-stock-48rj45-2sfp.json"
+FACTORY = ROOT / "src/calibration/faceplate-stock-48rj45-2sfp-compact.json"
 ASSETS = ROOT / "src/custom_components/switch_vision/stock-assets.json"
 ART_SHA = "b397891df10499016b0617d0967ec90269493e5708df6b5d8d4c76460934f772"
 OWNER_SHA = "b1f730aea388d9a3cd9cfbc267481e29aabdf115d95a590d958d044c6a9cf148"
@@ -43,10 +45,10 @@ class CompactStock48By2Tests(unittest.TestCase):
         source = json.loads(OWNER.read_text(encoding="utf-8"))["geometry"]
         factory = json.loads(FACTORY.read_text(encoding="utf-8"))
         self.assertEqual(factory["schema"], "switch-vision-interactive-calibration-v1")
-        self.assertEqual(factory["model"], "stock-48rj45-2sfp")
-        self.assertEqual(factory["profile"], "stock_48rj45_2sfp")
-        self.assertEqual(factory["image"]["file"], "faceplates/48rj45-2sfp.png")
-        self.assertEqual(factory["ui"]["faceplate"]["file"], "faceplates/48rj45-2sfp.png")
+        self.assertEqual(factory["model"], "stock-48rj45-2sfp-compact")
+        self.assertEqual(factory["profile"], "stock_48rj45_2sfp_compact")
+        self.assertEqual(factory["image"]["file"], "faceplates/48rj45-2sfp-compact.png")
+        self.assertEqual(factory["ui"]["faceplate"]["file"], "faceplates/48rj45-2sfp-compact.png")
         self.assertEqual(factory["image"]["coordinate_space"], "image-native-v1")
         self.assertEqual((factory["image"]["width"], factory["image"]["height"]), (6000, 900))
         self.assertFalse(factory["stack"]["enabled"])
@@ -76,9 +78,33 @@ class CompactStock48By2Tests(unittest.TestCase):
         self.assertEqual(factory["sfp"]["SFP1"]["display_name"], "G1")
         self.assertEqual(factory["sfp"]["SFP2"]["display_name"], "G2")
 
+    def test_original_is_preserved_with_matching_factory(self) -> None:
+        self.assertEqual(sha256(LEGACY_ART), "955d10fc23eb97555e7f6b45133dfa27b9569a2675f84d95b18aac43f5bd420c")
+        self.assertEqual(png_dimensions(LEGACY_ART), (6000, 1325))
+        old = json.loads(LEGACY_FACTORY.read_text(encoding="utf-8"))
+        self.assertEqual(old["profile"], "stock_48rj45_2sfp")
+        self.assertEqual(old["image"]["file"], "faceplates/48rj45-2sfp.png")
+        self.assertEqual((old["image"]["width"], old["image"]["height"]), (6000, 1325))
+        self.assertEqual(set(old["ports"]), {str(i) for i in range(1, 49)})
+        self.assertEqual(len(old["sfp"]), 2)
+        self.assertNotEqual(sha256(LEGACY_ART), sha256(ART))
+        catalog = json.loads((ROOT / "src/faceplates/catalog.json").read_text(encoding="utf-8"))
+        names = {row["filename"]: row["display_name"] for row in catalog["faceplates"]}
+        self.assertIn("48rj45-2sfp.png", names)
+        self.assertIn("48rj45-2sfp-compact.png", names)
+        registry = json.loads((ROOT / "src/devices/supported_devices.json").read_text(encoding="utf-8"))
+        selected = [row for row in registry["devices"] if row["model"] in
+                    ("WS-C2960S-48FPD-L", "WS-C2960X-48FPD-L", "PowerConnect 5548P")]
+        self.assertEqual(len(selected), 3)
+        for row in selected:
+            self.assertEqual(row["default_faceplate"], "faceplates/48rj45-2sfp-compact.png")
+            self.assertEqual(row["calibration_profile"], "stock_48rj45_2sfp_compact")
+            self.assertIn("faceplates/48rj45-2sfp.png", row["optional_faceplates"])
+
     def test_stock_manifest_hashes_current_image(self) -> None:
         manifest = json.loads(ASSETS.read_text(encoding="utf-8"))
-        self.assertEqual(manifest["assets"]["faceplates"]["48rj45-2sfp.png"], ART_SHA)
+        self.assertEqual(manifest["assets"]["faceplates"]["48rj45-2sfp-compact.png"], ART_SHA)
+        self.assertEqual(manifest["assets"]["faceplates"]["48rj45-2sfp.png"], sha256(LEGACY_ART))
 
 
 if __name__ == "__main__":

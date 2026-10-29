@@ -12,7 +12,7 @@ support_statuses:
 projection:
   schema: 1
   source_component: discovery
-  source_registry_sha256: 1403a24f2d5e724a9b557151b6d612e773b80c696483fcab0c15e85a2b8763a5
+  source_registry_sha256: d22f2680d4dd9f080e3293ccb4bcfc3fdbc335d5a34a424cbbc5093dae2f029e
   device_field_allowlist:
   - vendor
   - family
@@ -305,9 +305,10 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: cisco-2960x-48fpd-48p-2x10g
-  calibration_profile: cisco_2960s_48p
-  default_faceplate: faceplates/48rj45-2sfp.png
-  optional_faceplates: []
+  calibration_profile: stock_48rj45_2sfp_compact
+  default_faceplate: faceplates/48rj45-2sfp-compact.png
+  optional_faceplates:
+  - faceplates/48rj45-2sfp.png
   validation:
     exact_model_detection: confirmed
     rj45_mapping: confirmed
@@ -317,9 +318,10 @@ devices:
     stack: not_applicable
   visuals:
     status: confirmed
-    recommended_faceplate: faceplates/48rj45-2sfp.png
-    optional_faceplates: []
-    calibration_profile: cisco_2960s_48p
+    recommended_faceplate: faceplates/48rj45-2sfp-compact.png
+    optional_faceplates:
+    - faceplates/48rj45-2sfp.png
+    calibration_profile: stock_48rj45_2sfp_compact
     canvas:
       width: 2048
       height: 448
@@ -445,9 +447,10 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: cisco-2960s-48fpd-48p-2x10g
-  calibration_profile: cisco_2960s_48p
-  default_faceplate: faceplates/48rj45-2sfp.png
-  optional_faceplates: []
+  calibration_profile: stock_48rj45_2sfp_compact
+  default_faceplate: faceplates/48rj45-2sfp-compact.png
+  optional_faceplates:
+  - faceplates/48rj45-2sfp.png
   validation:
     exact_model_detection: confirmed
     rj45_mapping: confirmed
@@ -457,9 +460,10 @@ devices:
     stack: not_applicable
   visuals:
     status: confirmed
-    recommended_faceplate: faceplates/48rj45-2sfp.png
-    optional_faceplates: []
-    calibration_profile: cisco_2960s_48p
+    recommended_faceplate: faceplates/48rj45-2sfp-compact.png
+    optional_faceplates:
+    - faceplates/48rj45-2sfp.png
+    calibration_profile: stock_48rj45_2sfp_compact
     canvas:
       width: 2048
       height: 448
@@ -1965,9 +1969,10 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: dell-powerconnect-5548p-48p-2x10g
-  calibration_profile: stock_48rj45_2sfp
-  default_faceplate: faceplates/48rj45-2sfp.png
-  optional_faceplates: []
+  calibration_profile: stock_48rj45_2sfp_compact
+  default_faceplate: faceplates/48rj45-2sfp-compact.png
+  optional_faceplates:
+  - faceplates/48rj45-2sfp.png
   validation:
     exact_model_detection: contribution_confirmed
     rj45_mapping: real_hardware_interface_map_confirmed
@@ -1977,9 +1982,10 @@ devices:
     stack: not_applicable
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/48rj45-2sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_48rj45_2sfp
+    recommended_faceplate: faceplates/48rj45-2sfp-compact.png
+    optional_faceplates:
+    - faceplates/48rj45-2sfp.png
+    calibration_profile: stock_48rj45_2sfp_compact
     canvas:
       width: 2048
       height: 448

@@ -73,7 +73,7 @@ class CalibrationStatusLedLayoutTests(unittest.TestCase):
         # factory indicators. Preserve the supplied selection byte-for-byte.
         for suffix in ("2sfp", "4sfp"):
             stock = json.loads(
-                (CALIBRATION / f"faceplate-stock-48rj45-{suffix}.json").read_text(encoding="utf-8")
+                (CALIBRATION / ("faceplate-stock-48rj45-2sfp-compact.json" if suffix == "2sfp" else f"faceplate-stock-48rj45-{suffix}.json")).read_text(encoding="utf-8")
             )
             owner = json.loads(
                 (CALIBRATION / f"geometry-stock-48rj45-{suffix}-compact.json").read_text(

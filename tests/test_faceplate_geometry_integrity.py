@@ -182,7 +182,7 @@ def test_stock_48_port_factory_presentation_contract() -> None:
     # The new default 48 RJ45 / 2 SFP compact stock geometry must use
     # the owner's supplied label and LED values, not the retired stock layout.
     two = _CANVAS.render_space_calibration(
-        faceplate_calibrations()["48rj45-2sfp.png"]
+        faceplate_calibrations()["48rj45-2sfp-compact.png"]
     )
     two_owner = json.loads(
         (CALIBRATIONS / "geometry-stock-48rj45-2sfp-compact.json").read_text(

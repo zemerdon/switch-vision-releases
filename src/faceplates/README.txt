@@ -1,7 +1,8 @@
 Switch Vision bundled faceplates
 
 - 48rj45-4sfp.png — default 48-port, four-uplink faceplate; used by Catalyst 3650 and Juniper EX3300 profiles
-- 48rj45-2sfp.png — 48-port, two-uplink faceplate; used by WS-C2960S-48FPD-L and WS-C2960X-48FPD-L
+- 48rj45-2sfp.png — original 48-port, two-uplink artwork; remains manually selectable with its matching original Geometry
+- 48rj45-2sfp-compact.png — default compact 48-port, two-uplink faceplate with verified native Geometry for compatible 48/2 switches
 - 24rj45-4sfp.png — 24-port, four-uplink faceplate; used by WS-C2960X-24PS-L
 - 24rj45-2sfp.png — bundled 24-port, two-uplink faceplate for future compatible profiles
 

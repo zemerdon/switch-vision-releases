@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.29
+
+The original 48 RJ45 / 2 SFP faceplate is retained under its original filename with its original factory Geometry. The new 6000 × 900 compact artwork and its verified Geometry are now registered separately as `48rj45-2sfp-compact.png` and selected by default for compatible 48-port / two-uplink models. Saved per-switch Calibration changes only after a verified user-approved upgrade.
+
 # Switch Vision Core v2.8.28
 
 The stock 48 RJ45 / 2 SFP faceplate now uses a compact 6000 × 900 image and its matching factory Calibration. Its 48 ports, two SFP uplinks, LEDs and visual controls follow the supplied Geometry. The existing stock filename and model mappings remain unchanged. Saved switch-specific Calibration stays in place until a user approves the new faceplate through the normal upgrade workflow.
