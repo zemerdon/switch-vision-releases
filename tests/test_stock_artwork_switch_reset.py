@@ -8,6 +8,8 @@ import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src/custom_components/switch_vision"))
 from stock_artwork_selection import (apply_approved_switch_artwork,
                                      expected_artwork_choice_matches,
+                                     initial_stock_choice,
+                                     recover_implicit_new_default_pin,
                                      rebase_after_confirmed_factory_reset)
 
 
@@ -33,6 +35,58 @@ def validate_factory(base: str, calibration: dict) -> dict:
 
 
 class StockArtworkSelectionTests(unittest.TestCase):
+    def test_filename_changed_old_stock_is_pinned_until_explicit_approval(self):
+        old_name = "48rj45-2sfp.png"
+        new_name = "48rj45-2sfp-compact.png"
+        old_sha = "955d10fc23eb97555e7f6b45133dfa27b9569a2675f84d95b18aac43f5bd420c"
+        new_sha = "b397891df10499016b0617d0967ec90269493e5708df6b5d8d4c76460934f772"
+        old_profile = {"image": {"file": "faceplates/" + old_name},
+                       "ports": {"1": {"center": [100, 20]}},
+                       "ui": {"faceplate": {"source": "default", "file": "__default__"}}}
+        saved_original = deepcopy(old_profile)
+        first = initial_stock_choice(new_name, new_sha, old_name, old_sha)
+        self.assertEqual(first["filename"], old_name)
+        self.assertEqual(first["sha256"], old_sha)
+        self.assertEqual(first["eligible_faceplates"], [old_name, new_name])
+        self.assertEqual(old_profile, saved_original, "pin creation must not reset Geometry")
+
+        # A 2.8.29 first-use pin could incorrectly claim the new image had
+        # already been selected; only that unversioned auto-pin may migrate.
+        implicit = {"filename": new_name, "sha256": new_sha,
+                    "eligible_faceplates": [new_name]}
+        original = deepcopy(implicit)
+        recovered = recover_implicit_new_default_pin(
+            implicit, new_name, new_sha, old_name, old_sha,
+        )
+        self.assertEqual(recovered, first)
+        self.assertEqual(implicit, original, "recovery must not mutate before persistence")
+
+        for protected in (
+            {**implicit, "version": "sha-explicit-approval"},
+            {**implicit, "geometry_sha256": "a" * 64},
+            {**implicit, "eligible_faceplates": [old_name, new_name]},
+            {"filename": old_name, "sha256": old_sha, "eligible_faceplates": [old_name]},
+            {"filename": new_name, "sha256": "0" * 64, "eligible_faceplates": [new_name]},
+        ):
+            self.assertIsNone(recover_implicit_new_default_pin(
+                protected, new_name, new_sha, old_name, old_sha,
+            ), "previous owner approval and historical choices must survive")
+
+        self.assertIsNone(initial_stock_choice(new_name, new_sha, old_name, ""))
+        self.assertIsNone(recover_implicit_new_default_pin(
+            implicit, new_name, new_sha, old_name, "",
+        ))
+        self.assertEqual(initial_stock_choice(new_name, new_sha), implicit)
+        self.assertEqual(initial_stock_choice(new_name, new_sha, new_name, new_sha), implicit)
+
+    def test_persistence_handler_reconciles_saved_stock_before_hub_offer(self):
+        source = (Path(__file__).resolve().parents[1] /
+                  "src/custom_components/switch_vision/__init__.py").read_text()
+        self.assertIn("_stock_selection.initial_stock_choice(", source)
+        self.assertIn("_stock_selection.recover_implicit_new_default_pin(", source)
+        self.assertIn("_faceplate_artwork.current_stock_sha, _asset_root(),\n                        calibration, stock,", source)
+        self.assertIn("pins[base_profile] = recovered", source)
+
     def test_legacy_sha_pin_accepts_verified_display_version_but_keeps_stale_guards(self):
         """Regression: a 3850 pin predating versioned art must upgrade."""
         original = "eba68a052bc0baff1a5af583eb869895e30c93a51d3836bc763baee1025eacde"

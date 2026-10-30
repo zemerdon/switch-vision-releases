@@ -12,6 +12,57 @@ import re
 from typing import Any, Callable
 
 
+def initial_stock_choice(
+    recommended_file: str, recommended_sha: str,
+    saved_file: str = "", saved_sha: str = "",
+) -> dict[str, Any] | None:
+    """First-use pin: an existing *verified* saved faceplate wins over a new model default.
+
+    An unverified old saved image must not be silently labelled as the new
+    selection. The caller supplies SHA values only after manifest/byte checks.
+    """
+    if saved_file and saved_file != recommended_file:
+        if not re.fullmatch(r"[a-f0-9]{64}", saved_sha):
+            return None
+        return {
+            "filename": saved_file,
+            "sha256": saved_sha,
+            "eligible_faceplates": [saved_file, recommended_file],
+        }
+    return {
+        "filename": recommended_file,
+        "sha256": recommended_sha,
+        "eligible_faceplates": [recommended_file],
+    }
+
+
+def recover_implicit_new_default_pin(
+    previous: Any, recommended_file: str, recommended_sha: str,
+    saved_file: str, saved_sha: str,
+) -> dict[str, Any] | None:
+    """Recover a previously auto-created latest pin, never an approved choice.
+
+    Older Core builds could seed a new default filename even when the saved
+    Native factory still referenced the old stock filename. Only the exact
+    legacy first-use structure may be corrected from verified saved bytes.
+    """
+    if (
+        not isinstance(previous, dict)
+        or previous.get("filename") != recommended_file
+        or previous.get("sha256") != recommended_sha
+        or previous.get("version")
+        or previous.get("geometry_sha256")
+        or previous.get("eligible_faceplates") != [recommended_file]
+        or not saved_file
+        or saved_file == recommended_file
+        or saved_file != Path(saved_file).name
+        or not saved_file.endswith(".png")
+        or not re.fullmatch(r"[a-f0-9]{64}", saved_sha or "")
+    ):
+        return None
+    return initial_stock_choice(recommended_file, recommended_sha, saved_file, saved_sha)
+
+
 def expected_artwork_choice_matches(
     pin: Any, filename: str, sha256: str, expected_version: str = "",
 ) -> bool:

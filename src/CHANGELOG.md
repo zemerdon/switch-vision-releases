@@ -1,3 +1,8 @@
+## v2.8.30 — Preserve saved stock faceplates across renamed defaults
+
+- Preserve the SHA-verified original faceplate as the current selection on existing Native switches when a new model-specific default uses another filename; the new artwork and its paired factory Geometry remain an explicit Hub upgrade choice.
+- Recover only incorrectly initialized, unapproved latest-artwork pins from verified saved stock bytes. Never replace an explicitly approved revision, alter a neighboring switch, or reset saved Calibration without confirmation.
+
 ## v2.8.29 — Separate original and compact 48 RJ45 / 2 SFP faceplates
 
 - Restore the original 48rj45-2sfp artwork and factory Geometry as a selectable alternative. Register the owner-supplied 6000 × 900 compact artwork and its exact paired Geometry separately as 48rj45-2sfp-compact.

@@ -204,7 +204,7 @@ UNIFI_DEVICE_WS_SCHEMA = {
 }
 
 PANEL_URL_PATH = "switch-vision"
-PANEL_VERSION = "2.8.29"
+PANEL_VERSION = "2.8.30"
 PANEL_JS_PATH = "/api/switch_vision/switch-vision-panel.js"
 PANEL_JS_URL = f"{PANEL_JS_PATH}?v={PANEL_VERSION}"
 ICONSET_JS_PATH = "/api/switch_vision/switch-vision-iconset.js"
@@ -2514,6 +2514,23 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
                 )
                 if initial_sha == current_sha and recorded_sha:
                     initial_sha = recorded_sha
+                # A newly recommended stock filename is not proof that an
+                # existing saved switch has already selected that artwork.
+                # Recover the former saved factory only from manifest-verified
+                # bytes. Unverifiable old images never become fake latest pins.
+                saved_filename = (
+                    _faceplate_artwork.stock_filename(calibration)
+                    if isinstance(calibration, dict) else ""
+                )
+                saved_sha = ""
+                if saved_filename and saved_filename != filename:
+                    saved_sha = await hass.async_add_executor_job(
+                        _faceplate_artwork.current_stock_sha, _asset_root(),
+                        calibration, stock,
+                    )
+                initial_pin = _stock_selection.initial_stock_choice(
+                    filename, initial_sha, saved_filename, saved_sha,
+                )
                 selected_filename = filename
                 selected_sha = ""
                 async with storage_lock:
@@ -2524,15 +2541,22 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
                         current["stock_artwork_choices"] = pins
                     previous = pins.get(base_profile)
                     if isinstance(previous, dict):
-                        # Never replace a previously approved filename/sha
-                        # merely because a newer model recommendation differs.
+                        # Recover only the old unapproved implicit first-use
+                        # recommendation, not explicit Hub-approved selections.
+                        recovered = _stock_selection.recover_implicit_new_default_pin(
+                            previous, filename, current_sha, saved_filename, saved_sha,
+                        )
+                        if recovered is not None:
+                            pins[base_profile] = recovered
+                            await _save(current)
+                            previous = recovered
                         selected_filename = str(previous.get("filename") or "")
                         selected_sha = str(previous.get("sha256") or "")
-                    elif len(pins) < 256:
-                        pins[base_profile] = {"filename": filename, "sha256": initial_sha,
-                                              "eligible_faceplates": [filename]}
+                    elif len(pins) < 256 and initial_pin is not None:
+                        pins[base_profile] = initial_pin
                         await _save(current)
-                        selected_sha = initial_sha
+                        selected_filename = initial_pin["filename"]
+                        selected_sha = initial_pin["sha256"]
                 if selected_sha:
                     pin_current_sha = current_sha
                     if selected_filename != filename:

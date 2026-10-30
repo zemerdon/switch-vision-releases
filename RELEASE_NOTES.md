@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.30
+
+Existing switches that saved the original stock faceplate now retain that verified selection when a newer model default uses a different filename. Hub can offer the new artwork and matching factory Geometry for explicit approval instead of silently treating it as already selected. Core also corrects the prior release's unapproved automatic selection where the old saved artwork is still byte-verified; manually approved artwork and saved visual Calibration remain untouched until confirmation.
+
 # Switch Vision Core v2.8.29
 
 The original 48 RJ45 / 2 SFP faceplate is retained under its original filename with its original factory Geometry. The new 6000 × 900 compact artwork and its verified Geometry are now registered separately as `48rj45-2sfp-compact.png` and selected by default for compatible 48-port / two-uplink models. Saved per-switch Calibration changes only after a verified user-approved upgrade.

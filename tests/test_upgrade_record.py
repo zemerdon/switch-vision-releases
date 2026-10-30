@@ -49,5 +49,5 @@ class PreupgradeRecordTests(TestCase):
         source = (ROOT / "src/custom_components/switch_vision/__init__.py").read_text()
         self.assertIn("recorded_preupgrade_choice", source)
         self.assertLess(source.index("previous = pins.get(base_profile)"),
-                        source.index("elif len(pins) < 256:"))
+                        source.index("elif len(pins) < 256 and initial_pin is not None:"))
         self.assertIn("if initial_sha == current_sha and recorded_sha:", source)
