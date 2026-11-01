@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.31
+
+Dell SFP Status Boxes can now show existing read-only optical diagnostics (including TX/RX dBm) from actual Home Assistant entities without restricting presentation to the N2128PX-ON model name. Saved, explicitly customized Status Box field visibility remains authoritative. Devices without available optical sensors, including the N4032F where values were not observed, continue to show no invented measurements. This change adds no SNMP SET behavior or new model-support claim.
+
 # Switch Vision Core v2.8.30
 
 Existing switches that saved the original stock faceplate now retain that verified selection when a newer model default uses a different filename. Hub can offer the new artwork and matching factory Geometry for explicit approval instead of silently treating it as already selected. Core also corrects the prior release's unapproved automatic selection where the old saved artwork is still byte-verified; manually approved artwork and saved visual Calibration remain untouched until confirmation.

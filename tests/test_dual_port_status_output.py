@@ -62,7 +62,7 @@ const editor={config:{port_status_1_selected_field:"vlan",port_status_2_selected
 const markup = between("    const portStatusOutputPickerHtml =", "    const status1TitleOptions =");
 const build=new Function("statusUi","status2Ui","STATUS_PANEL_ROW_DEFS",
   "normaliseStatusPanelFieldOrder","fieldListFromValue","juniperModeOption",
-  "isDellN2128OpticalModel","SFP_OPTICAL_FIELDS","htmlEscape","outputSelection",
+  "isDellOpticalModel","SFP_OPTICAL_FIELDS","htmlEscape","outputSelection",
   markup+";return portStatusRowControlsHtml;");
 const renderControls=(mode)=>{
   cal.ui.port_status_output=mode;

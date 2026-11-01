@@ -59,7 +59,7 @@ class DellN2128OpticalStatusPanelTests(unittest.TestCase):
         ):
             self.assertIn(f'"{suffix}"', optics)
 
-        self.assertIn('includes("N2128PX-ON")', source)
+        self.assertIn("function isDellOpticalModel(config)", source)
         for field in (
             '"optic_status"',
             '"temperature"',
@@ -72,6 +72,23 @@ class DellN2128OpticalStatusPanelTests(unittest.TestCase):
             '"transceiver_part"',
         ):
             self.assertIn(field, source)
+
+    def test_only_dell_models_auto_offer_observed_optical_rows(self) -> None:
+        source = CARD.read_text(encoding="utf-8")
+        classifier = extract_js_function(source, "function isDellOpticalModel(config)")
+        harness = f"""
+const assert = require("node:assert/strict");
+{classifier}
+assert.equal(isDellOpticalModel({{switch_model: "N2128PX-ON"}}), true);
+assert.equal(isDellOpticalModel({{switch_model: "N4032F"}}), true);
+assert.equal(isDellOpticalModel({{switch_model: "PowerConnect 5548P", manufacturer: "Dell"}}), true);
+assert.equal(isDellOpticalModel({{switch_model: "Unknown", switch_vendor: "Dell EMC"}}), true);
+assert.equal(isDellOpticalModel({{switch_model: "EX3300-48P", manufacturer: "Juniper"}}), false);
+assert.equal(isDellOpticalModel({{switch_model: "WS-C3650-48PD-E"}}), false);
+assert.equal(isDellOpticalModel({{}}), false);
+"""
+        result = subprocess.run(["node", "-e", harness], cwd=ROOT, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_metric_display_preserves_home_assistant_units(self) -> None:
         source = CARD.read_text(encoding="utf-8")

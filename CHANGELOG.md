@@ -1,3 +1,8 @@
+## v2.8.31 — Display observed Dell optical diagnostics
+
+- Present existing read-only TX/RX optical power (dBm) and transceiver fields on Dell SFP Status Boxes when actual Home Assistant sensor readings are available, including Dell models other than the N2128PX-ON.
+- Preserve explicit per-box Calibration Show/Hide choices, keep unavailable/N4032F readings absent, and retain the existing model-bounded Discovery OID collection. No new SNMP SET, optical inference or unsupported-device claim.
+
 ## v2.8.30 — Preserve saved stock faceplates across renamed defaults
 
 - Preserve the SHA-verified original faceplate as the current selection on existing Native switches when a new model-specific default uses another filename; the new artwork and its paired factory Geometry remain an explicit Hub upgrade choice.

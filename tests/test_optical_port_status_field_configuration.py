@@ -98,7 +98,7 @@ assert(statusPanelFieldSelection({},"sfp",generic,1).includes("rx_power"));
         self.assertIn('${panelNumber === 1 ? portStatusOutputPickerHtml : ""}', s)
         self.assertIn('panel.field_order[rowType] = order;', s)
         self.assertIn('panel.hidden_fields[rowType] = [...hidden]', s)
-        self.assertIn('optics.available && isDellN2128OpticalModel(config)', s)
+        self.assertIn('optics.available && isDellOpticalModel(config)', s)
         self.assertIn('optical_rows_customized !== true', s)
         self.assertIn('SFP_OPTICAL_FIELDS.includes(field) || values[field] !== "—"', s)
         self.assertNotIn('panel.field_order.sfp = [...order];', s)
@@ -114,7 +114,7 @@ const b=s.indexOf("\nfunction selectedSfpDetails(",a);
 assert(a>0&&b>a);
 const ctx={
  rearSfpOrdinalFromPort:()=>0,
- normalizeEntityPrefix:()=>"dell",
+ normalizeEntityPrefix:(config)=>config.member||"dell",
  configuredEntity:()=>null,
  firstEntityValue:(h,ids)=>ids.map(id=>h.states[id]?.state).find(Boolean),
  firstEntityDisplayValue:(h,ids)=>ids.map(id=>{
@@ -145,6 +145,8 @@ assert.equal(oneG.media_type,"1000Base-LX");
 assert.equal(uplink.rx_power,"-3.8 dBm");
 assert.equal(none.available,false);
 assert.equal(none.tx_power,"—");
+const n4032=fn({states},{switch_model:"N4032F",member:"dell_n4032"},1);
+assert.equal(n4032.available,false,"other Dell unit must not borrow another switch optical values");
 '''
         result = subprocess.run(
             ["node", "-e", js, str(SOURCE)],
