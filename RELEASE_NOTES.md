@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.37
+
+Restore reviewed Core changelog history from v0.9.0 through v2.3.0 for the new consolidated major/minor changelog presentation. Historical patch details remain traceable to their release versions without exposing private contribution references. This documentation-only patch does not change device telemetry, Native faceplates, Calibration or other Core runtime behaviour.
+
 # Switch Vision Core v2.8.36
 
 Native status LEDs follow the verified artwork revision rather than a reused faceplate filename. Only the two original 48 RJ45 stock faceplates show generic status LEDs by default; other faceplates keep them hidden unless deliberately enabled through Calibration. Saved faceplate selections and user edits remain preserved.
