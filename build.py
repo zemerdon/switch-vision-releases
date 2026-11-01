@@ -299,6 +299,7 @@ def validate_faceplate_factory_calibrations(base: Path, source_layout: bool = Fa
         "48rj45-2sfp.png": ("stock_48rj45_2sfp", 48, 2),
         "48rj45-2sfp-compact.png": ("stock_48rj45_2sfp_compact", 48, 2),
         "48rj45-4sfp.png": ("stock_48rj45_4sfp", 48, 4),
+        "48rj45-4sfp-compact.png": ("stock_48rj45_4sfp_compact", 48, 4),
     }
 
     for filename, (profile, rj45_count, sfp_count) in required_stock.items():
@@ -1353,6 +1354,7 @@ def validate_device_visual_recommendations(base: Path, source_layout: bool = Fal
         "stock_48rj45_2sfp": "faceplates/48rj45-2sfp.png",
         "stock_48rj45_2sfp_compact": "faceplates/48rj45-2sfp-compact.png",
         "stock_48rj45_4sfp": "faceplates/48rj45-4sfp.png",
+        "stock_48rj45_4sfp_compact": "faceplates/48rj45-4sfp-compact.png",
         "unifi_24p_rj45_2sfp": "faceplates/unifi-24p-rj45-2sfp.png",
     }
 

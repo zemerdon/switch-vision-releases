@@ -166,8 +166,8 @@ class DeviceRegistryContractTests(unittest.TestCase):
         self.assertEqual(ports.get("uplinks"), 4)
         self.assertEqual(ports.get("gigabit_sfp"), 2)
         self.assertEqual(ports.get("ten_gigabit_sfp_plus"), 2)
-        self.assertEqual(device.get("calibration_profile"), "stock_48rj45_4sfp")
-        self.assertEqual(device.get("default_faceplate"), "faceplates/48rj45-4sfp.png")
+        self.assertEqual(device.get("calibration_profile"), "stock_48rj45_4sfp_compact")
+        self.assertEqual(device.get("default_faceplate"), "faceplates/48rj45-4sfp-compact.png")
         self.assertNotIn("unifi_api_port_map", device)
 
     def test_us_xg_16_uses_authoritative_optical_first_api_map(self) -> None:
@@ -191,7 +191,7 @@ class DeviceRegistryContractTests(unittest.TestCase):
         self.assertEqual(xr.get("status"), "experimental")
         self.assertEqual((xr.get("ports") or {}).get("rj45"), 48)
         self.assertEqual((xr.get("ports") or {}).get("gigabit_sfp"), 4)
-        self.assertEqual(xr.get("default_faceplate"), "faceplates/48rj45-4sfp.png")
+        self.assertEqual(xr.get("default_faceplate"), "faceplates/48rj45-4sfp-compact.png")
 
         fiber = self.models["UCG Fiber"]
         self.assertEqual(fiber.get("status"), "experimental")

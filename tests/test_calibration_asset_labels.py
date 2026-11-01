@@ -7,6 +7,7 @@ MIRROR = ROOT / "src/js/switch-vision.js"
 
 EXPECTED = {
     "48rj45-4sfp.png": "48 × RJ45 · 4 × SFP",
+    "48rj45-4sfp-compact.png": "48 × RJ45 · 4 × SFP · Compact",
     "48rj45-2sfp.png": "48 × RJ45 · 2 × SFP",
     "24rj45-4sfp.png": "24 × RJ45 · 4 × SFP",
     "24rj45-2sfp.png": "24 × RJ45 · 2 × SFP",

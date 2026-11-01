@@ -73,7 +73,7 @@ class CalibrationStatusLedLayoutTests(unittest.TestCase):
         # factory indicators. Preserve the supplied selection byte-for-byte.
         for suffix in ("2sfp", "4sfp"):
             stock = json.loads(
-                (CALIBRATION / ("faceplate-stock-48rj45-2sfp-compact.json" if suffix == "2sfp" else f"faceplate-stock-48rj45-{suffix}.json")).read_text(encoding="utf-8")
+                (CALIBRATION / f"faceplate-stock-48rj45-{suffix}-compact.json").read_text(encoding="utf-8")
             )
             owner = json.loads(
                 (CALIBRATION / f"geometry-stock-48rj45-{suffix}-compact.json").read_text(
@@ -86,6 +86,12 @@ class CalibrationStatusLedLayoutTests(unittest.TestCase):
             self.assertEqual(
                 set(stock["ui"]["status_leds"]["hidden"]), set(stock["status_leds"])
             )
+
+    def test_restored_original_48x4_keeps_its_distinct_status_led_defaults(self) -> None:
+        original = json.loads((CALIBRATION / "faceplate-stock-48rj45-4sfp.json").read_text(encoding="utf-8"))
+        compact = json.loads((CALIBRATION / "faceplate-stock-48rj45-4sfp-compact.json").read_text(encoding="utf-8"))
+        self.assertEqual(original["ui"]["status_leds"]["hidden"], [])
+        self.assertEqual(set(compact["ui"]["status_leds"]["hidden"]), set(compact["status_leds"]))
 
     def test_new_calibration_session_starts_with_all_status_leds_removed(self) -> None:
         helper_start = self.source.index("function applyNewCalibrationStatusLedDefaults")

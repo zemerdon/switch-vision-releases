@@ -29,7 +29,7 @@ class Catalyst3750ContractTests(unittest.TestCase):
         self.assertIs(device["stack_support"], True)
 
     def test_visual_contract(self) -> None:
-        self.assertEqual(self.device["default_faceplate"], "faceplates/48rj45-4sfp.png")
+        self.assertEqual(self.device["default_faceplate"], "faceplates/48rj45-4sfp-compact.png")
         self.assertEqual(self.device["calibration_profile"], "default_cisco_48_port")
 
 

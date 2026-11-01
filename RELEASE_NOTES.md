@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.32
+
+Restore the original 48 RJ45 / 4 SFP stock faceplate and factory Geometry under their original name. The compact 48/4 artwork and Geometry are now separately selectable as **48 × RJ45 · 4 × SFP · Compact**; supported 48/4 models continue to recommend compact, with the original available as an alternative. The stock filenames now resolve to their respective original and compact bytes; existing switch-scoped saved Calibration and approved artwork pins are not automatically reset. Explicit faceplate changes continue through the normal preview and approval workflow.
+
 # Switch Vision Core v2.8.31
 
 Dell SFP Status Boxes can now show existing read-only optical diagnostics (including TX/RX dBm) from actual Home Assistant entities without restricting presentation to the N2128PX-ON model name. Saved, explicitly customized Status Box field visibility remains authoritative. Devices without available optical sensors, including the N4032F where values were not observed, continue to show no invented measurements. This change adds no SNMP SET behavior or new model-support claim.

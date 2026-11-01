@@ -1,3 +1,8 @@
+## v2.8.32 — Keep original and compact 48 RJ45 / 4 SFP faceplates separate
+
+- Restore the original 6000 × 1325 stock 48 RJ45 / 4 SFP artwork and its original factory Geometry, while retaining the 6000 × 900 compact artwork and owner-calibrated Geometry as a separately named option.
+- Keep compact recommended for existing compatible 48/4 models and offer original stock separately. Preserve saved switch Calibration and require explicit approval for any faceplate/Geometry replacement.
+
 ## v2.8.31 — Display observed Dell optical diagnostics
 
 - Present existing read-only TX/RX optical power (dBm) and transceiver fields on Dell SFP Status Boxes when actual Home Assistant sensor readings are available, including Dell models other than the N2128PX-ON.

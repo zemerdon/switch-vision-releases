@@ -200,7 +200,7 @@ def test_stock_48_port_factory_presentation_contract() -> None:
 
     # The 48 RJ45 / 4 SFP stock replacement retains the owner's new values.
     four = _CANVAS.render_space_calibration(
-        faceplate_calibrations()["48rj45-4sfp.png"]
+        faceplate_calibrations()["48rj45-4sfp-compact.png"]
     )
     owner = json.loads(
         (CALIBRATIONS / "geometry-stock-48rj45-4sfp-compact.json").read_text(

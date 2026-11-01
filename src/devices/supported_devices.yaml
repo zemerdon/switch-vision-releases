@@ -236,8 +236,9 @@ devices:
   dashboard_support: true
   mapping_profile: cisco-3650-48p-2x10g
   calibration_profile: default_cisco_48_port
-  default_faceplate: faceplates/48rj45-4sfp.png
-  optional_faceplates: []
+  default_faceplate: faceplates/48rj45-4sfp-compact.png
+  optional_faceplates:
+  - faceplates/48rj45-4sfp.png
   validation:
     exact_model_detection: confirmed
     rj45_mapping: confirmed
@@ -247,8 +248,9 @@ devices:
     stack: confirmed
   visuals:
     status: confirmed
-    recommended_faceplate: faceplates/48rj45-4sfp.png
-    optional_faceplates: []
+    recommended_faceplate: faceplates/48rj45-4sfp-compact.png
+    optional_faceplates:
+    - faceplates/48rj45-4sfp.png
     calibration_profile: default_cisco_48_port
     canvas:
       width: 2048
@@ -271,8 +273,9 @@ devices:
   dashboard_support: true
   mapping_profile: cisco-3650-48p-2x10g
   calibration_profile: default_cisco_48_port
-  default_faceplate: faceplates/48rj45-4sfp.png
-  optional_faceplates: []
+  default_faceplate: faceplates/48rj45-4sfp-compact.png
+  optional_faceplates:
+  - faceplates/48rj45-4sfp.png
   validation:
     exact_model_detection: confirmed
     rj45_mapping: confirmed
@@ -282,8 +285,9 @@ devices:
     stack: confirmed
   visuals:
     status: confirmed
-    recommended_faceplate: faceplates/48rj45-4sfp.png
-    optional_faceplates: []
+    recommended_faceplate: faceplates/48rj45-4sfp-compact.png
+    optional_faceplates:
+    - faceplates/48rj45-4sfp.png
     calibration_profile: default_cisco_48_port
     canvas:
       width: 2048
@@ -413,8 +417,9 @@ devices:
   dashboard_support: true
   mapping_profile: cisco-2960xr-48lps-48p-4sfp
   calibration_profile: default_cisco_48_port
-  default_faceplate: faceplates/48rj45-4sfp.png
-  optional_faceplates: []
+  default_faceplate: faceplates/48rj45-4sfp-compact.png
+  optional_faceplates:
+  - faceplates/48rj45-4sfp.png
   validation:
     exact_model_detection: contribution_confirmed_exact_model
     rj45_mapping: contribution_confirmed_gi1_0_1_48
@@ -424,8 +429,9 @@ devices:
     stack: stack_capability_observed_multi_member_behavior_pending
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/48rj45-4sfp.png
-    optional_faceplates: []
+    recommended_faceplate: faceplates/48rj45-4sfp-compact.png
+    optional_faceplates:
+    - faceplates/48rj45-4sfp.png
     calibration_profile: default_cisco_48_port
     canvas:
       width: 2048
@@ -559,8 +565,9 @@ devices:
   dashboard_support: true
   mapping_profile: juniper-ex3300-48p
   calibration_profile: default_cisco_48_port
-  default_faceplate: faceplates/48rj45-4sfp.png
-  optional_faceplates: []
+  default_faceplate: faceplates/48rj45-4sfp-compact.png
+  optional_faceplates:
+  - faceplates/48rj45-4sfp.png
   validation:
     exact_model_detection: confirmed
     rj45_mapping: confirmed
@@ -570,8 +577,9 @@ devices:
     stack: not_validated
   visuals:
     status: confirmed
-    recommended_faceplate: faceplates/48rj45-4sfp.png
-    optional_faceplates: []
+    recommended_faceplate: faceplates/48rj45-4sfp-compact.png
+    optional_faceplates:
+    - faceplates/48rj45-4sfp.png
     calibration_profile: default_cisco_48_port
     canvas:
       width: 2048
@@ -985,9 +993,10 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: ubiquiti-us-48-poe-500w-api
-  calibration_profile: stock_48rj45_4sfp
-  default_faceplate: faceplates/48rj45-4sfp.png
-  optional_faceplates: []
+  calibration_profile: stock_48rj45_4sfp_compact
+  default_faceplate: faceplates/48rj45-4sfp-compact.png
+  optional_faceplates:
+  - faceplates/48rj45-4sfp.png
   validation:
     exact_model_detection: live_api_confirmed
     rj45_mapping: live_api_confirmed_port_indices
@@ -997,9 +1006,10 @@ devices:
     stack: not_applicable
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/48rj45-4sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_48rj45_4sfp
+    recommended_faceplate: faceplates/48rj45-4sfp-compact.png
+    optional_faceplates:
+    - faceplates/48rj45-4sfp.png
+    calibration_profile: stock_48rj45_4sfp_compact
     canvas:
       width: 2048
       height: 448
@@ -1020,9 +1030,10 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: ubiquiti-us-48-api
-  calibration_profile: stock_48rj45_4sfp
-  default_faceplate: faceplates/48rj45-4sfp.png
-  optional_faceplates: []
+  calibration_profile: stock_48rj45_4sfp_compact
+  default_faceplate: faceplates/48rj45-4sfp-compact.png
+  optional_faceplates:
+  - faceplates/48rj45-4sfp.png
   validation:
     exact_model_detection: live_api_confirmed
     rj45_mapping: live_api_confirmed_port_indices_1_48
@@ -1032,9 +1043,10 @@ devices:
     stack: not_applicable
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/48rj45-4sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_48rj45_4sfp
+    recommended_faceplate: faceplates/48rj45-4sfp-compact.png
+    optional_faceplates:
+    - faceplates/48rj45-4sfp.png
+    calibration_profile: stock_48rj45_4sfp_compact
     canvas:
       width: 2048
       height: 448
@@ -1786,8 +1798,9 @@ devices:
   dashboard_support: true
   mapping_profile: cisco-3750-48p-48fe-4sfp
   calibration_profile: default_cisco_48_port
-  default_faceplate: faceplates/48rj45-4sfp.png
-  optional_faceplates: []
+  default_faceplate: faceplates/48rj45-4sfp-compact.png
+  optional_faceplates:
+  - faceplates/48rj45-4sfp.png
   validation:
     exact_model_detection: contribution_confirmed
     rj45_mapping: candidate_48_fastethernet_ports_pending_live_dashboard_validation
@@ -1797,8 +1810,9 @@ devices:
     stack: capable_pending_live_validation
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/48rj45-4sfp.png
-    optional_faceplates: []
+    recommended_faceplate: faceplates/48rj45-4sfp-compact.png
+    optional_faceplates:
+    - faceplates/48rj45-4sfp.png
     calibration_profile: default_cisco_48_port
     canvas:
       width: 2048
@@ -2043,8 +2057,9 @@ devices:
   dashboard_support: true
   mapping_profile: cisco-3750x-48p-c3kx
   calibration_profile: default_cisco_48_port
-  default_faceplate: faceplates/48rj45-4sfp.png
-  optional_faceplates: []
+  default_faceplate: faceplates/48rj45-4sfp-compact.png
+  optional_faceplates:
+  - faceplates/48rj45-4sfp.png
   validation:
     exact_model_detection: contribution_confirmed_two_member_stack
     rj45_mapping: real_hardware_48_per_member_confirmed
@@ -2054,8 +2069,9 @@ devices:
     stack: real_hardware_two_member_topology_confirmed
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/48rj45-4sfp.png
-    optional_faceplates: []
+    recommended_faceplate: faceplates/48rj45-4sfp-compact.png
+    optional_faceplates:
+    - faceplates/48rj45-4sfp.png
     calibration_profile: default_cisco_48_port
     canvas:
       width: 2048
@@ -2078,8 +2094,9 @@ devices:
   dashboard_support: true
   mapping_profile: cisco-3750x-48p-c3kx
   calibration_profile: default_cisco_48_port
-  default_faceplate: faceplates/48rj45-4sfp.png
-  optional_faceplates: []
+  default_faceplate: faceplates/48rj45-4sfp-compact.png
+  optional_faceplates:
+  - faceplates/48rj45-4sfp.png
   validation:
     exact_model_detection: contribution_confirmed_entity_mib_exact_sku
     rj45_mapping: real_hardware_48_confirmed_family_contract_reproduced
@@ -2089,8 +2106,9 @@ devices:
     stack: single_member_observed_family_stack_support_inherited
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/48rj45-4sfp.png
-    optional_faceplates: []
+    recommended_faceplate: faceplates/48rj45-4sfp-compact.png
+    optional_faceplates:
+    - faceplates/48rj45-4sfp.png
     calibration_profile: default_cisco_48_port
     canvas:
       width: 2048

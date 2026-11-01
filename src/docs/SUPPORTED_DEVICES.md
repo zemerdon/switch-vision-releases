@@ -10,16 +10,16 @@ Only exact model identifiers are listed. Support for one SKU does not imply supp
 | HP | 1810 | `HP ProCurve 1810G-24` | 24 | 2 Gigabit SFP | No | No | `faceplates/hp-1810-24g.png` | `hp_1810_24g` | Manufacturer Confirmed Dual Personality Indexes 23 24 Medium Pending | Experimental | v2.4.47 |
 | Zyxel | GS1900 | `GS1900-8` | 8 | 0 none | No | No | `faceplates/24rj45-2sfp.png` | `stock_24rj45_2sfp` | Not Applicable | Experimental | v2.3.36 |
 | Sirivision | SR-S25G | `SR-S25G3420F` | 16 | 4 10G SFP+ | No | No | `faceplates/24rj45-4sfp.png` | `stock_24rj45_4sfp` | Real Hardware Indexes 17 20 Confirmed | Experimental | v2.3.36 |
-| Cisco | Catalyst 3650 | `WS-C3650-48PD-E` | 48 | 2 Gigabit SFP + 2 10G SFP+ | Yes | Yes | `faceplates/48rj45-4sfp.png` | `default_cisco_48_port` | Confirmed | Confirmed | v1.8.0 |
-| Cisco | Catalyst 3650 | `WS-C3650-48PD-L` | 48 | 2 Gigabit SFP + 2 10G SFP+ | Yes | Yes | `faceplates/48rj45-4sfp.png` | `default_cisco_48_port` | Confirmed | Confirmed | v1.8.0 |
+| Cisco | Catalyst 3650 | `WS-C3650-48PD-E` | 48 | 2 Gigabit SFP + 2 10G SFP+ | Yes | Yes | `faceplates/48rj45-4sfp-compact.png` | `default_cisco_48_port` | Confirmed | Confirmed | v1.8.0 |
+| Cisco | Catalyst 3650 | `WS-C3650-48PD-L` | 48 | 2 Gigabit SFP + 2 10G SFP+ | Yes | Yes | `faceplates/48rj45-4sfp-compact.png` | `default_cisco_48_port` | Confirmed | Confirmed | v1.8.0 |
 | Cisco | Catalyst 2960X | `WS-C2960X-48FPD-L` | 48 | 2 10G SFP+ | Yes | No | `faceplates/48rj45-2sfp-compact.png` | `stock_48rj45_2sfp_compact` | Confirmed | Confirmed | v1.8.26 |
 | Cisco | Catalyst 2960X | `WS-C2960X-24PS-L` | 24 | 4 Gigabit SFP | Yes | No | `faceplates/24rj45-4sfp.png` | `cisco_2960x_24p` | Confirmed | Community Validated | v3.0.0 |
 | Cisco | Catalyst 2960X | `WS-C2960X-24TS-L` | 24 | 4 Gigabit SFP | No | Yes | `faceplates/24rj45-4sfp.png` | `cisco_2960x_24p` | Pending | Experimental | v1.8.25 |
-| Cisco | Catalyst 2960X | `WS-C2960XR-48LPS-I` | 48 | 4 Gigabit SFP | Yes | Yes | `faceplates/48rj45-4sfp.png` | `default_cisco_48_port` | Contribution Confirmed Gi1 0 49 52 1G Sfp | Experimental | v2.4.42 |
+| Cisco | Catalyst 2960X | `WS-C2960XR-48LPS-I` | 48 | 4 Gigabit SFP | Yes | Yes | `faceplates/48rj45-4sfp-compact.png` | `default_cisco_48_port` | Contribution Confirmed Gi1 0 49 52 1G Sfp | Experimental | v2.4.42 |
 | Cisco | Catalyst 2960S | `WS-C2960S-48FPD-L` | 48 | 2 10G SFP+ | Yes | No | `faceplates/48rj45-2sfp-compact.png` | `stock_48rj45_2sfp_compact` | Confirmed | Confirmed | v1.8.26 |
 | Cisco | Catalyst 3560-C | `WS-C3560CG-8PC-S` | 8 | 2 Gigabit SFP | Yes | No | `faceplates/c3560cg-8pc-s-compact.png` | `cisco_3560cg_8pc_compact` | Pending | Experimental | v1.8.24 |
 | Cisco | Catalyst 3850 | `WS-C3850-12XS-E` | 0 | 12 10G SFP+ | No | No | `faceplates/cisco-3850-12xs.png` | `cisco_3850_12xs` | Community Confirmed Te Member 0 1 12 Link Speed Activity | Community Validated | v2.4.5 |
-| Juniper | EX3300 | `EX3300-48P` | 48 | 4 10G SFP+ | Yes | No | `faceplates/48rj45-4sfp.png` | `default_cisco_48_port` | Confirmed | Confirmed | v1.8.26 |
+| Juniper | EX3300 | `EX3300-48P` | 48 | 4 10G SFP+ | Yes | No | `faceplates/48rj45-4sfp-compact.png` | `default_cisco_48_port` | Confirmed | Confirmed | v1.8.26 |
 | Cisco | Small Business SG500X | `SG500X-24` | 24 | 4 10G SFP+ | No | Yes | `faceplates/24rj45-4sfp.png` | `cisco_2960x_24p` | Community Confirmed Four Uplink Positions | Community Validated | v2.6.7 |
 | Huawei | S5720 | `S5720-12TP-LI-AC` | 8 | 4 Gigabit SFP | No | No | `faceplates/24rj45-4sfp.png` | `stock_24rj45_4sfp` | Community Confirmed Ports 9 12 1G Sfp Link And Speed | Community Validated | v2.6.7 |
 | Zyxel | XS1930 | `XS1930-10` | 8 | 2 10G SFP+ | No | No | `faceplates/c3560cg-8pc-s.png` | `cisco_3560cg_8pc` | Contribution Confirmed Ifindex 9 10 Swp08 Swp09 | Experimental | v2.1.7 |
@@ -31,8 +31,8 @@ Only exact model identifiers are listed. Support for one SKU does not imply supp
 | Ubiquiti | UniFi Dream Machine Pro | `UDM Pro` | 9 | 2 10G SFP+ | No | No | `faceplates/unifi-9rj45-2sfp.png` | `unifi_9_rj45_2sfp` | Live Api Confirmed Connector And Speed | Experimental | v2.0.32 |
 | Dell | Dell EMC Networking N2000 | `N2128PX-ON` | 28 | 2 10G SFP+ | Yes | Yes | `faceplates/dell-28-rj45-2sfp.png` | `dell_28rj45_2sfp` | Contribution Confirmed Te Member 0 1 2 As 10G Sfp Plus | Experimental | v2.1.20 |
 | Dell | Dell Networking N4000 | `N4032F` | 0 | 24 10G SFP+ | No | No | `faceplates/dell-4032f.png` | `dell_n4032f` | Real Hardware 24 Front 10G Sfp Plus Confirmed Optional Front 2X40G Qsfp Bound When Observed | Experimental | v3.0.22 |
-| Ubiquiti | UniFi Switch | `US 48 PoE 500W` | 48 | 2 Gigabit SFP + 2 10G SFP+ | Yes | No | `faceplates/48rj45-4sfp.png` | `stock_48rj45_4sfp` | Live Api Confirmed Connector And Speed | Experimental | v2.1.15 |
-| Ubiquiti | UniFi Switch | `US 48` | 48 | 2 Gigabit SFP + 2 10G SFP+ | No | No | `faceplates/48rj45-4sfp.png` | `stock_48rj45_4sfp` | Live Api Confirmed Ports 49 50 10G Sfp Plus 51 52 1G Sfp | Experimental | v2.4.9 |
+| Ubiquiti | UniFi Switch | `US 48 PoE 500W` | 48 | 2 Gigabit SFP + 2 10G SFP+ | Yes | No | `faceplates/48rj45-4sfp-compact.png` | `stock_48rj45_4sfp_compact` | Live Api Confirmed Connector And Speed | Experimental | v2.1.15 |
+| Ubiquiti | UniFi Switch | `US 48` | 48 | 2 Gigabit SFP + 2 10G SFP+ | No | No | `faceplates/48rj45-4sfp-compact.png` | `stock_48rj45_4sfp_compact` | Live Api Confirmed Ports 49 50 10G Sfp Plus 51 52 1G Sfp | Experimental | v2.4.9 |
 | Ubiquiti | UniFi Switch XG | `US XG 16` | 4 | 12 10G SFP+ | No | No | `faceplates/unifi-4-rj45-12sfp.png` | `unifi_4_rj45_12sfp` | Live Api Confirmed Api Ports 1 12 10G Sfp Plus | Experimental | v2.4.9 |
 | Ubiquiti | UniFi Switch Pro Aggregation | `USW Pro Aggregation` | 0 | 28 10G SFP+ + 4 25G SFP28 | No | No | `faceplates/unifi-32sfp.png` | `unifi_32sfp` | Live Api Confirmed 28X10G Sfp Plus 4X25G Sfp28 | Experimental | v2.4.42 |
 | Ubiquiti | UniFi Switch 8 150W | `US-8-150W` | 8 | 2 Gigabit SFP | Yes | No | `faceplates/unifi-8-rj45-2sfp.png` | `unifi_8_rj45_2sfp` | Real Hardware Snmp Ports 0 9 0 10 1G Sfp Confirmed | Experimental | v2.4.11 |
@@ -52,14 +52,14 @@ Only exact model identifiers are listed. Support for one SKU does not imply supp
 | Ubiquiti | UniFi Switch 16 PoE 150W | `US 16 PoE 150W` | 16 | 2 Gigabit SFP | Yes | No | `faceplates/unifi-16rj45-2sfp.png` | `unifi_16_rj45_2sfp` | Live Api Confirmed Ports 17 18 1G Sfp | Experimental | v2.4.10 |
 | Ubiquiti | UniFi Switch Pro Max 24 | `USW Pro Max 24` | 24 | 2 10G SFP+ | No | No | `faceplates/unifi-24p-rj45-2sfp.png` | `unifi_24p_rj45_2sfp` | Live Api Confirmed Ports 25 26 10G Sfp Plus | Experimental | v2.4.10 |
 | Ubiquiti | UniFi Switch Ultra | `USW Ultra` | 8 | 0 none | Yes | No | `faceplates/unifi-8rj45.png` | `default_unifi_8_rj45` | Not Applicable | Experimental | v2.4.10 |
-| Cisco | Catalyst 3750 | `WS-C3750-48P` | 48 | 4 Gigabit SFP | Yes | Yes | `faceplates/48rj45-4sfp.png` | `default_cisco_48_port` | Candidate Four 1G Sfp Pending Live Validation | Experimental | v2.4.12 |
+| Cisco | Catalyst 3750 | `WS-C3750-48P` | 48 | 4 Gigabit SFP | Yes | Yes | `faceplates/48rj45-4sfp-compact.png` | `default_cisco_48_port` | Candidate Four 1G Sfp Pending Live Validation | Experimental | v2.4.12 |
 | Ubiquiti | UniFi Dream Machine Pro Max | `UDM Pro Max` | 9 | 2 10G SFP+ | No | No | `faceplates/unifi-9rj45-2sfp.png` | `unifi_9_rj45_2sfp` | Community Api Ports 10 11 10G Sfp Plus Confirmed Pending Rendered Validation | Experimental | v2.4.14 |
 | Ubiquiti | UniFi Switch Pro XG | `USW Pro XG 24 PoE` | 24 | 2 25G SFP28 | Yes | No | `faceplates/unifi-24-rj45-2sfp-inline.png` | `unifi_24_rj45_2sfp_inline` | Community Api Ports 25 26 25G Sfp28 Confirmed Pending Rendered Validation | Experimental | v2.4.14 |
 | MikroTik | CRS328 | `CRS328-24P-4S+RM` | 24 | 4 10G SFP+ | Yes | No | `faceplates/24rj45-4sfp.png` | `stock_24rj45_4sfp` | Contribution Confirmed Four Sfp Plus Positions Live Link Pending | Experimental | v2.3.21 |
 | Dell | PowerConnect 5500 | `PowerConnect 5548P` | 48 | 2 10G SFP+ | Yes | No | `faceplates/48rj45-2sfp-compact.png` | `stock_48rj45_2sfp_compact` | Real Hardware Interface Map Confirmed | Experimental | v2.3.24 |
 | Zyxel | GS1900 | `GS1900-24E` | 24 | 0 none | No | No | `faceplates/24rj45-2sfp.png` | `stock_24rj45_2sfp` | Not Applicable | Experimental | v2.4.47 |
-| Cisco | Catalyst 3750X | `WS-C3750X-48P` | 48 | 2 Gigabit SFP + 2 10G SFP+ | Yes | Yes | `faceplates/48rj45-4sfp.png` | `default_cisco_48_port` | Real Hardware Alias Dedup Mapping Confirmed | Experimental | v2.3.24 |
-| Cisco | Catalyst 3750X | `WS-C3750X-48P-S` | 48 | 2 Gigabit SFP + 2 10G SFP+ | Yes | Yes | `faceplates/48rj45-4sfp.png` | `default_cisco_48_port` | Real Hardware C3Kx Alias Dedup Mapping Confirmed | Experimental | v2.4.47 |
+| Cisco | Catalyst 3750X | `WS-C3750X-48P` | 48 | 2 Gigabit SFP + 2 10G SFP+ | Yes | Yes | `faceplates/48rj45-4sfp-compact.png` | `default_cisco_48_port` | Real Hardware Alias Dedup Mapping Confirmed | Experimental | v2.3.24 |
+| Cisco | Catalyst 3750X | `WS-C3750X-48P-S` | 48 | 2 Gigabit SFP + 2 10G SFP+ | Yes | Yes | `faceplates/48rj45-4sfp-compact.png` | `default_cisco_48_port` | Real Hardware C3Kx Alias Dedup Mapping Confirmed | Experimental | v2.4.47 |
 | Cisco | Cisco Small Business SG350 | `SG350-20` | 18 | 4 Gigabit SFP | No | No | `faceplates/24rj45-4sfp.png` | `stock_24rj45_4sfp` | Combo Semantics Conservative Pending Medium Validation | Experimental | v2.4.47 |
 | Cisco | Cisco Small Business SG200 | `SG200-26` | 26 | 2 Gigabit SFP | No | No | `faceplates/cisco-sg200-26.png` | `cisco_sg200_26` | Real Hardware Combo Logical Ports 25 26 Confirmed | Experimental | v3.0.26 |
 | HP | 3500yl | `HP J8693A Switch 3500yl-48G` | 48 | 4 Gigabit SFP | Yes | No | `faceplates/hp-3500yl-48g.png` | `hp_3500yl_48g` | Entity Binding Confirmed Medium Pending | Experimental | v2.4.47 |
