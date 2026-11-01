@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.35
+
+The displayed stock faceplate determines default status LED visibility, so compact 48 RJ45 / 4 SFP artwork cannot inherit status LEDs from another saved Geometry. Per-faceplate user Calibration is preserved.
+
 # Switch Vision Core v2.8.34
 
 Fresh Native cards now use the exact recommended faceplate's factory geometry and presentation, including hidden status LEDs on compact 48 RJ45 / 4 SFP faceplates. Existing saved switch Calibration and historical artwork selections remain intact until explicitly changed or approved through the usual per-switch workflow.

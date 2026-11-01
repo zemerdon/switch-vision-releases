@@ -1,3 +1,8 @@
+## v2.8.35 — Faceplate-driven status LED rendering
+
+- Native SVG status LEDs now obey the actual displayed faceplate's stock Geometry. The compact 48 RJ45 / 4 SFP faceplate cannot inherit LEDs from a saved original-stock layout; explicitly edited LED membership on the same selected faceplate remains a supported Calibration override.
+- Add executable red/green regression coverage for stale saved Geometry, actual Native SVG redraw wiring and the original/compact artwork distinction.
+
 ## v2.8.34 — Restore compact factory Status LED defaults in Native cards
 
 - New Native cards now resolve the exact model's factory presentation even when their RJ45/SFP counts match the generic legacy 3650 template. Compact 48/4 cards keep the seven authored status indicators hidden.

@@ -279,7 +279,7 @@ assert.strictEqual(statusLedIsHidden(profile, "STAT"), false);
 """
         result = subprocess.run(["node", "-e", js], text=True, capture_output=True, timeout=10)
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn("if (statusLedIsHidden(calibration, name)) continue;", self.source)
+        self.assertIn("if (statusLedIsHidden(calibration, name, config.__faceplate_filename)) continue;", self.source)
 
     def test_all_bundled_faceplates_honour_factory_led_visibility(self) -> None:
         # Exercise actual authored JSON: the old stock-only regression missed
