@@ -1,3 +1,7 @@
+## v2.8.33 — Align 48/4 stock and compact model projection
+
+- Synchronize Core's 67-model registry projection to Discovery's reviewed 48 RJ45 / 4 SFP faceplate defaults, retaining separate original and compact art/Geometry and the existing per-switch upgrade choices. No new physical-switch capabilities or changes to saved Calibration.
+
 ## v2.8.32 — Keep original and compact 48 RJ45 / 4 SFP faceplates separate
 
 - Restore the original 6000 × 1325 stock 48 RJ45 / 4 SFP artwork and its original factory Geometry, while retaining the 6000 × 900 compact artwork and owner-calibrated Geometry as a separately named option.

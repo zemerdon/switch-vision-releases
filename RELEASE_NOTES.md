@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.33
+
+Keep the original and compact 48 RJ45 / 4 SFP faceplates separately selectable and synchronize the exact model recommendations with Discovery's registry. Existing saved Calibration remains unchanged until an explicit per-switch faceplate upgrade is confirmed.
+
 # Switch Vision Core v2.8.32
 
 Restore the original 48 RJ45 / 4 SFP stock faceplate and factory Geometry under their original name. The compact 48/4 artwork and Geometry are now separately selectable as **48 × RJ45 · 4 × SFP · Compact**; supported 48/4 models continue to recommend compact, with the original available as an alternative. The stock filenames now resolve to their respective original and compact bytes; existing switch-scoped saved Calibration and approved artwork pins are not automatically reset. Explicit faceplate changes continue through the normal preview and approval workflow.
