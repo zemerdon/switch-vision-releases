@@ -72,14 +72,14 @@ const statusLedClass = (name) => "cv-led-" + name;
 const drawStatusPanel = () => {};
 let circles = [];
 const circle = (svg,x,y,r,cls) => { circles.push(cls); };
-const renderStatus = (cal, selectedFaceplate = '') => {
+const renderStatus = (cal, selectedFaceplate = '', verifiedGeometry = null) => {
   const copy = structuredClone(cal);
   copy.ports = {}; copy.sfp = {};
   circles = [];
   drawPanel({}, {
     hass: {},
     config: {show_status_leds:true,show_labels:false,show_status_panel:false,
-             __faceplate_filename:selectedFaceplate},
+             __faceplate_filename:selectedFaceplate, __faceplate_geometry:verifiedGeometry},
     calibration:copy,
     layout:{status:{mode_radius:3,radius:4}}
   });
@@ -120,6 +120,14 @@ assert.deepEqual(
 );
 assert.equal(renderStatus(preserved, "48rj45-4sfp.png").length, 7,
   "Selecting original artwork still preserves original-stock status LEDs");
+const pinnedOldCompact = structuredClone(compact);
+pinnedOldCompact.image.file = "faceplates/48rj45-4sfp.png";
+assert.deepEqual(
+  renderStatus(preserved, "48rj45-4sfp.png", pinnedOldCompact), [],
+  "Verified historical compact art under a reused filename must hide generic LEDs"
+);
+assert.equal(renderStatus(preserved, "48rj45-4sfp.png", original).length, 7,
+  "Verified original art under the same filename must retain intended LEDs");
 const oldCompactUi = structuredClone(compact);
 oldCompactUi.ui.status_leds.hidden = [];
 assert.deepEqual(renderStatus(oldCompactUi, "48rj45-4sfp-compact.png"), [],
@@ -156,6 +164,23 @@ circles = [];
 renderedCard.redrawSwitchSvg();
 assert.deepEqual(circles, [],
   "Native redraw must suppress stale original LEDs on selected compact artwork");
+renderedCard._stockArtworkBase = "native_SW3";
+renderedCard.baseCalibrationProfileName = () => "native_SW3";
+renderedCard._stockArtworkChoice = {
+  filename: "48rj45-4sfp.png", geometry: pinnedOldCompact
+};
+renderedCard.resolvedFaceplateFilename = () => "48rj45-4sfp.png";
+circles = [];
+renderedCard.redrawSwitchSvg();
+assert.deepEqual(circles, [],
+  "Native redraw must use verified historical geometry rather than today's reused filename");
+renderedCard._stockArtworkChoice = {
+  filename: "48rj45-4sfp.png", geometry: original
+};
+circles = [];
+renderedCard.redrawSwitchSvg();
+assert.equal(circles.length, 7,
+  "Native redraw must retain genuine original-stock LEDs");
 console.log("NATIVE_STATUS_LED_RUNTIME_PASS fresh=0 saved_original=7 verified_pin_preserved");
 """
         )

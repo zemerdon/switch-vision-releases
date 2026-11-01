@@ -1085,7 +1085,7 @@
     "port_number_font_size": 38.0859375,
     "sfp_label_font_size": 39.55078125,
     "status_leds": {
-      "hidden": [],
+      "hidden": ["STAT", "SYST", "DUPLX", "ACTV", "SPEED", "STACK", "PoE"],
       "text_color": "#eef7ff",
       "font_family": "Arial, Helvetica, sans-serif",
       "font_size": 48.33984375,

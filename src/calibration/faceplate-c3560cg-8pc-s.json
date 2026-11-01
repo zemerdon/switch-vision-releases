@@ -587,7 +587,7 @@
     "port_led_shape": "rectangle",
     "port_label_color": "#eef7ff",
     "status_leds": {
-      "hidden": [],
+      "hidden": ["STAT", "SYST", "DUPLX", "ACTV", "SPEED", "STACK", "PoE"],
       "text_color": "#030303",
       "font_family": "SwitchVisionCustom, Arial, Helvetica, sans-serif",
       "font_size": 14.6875,

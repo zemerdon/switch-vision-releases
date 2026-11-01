@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.36
+
+Native status LEDs follow the verified artwork revision rather than a reused faceplate filename. Only the two original 48 RJ45 stock faceplates show generic status LEDs by default; other faceplates keep them hidden unless deliberately enabled through Calibration. Saved faceplate selections and user edits remain preserved.
+
 # Switch Vision Core v2.8.35
 
 The displayed stock faceplate determines default status LED visibility, so compact 48 RJ45 / 4 SFP artwork cannot inherit status LEDs from another saved Geometry. Per-faceplate user Calibration is preserved.

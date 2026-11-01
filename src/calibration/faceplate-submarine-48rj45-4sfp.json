@@ -1856,7 +1856,7 @@
     "port_led_shape": "circle",
     "port_label_color": "#eef7ff",
     "status_leds": {
-      "hidden": []
+      "hidden": ["STAT", "SYST", "DUPLX", "ACTV", "SPEED", "STACK", "PoE"]
     }
   },
   "stack": {

@@ -12,10 +12,8 @@ MIRROR = ROOT / "src" / "js" / "switch-vision.js"
 CALIBRATION = ROOT / "src" / "calibration"
 
 FACTORY_PROFILES_WITH_VISIBLE_STATUS_LEDS = (
-    "faceplate-c3560cg-8pc-s.json",
-    "faceplate-stock-24rj45-2sfp.json",
-    "faceplate-stock-24rj45-4sfp.json",
-    "faceplate-submarine-48rj45-4sfp.json",
+    "faceplate-stock-48rj45-2sfp.json",
+    "faceplate-stock-48rj45-4sfp.json",
 )
 
 
@@ -61,13 +59,20 @@ class CalibrationStatusLedLayoutTests(unittest.TestCase):
             self.source,
         )
 
-        for name in FACTORY_PROFILES_WITH_VISIBLE_STATUS_LEDS:
-            profile = json.loads((CALIBRATION / name).read_text(encoding="utf-8"))
-            self.assertEqual(
-                profile["ui"]["status_leds"]["hidden"],
-                [],
-                f"{name} must retain its factory Status LED presentation",
-            )
+        # Exactly two stock faceplates intentionally show generic Status LEDs.
+        # Every other faceplate must hide its generic placeholders (or have none).
+        visible = set(FACTORY_PROFILES_WITH_VISIBLE_STATUS_LEDS)
+        for path in sorted(CALIBRATION.glob("faceplate-*.json")):
+            profile = json.loads(path.read_text(encoding="utf-8"))
+            led_names = set(profile.get("status_leds", {}))
+            hidden = set(profile.get("ui", {}).get("status_leds", {}).get("hidden", []))
+            if path.name in visible:
+                self.assertEqual(hidden, set(), path.name)
+                self.assertTrue(led_names, path.name)
+            else:
+                self.assertEqual(led_names - hidden, set(),
+                                 f"{path.name} must not render generic stock LEDs")
+        self.assertEqual(len(visible), 2)
 
         # This owner-supplied stock revision deliberately hides the seven
         # factory indicators. Preserve the supplied selection byte-for-byte.
@@ -279,7 +284,7 @@ assert.strictEqual(statusLedIsHidden(profile, "STAT"), false);
 """
         result = subprocess.run(["node", "-e", js], text=True, capture_output=True, timeout=10)
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn("if (statusLedIsHidden(calibration, name, config.__faceplate_filename)) continue;", self.source)
+        self.assertIn("if (statusLedIsHidden(calibration, name, config.__faceplate_filename, config.__faceplate_geometry)) continue;", self.source)
 
     def test_all_bundled_faceplates_honour_factory_led_visibility(self) -> None:
         # Exercise actual authored JSON: the old stock-only regression missed

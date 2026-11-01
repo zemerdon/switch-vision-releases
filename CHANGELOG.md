@@ -1,3 +1,9 @@
+## v2.8.36 — Preserve faceplate-specific status LED identity
+
+- Use the checksum-verified artwork revision's Geometry when drawing Native status LEDs, so historical compact artwork cannot inherit the LEDs of a newer faceplate that reused its filename.
+- Show generic factory status LEDs only on the two original 48 RJ45 stock faceplates; hide unused placeholders on the remaining faceplates without preventing explicit owner Calibration.
+- Add Native redraw and catalogue regression coverage for legacy pinned artwork, intentional factory LEDs and saved Calibration.
+
 ## v2.8.35 — Faceplate-driven status LED rendering
 
 - Native SVG status LEDs now obey the actual displayed faceplate's stock Geometry. The compact 48 RJ45 / 4 SFP faceplate cannot inherit LEDs from a saved original-stock layout; explicitly edited LED membership on the same selected faceplate remains a supported Calibration override.
