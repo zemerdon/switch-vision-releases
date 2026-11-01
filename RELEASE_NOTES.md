@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.34
+
+Fresh Native cards now use the exact recommended faceplate's factory geometry and presentation, including hidden status LEDs on compact 48 RJ45 / 4 SFP faceplates. Existing saved switch Calibration and historical artwork selections remain intact until explicitly changed or approved through the usual per-switch workflow.
+
 # Switch Vision Core v2.8.33
 
 Keep the original and compact 48 RJ45 / 4 SFP faceplates separately selectable and synchronize the exact model recommendations with Discovery's registry. Existing saved Calibration remains unchanged until an explicit per-switch faceplate upgrade is confirmed.

@@ -1,3 +1,8 @@
+## v2.8.34 — Restore compact factory Status LED defaults in Native cards
+
+- New Native cards now resolve the exact model's factory presentation even when their RJ45/SFP counts match the generic legacy 3650 template. Compact 48/4 cards keep the seven authored status indicators hidden.
+- Preserve existing switch-scoped saved Calibration and approved historical faceplate pins, without automatically resetting user selections.
+
 ## v2.8.33 — Align 48/4 stock and compact model projection
 
 - Synchronize Core's 67-model registry projection to Discovery's reviewed 48 RJ45 / 4 SFP faceplate defaults, retaining separate original and compact art/Geometry and the existing per-switch upgrade choices. No new physical-switch capabilities or changes to saved Calibration.
