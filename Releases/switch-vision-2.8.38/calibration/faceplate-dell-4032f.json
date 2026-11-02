@@ -1,0 +1,1347 @@
+{
+  "schema_version": 2,
+  "schema": "switch-vision-interactive-calibration-v1",
+  "image": {
+    "file": "faceplates/dell-4032f.png",
+    "width": 1935,
+    "height": 262,
+    "master": "dell-n4032f-owner-calibrated",
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "coordinate_space": "image-native-v1"
+  },
+  "ports": {},
+  "sfp": {
+    "SFP1": {
+      "center": [
+        647.510666667,
+        116.727238095
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        647.485714286,
+        78.716964286
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        639.72552381,
+        150.462857143
+      ],
+      "led_right": [
+        668.271047619,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_up",
+      "led_right_shape": "triangle_up",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "1"
+    },
+    "SFP2": {
+      "center": [
+        647.510666667,
+        185.595809524
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        647.485714286,
+        226.559821429
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        626.750285714,
+        151.460952381
+      ],
+      "led_right": [
+        654.297714286,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_down",
+      "led_right_shape": "triangle_down",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "2"
+    },
+    "SFP3": {
+      "center": [
+        711.388761905,
+        116.727238095
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        711.406696429,
+        78.716964286
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        703.603619047,
+        150.462857143
+      ],
+      "led_right": [
+        732.149142857,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_up",
+      "led_right_shape": "triangle_up",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "3"
+    },
+    "SFP4": {
+      "center": [
+        711.388761905,
+        185.595809524
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        711.406696429,
+        226.559821429
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        690.628380953,
+        151.460952381
+      ],
+      "led_right": [
+        718.175809524,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_down",
+      "led_right_shape": "triangle_down",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "4"
+    },
+    "SFP5": {
+      "center": [
+        775.266857143,
+        116.727238095
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        775.269196429,
+        78.716964286
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        767.481714286,
+        150.462857143
+      ],
+      "led_right": [
+        796.027238095,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_up",
+      "led_right_shape": "triangle_up",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "5"
+    },
+    "SFP6": {
+      "center": [
+        775.266857143,
+        185.595809524
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        775.269196429,
+        226.559821429
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        754.50647619,
+        151.460952381
+      ],
+      "led_right": [
+        782.053904762,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_down",
+      "led_right_shape": "triangle_down",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "6"
+    },
+    "SFP7": {
+      "center": [
+        835.152571429,
+        116.727238095
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        835.154910714,
+        78.716964286
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        827.367428571,
+        150.462857143
+      ],
+      "led_right": [
+        855.912952381,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_up",
+      "led_right_shape": "triangle_up",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "7"
+    },
+    "SFP8": {
+      "center": [
+        835.152571429,
+        185.595809524
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        835.154910714,
+        226.559821429
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        814.392190476,
+        151.460952381
+      ],
+      "led_right": [
+        841.939619047,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_down",
+      "led_right_shape": "triangle_down",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "8"
+    },
+    "SFP9": {
+      "center": [
+        899.030666667,
+        116.727238095
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        899.017410714,
+        78.716964286
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        891.24552381,
+        150.462857143
+      ],
+      "led_right": [
+        919.791047619,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_up",
+      "led_right_shape": "triangle_up",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "9"
+    },
+    "SFP10": {
+      "center": [
+        899.030666667,
+        185.595809524
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        899.017410714,
+        226.559821429
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        878.270285714,
+        151.460952381
+      ],
+      "led_right": [
+        905.817714286,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_down",
+      "led_right_shape": "triangle_down",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "10"
+    },
+    "SFP11": {
+      "center": [
+        962.908761905,
+        116.727238095
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        962.879910714,
+        78.716964286
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        955.123619047,
+        150.462857143
+      ],
+      "led_right": [
+        983.669142857,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_up",
+      "led_right_shape": "triangle_up",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "11"
+    },
+    "SFP12": {
+      "center": [
+        962.908761905,
+        185.595809524
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        962.879910714,
+        226.559821429
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        942.148380953,
+        151.460952381
+      ],
+      "led_right": [
+        969.695809524,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_down",
+      "led_right_shape": "triangle_down",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "12"
+    },
+    "SFP13": {
+      "center": [
+        1026.786857143,
+        116.727238095
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        1026.800892857,
+        78.716964286
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        1019.001714286,
+        150.462857143
+      ],
+      "led_right": [
+        1047.547238095,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_up",
+      "led_right_shape": "triangle_up",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "13"
+    },
+    "SFP14": {
+      "center": [
+        1026.786857143,
+        185.595809524
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        1026.800892857,
+        226.559821429
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        1006.02647619,
+        151.460952381
+      ],
+      "led_right": [
+        1033.573904762,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_down",
+      "led_right_shape": "triangle_down",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "14"
+    },
+    "SFP15": {
+      "center": [
+        1090.664952381,
+        116.727238095
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        1090.663392857,
+        78.716964286
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        1082.879809524,
+        150.462857143
+      ],
+      "led_right": [
+        1111.425333333,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_up",
+      "led_right_shape": "triangle_up",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "15"
+    },
+    "SFP16": {
+      "center": [
+        1090.664952381,
+        185.595809524
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        1090.663392857,
+        226.559821429
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        1069.904571429,
+        151.460952381
+      ],
+      "led_right": [
+        1097.452,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_down",
+      "led_right_shape": "triangle_down",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "16"
+    },
+    "SFP17": {
+      "center": [
+        1154.543047619,
+        116.727238095
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        1154.525892857,
+        78.716964286
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        1146.757904762,
+        150.462857143
+      ],
+      "led_right": [
+        1175.303428571,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_up",
+      "led_right_shape": "triangle_up",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "17"
+    },
+    "SFP18": {
+      "center": [
+        1154.543047619,
+        185.595809524
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        1154.525892857,
+        226.559821429
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        1133.782666667,
+        151.460952381
+      ],
+      "led_right": [
+        1161.330095238,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_down",
+      "led_right_shape": "triangle_down",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "18"
+    },
+    "SFP19": {
+      "center": [
+        1218.421142857,
+        116.727238095
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        1218.446875,
+        78.716964286
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        1210.636,
+        150.462857143
+      ],
+      "led_right": [
+        1239.18152381,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_up",
+      "led_right_shape": "triangle_up",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "19"
+    },
+    "SFP20": {
+      "center": [
+        1218.421142857,
+        185.595809524
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        1218.446875,
+        226.559821429
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        1197.660761905,
+        151.460952381
+      ],
+      "led_right": [
+        1225.208190476,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_down",
+      "led_right_shape": "triangle_down",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "20"
+    },
+    "SFP21": {
+      "center": [
+        1282.299238095,
+        116.727238095
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        1282.309375,
+        78.716964286
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        1274.514095238,
+        150.462857143
+      ],
+      "led_right": [
+        1303.059619047,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_up",
+      "led_right_shape": "triangle_up",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "21"
+    },
+    "SFP22": {
+      "center": [
+        1282.299238095,
+        185.595809524
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        1282.309375,
+        226.559821429
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        1261.538857143,
+        151.460952381
+      ],
+      "led_right": [
+        1289.086285714,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_down",
+      "led_right_shape": "triangle_down",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "22"
+    },
+    "SFP23": {
+      "center": [
+        1342.184952381,
+        116.727238095
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        1342.195089286,
+        78.716964286
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        1334.399809524,
+        150.462857143
+      ],
+      "led_right": [
+        1362.945333333,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_up",
+      "led_right_shape": "triangle_up",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "LINK 23 ACT"
+    },
+    "SFP24": {
+      "center": [
+        1342.184952381,
+        185.595809524
+      ],
+      "hitbox": [
+        48.707047619,
+        31.539809524
+      ],
+      "label": [
+        1342.195089286,
+        226.559821429
+      ],
+      "supported_speed": "10G",
+      "port_role": "",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        1321.424571429,
+        151.460952381
+      ],
+      "led_right": [
+        1348.972,
+        151.460952381
+      ],
+      "led_left_shape": "triangle_down",
+      "led_right_shape": "triangle_down",
+      "led_left_size": [
+        10.000446429,
+        9.00625
+      ],
+      "led_right_size": [
+        10.000446429,
+        9.00625
+      ],
+      "display_name": "24"
+    },
+    "SFP25": {
+      "center": [
+        1597.697333333,
+        177.611047619
+      ],
+      "hitbox": [
+        72.661333333,
+        31.539809524
+      ],
+      "label": [
+        1597.703571429,
+        139.596875
+      ],
+      "supported_speed": "40G",
+      "port_role": "uplink",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        1539.864732143,
+        164.042410714
+      ],
+      "led_right": [
+        1540.040178571,
+        190.242410714
+      ],
+      "led_left_shape": "circle",
+      "led_right_shape": "circle",
+      "led_left_size": [
+        17.544642857,
+        15.205357143
+      ],
+      "led_right_size": [
+        17.544642857,
+        15.205357143
+      ]
+    },
+    "SFP26": {
+      "center": [
+        1714.667857143,
+        177.610267857
+      ],
+      "hitbox": [
+        72.661333333,
+        31.539809524
+      ],
+      "label": [
+        1714.667857143,
+        139.596875
+      ],
+      "supported_speed": "40G",
+      "port_role": "uplink",
+      "label_show": true,
+      "led_left_show": true,
+      "led_right_show": true,
+      "led_left": [
+        1776.132589286,
+        164.042410714
+      ],
+      "led_right": [
+        1776.892857143,
+        190.827232143
+      ],
+      "led_left_shape": "circle",
+      "led_right_shape": "circle",
+      "led_left_size": [
+        17.544642857,
+        15.205357143
+      ],
+      "led_right_size": [
+        17.544642857,
+        15.205357143
+      ]
+    }
+  },
+  "status_leds": {
+    "STAT": [
+      762.8125,
+      49.125
+    ],
+    "SYST": [
+      762.8125,
+      87.138392857
+    ],
+    "DUPLX": [
+      866.910714286,
+      49.125
+    ],
+    "ACTV": [
+      866.910714286,
+      87.138392857
+    ],
+    "SPEED": [
+      968.669642857,
+      49.125
+    ],
+    "STACK": [
+      1072.767857143,
+      49.125
+    ],
+    "PoE": [
+      1169.263392857,
+      49.125
+    ]
+  },
+  "ui": {
+    "logo": {
+      "show": false,
+      "file": "sv-logo.png",
+      "source": "none",
+      "x": 452.272321429,
+      "y": -0.584821429,
+      "width": 109.361607143,
+      "height": 109.946428571
+    },
+    "status_panel": {
+      "show": true,
+      "x": 117.162780953,
+      "y": 95.567619047,
+      "width": 219.580952381,
+      "height": 110.788571429,
+      "font_family": "SwitchVisionCustom, Arial, Helvetica, sans-serif",
+      "font_size": 14.620535714,
+      "title_font_size": 9.357142857,
+      "font_weight": "normal",
+      "text_color": "#ffffff",
+      "label_color": "#eef2f4",
+      "title_color": "#f4f6f7",
+      "background_color": "rgba(0,0,0,.06)",
+      "border_color": "rgba(245,248,250,.75)",
+      "border_show": true,
+      "field_order": {
+        "switch": [
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "uptime",
+          "vendor",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode",
+          "poe",
+          "poe_power",
+          "poe_class"
+        ],
+        "sfp": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ]
+      },
+      "hidden_fields": {
+        "switch": [
+          "vendor",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu",
+          "poe"
+        ],
+        "port": [],
+        "sfp": []
+      },
+      "fields": {
+        "row1_key": [
+          11.111607143,
+          22.808035714
+        ],
+        "row1_value": [
+          62.575892857,
+          22.808035714
+        ],
+        "row2_key": [
+          11.111607143,
+          33.919642857
+        ],
+        "row2_value": [
+          62.575892857,
+          33.919642857
+        ],
+        "row3_key": [
+          11.111607143,
+          45.616071429
+        ],
+        "row3_value": [
+          62.575892857,
+          45.616071429
+        ],
+        "row4_key": [
+          11.111607143,
+          56.727678571
+        ],
+        "row4_value": [
+          62.575892857,
+          56.727678571
+        ],
+        "row5_key": [
+          11.111607143,
+          67.839285714
+        ],
+        "row5_value": [
+          62.575892857,
+          67.839285714
+        ],
+        "row6_key": [
+          11.111607143,
+          78.950892857
+        ],
+        "row6_value": [
+          62.575892857,
+          78.950892857
+        ]
+      },
+      "background_show": true
+    },
+    "faceplate": {
+      "fit": "fill",
+      "opacity": 1,
+      "show": true,
+      "file": "dell-4032f.png",
+      "source": "custom"
+    },
+    "calibration_button": {
+      "show": true,
+      "x": 1472.785714286,
+      "y": 8.1875,
+      "width": 80.705357143,
+      "height": 19.883928571,
+      "anchor": "top_right"
+    },
+    "status_panel_2": {
+      "show": true,
+      "x": 369.062057143,
+      "y": 95.567619047,
+      "width": 219.580952381,
+      "height": 110.788571429,
+      "font_family": "SwitchVisionCustom, Arial, Helvetica, sans-serif",
+      "font_size": 14.620535714,
+      "title_font_size": 9.357142857,
+      "font_weight": "normal",
+      "text_color": "#ffffff",
+      "label_color": "#eef2f4",
+      "title_color": "#f4f6f7",
+      "background_color": "rgba(0,0,0,.06)",
+      "border_color": "rgba(245,248,250,.75)",
+      "border_show": true,
+      "title_mode": "custom",
+      "title_field": "model",
+      "custom_title": "",
+      "field_order": {
+        "switch": [
+          "vendor",
+          "uptime",
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "poe",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu"
+        ],
+        "port": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode",
+          "poe",
+          "poe_power",
+          "poe_class"
+        ],
+        "sfp": [
+          "vlan",
+          "desc",
+          "link",
+          "rx",
+          "tx",
+          "mode"
+        ]
+      },
+      "hidden_fields": {
+        "switch": [
+          "model",
+          "ip",
+          "cpu",
+          "temp",
+          "os",
+          "firmware",
+          "serial",
+          "stack",
+          "fans",
+          "psu",
+          "uptime"
+        ],
+        "port": [],
+        "sfp": []
+      },
+      "fields": {
+        "row1_key": [
+          22.017980953,
+          32.158628571
+        ],
+        "row1_value": [
+          73.479771429,
+          32.158628571
+        ],
+        "row2_key": [
+          22.017980953,
+          42.099657143
+        ],
+        "row2_value": [
+          73.479771429,
+          42.099657143
+        ],
+        "row3_key": [
+          22.017980953,
+          52.040685714
+        ],
+        "row3_value": [
+          73.479771429,
+          52.040685714
+        ],
+        "row4_key": [
+          22.017980953,
+          61.981714286
+        ],
+        "row4_value": [
+          73.479771429,
+          61.981714286
+        ],
+        "row5_key": [
+          22.017980953,
+          71.942704762
+        ],
+        "row5_value": [
+          73.479771429,
+          71.942704762
+        ],
+        "row6_key": [
+          22.017980953,
+          81.883733333
+        ],
+        "row6_value": [
+          73.479771429,
+          81.883733333
+        ]
+      },
+      "background_show": true
+    },
+    "port_status_output": "status_box_2",
+    "port_led_shape": "circle",
+    "port_label_color": "#eef7ff",
+    "port_number_color": "#eef7ff",
+    "port_label_font_weight": "bold",
+    "port_number_font_size": 7.602678571,
+    "sfp_label_font_size": 11.696428571,
+    "status_leds": {
+      "hidden": [
+        "STAT",
+        "SYST",
+        "DUPLX",
+        "ACTV",
+        "SPEED",
+        "STACK",
+        "PoE"
+      ],
+      "text_color": "#eef7ff",
+      "font_family": "Arial, Helvetica, sans-serif",
+      "font_size": 9.649553571,
+      "font_weight": "900"
+    },
+    "show_link_leds": true,
+    "show_activity_leds": true,
+    "test_mode_button": {
+      "show": true,
+      "x": 1472.795695238,
+      "y": 69.856685714,
+      "width": 80.705357143,
+      "height": 19.883928571,
+      "anchor": "top_right"
+    },
+    "port_number_mode": "static"
+  },
+  "stack": {
+    "enabled": false,
+    "stack_id": "",
+    "uptime_source": "",
+    "members": {}
+  },
+  "management": {
+    "switch_ip": ""
+  },
+  "model": "dell-n4032f",
+  "profile": "dell_n4032f",
+  "generated_by": "Switch Vision owner-supplied Dell N4032F geometry",
+  "allow_out_of_bounds_sfp_geometry": true,
+  "allow_out_of_bounds_ui_geometry": true
+}

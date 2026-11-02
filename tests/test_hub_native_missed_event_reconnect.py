@@ -25,6 +25,7 @@ const parts=[
 ];
 const Card=vm.runInNewContext('class Card {\n'+parts.join('\n')+'\n}\nCard',{
  window:{addEventListener(){}},
+ SV_MOUNTED_CALIBRATION_CARDS:new Set(),
  calibrationControlsEnabled:()=>false,
  stableCalibrationSwitchKey:()=> 'SW3',
  validateImportedCalibration:raw=>({valid:true,calibration:raw}),

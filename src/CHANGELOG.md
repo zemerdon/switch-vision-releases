@@ -1,3 +1,8 @@
+## v2.8.38 — Reset All restores each loaded switch's current factory artwork
+
+- Fix Reset All retaining historical faceplate artwork on other loaded switches after the original and Compact 48/4 stock filenames were separated. Use each card's verified model-specific Reset Current Switch contract before saving its paired factory Geometry.
+- Refresh all mounted cards in the selected Native or Custom scope even if their HA update events were missed, without touching the opposite scope or physical switches. Fail visibly if a mounted switch cannot complete its factory reset.
+
 ## v2.8.37 — Restore complete verified Core changelog history
 
 - Restore previously omitted verified v0.9.0–v2.3.0 release entries from canonical local Git, while retaining full version attribution for major/minor roll-up presentation.

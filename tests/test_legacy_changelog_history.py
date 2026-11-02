@@ -19,7 +19,8 @@ class LegacyChangelogHistoryTests(unittest.TestCase):
             ("2", "0", "0"), ("2", "3", "0"), ("2", "4", "0"), ("2", "8", "37"),
         )))
         self.assertEqual(text, (ROOT / "CHANGELOG.md").read_text(encoding="utf-8"))
-        self.assertTrue(text.startswith("## v2.8.37 "))
+        current_version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
+        self.assertTrue(text.startswith(f"## v{current_version} "))
 
     def test_recovered_history_does_not_expose_private_source_identifiers(self):
         text = (ROOT / "src" / "CHANGELOG.md").read_text(encoding="utf-8")

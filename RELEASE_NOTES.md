@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.38
+
+Reset All now reapplies the latest verified model-specific factory artwork and matching Geometry for every mounted switch in the selected Native or Custom dashboard scope. The reset no longer silently leaves neighbouring loaded cards pinned to old faceplates after the original/Compact filename split, and missed Home Assistant update events no longer prevent mounted-card refresh. Both confirmation prompts and namespace isolation remain intact; a failed card reset is reported rather than claimed successful.
+
 # Switch Vision Core v2.8.37
 
 Restore reviewed Core changelog history from v0.9.0 through v2.3.0 for the new consolidated major/minor changelog presentation. Historical patch details remain traceable to their release versions without exposing private contribution references. This documentation-only patch does not change device telemetry, Native faceplates, Calibration or other Core runtime behaviour.
