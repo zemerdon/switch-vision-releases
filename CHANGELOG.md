@@ -1,3 +1,7 @@
+## v2.8.41 — Keep Calibration manifest reads off the HA event loop
+
+- Offload packaged stock-artwork manifest reads from Calibration save, selection and approval WebSocket operations to Home Assistant’s executor. Preserve exact stock SHA-256 checks, saved Calibration and existing artwork-selection rules.
+
 ## v2.8.40 — Keep original and compact 24-port stock faceplates separate
 
 - Restore the original 24 RJ45 / 2 SFP and 24 RJ45 / 4 SFP artwork and factory Geometry under their established filenames, and add owner-calibrated 6000 × 750 Compact artwork with matching Geometry under distinct `-compact.png` filenames.

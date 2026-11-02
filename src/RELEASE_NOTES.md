@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.41
+
+Fix Home Assistant event-loop blocking warnings when saving Calibration or viewing and approving stock faceplates. Stock-artwork manifest reads now run in an executor while preserving existing SHA-256 verification, saved Calibration and stock-artwork choices.
+
 # Switch Vision Core v2.8.40
 
 Restore the two original 24-port stock faceplates and their original Geometry, and introduce distinct Compact 24 RJ45 / 2 SFP and Compact 24 RJ45 / 4 SFP artwork with matching factory Geometry. Compact is now the recommended generic default; Original remains selectable. Existing Calibration and previously approved faceplate revisions are not reset or silently replaced.

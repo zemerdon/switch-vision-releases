@@ -204,7 +204,7 @@ UNIFI_DEVICE_WS_SCHEMA = {
 }
 
 PANEL_URL_PATH = "switch-vision"
-PANEL_VERSION = "2.8.40"
+PANEL_VERSION = "2.8.41"
 PANEL_JS_PATH = "/api/switch_vision/switch-vision-panel.js"
 PANEL_JS_URL = f"{PANEL_JS_PATH}?v={PANEL_VERSION}"
 ICONSET_JS_PATH = "/api/switch_vision/switch-vision-iconset.js"
@@ -2173,7 +2173,7 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
             calibration.pop(_faceplate_artwork.STOCK_SHA_FIELD, None)
         _validate_calibration(profile, calibration)
         try:
-            stock_assets = _load_stock_asset_manifest()
+            stock_assets = await hass.async_add_executor_job(_load_stock_asset_manifest)
             artwork_sha = await hass.async_add_executor_job(
                 _faceplate_artwork.current_stock_sha, _asset_root(), calibration, stock_assets
             )
@@ -2494,7 +2494,7 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
             # A browser cannot choose a hash or historical path. It may name
             # only a file whose bytes match the installed stock manifest.
             try:
-                stock = _load_stock_asset_manifest()
+                stock = await hass.async_add_executor_job(_load_stock_asset_manifest)
                 current_sha = await hass.async_add_executor_job(
                     _faceplate_artwork.current_stock_sha, _asset_root(),
                     {"image": {"file": "faceplates/" + filename}},
@@ -2831,7 +2831,7 @@ async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
             connection.send_error(msg["id"], "invalid_target", "Invalid switch artwork selection.")
             return
         try:
-            manifest = _load_stock_asset_manifest()
+            manifest = await hass.async_add_executor_job(_load_stock_asset_manifest)
             installed_sha = await hass.async_add_executor_job(
                 _faceplate_artwork.current_stock_sha, _asset_root(),
                 {"image": {"file": "faceplates/" + name}}, manifest,
