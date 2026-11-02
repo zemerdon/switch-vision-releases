@@ -11,3 +11,5 @@ htmlcov/
 Switch_Vision_v*_source.zip
 Switch_Vision_v*_SHA256SUMS.txt
 Releases/*.zip
+Releases/*.zip.sha256
+Releases/switch-vision-*/
