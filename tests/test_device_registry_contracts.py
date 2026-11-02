@@ -81,8 +81,8 @@ class DeviceRegistryContractTests(unittest.TestCase):
         self.assertEqual(device.get("confirmed_since"), "2.3.22")
         self.assertEqual(device.get("last_validated_version"), "2.3.21")
         self.assertEqual(device.get("mapping_profile"), "mikrotik-crs328-24p-4splus")
-        self.assertEqual(device.get("calibration_profile"), "stock_24rj45_4sfp")
-        self.assertEqual(device.get("default_faceplate"), "faceplates/24rj45-4sfp.png")
+        self.assertEqual(device.get("calibration_profile"), "stock_24rj45_4sfp_compact")
+        self.assertEqual(device.get("default_faceplate"), "faceplates/24rj45-4sfp-compact.png")
 
         ports = device.get("ports") or {}
         self.assertEqual(ports.get("rj45"), 24)
@@ -108,8 +108,8 @@ class DeviceRegistryContractTests(unittest.TestCase):
 
         visuals = device.get("visuals") or {}
         self.assertEqual(visuals.get("status"), "experimental")
-        self.assertEqual(visuals.get("recommended_faceplate"), "faceplates/24rj45-4sfp.png")
-        self.assertEqual(visuals.get("calibration_profile"), "stock_24rj45_4sfp")
+        self.assertEqual(visuals.get("recommended_faceplate"), "faceplates/24rj45-4sfp-compact.png")
+        self.assertEqual(visuals.get("calibration_profile"), "stock_24rj45_4sfp_compact")
 
     def test_3560cg_combo_port_semantics_are_projected(self) -> None:
         device = self.models["WS-C3560CG-8PC-S"]

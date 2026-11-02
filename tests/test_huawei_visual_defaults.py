@@ -10,11 +10,11 @@ class HuaweiVisualDefaultsRegression(unittest.TestCase):
         models = {str(item.get('model')): item for item in payload.get('devices', []) if isinstance(item, dict)}
         for model in ('S5720-12TP-LI-AC', 'S5735-L8P4X-A1'):
             device = models[model]
-            self.assertEqual(device.get('calibration_profile'), 'stock_24rj45_4sfp')
-            self.assertEqual(device.get('default_faceplate'), 'faceplates/24rj45-4sfp.png')
+            self.assertEqual(device.get('calibration_profile'), 'stock_24rj45_4sfp_compact')
+            self.assertEqual(device.get('default_faceplate'), 'faceplates/24rj45-4sfp-compact.png')
             visuals = device.get('visuals') or {}
-            self.assertEqual(visuals.get('calibration_profile'), 'stock_24rj45_4sfp')
-            self.assertEqual(visuals.get('recommended_faceplate'), 'faceplates/24rj45-4sfp.png')
+            self.assertEqual(visuals.get('calibration_profile'), 'stock_24rj45_4sfp_compact')
+            self.assertEqual(visuals.get('recommended_faceplate'), 'faceplates/24rj45-4sfp-compact.png')
 
 
 if __name__ == '__main__':

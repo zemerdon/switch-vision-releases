@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.40
+
+Restore the two original 24-port stock faceplates and their original Geometry, and introduce distinct Compact 24 RJ45 / 2 SFP and Compact 24 RJ45 / 4 SFP artwork with matching factory Geometry. Compact is now the recommended generic default; Original remains selectable. Existing Calibration and previously approved faceplate revisions are not reset or silently replaced.
+
 # Switch Vision Core v2.8.39
 
 The default 24 RJ45 / 2 SFP and 24 RJ45 / 4 SFP stock faceplates now use the new compact artwork with matching factory Geometry for all ports, SFP uplinks and Status LEDs. Existing generic stock filenames and functional mappings stay compatible; user Calibration and approved historical faceplates are preserved until explicitly upgraded.

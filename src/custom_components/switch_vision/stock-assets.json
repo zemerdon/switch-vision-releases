@@ -1,8 +1,10 @@
 {
   "assets": {
     "faceplates": {
-      "24rj45-2sfp.png": "7d2783df6be194a0b5aa200e3f13d57d088bfce06b4347131d91b752ac5d42d7",
-      "24rj45-4sfp.png": "ccf4c5d056872c617fc5d16a46968f2dfbe6f18c612474418608e86d4ace1a1c",
+      "24rj45-2sfp.png": "917b638525ba0a6dbed76f7b619a38cf81a6da3c090bd60b3a76aa0006304bcd",
+      "24rj45-2sfp-compact.png": "7d2783df6be194a0b5aa200e3f13d57d088bfce06b4347131d91b752ac5d42d7",
+      "24rj45-4sfp.png": "dfc1a7e3ec675e9ce534eb675c8692358e8e122fb09976956fb0858a77760851",
+      "24rj45-4sfp-compact.png": "ccf4c5d056872c617fc5d16a46968f2dfbe6f18c612474418608e86d4ace1a1c",
       "48rj45-2sfp-compact.png": "b397891df10499016b0617d0967ec90269493e5708df6b5d8d4c76460934f772",
       "48rj45-2sfp.png": "955d10fc23eb97555e7f6b45133dfa27b9569a2675f84d95b18aac43f5bd420c",
       "48rj45-4sfp-compact.png": "b69bcff85fc4d682fa19a16a9afabc74afa94de9b86504a69646a487b5c8ccd9",

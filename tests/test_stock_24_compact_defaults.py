@@ -36,16 +36,16 @@ class Stock24CompactDefaultsTests(unittest.TestCase):
         for uplinks, expected in self.EXPECTED.items():
             with self.subTest(uplinks=uplinks):
                 slug = f"24rj45-{uplinks}sfp"
-                filename = f"{slug}.png"
+                filename = f"{slug}-compact.png"
                 png = SOURCE / "faceplates" / filename
                 self.assertEqual(canvas.png_dimensions(png), (6000, 750))
                 self.assertEqual(hashlib.sha256(png.read_bytes()).hexdigest(), expected["sha256"])
                 self.assertEqual(entries[filename], expected["display_name"])
 
-                file = SOURCE / "calibration" / f"faceplate-stock-{slug}.json"
+                file = SOURCE / "calibration" / f"faceplate-stock-{slug}-compact.json"
                 factory = json.loads(file.read_text())
-                self.assertEqual(factory["model"], f"stock-{slug}")
-                self.assertEqual(factory["profile"], f"stock_{slug.replace('-', '_')}")
+                self.assertEqual(factory["model"], f"stock-{slug}-compact")
+                self.assertEqual(factory["profile"], f"stock_{slug.replace('-', '_')}_compact")
                 self.assertEqual(factory["image"]["file"], f"faceplates/{filename}")
                 self.assertEqual(factory["ui"]["faceplate"]["file"], filename)
                 self.assertEqual(factory["image"]["coordinate_space"], "image-native-v1")
@@ -80,6 +80,7 @@ class Stock24CompactDefaultsTests(unittest.TestCase):
         for uplinks in (2, 4):
             slug = f"24rj45-{uplinks}sfp"
             self.assertIn(f'stock_{slug.replace("-", "_")}: "{slug}.png"', js)
+            self.assertIn(f'stock_{slug.replace("-", "_")}_compact: "{slug}-compact.png"', js)
         self.assertIn("function faceplateFactoryCalibrationForFile(", js)
         self.assertIn("this.factoryCalibrationForCurrentSwitch(", js)
         self.assertIn("await this.resetSavedCalibrations(\"switch\")", js)

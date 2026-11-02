@@ -1,3 +1,8 @@
+## v2.8.40 — Keep original and compact 24-port stock faceplates separate
+
+- Restore the original 24 RJ45 / 2 SFP and 24 RJ45 / 4 SFP artwork and factory Geometry under their established filenames, and add owner-calibrated 6000 × 750 Compact artwork with matching Geometry under distinct `-compact.png` filenames.
+- Make the Compact variants the recommended default for compatible generic 24-port models while retaining Original as an explicit optional selection. Preserve historical artwork revisions and per-switch saved Calibration until the normal, explicit upgrade approval.
+
 ## v2.8.39 — New compact 24-port stock faceplate defaults
 
 - Replace the default 24 RJ45 / 2 SFP and 24 RJ45 / 4 SFP artwork with the new owner-supplied 6000 × 750 compact faceplates and their individually calibrated port, optical and status LED Geometry. Both existing stock filenames, profiles and functional port counts remain unchanged.

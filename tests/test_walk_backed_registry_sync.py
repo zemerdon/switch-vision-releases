@@ -89,8 +89,8 @@ class WalkBackedRegistrySyncTests(unittest.TestCase):
         self.assertEqual(row["ports"]["gigabit_sfp"], 0)
         self.assertEqual(row["ports"]["ten_gigabit_sfp_plus"], 0)
         self.assertTrue(row["ports"]["poe"])
-        self.assertEqual(row["default_faceplate"], "faceplates/24rj45-2sfp.png")
-        self.assertEqual(row["calibration_profile"], "stock_24rj45_2sfp")
+        self.assertEqual(row["default_faceplate"], "faceplates/24rj45-2sfp-compact.png")
+        self.assertEqual(row["calibration_profile"], "stock_24rj45_2sfp_compact")
 
 
 if __name__ == "__main__":

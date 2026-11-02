@@ -12,7 +12,7 @@ support_statuses:
 projection:
   schema: 1
   source_component: discovery
-  source_registry_sha256: f324142253702d7bb1aab2f7c1b4dc714d87093360231e4a01487605ed2c93ae
+  source_registry_sha256: d6934a11b0c3ea3d5b7fdeddb790065ff7534c148d2c8dd469cbfb9aad3df6ac
   device_field_allowlist:
   - vendor
   - family
@@ -50,9 +50,10 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: hp-1810-24g-24p-2sfp
-  calibration_profile: stock_24rj45_2sfp
-  default_faceplate: faceplates/24rj45-2sfp.png
-  optional_faceplates: []
+  calibration_profile: stock_24rj45_2sfp_compact
+  default_faceplate: faceplates/24rj45-2sfp-compact.png
+  optional_faceplates:
+  - faceplates/24rj45-2sfp.png
   validation:
     exact_model_detection: contribution_confirmed
     rj45_mapping: real_hardware_indexes_1_24_confirmed
@@ -62,9 +63,10 @@ devices:
     stack: not_applicable
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/24rj45-2sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_24rj45_2sfp
+    recommended_faceplate: faceplates/24rj45-2sfp-compact.png
+    optional_faceplates:
+    - faceplates/24rj45-2sfp.png
+    calibration_profile: stock_24rj45_2sfp_compact
     canvas:
       width: 2048
       height: 448
@@ -89,9 +91,10 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: hp-2530-8g-poep-8p-2dual
-  calibration_profile: stock_24rj45_2sfp
-  default_faceplate: faceplates/24rj45-2sfp.png
-  optional_faceplates: []
+  calibration_profile: stock_24rj45_2sfp_compact
+  default_faceplate: faceplates/24rj45-2sfp-compact.png
+  optional_faceplates:
+  - faceplates/24rj45-2sfp.png
   validation:
     exact_model_detection: real_hardware_sysobjectid_and_local_identity_confirmed
     rj45_mapping: real_hardware_numeric_interfaces_1_8_fixed_copper_confirmed
@@ -101,9 +104,10 @@ devices:
     stack: not_applicable
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/24rj45-2sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_24rj45_2sfp
+    recommended_faceplate: faceplates/24rj45-2sfp-compact.png
+    optional_faceplates:
+    - faceplates/24rj45-2sfp.png
+    calibration_profile: stock_24rj45_2sfp_compact
     canvas:
       width: 2048
       height: 448
@@ -165,9 +169,10 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: zyxel-gs1900-8
-  calibration_profile: stock_24rj45_2sfp
-  default_faceplate: faceplates/24rj45-2sfp.png
-  optional_faceplates: []
+  calibration_profile: stock_24rj45_2sfp_compact
+  default_faceplate: faceplates/24rj45-2sfp-compact.png
+  optional_faceplates:
+  - faceplates/24rj45-2sfp.png
   validation:
     exact_model_detection: contribution_confirmed
     rj45_mapping: real_hardware_eight_ports_confirmed
@@ -177,9 +182,10 @@ devices:
     stack: not_applicable
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/24rj45-2sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_24rj45_2sfp
+    recommended_faceplate: faceplates/24rj45-2sfp-compact.png
+    optional_faceplates:
+    - faceplates/24rj45-2sfp.png
+    calibration_profile: stock_24rj45_2sfp_compact
     canvas:
       width: 2048
       height: 448
@@ -200,9 +206,10 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: sirivision-sr-s25g3420f
-  calibration_profile: stock_24rj45_4sfp
-  default_faceplate: faceplates/24rj45-4sfp.png
-  optional_faceplates: []
+  calibration_profile: stock_24rj45_4sfp_compact
+  default_faceplate: faceplates/24rj45-4sfp-compact.png
+  optional_faceplates:
+  - faceplates/24rj45-4sfp.png
   validation:
     exact_model_detection: contribution_confirmed
     rj45_mapping: real_hardware_indexes_1_16_confirmed
@@ -212,9 +219,10 @@ devices:
     stack: not_applicable
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/24rj45-4sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_24rj45_4sfp
+    recommended_faceplate: faceplates/24rj45-4sfp-compact.png
+    optional_faceplates:
+    - faceplates/24rj45-4sfp.png
+    calibration_profile: stock_24rj45_4sfp_compact
     canvas:
       width: 2048
       height: 448
@@ -347,8 +355,9 @@ devices:
   dashboard_support: true
   mapping_profile: cisco-2960x-24ps-24p-4sfp
   calibration_profile: cisco_2960x_24p
-  default_faceplate: faceplates/24rj45-4sfp.png
-  optional_faceplates: []
+  default_faceplate: faceplates/24rj45-4sfp-compact.png
+  optional_faceplates:
+  - faceplates/24rj45-4sfp.png
   validation:
     exact_model_detection: confirmed
     rj45_mapping: confirmed
@@ -358,8 +367,9 @@ devices:
     stack: not_applicable
   visuals:
     status: community_validated
-    recommended_faceplate: faceplates/24rj45-4sfp.png
-    optional_faceplates: []
+    recommended_faceplate: faceplates/24rj45-4sfp-compact.png
+    optional_faceplates:
+    - faceplates/24rj45-4sfp.png
     calibration_profile: cisco_2960x_24p
     canvas:
       width: 2048
@@ -382,8 +392,9 @@ devices:
   dashboard_support: true
   mapping_profile: cisco-2960x-24ts-24p-4sfp
   calibration_profile: cisco_2960x_24p
-  default_faceplate: faceplates/24rj45-4sfp.png
-  optional_faceplates: []
+  default_faceplate: faceplates/24rj45-4sfp-compact.png
+  optional_faceplates:
+  - faceplates/24rj45-4sfp.png
   validation:
     exact_model_detection: contribution_confirmed
     rj45_mapping: contribution_pending_live_validation
@@ -393,8 +404,9 @@ devices:
     stack: contribution_detected_pending_live_validation
   visuals:
     status: confirmed
-    recommended_faceplate: faceplates/24rj45-4sfp.png
-    optional_faceplates: []
+    recommended_faceplate: faceplates/24rj45-4sfp-compact.png
+    optional_faceplates:
+    - faceplates/24rj45-4sfp.png
     calibration_profile: cisco_2960x_24p
     canvas:
       width: 2048
@@ -602,8 +614,9 @@ devices:
   dashboard_support: true
   mapping_profile: cisco-sg500x-24-24p-4x10g
   calibration_profile: cisco_2960x_24p
-  default_faceplate: faceplates/24rj45-4sfp.png
-  optional_faceplates: []
+  default_faceplate: faceplates/24rj45-4sfp-compact.png
+  optional_faceplates:
+  - faceplates/24rj45-4sfp.png
   validation:
     exact_model_detection: contribution_confirmed
     rj45_mapping: community_confirmed_ports_1_24
@@ -613,8 +626,9 @@ devices:
     stack: pending
   visuals:
     status: community_validated
-    recommended_faceplate: faceplates/24rj45-4sfp.png
-    optional_faceplates: []
+    recommended_faceplate: faceplates/24rj45-4sfp-compact.png
+    optional_faceplates:
+    - faceplates/24rj45-4sfp.png
     calibration_profile: cisco_2960x_24p
     canvas:
       width: 2048
@@ -636,9 +650,10 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: huawei-s5720-12tp-li-ac
-  calibration_profile: stock_24rj45_4sfp
-  default_faceplate: faceplates/24rj45-4sfp.png
-  optional_faceplates: []
+  calibration_profile: stock_24rj45_4sfp_compact
+  default_faceplate: faceplates/24rj45-4sfp-compact.png
+  optional_faceplates:
+  - faceplates/24rj45-4sfp.png
   validation:
     exact_model_detection: contribution_confirmed_sysobjectid_and_model
     rj45_mapping: community_confirmed_ports_1_8
@@ -648,9 +663,10 @@ devices:
     stack: not_applicable
   visuals:
     status: community_validated
-    recommended_faceplate: faceplates/24rj45-4sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_24rj45_4sfp
+    recommended_faceplate: faceplates/24rj45-4sfp-compact.png
+    optional_faceplates:
+    - faceplates/24rj45-4sfp.png
+    calibration_profile: stock_24rj45_4sfp_compact
     canvas:
       width: 2048
       height: 448
@@ -778,9 +794,10 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: ''
-  calibration_profile: stock_24rj45_2sfp
-  default_faceplate: faceplates/24rj45-2sfp.png
-  optional_faceplates: []
+  calibration_profile: stock_24rj45_2sfp_compact
+  default_faceplate: faceplates/24rj45-2sfp-compact.png
+  optional_faceplates:
+  - faceplates/24rj45-2sfp.png
   validation:
     exact_model_detection: api_confirmed
     rj45_mapping: api_confirmed_port_indices
@@ -790,9 +807,10 @@ devices:
     stack: not_applicable
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/24rj45-2sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_24rj45_2sfp
+    recommended_faceplate: faceplates/24rj45-2sfp-compact.png
+    optional_faceplates:
+    - faceplates/24rj45-2sfp.png
+    calibration_profile: stock_24rj45_2sfp_compact
     canvas:
       width: 2048
       height: 448
@@ -848,9 +866,10 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: huawei-s5735-l8p4x-a1
-  calibration_profile: stock_24rj45_4sfp
-  default_faceplate: faceplates/24rj45-4sfp.png
-  optional_faceplates: []
+  calibration_profile: stock_24rj45_4sfp_compact
+  default_faceplate: faceplates/24rj45-4sfp-compact.png
+  optional_faceplates:
+  - faceplates/24rj45-4sfp.png
   validation:
     exact_model_detection: contribution_confirmed_two_devices
     rj45_mapping: community_confirmed_two_devices_ports_1_8
@@ -860,9 +879,10 @@ devices:
     stack: not_applicable
   visuals:
     status: community_validated
-    recommended_faceplate: faceplates/24rj45-4sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_24rj45_4sfp
+    recommended_faceplate: faceplates/24rj45-4sfp-compact.png
+    optional_faceplates:
+    - faceplates/24rj45-4sfp.png
+    calibration_profile: stock_24rj45_4sfp_compact
     canvas:
       width: 2048
       height: 448
@@ -1332,9 +1352,10 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: ubiquiti-usw-flex-2p5g-8-poe-api
-  calibration_profile: stock_24rj45_2sfp
-  default_faceplate: faceplates/24rj45-2sfp.png
-  optional_faceplates: []
+  calibration_profile: stock_24rj45_2sfp_compact
+  default_faceplate: faceplates/24rj45-2sfp-compact.png
+  optional_faceplates:
+  - faceplates/24rj45-2sfp.png
   validation:
     exact_model_detection: live_api_confirmed
     rj45_mapping: live_api_confirmed_port_indices
@@ -1344,9 +1365,10 @@ devices:
     stack: not_applicable
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/24rj45-2sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_24rj45_2sfp
+    recommended_faceplate: faceplates/24rj45-2sfp-compact.png
+    optional_faceplates:
+    - faceplates/24rj45-2sfp.png
+    calibration_profile: stock_24rj45_2sfp_compact
     canvas:
       width: 2048
       height: 448
@@ -1948,9 +1970,10 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: mikrotik-crs328-24p-4splus
-  calibration_profile: stock_24rj45_4sfp
-  default_faceplate: faceplates/24rj45-4sfp.png
-  optional_faceplates: []
+  calibration_profile: stock_24rj45_4sfp_compact
+  default_faceplate: faceplates/24rj45-4sfp-compact.png
+  optional_faceplates:
+  - faceplates/24rj45-4sfp.png
   validation:
     exact_model_detection: contribution_confirmed_local_routeros_identity
     rj45_mapping: contribution_confirmed_ether1_through_ether24_pending_rendered_validation
@@ -1960,9 +1983,10 @@ devices:
     stack: not_applicable
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/24rj45-4sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_24rj45_4sfp
+    recommended_faceplate: faceplates/24rj45-4sfp-compact.png
+    optional_faceplates:
+    - faceplates/24rj45-4sfp.png
+    calibration_profile: stock_24rj45_4sfp_compact
     canvas:
       width: 2048
       height: 448
@@ -2021,9 +2045,10 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: zyxel-gs1900-24e
-  calibration_profile: stock_24rj45_2sfp
-  default_faceplate: faceplates/24rj45-2sfp.png
-  optional_faceplates: []
+  calibration_profile: stock_24rj45_2sfp_compact
+  default_faceplate: faceplates/24rj45-2sfp-compact.png
+  optional_faceplates:
+  - faceplates/24rj45-2sfp.png
   validation:
     exact_model_detection: contribution_confirmed
     rj45_mapping: real_hardware_24_ports_confirmed
@@ -2033,9 +2058,10 @@ devices:
     stack: not_applicable
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/24rj45-2sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_24rj45_2sfp
+    recommended_faceplate: faceplates/24rj45-2sfp-compact.png
+    optional_faceplates:
+    - faceplates/24rj45-2sfp.png
+    calibration_profile: stock_24rj45_2sfp_compact
     canvas:
       width: 2048
       height: 448
@@ -2134,9 +2160,10 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: cisco-sg350-20-16p-2dual-2sfp
-  calibration_profile: stock_24rj45_4sfp
-  default_faceplate: faceplates/24rj45-4sfp.png
-  optional_faceplates: []
+  calibration_profile: stock_24rj45_4sfp_compact
+  default_faceplate: faceplates/24rj45-4sfp-compact.png
+  optional_faceplates:
+  - faceplates/24rj45-4sfp.png
   validation:
     exact_model_detection: contribution_confirmed
     rj45_mapping: real_hardware_fixed_ports_1_16_confirmed
@@ -2146,9 +2173,10 @@ devices:
     stack: not_applicable
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/24rj45-4sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_24rj45_4sfp
+    recommended_faceplate: faceplates/24rj45-4sfp-compact.png
+    optional_faceplates:
+    - faceplates/24rj45-4sfp.png
+    calibration_profile: stock_24rj45_4sfp_compact
     canvas:
       width: 2048
       height: 448
@@ -2479,9 +2507,10 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: zyxel-gs1915-24ep
-  calibration_profile: stock_24rj45_2sfp
-  default_faceplate: faceplates/24rj45-2sfp.png
-  optional_faceplates: []
+  calibration_profile: stock_24rj45_2sfp_compact
+  default_faceplate: faceplates/24rj45-2sfp-compact.png
+  optional_faceplates:
+  - faceplates/24rj45-2sfp.png
   validation:
     exact_model_detection: real_hardware_walk_confirmed
     rj45_mapping: real_hardware_swp00_swp23_confirmed
@@ -2491,9 +2520,10 @@ devices:
     stack: not_applicable
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/24rj45-2sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_24rj45_2sfp
+    recommended_faceplate: faceplates/24rj45-2sfp-compact.png
+    optional_faceplates:
+    - faceplates/24rj45-2sfp.png
+    calibration_profile: stock_24rj45_2sfp_compact
     canvas:
       width: 2048
       height: 448
@@ -2556,9 +2586,10 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: tplink-tl-sg2428p-24rj45-4sfp
-  calibration_profile: stock_24rj45_4sfp
-  default_faceplate: faceplates/24rj45-4sfp.png
-  optional_faceplates: []
+  calibration_profile: stock_24rj45_4sfp_compact
+  default_faceplate: faceplates/24rj45-4sfp-compact.png
+  optional_faceplates:
+  - faceplates/24rj45-4sfp.png
   validation:
     exact_model_detection: curated_sysobjectid_and_full_sysdescr_plus_manufacturer_product_family_identification_hardware_revision_pending
     rj45_mapping: real_hardware_ifname_1_to_24_ifindex_plus_manufacturer_ports
@@ -2568,9 +2599,10 @@ devices:
     stack: not_observed
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/24rj45-4sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_24rj45_4sfp
+    recommended_faceplate: faceplates/24rj45-4sfp-compact.png
+    optional_faceplates:
+    - faceplates/24rj45-4sfp.png
+    calibration_profile: stock_24rj45_4sfp_compact
     canvas:
       width: 2048
       height: 448
@@ -2591,9 +2623,10 @@ devices:
   discovery_support: true
   dashboard_support: true
   mapping_profile: tplink-tl-sg2008p-8rj45-0sfp
-  calibration_profile: stock_24rj45_2sfp
-  default_faceplate: faceplates/24rj45-2sfp.png
-  optional_faceplates: []
+  calibration_profile: stock_24rj45_2sfp_compact
+  default_faceplate: faceplates/24rj45-2sfp-compact.png
+  optional_faceplates:
+  - faceplates/24rj45-2sfp.png
   validation:
     exact_model_detection: curated_sysobjectid_and_full_sysdescr_plus_manufacturer_product_family_identification_hardware_revision_pending
     rj45_mapping: real_hardware_ifname_1_to_8_ifindex_plus_manufacturer_ports
@@ -2603,9 +2636,10 @@ devices:
     stack: not_observed
   visuals:
     status: experimental
-    recommended_faceplate: faceplates/24rj45-2sfp.png
-    optional_faceplates: []
-    calibration_profile: stock_24rj45_2sfp
+    recommended_faceplate: faceplates/24rj45-2sfp-compact.png
+    optional_faceplates:
+    - faceplates/24rj45-2sfp.png
+    calibration_profile: stock_24rj45_2sfp_compact
     canvas:
       width: 2048
       height: 448
