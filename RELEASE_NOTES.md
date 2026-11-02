@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.39
+
+The default 24 RJ45 / 2 SFP and 24 RJ45 / 4 SFP stock faceplates now use the new compact artwork with matching factory Geometry for all ports, SFP uplinks and Status LEDs. Existing generic stock filenames and functional mappings stay compatible; user Calibration and approved historical faceplates are preserved until explicitly upgraded.
+
 # Switch Vision Core v2.8.38
 
 Reset All now reapplies the latest verified model-specific factory artwork and matching Geometry for every mounted switch in the selected Native or Custom dashboard scope. The reset no longer silently leaves neighbouring loaded cards pinned to old faceplates after the original/Compact filename split, and missed Home Assistant update events no longer prevent mounted-card refresh. Both confirmation prompts and namespace isolation remain intact; a failed card reset is reported rather than claimed successful.

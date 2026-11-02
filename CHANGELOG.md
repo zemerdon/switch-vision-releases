@@ -1,3 +1,8 @@
+## v2.8.39 — New compact 24-port stock faceplate defaults
+
+- Replace the default 24 RJ45 / 2 SFP and 24 RJ45 / 4 SFP artwork with the new owner-supplied 6000 × 750 compact faceplates and their individually calibrated port, optical and status LED Geometry. Both existing stock filenames, profiles and functional port counts remain unchanged.
+- Preserve switch-scoped Calibration and approved historical artwork revisions until a deliberate faceplate upgrade. No model support claims or hardware capabilities are changed.
+
 ## v2.8.38 — Reset All restores each loaded switch's current factory artwork
 
 - Fix Reset All retaining historical faceplate artwork on other loaded switches after the original and Compact 48/4 stock filenames were separated. Use each card's verified model-specific Reset Current Switch contract before saving its paired factory Geometry.
