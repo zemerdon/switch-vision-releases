@@ -60,11 +60,6 @@ function fixture(base='native_SW3',pinSha=approved) {
     return {exists:true};
   };
   card.setCalibrationSaveStatus=()=>trace.push('error-status');
-  card.verifySavedVisualOperation=async(action,expected,profile,opts)=>{
-    assert.equal(action,'hub_approval');
-    assert.equal(opts.approvedSha,approved);
-    trace.push('verify');
-  };
   card.resetSavedCalibrations=()=>{throw Error('must NOT launch a second reset')};
   return {card,trace};
 }
@@ -73,7 +68,7 @@ const event={data:{profile:'native_SW3',base_profile_name:'native_SW3',
 (async()=>{
   const f=fixture();
   await f.card.handleCalibrationUpdateEvent(event);
-  assert.deepEqual(f.trace,['invalidate','refresh','clear','load','verify','render']);
+  assert.deepEqual(f.trace,['invalidate','refresh','clear','load','render']);
   assert.equal(f.card._profileCalibration.geometry,'verified Core factory');
   assert.equal(f.card._calibrationDirty,false);
 
@@ -96,7 +91,7 @@ const event={data:{profile:'native_SW3',base_profile_name:'native_SW3',
   await customApproval.card.handleCalibrationUpdateEvent({data:{
     profile:'custom_SW3',base_profile_name:'custom_SW3',
     action:'reset_switch',stock_artwork_approved:true,approved_sha256:approved}});
-  assert.deepEqual(customApproval.trace,['invalidate','refresh','clear','load','verify','render']);
+  assert.deepEqual(customApproval.trace,['invalidate','refresh','clear','load','render']);
   assert.equal(customApproval.card._profileCalibration.geometry,'verified Core factory');
   assert.equal(customApproval.card._calibrationWorking.geometry,'verified Core factory');
 

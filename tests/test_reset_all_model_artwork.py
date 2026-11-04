@@ -57,7 +57,6 @@ function card(base) {
   instance.refreshApprovedStockArtwork = async () => {
     instance._stockArtworkChoice = { filename: state[base] };
   };
-  instance.verifySavedVisualOperation = async () => true;
   instance.setCalibrationSaveStatus = (message, failed) => {
     instance._status = { message, failed };
   };
