@@ -1,3 +1,8 @@
+## v2.8.42 — Verify saved artwork, geometry and LEDs after visual operations
+
+- Read back Core's persisted Calibration after Reset Current Faceplate, Reset Current Switch, Reset All and Hub-approved stock upgrades. Check the saved image, RJ45/SFP geometry, status LED positions and LED membership instead of reporting success from a save acknowledgement alone.
+- Check the selected verified stock artwork on switch/namespace resets and the explicitly approved stock revision on Hub upgrades. Reject missing or mismatched saved state, and retain a compact per-card operation result with the failing stage for diagnosis.
+
 ## v2.8.41 — Keep Calibration manifest reads off the HA event loop
 
 - Offload packaged stock-artwork manifest reads from Calibration save, selection and approval WebSocket operations to Home Assistant’s executor. Preserve exact stock SHA-256 checks, saved Calibration and existing artwork-selection rules.

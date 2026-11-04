@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.42
+
+Reset and faceplate-approval operations now verify the saved visual result through Core before reporting completion: selected artwork, port and uplink geometry, Status LED layout/visibility and stock revision must match the intended state. Missing or inconsistent state fails visibly and records the operation stage for diagnosis; existing per-switch Calibration and explicit upgrade consent remain protected.
+
 # Switch Vision Core v2.8.41
 
 Fix Home Assistant event-loop blocking warnings when saving Calibration or viewing and approving stock faceplates. Stock-artwork manifest reads now run in an executor while preserving existing SHA-256 verification, saved Calibration and stock-artwork choices.
