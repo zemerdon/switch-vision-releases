@@ -13,7 +13,7 @@
   "projection": {
     "schema": 1,
     "source_component": "discovery",
-    "source_registry_sha256": "a73279ef71686e9640372861fcd8fa0bdd37d4e39d0b4c5625a259a3e327eb8f",
+    "source_registry_sha256": "dd28f7cd4b59a34ac546825736a9b743cbfb49d5a3966659de9edc75225aad41",
     "device_field_allowlist": [
       "vendor",
       "family",
@@ -43,12 +43,12 @@
       "model": "HP J8697A Switch 5406zl",
       "status": "experimental",
       "confirmed_since": "3.1.16",
-      "last_validated_version": "3.1.16",
+      "last_validated_version": "3.1.17",
       "ports": {
         "rj45": 72,
-        "poe": false,
+        "poe": true,
         "uplinks": 4,
-        "uplink_type": "4 x 10G optical in observed J8707A module",
+        "uplink_type": "4 x 10G X2 transceivers in observed J8707A module (SFP+ compatibility category)",
         "gigabit_sfp": 0,
         "ten_gigabit_sfp_plus": 4
       },
@@ -63,9 +63,9 @@
       "validation": {
         "exact_model_detection": "sysobjectid_and_local_sysdescr_confirmed",
         "rj45_mapping": "entity_mib_72_alias_joined_ports_in_installed_A_B_E_J8702A_modules",
-        "poe": "pending_unknown_for_other_modules",
-        "system_sensors": "pending",
-        "uplinks": "entity_mib_four_10g_optical_D_J8707A_aliases_confirmed",
+        "poe": "observed_J8702A_72_port_PSE_status_and_three_module_budgets;_other_module_SKUs_pending",
+        "system_sensors": "ENTITY_SENSOR_28C_chassis_temperature_and_two_fan_sensor_status_codes;_fan_RPM_unknown",
+        "uplinks": "entity_mib_four_10g_X2_D_J8707A_aliases_confirmed",
         "stack": "not_applicable",
         "visual_alignment": "pending_modular_faceplate"
       },

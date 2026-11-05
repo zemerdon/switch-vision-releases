@@ -1,3 +1,7 @@
+## v2.8.43 — Refine HP 5406zl modular capability metadata
+
+- Preserve the verified J8702A PoE and chassis sensor capabilities in the projected Experimental registry; distinguish physical 10G X2 optics from the generic SFP+ compatibility mapping while retaining existing stock visual and Calibration behavior.
+
 ## v2.8.42 — Recognize modular HP 5406zl model metadata
 
 - Mirror Discovery's Experimental HP J8697A 5406zl device contract into Core's generated model catalogue, preserving existing stock faceplates and user Calibration. Exact modular artwork remains pending.

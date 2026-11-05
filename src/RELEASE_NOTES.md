@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.43
+
+Core's Experimental HP J8697A 5406zl model metadata now records the module-backed PoE and chassis sensors, and distinguishes actual X2 optic hardware from the generic 10G SFP+ compatibility category. Existing stock faceplates and saved Calibration remain unchanged.
+
 # Switch Vision Core v2.8.42
 
 Carry the Experimental HP J8697A 5406zl modular registry into Core. Discovery derives actual port bindings from installed modules; exact modular faceplate artwork remains pending. Existing stock artwork and saved Calibration remain unchanged.
