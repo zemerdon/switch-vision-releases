@@ -5,6 +5,7 @@ Only exact model identifiers are listed. Support for one SKU does not imply supp
 
 | Vendor | Family | Exact model | RJ45 | Uplinks | PoE | Stack | Recommended faceplate | Calibration profile | Uplink validation | Status | Last validated |
 |---|---|---|---:|---:|---|---|---|---|---|---|---|
+| HP | 5400zl | `HP J8697A Switch 5406zl` | 72 | 4 10G SFP+ | No | No | `faceplates/48rj45-4sfp-compact.png` | `stock_48rj45_4sfp_compact` | Entity Mib Four 10G Optical D J8707A Aliases Confirmed | Experimental | v3.1.16 |
 | HP | 1810 | `HP 1810-24G` | 24 | 2 Gigabit SFP | No | No | `faceplates/24rj45-2sfp-compact.png` | `stock_24rj45_2sfp_compact` | Real Hardware Indexes 25 26 Confirmed | Experimental | v2.3.36 |
 | HP | 2530 | `HP J9774A 2530-8G-PoEP` | 10 | 2 Gigabit SFP | Yes | No | `faceplates/24rj45-2sfp-compact.png` | `stock_24rj45_2sfp_compact` | Real Hardware Dual Personality Logical Ports 9 10 Confirmed | Experimental | v3.0.9 |
 | HP | 1810 | `HP ProCurve 1810G-24` | 24 | 2 Gigabit SFP | No | No | `faceplates/hp-1810-24g.png` | `hp_1810_24g` | Manufacturer Confirmed Dual Personality Indexes 23 24 Medium Pending | Experimental | v2.4.47 |

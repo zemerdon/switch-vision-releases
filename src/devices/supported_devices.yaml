@@ -12,7 +12,7 @@ support_statuses:
 projection:
   schema: 1
   source_component: discovery
-  source_registry_sha256: d6934a11b0c3ea3d5b7fdeddb790065ff7534c148d2c8dd469cbfb9aad3df6ac
+  source_registry_sha256: a73279ef71686e9640372861fcd8fa0bdd37d4e39d0b4c5625a259a3e327eb8f
   device_field_allowlist:
   - vendor
   - family
@@ -21,6 +21,7 @@ projection:
   - confirmed_since
   - last_validated_version
   - ports
+  - port_topology_mode
   - stack_support
   - discovery_support
   - dashboard_support
@@ -33,6 +34,43 @@ projection:
   - unifi_api_port_map
   - port_roles
 devices:
+- vendor: HP
+  family: 5400zl
+  model: HP J8697A Switch 5406zl
+  status: experimental
+  confirmed_since: 3.1.16
+  last_validated_version: 3.1.16
+  ports:
+    rj45: 72
+    poe: false
+    uplinks: 4
+    uplink_type: 4 x 10G optical in observed J8707A module
+    gigabit_sfp: 0
+    ten_gigabit_sfp_plus: 4
+  port_topology_mode: entity_mib_modules
+  stack_support: false
+  discovery_support: true
+  dashboard_support: true
+  mapping_profile: hp-5406zl-entity-module-ports
+  calibration_profile: stock_48rj45_4sfp_compact
+  default_faceplate: faceplates/48rj45-4sfp-compact.png
+  optional_faceplates: []
+  validation:
+    exact_model_detection: sysobjectid_and_local_sysdescr_confirmed
+    rj45_mapping: entity_mib_72_alias_joined_ports_in_installed_A_B_E_J8702A_modules
+    poe: pending_unknown_for_other_modules
+    system_sensors: pending
+    uplinks: entity_mib_four_10g_optical_D_J8707A_aliases_confirmed
+    stack: not_applicable
+    visual_alignment: pending_modular_faceplate
+  visuals:
+    status: experimental
+    recommended_faceplate: faceplates/48rj45-4sfp-compact.png
+    optional_faceplates: []
+    calibration_profile: stock_48rj45_4sfp_compact
+    canvas:
+      width: 2048
+      height: 448
 - vendor: HP
   family: '1810'
   model: HP 1810-24G

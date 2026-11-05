@@ -1,3 +1,7 @@
+## v2.8.42 — Recognize modular HP 5406zl model metadata
+
+- Mirror Discovery's Experimental HP J8697A 5406zl device contract into Core's generated model catalogue, preserving existing stock faceplates and user Calibration. Exact modular artwork remains pending.
+
 ## v2.8.41 — Keep Calibration manifest reads off the HA event loop
 
 - Offload packaged stock-artwork manifest reads from Calibration save, selection and approval WebSocket operations to Home Assistant’s executor. Preserve exact stock SHA-256 checks, saved Calibration and existing artwork-selection rules.

@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.42
+
+Carry the Experimental HP J8697A 5406zl modular registry into Core. Discovery derives actual port bindings from installed modules; exact modular faceplate artwork remains pending. Existing stock artwork and saved Calibration remain unchanged.
+
 # Switch Vision Core v2.8.41
 
 Fix Home Assistant event-loop blocking warnings when saving Calibration or viewing and approving stock faceplates. Stock-artwork manifest reads now run in an executor while preserving existing SHA-256 verification, saved Calibration and stock-artwork choices.
