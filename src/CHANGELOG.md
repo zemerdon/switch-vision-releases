@@ -1,3 +1,8 @@
+## v2.8.44 — Recognize non-PoE Dell PowerConnect 5548
+
+- Carry Discovery's exact PowerConnect 5548 Experimental model into the Core registry, distinct from the 5548P, with 48 copper ports and two 10G SFP+ uplinks.
+- Use the existing stock 48/2 faceplate and established optical-status capability; do not invent optical values, modify artwork or overwrite saved Calibration.
+
 ## v2.8.43 — Refine HP 5406zl modular capability metadata
 
 - Preserve the verified J8702A PoE and chassis sensor capabilities in the projected Experimental registry; distinguish physical 10G X2 optics from the generic SFP+ compatibility mapping while retaining existing stock visual and Calibration behavior.

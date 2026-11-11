@@ -7,7 +7,7 @@
   "config_flow": true,
   "documentation": "https://switch-vision.zemerdon.com",
   "iot_class": "local_push",
-  "version": "2.8.43",
+  "version": "2.8.44",
   "requirements": [
     "pysnmp==7.1.21"
   ],

@@ -1,3 +1,7 @@
+# Switch Vision Core v2.8.44
+
+Recognize the non-PoE Dell PowerConnect 5548 as a distinct Experimental switch with 48 copper ports and two 10G SFP+ uplinks. Reuse existing stock artwork and Calibration; unavailable optic readings remain unknown rather than inferred. This release does not replace any faceplates.
+
 # Switch Vision Core v2.8.43
 
 Core's Experimental HP J8697A 5406zl model metadata now records the module-backed PoE and chassis sensors, and distinguishes actual X2 optic hardware from the generic 10G SFP+ compatibility category. Existing stock faceplates and saved Calibration remain unchanged.

@@ -13,7 +13,7 @@
   "projection": {
     "schema": 1,
     "source_component": "discovery",
-    "source_registry_sha256": "dd28f7cd4b59a34ac546825736a9b743cbfb49d5a3966659de9edc75225aad41",
+    "source_registry_sha256": "731bab122c582bbdc292b2d1a97ccd7ee61ff9673a06e41a621cb0d241db2ce4",
     "device_field_allowlist": [
       "vendor",
       "family",
@@ -2402,6 +2402,52 @@
           "faceplates/24rj45-4sfp.png"
         ],
         "calibration_profile": "stock_24rj45_4sfp_compact",
+        "canvas": {
+          "width": 2048,
+          "height": 448
+        }
+      }
+    },
+    {
+      "vendor": "Dell",
+      "family": "PowerConnect 5500",
+      "model": "PowerConnect 5548",
+      "status": "experimental",
+      "confirmed_since": "3.1.26",
+      "last_validated_version": "3.1.26",
+      "ports": {
+        "rj45": 48,
+        "poe": false,
+        "uplinks": 2,
+        "uplink_type": "2x 10G SFP+",
+        "gigabit_sfp": 0,
+        "ten_gigabit_sfp_plus": 2
+      },
+      "stack_support": false,
+      "discovery_support": true,
+      "dashboard_support": true,
+      "mapping_profile": "dell-powerconnect-5548-48c-2x10g",
+      "calibration_profile": "stock_48rj45_2sfp_compact",
+      "default_faceplate": "faceplates/48rj45-2sfp-compact.png",
+      "optional_faceplates": [
+        "faceplates/48rj45-2sfp.png"
+      ],
+      "validation": {
+        "exact_model_detection": "verified_local_sysobjectid",
+        "rj45_mapping": "observed_real_hardware",
+        "poe": "not_applicable",
+        "system_sensors": "validated_cpu_and_temperature",
+        "uplinks": "observed_real_hardware",
+        "stack": "not_applicable",
+        "optical_dom": "not_observed"
+      },
+      "visuals": {
+        "status": "experimental",
+        "recommended_faceplate": "faceplates/48rj45-2sfp-compact.png",
+        "optional_faceplates": [
+          "faceplates/48rj45-2sfp.png"
+        ],
+        "calibration_profile": "stock_48rj45_2sfp_compact",
         "canvas": {
           "width": 2048,
           "height": 448
